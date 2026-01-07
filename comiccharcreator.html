@@ -1,0 +1,3099 @@
+<!DOCTYPE html>
+<html lang="en">
+<!DOCTYPE html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Super Hero Character Generator</title>
+  <style>
+    :root {
+      --primary-color: #e23636;
+      --secondary-color: #fca311;
+      --dark-bg: #14213d;
+      --light-text: #ffffff;
+      --panel-bg: #e5e5e5;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .controls {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: var(--dark-bg);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: var(--secondary-color);
+      color: black;
+    }
+
+    .character-sheet {
+      background-color: white;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      border-top: 10px solid var(--primary-color);
+    }
+
+    .section-title {
+      grid-column: 1 / -1;
+      background-color: var(--dark-bg);
+      color: white;
+      padding: 5px 10px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .list-section {
+      grid-column: 1 / -1;
+    }
+
+    .stat-block {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px;
+      padding: 5px 0;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .stat-label {
+      font-weight: bold;
+    }
+
+    .stat-rank {
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    .stat-number {
+      color: #666;
+      font-family: monospace;
+    }
+
+    .secondary-block {
+      background-color: var(--panel-bg);
+      padding: 15px;
+      text-align: center;
+      border-radius: 5px;
+    }
+
+    .secondary-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--dark-bg);
+    }
+
+    .info-header {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .info-item span {
+      font-weight: bold;
+      display: block;
+      color: #666;
+      font-size: 0.8em;
+    }
+
+    .list-section ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .roll-log {
+      grid-column: 1 / -1;
+      background: #333;
+      color: #0f0;
+      font-family: monospace;
+      padding: 15px;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-top: 20px;
+      font-size: 0.9em;
+    }
+
+    .test-output {
+      background: #eee;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 20px;
+      font-family: monospace;
+    }
+
+    .pass {
+      color: green;
+    }
+
+    .fail {
+      color: red;
+    }
+
+    .power {
+      font-size: 12pt;
+    }
+
+    .talent {
+      font-size: 12pt;
+    }
+
+    .contact {
+      font-size: 12pt;
+    }
+
+    .power-description {
+      font-size: 8pt;
+    }
+
+    .talent-description {
+      font-size: 8pt;
+    }
+
+    .contact-description {
+      font-size: 8pt;
+    }
+
+    .side-by-side {
+      display: grid;
+      gap: 20px 20px;
+      width: 100%;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 10px;
+      box-sizing: border-box;
+      grid-column: 1 / -1;
+    }
+
+    details.about {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    details.about summary {
+      font-size: 8pt;
+    }
+
+    details.about>div {
+      border: 1px solid black;
+      padding: 3px;
+      margin-bottom: 4px;
+      font-size: 8pt;
+    }
+
+    details.options {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    details.options summary {
+      font-size: 8pt;
+    }
+
+    details.options>div {
+      border: 1px solid black;
+      padding: 3px;
+      margin-bottom: 4px;
+      display: grid;
+      grid-column: 1 / -1;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    p.center {
+      text-align: center;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background-color: transparent;
+      }
+
+      header {
+        padding: 5px 5px 5px 5px;
+        margin-bottom: 0;
+      }
+
+      header h1 {
+        font-size: 12pt;
+      }
+
+      .controls {
+        margin-bottom: 0;
+      }
+
+      .character-sheet {
+        gap: 5px 10px;
+        border-top: none;
+        padding: 0;
+        background-color: transparent;
+        box-shadow: none;
+      }
+
+      .section-title {
+        margin-top: 0;
+      }
+
+      .info-header {
+        margin-bottom: 0;
+      }
+
+      .list-section {
+        margin-bottom: 0;
+      }
+
+      .stat-block {
+        margin-bottom: 0;
+      }
+
+      .stat-label {
+        font-size: 8pt;
+      }
+
+      .stat-rank {
+        font-size: 8pt;
+      }
+
+      .stat-number {
+        font-size: 8pt;
+      }
+
+      .secondary-block {
+        padding: 4px;
+        font-size: 8pt;
+      }
+
+      .secondary-value {
+        font-size: 10pt;
+      }
+
+      .side-by-side {
+        padding: 2px;
+      }
+
+      .power {
+        font-size: 10pt;
+      }
+
+      .talent {
+        font-size: 10pt;
+      }
+
+      .contact {
+        font-size: 10pt;
+      }
+
+      .no-print {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <details class="about no-print">
+    <summary>About</summary>
+    <div>
+      <p>I have been a collector of comic books for over 40 years.  One of my favorite books was the Official Handbook to the Marvel Universe.   This provided simple descriptions of the characters, including powers, talents, group affiliations, contacts, etc.  This format inspired me to create new characters using a very simple random number generator and a set of rules that I created.   The details of those rules are now lost to my childhood.  Many years ago I came across the Marvel Super Heroes RPG by TSR and was immediately drawn to the system.  I have never been an RPG player, but the system provided a simple character generation system.</p>
+      <p>This character generator is based (heavily) on the Marvel Super Heroes Advanced Rulebook.  It has been significantly simplified and many of the Marvel Universe specific ideas have been removed.  The intent of this version is to provide simple character creation and is not ment to be used in an RPG environment.</p>
+      <br>
+      <p class="center">
+        TSR is a registered trademark owned by TSR Inc. TSR inc. is a subsidiary of Wizards of the Coast, Inc., a division of Hasbro, Inc.<br>
+      Names(s) of character(s) and the distinctive likeness(es) thereof are Trademarks and © of Marvel Characters, Inc. and are used without permission.<br>
+      Names(s) of character(s) and the distinctive likeness(es) thereof are Trademarks and © of DC Comics and are used without permission.<br>
+      This site is not intended to make money.</p>
+    </div>
+  </details>
+
+
+  <header>
+    <h1>Super Hero Character Generator</h1>
+  </header>
+
+  <div class="controls no-print">
+    <button onclick="app.generate()">Generate New Hero</button>
+    <button onclick="app.runTests()">Run Unit Tests</button>
+    <button onclick="print()">Print Hero Sheet</button>
+  </div>
+
+  <details class="options no-print">
+    <summary>Options</summary>
+    <div>
+      <div>
+        <label>Identity:</label>
+        <input type="radio" name="identity" id="identity_secret" checked />
+        <label for="identity_secret">Secret</label>
+        <input type="radio" name="identity" id="identity_public" />
+        <label for="identity_public">Public</label>
+      </div>
+      <div>
+        <label>If Hi-Tech:</label>
+        <input type="radio" name="hi_tech" id="hi_tech_good" checked />
+        <label for="hi_tech_good">Set Resources to Good</label>
+        <input type="radio" name="hi_tech" id="hi_tech_roll" />
+        <label for="hi_tech_roll">Roll for Resources</label>
+      </div>
+    </div>
+  </details>
+
+  <div id="display-area"></div>
+  <div class="no-print" id="test-area"></div>
+
+  <script>
+    // --- DATA & TABLES ---
+
+    // Page 2: Ranks table
+    const RANKS = [
+      { name: "Shift 0", abbr: "S0", min: 0, max: 0, standard: 0 },
+      { name: "Feeble", abbr: "FE", min: 1, max: 2, standard: 2 },
+      { name: "Poor", abbr: "PR", min: 3, max: 4, standard: 4 },
+      { name: "Typical", abbr: "TY", min: 5, max: 7, standard: 6 },
+      { name: "Good", abbr: "GD", min: 8, max: 15, standard: 10 },
+      { name: "Excellent", abbr: "EX", min: 16, max: 25, standard: 20 },
+      { name: "Remarkable", abbr: "RM", min: 26, max: 35, standard: 30 },
+      { name: "Incredible", abbr: "IN", min: 36, max: 45, standard: 40 },
+      { name: "Amazing", abbr: "AM", min: 46, max: 62, standard: 50 },
+      { name: "Monstrous", abbr: "MO", min: 63, max: 87, standard: 75 },
+      { name: "Unearthly", abbr: "UE", min: 88, max: 125, standard: 100 },
+      { name: "Shift X", abbr: "SX", min: 126, max: 175, standard: 150 },
+      { name: "Shift Y", abbr: "SY", min: 176, max: 350, standard: 200 },
+      { name: "Shift Z", abbr: "SZ", min: 351, max: 1000, standard: 500 },
+      { name: "Class 1000", abbr: "C1", min: 1000, max: 3000, standard: 1000 },
+      { name: "Class 3000", abbr: "C3", min: 3000, max: 5000, standard: 3000 },
+      { name: "Class 5000", abbr: "C5", min: 5000, max: 1000000000, standard: 5000 },
+      { name: "Beyond", abbr: "BY", min: 1000000000, max: 1000000000, standard: 1000000000 }
+    ];
+
+    // Page 6: Random Ranks Table
+    // Maps percentile roll to Rank Name based on Column (Origin)
+    const RANDOM_RANKS_TABLE = [
+      { rank: 'Feeble', rankNumber: 1, maxRolls: [5, 5, 5, 5, 10] },
+      { rank: 'Poor', rankNumber: 3, maxRolls: [10, 25, 10, 10, 20] },
+      { rank: 'Typical', rankNumber: 5, maxRolls: [20, 75, 40, 15, 30] },
+      { rank: 'Good', rankNumber: 8, maxRolls: [40, 95, 80, 40, 40] },
+      { rank: 'Excellent', rankNumber: 16, maxRolls: [60, 100, 95, 50, 60] },
+      { rank: 'Remarkable', rankNumber: 26, maxRolls: [80, -1, 100, 70, 70] },
+      { rank: 'Incredible', rankNumber: 36, maxRolls: [96, -1, -1, 90, 80] },
+      { rank: 'Amazing', rankNumber: 46, maxRolls: [100, -1, -1, 98, 95] },
+      { rank: 'Monstrous', rankNumber: 63, maxRolls: [-1, -1, -1, 100, 100] },
+    ];
+
+    // Page 7: Origins Table
+    const ORIGINS = [
+      {
+        maxRoll: 30, name: "Altered Human", column: 0,
+        fightingStart: -1, fightingSet: -1, fightingAdjustment: 0, fightingMinimum: -1, fightingMaximum: -1,
+        agilityStart: -1, agilitySet: -1, agilityAdjustment: 0, agilityMinimum: -1, agilityMaximum: -1,
+        strengthStart: -1, strengthSet: -1, strengthAdjustment: 0, strengthMinimum: -1, strengthMaximum: -1,
+        enduranceStart: -1, enduranceSet: -1, enduranceAdjustment: 0, enduranceMinimum: -1, enduranceMaximum: -1,
+        reasonStart: -1, reasonSet: -1, reasonAdjustment: 0, reasonMinimum: -1, reasonMaximum: -1,
+        intuitionStart: -1, intuitionSet: -1, intuitionAdjustment: 0, intuitionMinimum: -1, intuitionMaximum: -1,
+        psycheStart: -1, psycheSet: -1, psycheAdjustment: 0, psycheMinimum: -1, psycheMaximum: -1,
+        resourcesStart: -1, resourcesSet: -1, resourcesAdjustment: 0, resourcesMinimum: -1, resourcesMaximum: -1,
+        popularityStart: -1, popularitySet: -1, popularityAdjustment: 0, popularityMinimum: -1, popularityMaximum: -1,
+        powersCountSet: -1, powersCountAdjustment: 0, powersCountMinimum: -1, powersCountMaximum: -1,
+        talentsCountSet: -1, talentsCountAdjustment: 0, talentsCountMinimum: -1, talentsCountMaximum: -1,
+        contactsCountSet: -1, contactsCountAdjustment: 0, contactsCountMinimum: -1, contactsCountMaximum: -1
+      },
+      {
+        maxRoll: 60, name: "Mutant", column: 0,
+        fightingStart: -1, fightingSet: -1, fightingAdjustment: 0, fightingMinimum: -1, fightingMaximum: -1,
+        agilityStart: -1, agilitySet: -1, agilityAdjustment: 0, agilityMinimum: -1, agilityMaximum: -1,
+        strengthStart: -1, strengthSet: -1, strengthAdjustment: 0, strengthMinimum: -1, strengthMaximum: -1,
+        enduranceStart: -1, enduranceSet: -1, enduranceAdjustment: 2, enduranceMinimum: -1, enduranceMaximum: -1,
+        reasonStart: -1, reasonSet: -1, reasonAdjustment: 0, reasonMinimum: -1, reasonMaximum: -1,
+        intuitionStart: -1, intuitionSet: -1, intuitionAdjustment: 0, intuitionMinimum: -1, intuitionMaximum: -1,
+        psycheStart: -1, psycheSet: -1, psycheAdjustment: 0, psycheMinimum: -1, psycheMaximum: -1,
+        resourcesStart: -1, resourcesSet: -1, resourcesAdjustment: -1, resourcesMinimum: -1, resourcesMaximum: -1,
+        popularityStart: -1, popularitySet: 0, popularityAdjustment: 0, popularityMinimum: -1, popularityMaximum: -1,
+        powersCountSet: -1, powersCountAdjustment: 1, powersCountMinimum: -1, powersCountMaximum: -1,
+        talentsCountSet: -1, talentsCountAdjustment: 0, talentsCountMinimum: -1, talentsCountMaximum: -1,
+        contactsCountSet: -1, contactsCountAdjustment: 0, contactsCountMinimum: -1, contactsCountMaximum: -1
+      },
+      {
+        maxRoll: 90, name: "Hi-Tech", column: 2,
+        fightingStart: -1, fightingSet: -1, fightingAdjustment: 0, fightingMinimum: -1, fightingMaximum: -1,
+        agilityStart: -1, agilitySet: -1, agilityAdjustment: 0, agilityMinimum: -1, agilityMaximum: -1,
+        strengthStart: -1, strengthSet: -1, strengthAdjustment: 0, strengthMinimum: -1, strengthMaximum: -1,
+        enduranceStart: -1, enduranceSet: -1, enduranceAdjustment: 2, enduranceMinimum: -1, enduranceMaximum: -1,
+        reasonStart: -1, reasonSet: -1, reasonAdjustment: 2, reasonMinimum: -1, reasonMaximum: -1,
+        intuitionStart: -1, intuitionSet: -1, intuitionAdjustment: 0, intuitionMinimum: -1, intuitionMaximum: -1,
+        psycheStart: -1, psycheSet: -1, psycheAdjustment: 0, psycheMinimum: -1, psycheMaximum: -1,
+        resourcesStart: -1, resourcesSet: -1, resourcesAdjustment: 0, resourcesMinimum: -1, resourcesMaximum: -1,
+        popularityStart: -1, popularitySet: -1, popularityAdjustment: 0, popularityMinimum: -1, popularityMaximum: -1,
+        powersCountSet: -1, powersCountAdjustment: 0, powersCountMinimum: -1, powersCountMaximum: -1,
+        talentsCountSet: -1, talentsCountAdjustment: 0, talentsCountMinimum: -1, talentsCountMaximum: -1,
+        contactsCountSet: -1, contactsCountAdjustment: 0, contactsCountMinimum: -1, contactsCountMaximum: -1
+      },
+      {
+        maxRoll: 95, name: "Robot", column: 3,
+        fightingStart: -1, fightingSet: -1, fightingAdjustment: 0, fightingMinimum: -1, fightingMaximum: -1,
+        agilityStart: -1, agilitySet: -1, agilityAdjustment: 0, agilityMinimum: -1, agilityMaximum: -1,
+        strengthStart: -1, strengthSet: -1, strengthAdjustment: 0, strengthMinimum: -1, strengthMaximum: -1,
+        enduranceStart: -1, enduranceSet: -1, enduranceAdjustment: 2, enduranceMinimum: -1, enduranceMaximum: -1,
+        reasonStart: -1, reasonSet: -1, reasonAdjustment: 0, reasonMinimum: -1, reasonMaximum: -1,
+        intuitionStart: -1, intuitionSet: -1, intuitionAdjustment: 0, intuitionMinimum: -1, intuitionMaximum: -1,
+        psycheStart: -1, psycheSet: -1, psycheAdjustment: 0, psycheMinimum: -1, psycheMaximum: -1,
+        resourcesStart: -1, resourcesSet: -1, resourcesAdjustment: 0, resourcesMinimum: -1, resourcesMaximum: -1,
+        popularityStart: -1, popularitySet: 0, popularityAdjustment: 0, popularityMinimum: -1, popularityMaximum: -1,
+        powersCountSet: -1, powersCountAdjustment: 0, powersCountMinimum: -1, powersCountMaximum: -1,
+        talentsCountSet: -1, talentsCountAdjustment: 0, talentsCountMinimum: -1, talentsCountMaximum: -1,
+        contactsCountSet: -1, contactsCountAdjustment: 0, contactsCountMinimum: -1, contactsCountMaximum: -1
+      },
+      {
+        maxRoll: 100, name: "Alien", column: 4,
+        fightingStart: -1, fightingSet: -1, fightingAdjustment: 0, fightingMinimum: -1, fightingMaximum: -1,
+        agilityStart: -1, agilitySet: -1, agilityAdjustment: 0, agilityMinimum: -1, agilityMaximum: -1,
+        strengthStart: -1, strengthSet: -1, strengthAdjustment: 0, strengthMinimum: -1, strengthMaximum: -1,
+        enduranceStart: -1, enduranceSet: -1, enduranceAdjustment: 2, enduranceMinimum: -1, enduranceMaximum: -1,
+        reasonStart: -1, reasonSet: -1, reasonAdjustment: 0, reasonMinimum: -1, reasonMaximum: -1,
+        intuitionStart: -1, intuitionSet: -1, intuitionAdjustment: 0, intuitionMinimum: -1, intuitionMaximum: -1,
+        psycheStart: -1, psycheSet: -1, psycheAdjustment: 0, psycheMinimum: -1, psycheMaximum: -1,
+        resourcesStart: 3 /* Poor */, resourcesSet: -1, resourcesAdjustment: 0, resourcesMinimum: -1, resourcesMaximum: -1,
+        popularityStart: -1, popularitySet: -1, popularityAdjustment: -5, popularityMinimum: -1, popularityMaximum: -1,
+        powersCountSet: -1, powersCountAdjustment: -1, powersCountMinimum: -1, powersCountMaximum: 2,
+        talentsCountSet: -1, talentsCountAdjustment: 0, talentsCountMinimum: -1, talentsCountMaximum: -1,
+        contactsCountSet: 1, contactsCountAdjustment: 0, contactsCountMinimum: 1, contactsCountMaximum: -1
+      },
+    ];
+
+    // Page 6: Ability Modifier Table
+    const ABILITY_MODIFIER_TABLE = [
+      { maxRoll: 15, modifier: -1 },
+      { maxRoll: 50, modifier: 0 },
+      { maxRoll: 70, modifier: 1 },
+      { maxRoll: 85, modifier: 2 },
+      { maxRoll: 95, modifier: 3 },
+      { maxRoll: 100, modifier: 4 }
+    ];
+
+    // Page 9: Powers/Talents/Contacts Quantity Table
+    const QUANTITY_TABLE = [
+      { maxRoll: 20, powers: { initial: 2, maximum: 4 }, talents: { initial: 1, maximum: 6 }, contacts: { initial: 0, maximum: 4 } },
+      { maxRoll: 60, powers: { initial: 3, maximum: 4 }, talents: { initial: 2, maximum: 5 }, contacts: { initial: 1, maximum: 4 } },
+      { maxRoll: 90, powers: { initial: 4, maximum: 4 }, talents: { initial: 3, maximum: 4 }, contacts: { initial: 2, maximum: 4 } },
+      { maxRoll: 100, powers: { initial: 5, maximum: 5 }, talents: { initial: 4, maximum: 4 }, contacts: { initial: 3, maximum: 4 } }
+    ];
+
+    // Page 10: Power Categories
+    const POWER_CATEGORIES = [
+      { maxRoll: 5, name: "Resistances" },
+      { maxRoll: 10, name: "Senses" },
+      { maxRoll: 15, name: "Movement" },
+      { maxRoll: 25, name: "Matter Control" },
+      { maxRoll: 40, name: "Energy Control" },
+      { maxRoll: 55, name: "Body Control" },
+      { maxRoll: 70, name: "Distance Attacks" },
+      { maxRoll: 75, name: "Mental Powers" },
+      { maxRoll: 90, name: "Body Alterations/Offensive" },
+      { maxRoll: 100, name: "Body Alterations/Defensive" }
+    ];
+
+    const POWER_LIST = [
+      {
+        category: "Resistances", maxRoll: 1, name: "Resistance to Fire and Heat", powerCount: 1,
+        description: "All damage from fire and heat-based attacks is reduced.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Resistances", maxRoll: 2, name: "Resistance to Cold", powerCount: 1,
+        description: "All damage from cold-based attacks is reduced.  Physical items made of ice may still affect the hero.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Resistances", maxRoll: 3, name: "Resistance to Electricity", powerCount: 1,
+        description: "All damage resulting from electrical-based attacks is reduced. The hero must decide if this Power is conductive or non-conductive in nature. Conductive resistance allows energy to pass through the hero into those the hero is touching (like a copper wire). Non-conductive resistance stops the energy at the contact point, allowing those being touched or held to be unharmed (like rubber insulation). ",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Resistances", maxRoll: 4, name: "Resistance to Radiation", powerCount: 1,
+        description: "All damage resulting from radiation-based attacks, including but not limited to X-rays, alpha and beta particles, and gamma rays, is reduced. Most non-concussive energy rays used by super-powered individuals may be so reduced.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Resistances", maxRoll: 5, name: "Resistance to Toxins", powerCount: 1,
+        description: "All damagee resulting from toxin attacks is reduced.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Resistances", maxRoll: 6, name: "Resistance to Corrosives", powerCount: 1,
+        description: "This resistance reduces the amount of damage from acids and other caustic agents, including but not limited to rust, rot, acids, salt deterioration, and destructive microbes.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Resistances", maxRoll: 7, name: "Resistance to Emotion Attacks", powerCount: 1,
+        description: "This resistance reduces the effect of emotion attacks including illusions, emotion-control, and dominance. ",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Resistances", maxRoll: 8, name: "Resistance to Mental Attacks", powerCount: 1,
+        description: "This resistance is similar to that of resistance to emotion attacks, but is used against attacks that affect the Psyche from psionic (but not magical) sources.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Resistances", maxRoll: 9, name: "Resistance to Magic Attacks", powerCount: 1,
+        description: "This resistance is similar to that of Resistance to Emotion Attacks, but is used against attacks that affect the Psyche from magical and extra-dimensional sources.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Resistances", maxRoll: 10, name: "Resistance to Disease", powerCount: 1,
+        description: "The individual with this resistance is less susceptible to disease than other heroes. Included are common diseases, as well as the effects of biological warfare and vampirism.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Resistances", maxRoll: 11, name: "Invulnerability", powerCount: 2,
+        description: "The hero with this Power is totally unaffected by one or more of the attack forms listed above. The initial choosing of Invulnerability counts as two choices, but every additional choice in Resistances may be changed to an Invulnerability.",
+        bonusPowerCount: 0
+      },
+
+      {
+        category: "Senses", maxRoll: 1, name: "Protected Senses", powerCount: 1,
+        description: "One or more of the hero's basic senses are protected from attack. The hero generally ignores potentially damaging attacks.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Senses", maxRoll: 2, name: "Enhances Senses", powerCount: 1,
+        description: "One or more of the hero's five normal senses (hearing, sight, smell, touch, taste) is increased.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Senses", maxRoll: 3, name: "Infravision", powerCount: 1,
+        description: "The individual with this ability can see in the dark.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Senses", maxRoll: 4, name: "Computer Links", powerCount: 1,
+        description: "The character with this Power may communicate with and retrieve information from computer systems. The hero must be able to access the computer in some way; usually this is by means of an implant relayed to a predetermined computer.  This Power also allows the reprogramming of simple robots. ",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Senses", maxRoll: 5, name: "Emotion Detection", powerCount: 1,
+        description: "The hero can detect emotion in others. This Power may be a limited form of Empathy, or merely the ability to catch the subtle physiological clues that indicate a person is under stress, lying, or worried. ",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Senses", maxRoll: 6, name: "Energy Detection", powerCount: 1,
+        description: "The hero with this Power is able to identify specific types of energy and track energy trails. The hero can identify the general type of energy, and can track the energy trail of that specific type.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Senses", maxRoll: 7, name: "Magnetic Detection", powerCount: 1,
+        description: "The hero with this Power can detect the magnetic field of Earth (and likely other planets as well), as well as aberrations of that field. It is difficult for a hero with this Power to become lost.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Senses", maxRoll: 8, name: "Psionic Detection", powerCount: 1,
+        description: "The hero with this Power is attuned to exceptional mental radiation in general, and as such can detect the use of paranormal abilities including mindreading, thought-casting, mental control and attacks, whether by technological or of mutant orgin (but not those of magical origin). The hero can detect these abilities only when they are in use.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Senses", maxRoll: 9, name: "Astral Detection", powerCount: 1,
+        description: "The hero with this Power can see the forms of creatures operating in the astral plane, including ectoplasm of those adepts who can astrally project. This is an automatic ability: the individual can always recognize that an astral form is nearby.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Senses", maxRoll: 10, name: "Tracking Ability", powerCount: 1,
+        description: "Through use of heightened senses, learned abilities, or mutant Powers the hero with this Power can track another individual's path.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Senses", maxRoll: 11, name: "Mutant Detection", powerCount: 1,
+        description: "The hero with this Power is attuned to the specific mental radiation given out by mutants.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Senses", maxRoll: 12, name: "Magic Detection", powerCount: 1,
+        description: "The hero with this Power can detect magic.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Senses", maxRoll: 13, name: "Combat Sense", powerCount: 2,
+        description: "The hero with this Power can sense the moves of an opponent during physical combat, thus increasing surprise, blocking, dodging, and escaping.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Senses", maxRoll: 14, name: "Cosmic Awareness", powerCount: 2,
+        description: "The hero possessing this Power is in tune with the universe to some degree, allowing him to perceive other powerful entities and to detect weaknesses in opponents.",
+        bonusPowerCount: 0
+      },
+
+      {
+        category: "Movement", maxRoll: 2, name: "Flight", powerCount: 1,
+        description: "The hero with this Power can move through the air under his own power.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Movement", maxRoll: 3, name: "Gliding", powerCount: 1,
+        description: "The hero has the ability to glide.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Movement", maxRoll: 4, name: "Leaping", powerCount: 1,
+        description: "The hero with this Power can leap great distances.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Movement", maxRoll: 6, name: "Wall-Crawling", powerCount: 1,
+        description: "The hero can move along vertical and upside-down surfaces as if they were normal surfaces.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Movement", maxRoll: 7, name: "Lightning Speed", powerCount: 1,
+        description: "The hero with this Power can move as a vehicle with a high speed.  Lightning Speed is assumed to apply to ground movement, but may be applied to any of the following Powers, if the hero has them in his possession: Flight, Gliding, Wall-crawling, or Digging. ",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Movement", maxRoll: 8, name: "Levitation", powerCount: 1,
+        description: "This Power allows the hero to move vertically unaided, and usually has a magical or mental origin. It does not allow true flight, but is immune to the effects of wind or air control Powers, unless the hero with the Power so chooses.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Movement", maxRoll: 9, name: "Swimming", powerCount: 1,
+        description: "All heroes are assumed to be capable of swimming if free of impediments. The Swimming Power shows that the hero can move through the water at high speeds, as in the Lightning Speed Power applied to water. This Power does not negate the need to breathe.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Movement", maxRoll: 10, name: "Climbing", powerCount: 1,
+        description: "The hero with this Power can scale vertical (but not upside-down) surfaces as if possessing the Wall-Crawling Power with Lightning Speed.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Movement", maxRoll: 11, name: "Teleportation", powerCount: 2,
+        description: "The hero with Teleportation Power can move instantaneously from point to point without physically crossing the distance between.  The teleporting hero may carry either all individuals in his area or someone the hero is touching.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Movement", maxRoll: 12, name: "Digging", powerCount: 1,
+        description: "The hero can move below ground by digging a tunnel. The hero gains Claws as A Bonus Power if there are available power slots. Normal movement is as for normal ground vehicle speed, half if the hero is digging a tunnel well-supported enough to allow others to follow.",
+        bonusPowerCount: 1,
+        bonusPower: "Body Alterations/Offensive\\Claws(100)"
+      },
+      {
+        category: "Movement", maxRoll: 13, name: "Dimensional Travel", powerCount: 2,
+        description: "This Power allows the character to break through into other dimensions. The hero does this automatically.",
+        bonusPowerCount: 0
+      },
+
+      {
+        category: "Matter Control", maxRoll: 2, name: "Earth Control", powerCount: 1,
+        description: "The hero with this Power can manipulate natural or semi-natural mineral items. This Power is limited to naturally occurring materials, or semi-natural materials that are of consistent nature. Radically altered items such as steel alloys and artifically constructed mechanisms, and living or once living things are beyond the scope of this Power.  The material may be used as a weapon, or shield.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Matter Control", maxRoll: 4, name: "Air Control", powerCount: 1,
+        description: "The hero with this Power has the ability to manipulate air, winds, and (potentially) weather. The hero can create shields of wind that are effective against all physical missile attacks. The hero can also use air as a distance weapon, but repelled by any form of Force Field, including shields made of air. The hero can also generate winds.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Matter Control", maxRoll: 6, name: "Fire Control", powerCount: 1,
+        description: "The hero with this Power can control existing fire sources. He can intensify the fire, or may reduce it.  The hero with this Power can manipulate flame, so as to form a fiery shield, but cannot initially use the Fire Control to affect targets at a distance.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Matter Control", maxRoll: 8, name: "Water Control", powerCount: 1,
+        description: "The hero with Water Control Powers can use available liquid water for specific effects. The water can be used as a missile weapon. The water can also be used as a shield, having no effect on physical weapons, but reducing energy, force, and fire attacks.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Matter Control", maxRoll: 10, name: "Weather Control", powerCount: 1,
+        description: "The hero with this Power has the ability to manipulate the forces of weather.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Matter Control", maxRoll: 11, name: "Density Mannipulation - Others", powerCount: 1,
+        description: "The hero can alter the density of other individuals on touch, either increasing the density (and thereby mass) or reducing the density (take less damage, etc.). The hero must touch his target.  Effects are: Density Reduction: The target becomes vaguely transparent, and as such will become both less vulnerable to attacks and less effective in attacking.  The affected individual may not phase, but may be affected by winds.  Density Increase: The affected individual increases in density (and therefore mass) without the increased strength in the limbs and other structures required to move that mass."
+      },
+      {
+        category: "Matter Control", maxRoll: 12, name: "Body Transformation - Others", powerCount: 1,
+        description: "The hero with this Power can convert living tissues to other substances. The hero with this Power chooses one material and the transformation duration. A target of this Power must be touched. While in that form the target has no recollection of what has occurred, and has the material strength of that substance. Flesh-to-flesh contact must be made; a foe in a full body-suit would be immune to this Power. The target regains his normal form following the transformation, even if pieces are broken off or dispersed.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Matter Control", maxRoll: 13, name: "Animal Transformation - Others", powerCount: 1,
+        description: "The hero with this Power can transform human targets into animals and reverse the process. The target must be touched. The target then has the physical attributes of the animal, but retains the mental attributes of the original form. The touch must be flesh-to-flesh. Heroes with inborn Powers retain those Powers in their new form.",
+        bonusPowerCount: 0
+      },
+
+      {
+        category: "Energy Control", maxRoll: 2, name: "Magneetic Manipulation", powerCount: 1,
+        description: "The hero can manipulate magnetic lines of force. Initially, this gives the hero the ability to move and control metallic objects.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Energy Control", maxRoll: 4, name: "Electrical Manipulation", powerCount: 1,
+        description: "The hero can manipulate and control electricity. Initially, this gives the hero a resistance to electrical attacks.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Energy Control", maxRoll: 6, name: "Light Manipulation", powerCount: 1,
+        description: "The hero can generate light and manipulate existing light energy. Such light may either be cast in a burst, affecting all targets in the same area, or in a line, affecting a single target. Light used in this fashion inflicts no damage, but may blind the targets.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Energy Control", maxRoll: 9, name: "Sound Manipulation", powerCount: 1,
+        description: "The hero can manipulate existing sonic energies, dampening existing noise, or increasing that noise. The individual with this Power may reduce all sonic-based attacks on his form.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Energy Control", maxRoll: 10, name: "Gravity Manipulation", powerCount: 1,
+        description: "The hero with this Power can alter the attractive forces of gravity.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Energy Control", maxRoll: 11, name: "Probability Manipulation", powerCount: 2,
+        description: "This is a very potent Power, and has strict limits. The hero has the ability to alter the chance element.  Good Luck may only affect the hero with the Power.  Bad Luck affects those that are attacking the hero or performing actions that would result in damage to the hero. Note that the allies, friends, and relatives of the hero with this Power do not benefit from this Power, and in fact may be damaged by its limitations.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Energy Control", maxRoll: 12, name: "Nullifying Power", powerCount: 2,
+        description: "The hero with this extremely potent Power can negate the inborn super-human Powers of other individuals. Technological or Magical abilities are unaffected.  Note that this Power will affect all within the range of the Power, and the individual may use no other inborn super-human Powers while using this Power.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Energy Control", maxRoll: 13, name: "Energy Reflection", powerCount: 1,
+        description: "This Power grants the hero a limited form of Invulnerability (as the Power) to a specific form of energy.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Energy Control", maxRoll: 14, name: "Time Control", powerCount: 2,
+        description: "The hero with this Power can control to passage of time, slowing it, speeding it, or, with concentration reversing it.",
+        bonusPowerCount: 0
+      },
+
+      {
+        category: "Body Control", maxRoll: 1, name: "Growth", powerCount: 1,
+        description: "The hero with this Power can grow taller at will.  Characters that experience growth usually but not always draw their additional mass from an unknown source. Characters with growth are not slowed or impaired by their added mass. Finally, the hero with this Power may choose (as a limitation) to have the Power always in effect.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Control", maxRoll: 2, name: "Shrinking", powerCount: 1,
+        description: "The hero with this Power can make himself smaller, while retaining the original strength and abilities. The hero's Strength is unaffected by the shrinking.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Control", maxRoll: 3, name: "Invisibility", powerCount: 1,
+        description: "The hero with this Power can make his body invisible to normal sight. This Power does not negate location by other senses, or nor does it initially negate location by heat or ultraviolet sources. The hero still has mass and substance (coating the hero with dust or paint reveals the true form). The hero may remain invisible as long as desired.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Control", maxRoll: 4, name: "Plasticity", powerCount: 1,
+        description: "The body of the hero with this Power is slightly elastic and malleable, and the hero manipulates his body as he sees fit. The hero with this Power also gains Elongation as a bonus Power if there are available power slots.",
+        bonusPowerCount: 1,
+        bonusPower: "Body Control\\Elongation(100)"
+      },
+      {
+        category: "Body Control", maxRoll: 5, name: "Shape-Shifting", powerCount: 1,
+        description: "This Power allows the hero to radically modify his shape to resemble other objects or beings, to the point of being that object to all appearances (touch, taste, etc.). A character may not gain more than half his height or shrink to half his original size. Only obvious, visible physical Powers may be gained by shifting shape (claws, gliding membranes, etc.). True super powers may not be gained in this fashion. ",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Control", maxRoll: 6, name: "Body Transformation", powerCount: 2,
+        description: "Similar to Body Transformation - Others with the added advantage of normal mobility and cognizance while in the transformed state. The character gains any special functions of that material. A hero who is damaged while in transformed state takes damage as normal, but if destroyed in this form may reintegrate.  The pieces may integrate only if close by.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Control", maxRoll: 7, name: "Animal Transformation - Self", powerCount: 1,
+        description: "This Power allows the hero to assume the form of a normal animal, with all applicable Powers of that animal. Weight and height are that of a normal version of that particular animal. Any other super-human Powers are lost while in animal form. ",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Control", maxRoll: 8, name: "Raise Lowest Ability", powerCount: 1,
+        description: "Not really a Power by any means, but a method of immediate self-improvement for a character that may be suffering from terminally low stats in a critical area. Only one of the seven abilities may be modified in this fashion, and then only the lowest one if two are lowest.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Control", maxRoll: 9, name: "Blending", powerCount: 1,
+        description: "The hero has the ability to change his shade to blend in with his surroundings, and has in effect a specialized form of Invisibility. The hero and his uniform are hidden, and will not be detected until the character moves or acts.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Control", maxRoll: 10, name: "Alter Ego", powerCount: 1,
+        description: "An alter ego is not the same thing as a secret ID. It is a separate persona.  An alter ego has no super Powers, and the hero who creates him must decide if the Contacts are enjoyed by the hero, the alter ego, or both. Talents remain the same for hero and alter ego. Transformation from alter ego to hero is immediate.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Control", maxRoll: 11, name: "Density Manipulation - Self", powerCount: 1,
+        description: "The hero with this Power can alter his mass at will. The hero who has altered mass weighs as much as a character with that strength could lift. A high density may slow the character down.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Control", maxRoll: 12, name: "Phasing", powerCount: 1,
+        description: "This is similar to Density Manipulation, save that it pulls the molecules of a body out of phase with those of the surrounding area, allowing the hero to phase through solid items. While phased, the hero is immune to physical and most energy attacks, but is still subject to the effects of mental attacks and magic. While the hero cannot be affected by physical attacks while phased, the hero may similarly not make physical attacks. Phasing has a detrimental effect on electronic devices. Phasing through such a device will cause a malfunction.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Control", maxRoll: 13, name: "Elongation", powerCount: 1,
+        description: "Elongation is similar to the Power of Plasticity, but differs primarily in that it allows the character to extend his body and limbs over a number of areas The character with this Power may attack non-adjacent foes in close combat types of attacks (slugfest, grappling, etc.). The target of these attacks may only make close attacks against the part of the opponent that is attacking.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Control", maxRoll: 14, name: "Imitation", powerCount: 1,
+        description: "Not the sincerest form of flattery, but a specialized form of Shape-shifting that allows the hero to duplicate the appearance of other humanoid forms, up to the limits of Shape-shifting (half-again or half of original size). The character with Imitation may duplicate the appearance, voice, and mannerisms (but not Powers, Talents, or abilities) of a specific individual. The hero must have seen the individual previously for a sufficient period to duplicate him.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Control", maxRoll: 15, name: "Power Absorption", powerCount: 1,
+        description: "This is not the absorption of energy, but the acquiring of other individuals' super-human Powers and abilities. Only those naturally occurring powers and abilities may be absorbed. The character must touch the target in order to gain those abilities.",
+        bonusPowerCount: 0
+      },
+
+      {
+        category: "Distance Attacks", maxRoll: 1, name: "Projectile Missile", powerCount: 1,
+        description: "A projectile missile represents a specially designed weapon. This is usually some form of technological device, but not always. This weapon is specially designed for the character, and the hero suffers no penalty for range when firing it (other individuals that may get their hands on it would suffer such a penalty).",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Distance Attacks", maxRoll: 2, name: "Ensnaring Missile", powerCount: 1,
+        description: "An ensnaring missile is a device that makes a form of grappling attack. This entangling is the equivalent of a grappling attack.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Distance Attacks", maxRoll: 3, name: "Ice Generation", powerCount: 1,
+        description: "The hero in question may draw water from the ambient atmosphere and convert it to ice, which the hero may then use initially as a missile weapon.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Distance Attacks", maxRoll: 4, name: "Fire Generation", powerCount: 1,
+        description: "The hero with this Power may project flame. Like ice generation, creation of large amounts of flame may damage the surrounding area. The hero may choose to inflict less damage with his flame.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Distance Attacks", maxRoll: 5, name: "Energy Generation", powerCount: 1,
+        description: "The hero with this Power can fire bolts of force that inflict Energy-type damage, Force-type damage, or either (determined before attack). The hero with Energy Generation may choose to inflict less damage than determined.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Distance Attacks", maxRoll: 6, name: "Sound Generation", powerCount: 1,
+        description: "The hero with this Power can make sonic attacks. Sonic attacks can affect only one target at a time.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Distance Attacks", maxRoll: 7, name: "Stunning Missile", powerCount: 1,
+        description: "The hero possesses a weapon, energy bolt, or Power that either inflicts damage, or inflicts a Stunning attack. One of the two types must be chosen at start.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Distance Attacks", maxRoll: 8, name: "Corrosive Missile", powerCount: 1,
+        description: "The hero has some form of corrosive, acidic, or matter-hostile attack that inflicts damage over a long period of time.  Damage may be halted by washing the exposed material or area. The character with this attack may never choose to inflict less damage. Corrosive attacks may also affect materials and Body Armor. Corrosive attacks must hit the target, and as such have no effect on Force Fields and the like.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Distance Attacks", maxRoll: 10, name: "Slashing Missile", powerCount: 1,
+        description: "The hero with this form of weapon makes attacks on the Throwing, Edged column, and may not reduce the effect of the attack.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Distance Attacks", maxRoll: 11, name: "Nullifier Missile", powerCount: 1,
+        description: "The hero with this type of attack inflicts no damage, but may nullify inborn or technological Powers. The effects of this nullification last for only as long as the hero concentrates. He can concentrate on only a single target.",
+        bonusPowerCount: 0
+      },
+
+      {
+        category: "Mental Powers", maxRoll: 1, name: "Telepathy", powerCount: 1,
+        description: "The hero with Telepathic Power may establish mind-to-mind communication between himself and other individuals. The telepath only reads surface thoughts, but does so without visible or audible signs.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 2, name: "Image Generation", powerCount: 2,
+        description: "The hero with this Power may create vivid mental images. These images do not register on cameras, film, or in the minds of non-sentient robots.  Heroes with Image Generation must be in line of sight of these illusions. Illusions will last as long as the hero concentrates on them. Illusions inflict no intrinsic damage, but if they are believed, the characters that believe them will take imaginary damage, with apparent death resulting in unconsciousness. Since a character who has time to examine his wounds will find he is not hurt, and the damage is illusionary, most illusion-casters do not make direct attacks but use their illusions for subterfuge and deception. Illusions fool characters but do not fool nature.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 3, name: "Telekinesis", powerCount: 1,
+        description: "This Power allows the hero to lift and/or move objects.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 4, name: "Force Field Generation", powerCount: 1,
+        description: "The hero with this Power can create force fields that will protect himself and possibly other allies. It is not necessarily a Power of the mind, but it is included here. A force field operates as a form of Body Armor. A personal force field is considered to replace Body Armor, such that damage that gets around a personal force field is not absorbed by Body Armor.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 5, name: "Animal Communication and Control", powerCount: 1,
+        description: "A hero with this Power can talk to animals and influence their actions.  Animals which are Contacts (always friendly) never turn on the controller. Note on communications: Animals have no language, per se, but do communicate by a number of verbal and non-verbal signals. Communication is considered to be a super-human ability to recognize those signals and make one's own desires and wishes clear, as limited by the animals intelligence level. ",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 6, name: "Empathy", powerCount: 1,
+        description: "Empathy is similar to Telepathy, but registers the surface emotions as opposed to the surface thoughts of the opponent, and no emotions may be transmitted back to the target.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 7, name: "Psi-Screen", powerCount: 1,
+        description: "This form of Psi-Screen is an inborn Power that resists mental scans and domination.  This Power differs from the Talent of the same name in that it may be extended over a number of targets to attempt to protect others from attacks.  Also, the attacker will be aware of the protector's mental presence. ",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 8, name: "Mental Probe", powerCount: 1,
+        description: "This Power is a specific form of Telepathy. A Mental Probe is a search for a specific image in the mind of the target. The hero with this Power must state what she is looking for before beginning the scan.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 9, name: "Astral Projection", powerCount: 1,
+        description: "The hero with this Power can leave the body and travel elsewhere, either in this dimension, or entering other dimensions.  The character in astral form may observe actions in the normal world, but may not be detected by normal means. The character may not use his other abilities in the Astral form against non-astral targets. An astral character is not affected by non-telepathic objects or forms of attack, but may be affected by Mental Powers. The astral character may phase through solid objects without damaging either character or object.  While the astral form is separate, the body is immobile, in a trance. Damage to the body will be known to the astral traveler if it is in this dimension, and it is possible for the body to perish while the astral form is away. Characters whose bodies have perished are trapped in astral form.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 10, name: "Psionic Attack", powerCount: 1,
+        description: "This Power gives the hero the ability to project psionic force blasts. Force Field's operate against psionic attack.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 11, name: "Mind Control", powerCount: 2,
+        description: "Mind Control is the total overriding of the conscious mind. The character's personality remains, but his actions are controlled by the character with this power. The target has no memory of the period he is under control. The attacker and target must be within 10 feet of each other initially to effect Mind Control, though the target and attacker may be separated by miles afterwards. The target will only obey the orders of the controller, though those orders may be verbal or telepathic (if the controlling character has that Power) in nature. A character who has been Mind Controlled is unaware of his actions, knowing only that he has blanked out for a while.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 12, name: "Emotion Control", powerCount: 2,
+        description: "Emotion Control is a related form of Mind Control that acts upon the subconscious fears and attractions to produce the required results. Targets of an Emotion Control attack must be in the same area as the character with this Power. The effects must diminish before another dose of Emotion Control may be applied. Robots and non-human alien beings are immune to the effects of Emotion Control. Only one type of emotion may be instilled in a target at a time.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 13, name: "Mechanical Intuition", powerCount: 1,
+        description: "This is a specific form of Ultimate Skill that affects repairs, inventing, and building things. The character with this Power has a strong intuitive knowledge of machinery.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 14, name: "Animal Empathy", powerCount: 1,
+        description: "This specialized form of Empathy extends to all animals in a primitive form of Animal Communication. The hero with this Power may detect and influence the surface emotions of the animal involved, and instill in it fear, hunger, affection, exhaustion, or other emotions.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 15, name: "Animate Drawings", powerCount: 1,
+        description: "The hero with this Power may animate flat drawings and other repesentations, causing them to become fully operational items. A character may attempt to animate any drawing, even one of his own creation, or animate a specific type or class of object.  No additional Powers can be given to the animation.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 16, name: "Possession", powerCount: 2,
+        description: "This Power is a specific form of Mind Control in which all actions of the character are assumed by the controller. The controller is in effect inside` the mind of the character, and as such controls all actions without having to give commands.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 17, name: "Transferral", powerCount: 2,
+        description: "Transferral is the ultimate form of Possession, in that it allows the complete transferral of consciousness with a target within one area. The target's consciousness is not put away in the back of the character's mind, but rather moved into the body of the character with the Transferral Power.  When characters transfer consciousness, they also trade the mental abilities, Powers, and Talents. They do not trade physical abilities or Powers.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 18, name: "Precognition", powerCount: 2,
+        description: "An accurate divining of the future is impossible. There are a large variety of possible alternate futures diverging at any one point, all leading to different conclusions. The future is also mutable, such that the actions of today may bypass the future of the timeline that is viewed in this manner. Precognition allows the character to scan alternative futures up to a week in advance and choose from them an image that may or not come true, and use that information to form his own decisions. No farther than a week in the future may be scanned in this fashion. Precognition may not be used more than once a day.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 19, name: "Postcognition", powerCount: 1,
+        description: "The reverse of Precognition, but easier to handle, in that the past is fairly immutable. Postcognition only works on items the character handles.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 20, name: "Plant Control", powerCount: 1,
+        description: "The hero with this Power can command the actions of plants, granting them temporary Powers of their own, including movement, growth, and a rudimentary intelligence. These abilities only exist as long as the hero concentrates.  By mere control, the hero cannot have the plants perform any actions that would not be normally possible by the plants).",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Mental Powers", maxRoll: 21, name: "Ultimate Skill", powerCount: 1,
+        description: "Ultimate Skill is a special Power possessed by the hero, making him literally 'the best at what he does.'",
+        bonusPowerCount: 0
+      },
+
+      {
+        category: "Body Alterations/Offensive", maxRoll: 3, name: "Extra Body Parts", powerCount: 1,
+        description: "The hero who gains this Power when the character is generated may choose the type and number of body parts. Some of these parts may provide Bonus Powers.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Alterations/Offensive", maxRoll: 4, name: "Extra Attacks", powerCount: 1,
+        description: "The hero who gains this Power has increased fighting ability due to the ability to execute multiple attacks at once.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Alterations/Offensive", maxRoll: 5, name: "Energy Touch", powerCount: 1,
+        description: "The hero with this Power may inflict damage and effects. The touch can be carried through conductive material, and may affect multiple targets in this fashion. The hero with this Power gains Resistance to Electricity as a Bonus Power if there are available power slots.",
+        bonusPowerCount: 1,
+        bonusPower: "Resistances\\Resistance to Electricity(100)"
+      },
+      {
+        category: "Body Alterations/Offensive", maxRoll: 6, name: "Paralyzing Touch", powerCount: 1,
+        description: "Those touched by an individual with this Power will be paralyzed. This Power is always in operation, and the user may be knocked out himself by such a touch.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Alterations/Offensive", maxRoll: 8, name: "Claws", powerCount: 1,
+        description: "Claws are…. well, claws. Sharp pointy items that inflict damage. As with most sharp things attacks cannot be reduced in damage or effect. The effects of claws depend on whether they are being wielded against living creatures or non-living materials. ",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Alterations/Offensive", maxRoll: 9, name: "Rotting Touch", powerCount: 1,
+        description: "This touch causes organic material to decay.  Resistance to Corrosives will offset the effects.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Alterations/Offensive", maxRoll: 10, name: "Corrosive Touch", powerCount: 1,
+        description: "Similar to Rotting Touch, but affects inorganic materials instead.  Resistance to Corrosives will offset these effects. Similar to Claws, this may chew through inorganic Body Armor to affect the individual beneath. ",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Alterations/Offensive", maxRoll: 11, name: "Health-Drain Touch", powerCount: 2,
+        description: "The touch of a character with this Power transfers health from the target to the hero.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Alterations/Offensive", maxRoll: 12, name: "Blinding Touch", powerCount: 1,
+        description: "The touch of this character can blind the unprotected target.  The target cannot avoid this touch, unless the target possesses Protected Senses.",
+        bonusPowerCount: 0
+      },
+
+      {
+        category: "Body Alterations/Defensive", maxRoll: 3, name: "Body Armor", powerCount: 1,
+        description: "A hero with Body Armor has a natural resistance to physical damage and, to a lesser extent, energy attacks. Body Armor absorbs damage from any physical attack. If an attack does not equal or better the amount of Body Armor, then none of the effects of the attack take place.  Body Armor is proof against physical attacks, including Blunt and Edged attacks, Shooting, Throwing attacks, Force, Grappling, and Charging attacks. It is less effective against Energy attacks. Body Armor may be natural or artificial material. Natural Body Armor is protection that is part of the creature itself. Artificial Body Armor is made of other materials, which may be bolstered by force fields. Certain types of attack are more effective against one type of Body Armor than the other. Artifical Body Armor has the advantage that it can be removed, allowing the hero to have a relatively normal life. High technology heroes who choose Body Armor may choose to have a battle-suit. All of the hero's other Powers are included in the suit, and the suit is considered artificial Body Armor.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Alterations/Defensive", maxRoll: 4, name: "Water Breathing", powerCount: 1,
+        description: "This Power allows you to breathe water (fresh or salt) as if air.  In addition, this Power allows the hero to see underwater as if on land, and survive at great depths. The hero's next Power will be either Swimming or Animal Communication and Control (Sea life) if there are available power slots.",
+        bonusPowerCount: 1,
+        bonusPower: "Movement\\Swimming(50)|Mental Powers\\Animal Communication and Control(100)"
+      },
+      {
+        category: "Body Alterations/Defensive", maxRoll: 5, name: "Absorption", powerCount: 1,
+        description: "The hero with this Power may absorb a certain specific type of damage. Any attacks made in the specified mode inflict no damage; rather the damage is absorbed, healing existing damage. Any such absorbed energy dissipates after it has been absorbed, and must be discharged before then or it is lost.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Alterations/Defensive", maxRoll: 6, name: "Regeneration", powerCount: 1,
+        description: "The hero with this Power heals faster than the normal rate. A hero with Regeneration recovers, providing the hero does not take additional damage in that time and is able to rest. A hero resting cannot engage in any other actions while healing himself. If that rest is interrupted, the hero must start again to recover. ",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Alterations/Defensive", maxRoll: 7, name: "Solar Regeneration", powerCount: 1,
+        description: "The hero with this Power heals as per Regeneration, but only heals when he is in the sunshine. In darkness, inside buildings, and in other similar situations, the character heals normally.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Alterations/Defensive", maxRoll: 9, name: "Recovery", powerCount: 1,
+        description: "The hero with this Power recovers faster than normal.  The hero with this Power may choose any Resistance as a Bonus Power if there are available power slots. ",
+        bonusPowerCount: 1,
+        bonusPower: "Resistances\\Resistance to Fire and Heat(10)|Resistances\\Resistance to Cold(20)|Resistances\\Resistance to Electricity(30)|Resistances\\Resistance to Radiation(40)|Resistances\\Resistance to Toxins(50)|Resistances\\Resistance to Corrosives(60)|Resistances\\Resistance to Emotion Attacks(70)|Resistances\\Resistance to Mental Attacks(80)|Resistances\\Resistance to Magic Attacks(90)|Resistances\\Resistance to Disease(100)"
+      },
+      {
+        category: "Body Alterations/Defensive", maxRoll: 10, name: "Life Support", powerCount: 1,
+        description: "The hero with this Power has the potential to survive under hostile conditions for longer than normal amounts of time.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Alterations/Defensive", maxRoll: 11, name: "Pheromones", powerCount: 1,
+        description: "Pheromones are a specialized form of Emotion Control that affect the pleasure centers of the...ah...opposite sex. Robots, aliens, and those unable to smell or be affected by the pheromones are not affected.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Alterations/Defensive", maxRoll: 12, name: "Damage Transfer", powerCount: 1,
+        description: "This Power is a relative of the Health-Drain Touch, except health may be transferred between two separate targets on touch, in effect healing one while reducing the health of the other. The hero does not regain any health in this Damage Transfer.",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Alterations/Defensive", maxRoll: 13, name: "Healing", powerCount: 1,
+        description: "This Power allows the hero to restore lost health to others (but not the hero himself).",
+        bonusPowerCount: 0
+      },
+      {
+        category: "Body Alterations/Defensive", maxRoll: 14, name: "Immortality", powerCount: 2,
+        description: "The character with this Power does not age or die in a normal fashion.  The hero can still suffer loss as the result of wounds, poisons, and damages, but if the results call for perishing, then the character does not die. The character cannot move or act until health recovers.  It counts as two Powers for any hero who takes it, unless the character is alien in origin. An immortal character's body will slowly regenerate lost parts and heal, so that short of atomizing the remains and spreading that collection of atoms through a large portion of space, the immortal character will return at some point in the future. Immortality is applicable to the Earth Dimension only (including all planets of this dimension). An immortal character in another dimension does not age, but may be killed normally while in that dimension.",
+        bonusPowerCount: 0
+      },
+    ];
+
+    const TALENT_CATEGORIES = [
+      { maxRoll: 20, name: "Weapon Skills" },
+      { maxRoll: 45, name: "Fighting Skills" },
+      { maxRoll: 65, name: "Professional Skills" },
+      { maxRoll: 85, name: "Scientific Skills" },
+      { maxRoll: 90, name: "Mystic and Mental Skills" },
+      { maxRoll: 100, name: "Other Skills" }
+    ];
+
+    const TALENT_LIST = [
+      {
+        category: "Weapon Skills", maxRoll: 2, name: "Guns", talentCount: 1,
+        description: "Individuals without this Talent fire guns (all handguns, rifles, and submachine guns, including laser, stun, and concussion varieties).",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Weapon Skills", maxRoll: 5, name: "Thrown Weapons", talentCount: 1,
+        description: "Characters with this Talent toss weapons designed to be thrown (including spears, daggers, shuriken, disks, and snowballs).",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Weapon Skills", maxRoll: 6, name: "Bows", talentCount: 1,
+        description: "Bows are tricky items to operate.  Those with this Talent gain increased chance to hit with all bows, including crossbows, and may fire and reload in a simultaneously. With concentration, they may fire multiple arrows at once.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Weapon Skills", maxRoll: 8, name: "Blunt Weapons", talentCount: 1,
+        description: "Characters with this Talent gain an increased chance to hit when attacking with a blunt weapon.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Weapon Skills", maxRoll: 9, name: "Sharp Weapons", talentCount: 1,
+        description: "Characters with this Talent gain an increeased chance to hit when attacking with a sharp weapons.  This includes swords, daggers (unless thrown), and spears, but excludes claws and other natural extensions that inflict this type of damage.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Weapon Skills", maxRoll: 10, name: "Oriental Weapons", talentCount: 1,
+        description: "This a special category that grants the character increased skill when using the following weapons: shuriken, crossbows, sais (treat as swords), and oriental swords and daggers (including the katana and the kris).",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Weapon Skills", maxRoll: 11, name: "Marksman", talentCount: 2,
+        description: "The character with this Talent gains an increased chance to hit with any distance weapon that requires line of sight to hit. Such a weapon in the hands of a marksman does not suffer penalties to hit from range.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Weapon Skills", maxRoll: 12, name: "Weapons Master", talentCount: 2,
+        description: "The character with this Talent gains an increased chance to hit with any weapon that requires concentration to hit.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Weapon Skills", maxRoll: 13, name: "Weapons Specialist", talentCount: 2,
+        description: "The character with this Talent gains an increased skill with a single weapon of choice. This may be any type of weapon, missile or melee. The character who is a weapon specialist will also increase his speed when using this weapon.",
+        bonusContactCount: 0,
+      },
+
+      {
+        category: "Fighting Skills", maxRoll: 1, name: "Martial Arts A", talentCount: 1,
+        description: "This form of martial arts concentrates on using an opponent's strength against him, and is typical of oriental- American forms such as judo and karate. The practioner of this type of martial arts can Stun or Slam an opponent regardless of their comparative Strengths and Endurances.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Fighting Skills", maxRoll: 2, name: "Martial Arts B", talentCount: 1,
+        description: "This form of martial arts is keyed on offense and inflicting damage in short, quick bursts, and includes such disciplines as boxing. The practioner of this form of martial arts gains an increased chance of hitting when engaged in unarmed combat.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Fighting Skills", maxRoll: 3, name: "Martial Arts C", talentCount: 1,
+        description: "This form of martial arts concentrates on holds and escapes. The practitioner of this form gains increased strength when grappling attacks (including damage), an increased chance of escaping and increased agility when dodging.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Fighting Skills", maxRoll: 4, name: "Martial Arts D", talentCount: 1,
+        description: "This meditative form of martial arts searches out the weak spots of the opponent's defenses and strikes against them. The practioner of this form of attack may ignore the effects of Body Armor (though not force fields). The disadvantage is that the target of this attack must be studied before the effects may be brought. The character with this Talent does not have to attack the character, only watch him in battle previous to attacking.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Fighting Skills", maxRoll: 5, name: "Martial Arts E", talentCount: 1,
+        description: "This form of martial arts encourages quick striking to catch the opponent off-guard.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Fighting Skills", maxRoll: 6, name: "Wrestling", talentCount: 1,
+        description: "The hero with this Talent is proficient in applying holds . It includes familiar types of wrestling as well as the sumo forms of the art. ",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Fighting Skills", maxRoll: 7, name: "Thrown Objects", talentCount: 1,
+        description: "The hero with this Talent gains an increased  chance of hitting with all Throwing attacks (both Edged and Blunt). This applies to both thrown weapons and normal items.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Fighting Skills", maxRoll: 8, name: "Tumbling", talentCount: 1,
+        description: "The hero with this Talent knows how to fall and land without undue injury.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Fighting Skills", maxRoll: 9, name: "Unknown", talentCount: 1,
+        description: "",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Fighting Skills", maxRoll: 10, name: "Acrobatics", talentCount: 1,
+        description: "The hero with this Talent is very limber and as such gains advantages when under attack. The hero is better when dodging, evading, and escaping.",
+        bonusContactCount: 0,
+      },
+
+      {
+        category: "Professional Skills", maxRoll: 1, name: "Law", talentCount: 1,
+        description: "The character with this Talent has an extensive background in law. The hero may be a lawyer or capable of applying to pass the bar.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Professional Skills", maxRoll: 2, name: "Pilot", talentCount: 1,
+        description: "The character with this Talent has a working knowledge of most aircraft. A character with a background that would permit it may extend this Talent to spacecraft as well. ",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Professional Skills", maxRoll: 3, name: "Military", talentCount: 1,
+        description: "The hero has had some dealings with one of the armed services.",
+        bonusContactCount: 1,
+        bonusContact: "Political/National(100)"
+      },
+      {
+        category: "Professional Skills", maxRoll: 4, name: "Business/Finance", talentCount: 1,
+        description: "The hero is familiar with the world of business, corporate finance, and how money works. The hero gains a Contact in the Professional category.",
+        bonusContactCount: 1,
+        bonusContact: "Professional/Business World(100)"
+      },
+      {
+        category: "Professional Skills", maxRoll: 5, name: "Journalism", talentCount: 1,
+        description: "The hero with this Talent gains an additional 2 Contacts to those already generated. The Contacts should be connected with the media in some fashion, such as at local newspapers, radio or TV stations, or as sources in law enforcement, political circles, or snitches of the criminal underworld. ",
+        bonusContactCount: 2,
+        bonusContact: "Political/Local(33)|Professional/Law Enforcement(66)|Professional/Crime(100)"
+      },
+      {
+        category: "Professional Skills", maxRoll: 6, name: "Engineering", talentCount: 1,
+        description: "Engineering includes all the varied types of that profession dedicated to the design of functional items: civil, chemical, mechanical, etc.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Professional Skills", maxRoll: 7, name: "Crime", talentCount: 1,
+        description: "The hero with this Talent has an understanding of the criminal mind and behavior, either from studies or first-hand observation. The hero also gains a Contact in either the police or crime areas.",
+        bonusContactCount: 1,
+        bonusContact: "Professional/Law Enforcement(50)|Professional/Crime(100)"
+      },
+      {
+        category: "Professional Skills", maxRoll: 8, name: "Psychiatry", talentCount: 1,
+        description: "",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Professional Skills", maxRoll: 9, name: "Unknown", talentCount: 1,
+        description: "",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Professional Skills", maxRoll: 10, name: "Detective/Espionage", talentCount: 1,
+        description: "The hero with this Talent has been trained to notice small clues in solving crimes. The character with this Talent gains a Contact in either crime, law enforcement, law, or espionage.",
+        bonusContactCount: 1,
+        bonusContact: "Professional/Law Enforcement(25)|Professional/Crime(50)|Professional/Law(75)|Professional/Espionage(100)"
+      },
+      {
+        category: "Professional Skills", maxRoll: 11, name: "Medicine", talentCount: 2,
+        description: "The hero with this Talent has extensive knowledge of medicine, and as such limited Talents in healing. In general, a character losing Endurance Ranks as the result of a lethal situation can have those losses stopped by any character checking on him.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Professional Skills", maxRoll: 12, name: "Law-Enforcemeent", talentCount: 1,
+        description: "The character with this Talent has a background with law-enforcement authorities. This Talent includes both Gun and Law Talents, and the character, if still a member of a law-enforcement agency, may legally carry a gun and make arrests. ",
+        bonusContactCount: 0,
+      },
+
+      {
+        category: "Scientific Skills", maxRoll: 2, name: "Chemistry", talentCount: 1,
+        description: "The character with this Talent studies matters of chemistry, including developing new formulas, finding cures for inorganic poisons, and identifying chemicals by smell, touch, or taste. ",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Scientific Skills", maxRoll: 4, name: "Biology", talentCount: 1,
+        description: "The character with this Talent studies matters of biology, including animal and plant identification, finding cures for organic poisons, and researching diseases and their cures. ",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Scientific Skills", maxRoll: 6, name: "Geology", talentCount: 1,
+        description: "The character with this Talent studies matters involving the Earth, including volcanic activity, the geology of the surrounding land, types of rocks and their powers, and mineral identification. ",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Scientific Skills", maxRoll: 7, name: "Genetics", talentCount: 1,
+        description: "The character with this Talent studies matters involving the genes, including creating new life forms, understanding mutants, and researching diseases. ",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Scientific Skills", maxRoll: 8, name: "Archeology", talentCount: 1,
+        description: "The character with this Talent studies matters involving the past, including paeleontology, historical records, and ancient myths and legends. ",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Scientific Skills", maxRoll: 9, name: "Physics", talentCount: 1,
+        description: "The character with this Talent studies matters involving 9 0 physics and astrophysics, including motion, flight, and the planets and stars. ",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Scientific Skills", maxRoll: 10, name: "Electronics", talentCount: 1,
+        description: "The character with this Talent studies matters involving electronic devices, including their creation and repair. ",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Scientific Skills", maxRoll: 11, name: "Computers", talentCount: 1,
+        description: "The character with this Talent studies matters involving computers, computer-controled equipment, and artificial intelligences. ",
+        bonusContactCount: 0,
+      },
+
+      {
+        category: "Mystic and Mental Skills", maxRoll: 2, name: "Trance", talentCount: 1,
+        description: "The character may place himself into a trance. While in a trance the character slows his body functions to such a level that he may be assumed to be deceased. A character in a trance reduces needs for food and water to a minimal level",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Mystic and Mental Skills", maxRoll: 5, name: "Mesmerism and Hypnosis", talentCount: 1,
+        description: "This Talent is a primitive form of Mind Control. Information can be gained as per a Mental Probe, and post-hypnotic suggestions may be implanted within the victim's mind. Any attempt to force an individual to do something that he would not normally do, or divulge information that he would not normally reveal, will cause the hypnotism to break. A hypnotic command fades in 1-10 hours after it is given. ",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Mystic and Mental Skills", maxRoll: 7, name: "Sleight of Hand", talentCount: 1,
+        description: "This is a Talent developed by stage magicians which causes items to appear and disappear by a combination of misdirection and swift, fluid gestures. The character with this Talent may palm small items, making them appear or disappear. ",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Mystic and Mental Skills", maxRoll: 9, name: "Resist Domination", talentCount: 1,
+        description: "This is a Psi-Screen that may be developed by the individuals without that Power. This permits the character to resist mental attacks as if the character had a mental power. The Talent is passive in nature, and does not grant any other particular benefit. A character with Mental Probe may be able to discern where the character gained this Talent, but nothing else. ",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Mystic and Mental Skills", maxRoll: 10, name: "Occult Lore", talentCount: 1,
+        description: "The character with this Talent has a knowledge of magical societies, antiquities, runes, and a general understanding of forgotten lore.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Mystic and Mental Skills", maxRoll: 11, name: "Mystic Origin", talentCount: 2,
+        description: "This Talent shows that the character has some background with magical forces. Heroes may have derived their powers from these forces if they choose this Talent.",
+        bonusContactCount: 0,
+      },
+
+      {
+        category: "Other Skills", maxRoll: 2, name: "Artist", talentCount: 1,
+        description: "The character with an artist background creates works of art, either for himself or for sale to others. This includes painting, sculpting, and writing.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Other Skills", maxRoll: 4, name: "Languages", talentCount: 1,
+        description: "The character with this Talent has a natural understanding of languages. The character gains 1 additional language at start, and may add other languages mor easily. Characters without languages Talent must gain this Talent first to learn other languages. The gaining of additional languages assumes someone is available to teach these languages. A Player character with this Talent does not have to assign a language at start, but may fill one in later as need be. ",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Other Skills", maxRoll: 6, name: "First Aid", talentCount: 1,
+        description: "The medicine Talent notes that the loss of Endurance ranks may be halted by someone checking on the dying character and administering some form of aid.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Other Skills", maxRoll: 8, name: "Repair/Tinkering", talentCount: 1,
+        description: "The character with this Talent gains an increased chance of success involving the repair and modfication of existing items, but not the building of new items. This is a general category that covers any one subject desired by the character.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Other Skills", maxRoll: 10, name: "Trivia", talentCount: 1,
+        description: "Trivia categories should be specific (old movies, military history, sports, rock music, comic books) as opposed to general (all knowledge) or covered by other Talents.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Other Skills", maxRoll: 11, name: "Performer", talentCount: 1,
+        description: "The character is someone who acts, sings, dances, mimes, or otherwise uses his Talents to entertain.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Other Skills", maxRoll: 12, name: "Animal Training", talentCount: 2,
+        description: "The character with this Talent has the ability to train animals to perform certain stunts. The individual does not have Animal Empathy or Communications and Control, but may teach an animal a trick.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Other Skills", maxRoll: 13, name: "Heir to Fortune", talentCount: 2,
+        description: "This is not a Talent, but a situation which brings the character into a lot of money.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Other Skills", maxRoll: 14, name: "Student", talentCount: 2,
+        description: "The Student character has no other initial Talents, but may gain other Talents more eeasily.",
+        bonusContactCount: 0,
+      },
+      {
+        category: "Other Skills", maxRoll: 15, name: "Leadership", talentCount: 2,
+        description: "The hero with this Talent has the brains and understanding of a cohesive group, such that he is a benefit to the team.",
+        bonusContactCount: 0,
+      },
+
+    ];
+
+    const CONTACT_CATEGORIES = [
+      { maxRoll: 30, name: "Professional" },
+      { maxRoll: 60, name: "Scientific" },
+      { maxRoll: 90, name: "Political" },
+      { maxRoll: 100, name: "Mystic Arts" },
+    ];
+
+    const CONTACT_TYPE_LIST = [
+      {
+        category: "Professional", maxRoll: 12, name: "Medicine",
+        description: "The hero with this Contact has a friend, ally or acquaintance with Medicine Talent, who will provide medical advice and services either for free or charge an affordable fee."
+      },
+      {
+        category: "Professional", maxRoll: 24, name: "Law",
+        description: "The hero with this Contact has a friend, ally, or acquaintance with Law Talent, who will provide legal assistance for a reduced fee and legal advice to the hero for free."
+      },
+      {
+        category: "Professional", maxRoll: 36, name: "Law Enforcement",
+        description: "The hero with this Contact has a friend, ally, or acquaintance with Law-enforcement Talent, who is in addition a member of the law-enforcement profession."
+      },
+      {
+        category: "Professional", maxRoll: 50, name: "Business World",
+        description: "The character has a Contact in the world of business or finance."
+      },
+      {
+        category: "Professional", maxRoll: 60, name: "Crime",
+        description: "The character with this Contact has some connection with the criminal underworld. This ranges from having a snitch that passes on information about street action up to a Contact high in the hierarchy of organized crime."
+      },
+      {
+        category: "Professional", maxRoll: 70, name: "Engineering",
+        description: "The character with this Contact has some connection with someone who builds, either independently or for a larger corporation. The character may aid in the construction of devices. "
+      },
+      {
+        category: "Professional", maxRoll: 80, name: "Psychiatry",
+        description: "The character with this Contact has some connection with a character in the fields of psychiatry or psycho-analysis, including doctors devoted to the curing of the criminal mind. "
+      },
+      {
+        category: "Professional", maxRoll: 95, name: "Espionage",
+        description: "The character with this Contact has connections with the world of espionage. This includes agencies such as the FBI, CIA, NSA, KGB, Interpol, or MI5."
+      },
+      {
+        category: "Professional", maxRoll: 100, name: "Hero Group",
+        description: "The character has some connection with, or was or is a member of or an ally of some existing group of super-powered heroes, and a s such may enjoy the privileges thereof. This includes using their equipment, calling them in on an emergency, using their HQ, and benefitting from their training."
+      },
+      {
+        category: "Scientific", maxRoll: 12, name: "Chemistry",
+        description: "The character with this Contact has some connection with a character in the fields of chemistry."
+      },
+      {
+        category: "Scientific", maxRoll: 25, name: "Biology",
+        description: "The character with this Contact has some connection with a character in the fields of biology."
+      },
+      {
+        category: "Scientific", maxRoll: 37, name: "Geology",
+        description: "The character with this Contact has some connection with a character in the fields of geology."
+      },
+      {
+        category: "Scientific", maxRoll: 49, name: "Genetics",
+        description: "The character with this Contact has some connection with a character in the fields of genetics."
+      },
+      {
+        category: "Scientific", maxRoll: 62, name: "Archeology",
+        description: "The character with this Contact has some connection with a character in the fields of archeology."
+      },
+      {
+        category: "Scientific", maxRoll: 75, name: "Physics",
+        description: "The character with this Contact has some connection with a character in the fields of physics."
+      },
+      {
+        category: "Scientific", maxRoll: 87, name: "Computers",
+        description: "The character with this Contact has some connection with a character in the fields of computers."
+      },
+      {
+        category: "Scientific", maxRoll: 100, name: "Electronics",
+        description: "The character with this Contact has some connection with a character in the fields of electronics."
+      },
+      {
+        category: "Political", maxRoll: 50, name: "Local",
+        description: "The hero has an ally in the local political scene: alderman, mayor, or councilman. The Contact may provide information on what is going on in the neighborhood. "
+      },
+      {
+        category: "Political", maxRoll: 75, name: "State",
+        description: "The hero has an ally in state government — connected with the office of governor, a state representative, or someone in one of the state agencies."
+      },
+      {
+        category: "Political", maxRoll: 85, name: "National",
+        description: "The hero has a Contact in national government — a congressional aide, a congressman, representative, member of the Executive Branch or one of the myriad number of agencies in the capital."
+      },
+      {
+        category: "Political", maxRoll: 95, name: "Other National",
+        description: "The hero has a Contact in national government — someone else's. The hero may be friendly with the leadership or government apparatus of any other nation, friend or foe. This Contact, if known to others, may create difficulties in dealing with other political Contacts. Resources available are as for National government, but the character must be able to communicate with the Contact to gain any materials. "
+      },
+      {
+        category: "Political", maxRoll: 99, name: "International",
+        description: "The hero has Contacts in the UN or in a similar multi-national organization, such as the Common Market of Europe."
+      },
+      {
+        category: "Political", maxRoll: 100, name: "Planetary",
+        description: "This Contact is available to Alien characters only. The hero is well-known to the inhabitants and/or rulers of another planet, provided they can get in contact with those sources. "
+      },
+      {
+        category: "Mystic Arts", maxRoll: 50, name: "Occult Lore",
+        description: "The hero knows someone who dabbles in the darker arts. The Contact may provide advice on mystic writings, spells and their castings, and curses. The Contact is not necessarily a true magic-wielder. "
+      },
+      {
+        category: "Mystic Arts", maxRoll: 100, name: "Mythology",
+        description: "The hero knows someone who studies recognized mythology and actions of the extra-dimensional beings known as gods (Olympians, Asgardians, etc.). The Contact will specialize in one pantheon of deities."
+      },
+    ];
+
+    // --- CLASSES ---
+
+    class Dice {
+      static roll(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min; // Both min and max are inclusive
+      }
+
+      static roll100() {
+        return Dice.roll(1, 100);
+      }
+
+      static roll10() {
+        return Dice.roll(1, 10);
+      }
+
+      static getRandomItem(array) {
+        return array[Math.floor(Math.random() * array.length)];
+      }
+    }
+
+    class Character {
+      constructor() {
+        this.originRoll = -1;
+        this.origin = "";
+        this.name = "Unknown Hero";
+        this.Identity = "Secret";
+
+        // FASERIP
+        this.primaryAbilities = {
+          Fighting: { rank: "", number: 0 },
+          Agility: { rank: "", number: 0 },
+          Strength: { rank: "", number: 0 },
+          Endurance: { rank: "", number: 0 },
+          Reason: { rank: "", number: 0 },
+          Intuition: { rank: "", number: 0 },
+          Psyche: { rank: "", number: 0 }
+        };
+
+        // Secondary
+        this.health = 0;
+        this.karma = 0;
+        this.resources = { rank: "", number: 0 };
+        this.popularity = 0;
+
+        // Specials
+        this.powersMax = 0;
+        this.powersCount = 0;
+        this.powers = []; // Array of objects { name, rank, number }
+        this.talentsMax = 0;
+        this.talentsCount = 0;
+        this.talents = [];
+        this.contactsMax = 0;
+        this.contactsCount = 0;
+        this.contacts = [];
+
+        // Meta
+        this.log = []; // Stores roll history
+      }
+
+      logRoll(description, roll, result) {
+        this.log.push(`[${description}] Rolled: ${roll} -> Result: ${result}`);
+      }
+
+      setAbility(abilityName, rankName) {
+        const rankData = RANDOM_RANKS_TABLE.find(r => r.rank === rankName);
+        if (rankData) {
+          this.primaryAbilities[abilityName].rank = rankData.rank;
+          this.primaryAbilities[abilityName].number = rankData.rankNumber;
+        }
+      }
+
+      getAbilityNumber(abilityName) {
+        return this.primaryAbilities[abilityName].number;
+      }
+
+      getRankByShift(currentRankName, shift) {
+        let index = RANKS.findIndex(r => r.name === currentRankName);
+        if (index === -1) return currentRankName;
+        let newIndex = index + shift;
+        if (newIndex < 0) newIndex = 0;
+        if (newIndex >= RANKS.length) newIndex = RANKS.length - 1;
+        return RANKS[newIndex];
+      }
+
+      modifyAbilityRank(abilityName, shift) {
+        const currentRank = this.primaryAbilities[abilityName].rank;
+        const newRankData = this.getRankByShift(currentRank, shift);
+        this.primaryAbilities[abilityName].rank = newRankData.name;
+        this.primaryAbilities[abilityName].number = newRankData.standard;
+        this.logRoll(`Modifier: ${abilityName}`, `${shift} CS`, newRankData.name);
+      }
+
+      calculateSecondary() {
+        this.health = this.getAbilityNumber("Fighting") +
+          this.getAbilityNumber("Agility") +
+          this.getAbilityNumber("Strength") +
+          this.getAbilityNumber("Endurance");
+
+        this.karma = this.getAbilityNumber("Reason") +
+          this.getAbilityNumber("Intuition") +
+          this.getAbilityNumber("Psyche");
+      }
+    }
+
+    class CharacterGenerator {
+      originRoll = 0;
+
+      primaryAbilityRolls = { "Fighting": 0, "Agility": 0, "Strength": 0, "Endurance": 0, "Reason": 0, "Intuition": 0, "Psyche": 0 };
+
+      resourceModifierRoll = 0;
+
+      powerNumberRoll = 0;
+      powerCategoryRolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      powerRolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      powerRankRolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+      talentNumberRoll = 0;
+      talentCategoryRolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      talentRolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+      contactNumberRoll = 0;
+      contactCategoryRolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      contactRolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+      identitySecret = true;
+      hiTechToGood = true;
+
+      generate() {
+        const char = new Character();
+
+        this.originRoll = Dice.roll100();
+        this.primaryAbilityRolls["Fighting"] = Dice.roll100();
+        this.primaryAbilityRolls["Agility"] = Dice.roll100();
+        this.primaryAbilityRolls["Strength"] = Dice.roll100();
+        this.primaryAbilityRolls["Endurance"] = Dice.roll100();
+        this.primaryAbilityRolls["Reason"] = Dice.roll100();
+        this.primaryAbilityRolls["Intuition"] = Dice.roll100();
+        this.primaryAbilityRolls["Psyche"] = Dice.roll100();
+        this.resourceModifierRoll = Dice.roll100();
+        this.powerNumberRoll = Dice.roll100();
+        for (let index = 0; index < this.powerCategoryRolls.length; index++) {
+          this.powerCategoryRolls[index] = Dice.roll100();
+        }
+        for (let index = 0; index < this.powerRolls.length; index++) {
+          this.powerRolls[index] = Dice.roll10();
+        }
+        for (let index = 0; index < this.powerRankRolls.length; index++) {
+          this.powerRankRolls[index] = Dice.roll100();
+        }
+        this.talentNumberRoll = Dice.roll100();
+        for (let index = 0; index < this.talentCategoryRolls.length; index++) {
+          this.talentCategoryRolls[index] = Dice.roll100();
+        }
+        for (let index = 0; index < this.talentRolls.length; index++) {
+          this.talentRolls[index] = Dice.roll10();
+        }
+        this.contactNumberRoll = Dice.roll100();
+        for (let index = 0; index < this.contactCategoryRolls.length; index++) {
+          this.contactCategoryRolls[index] = Dice.roll100();
+        }
+        for (let index = 0; index < this.contactRolls.length; index++) {
+          this.contactRolls[index] = Dice.roll100();
+        }
+
+        // 1. Determine Origin
+        this.determineOrigin(char);
+
+        // 2. Determine Primary Abilities (FASERIP)
+        this.determinePrimaryAbilities(char);
+
+        // 4. Secondary Abilities Setup
+        this.determineResources(char);
+        this.determinePopularity(char);
+
+        // 5. Special Abilities (Powers, Talents, Contacts)
+        this.determineSpecialAbilities(char);
+
+        // Final Calculation
+        char.calculateSecondary();
+
+        char.identity = this.identitySecret ? "Secret" : "Public";
+
+        return char;
+      }
+
+      determineOrigin(char) {
+        if (this.originRoll < 1 || this.originRoll > 100) {
+          char.logRoll("Origin", -1, "Invalid Roll");
+          return;
+        }
+
+        const originData = ORIGINS.find(o => this.originRoll <= o.maxRoll);
+        char.origin = originData.name;
+        // Store the column index for ability generation
+        char._originColumn = originData.column;
+        char.logRoll("Origin", this.originRoll, char.origin);
+      }
+
+      determinePrimaryAbilities(char) {
+        const abilities = ["Fighting", "Agility", "Strength", "Endurance", "Reason", "Intuition", "Psyche"];
+        const originRow = ORIGINS.find(o => o.name === char.origin);
+
+        abilities.forEach(ability => {
+          const abilityLower = ability.toLowerCase();
+          if (originRow[abilityLower + 'Set'] !== -1) {
+            char.setAbility(ability, originRow[abilityLower + 'Set']);
+            char.logRoll(`Primary Ability: ${ability}`, "Base Rules", originRow[ability + 'Set']);
+            return;
+          }
+
+          let rankRow = null;
+
+          if (originRow[abilityLower + 'Start'] !== -1) {
+            rankRow = RANDOM_RANKS_TABLE.find(r => r.rank === originRow[abilityLower + 'Start']);
+            char.logRoll(`Primary Ability: ${ability}`, "Base Rules", rankRow.rank + " as Start");
+          }
+          else {
+            const roll = this.primaryAbilityRolls[ability];
+
+            if (roll < 1 || roll > 100) {
+              char.logRoll("Primary Ability: " + ability, -1, "Invalid Roll");
+              return;
+            }
+
+            rankRow = Utility.findRow(roll, char._originColumn);
+            char.logRoll(`Primary Ability: ${ability}`, roll, rankRow.rank);
+          }
+
+          if (rankRow === null) {
+            char.logRoll(`Primary Ability: ${ability}`, -1, "Invalid RankRow");
+            return;
+          }
+
+          const finalRank = this.getAbilityAfterModifier(char, rankRow.rank, originRow[abilityLower + 'Adjustment'], originRow[abilityLower + 'Minimum'], originRow[abilityLower + 'Maximum']);
+          char.setAbility(ability, finalRank);
+        });
+      }
+
+      getAbilityAfterModifier(char, abilityRank, adjustment, minimum, maximum) {
+        let rankIndex = RANDOM_RANKS_TABLE.findIndex(r => r.rank === abilityRank);
+        if (rankIndex === null) {
+          char.logRoll("Ability", "Ability Modifier", "Invalid Rank. Setting to Feeble");
+          rankIndex = 0;
+        }
+
+        rankIndex += adjustment;
+
+        char.logRoll("Ability", "Ability Modifier", `Ability Rank: ${abilityRank}. Adjustment: ${adjustment}.  Min: ${minimum}.  Max: ${maximum}`);
+
+        if (rankIndex < 0) {
+          rankIndex = 0;
+          char.logRoll("Ability", "Ability Modifier", "Rank is less than 0. Setting to Feeble");
+        }
+
+        if (rankIndex >= RANDOM_RANKS_TABLE.length) {
+          rankIndex = RANDOM_RANKS_TABLE.length - 1;
+          char.logRoll("Ability", "Ability Modifier", `Rank is greater than max. Setting to ${rankIndex}.`);
+        }
+
+        let returnRank = RANDOM_RANKS_TABLE[rankIndex].rank;
+        if (minimum !== -1 && returnRank < minimum) {
+          returnRank = minimum;
+          char.logRoll("Ability", "Ability Modifier", `Rank is less than Min. Setting to ${returnRank}.`);
+        }
+
+        if (maximum !== -1 && returnRank > maximum) {
+          returnRank = maximum;
+          char.logRoll("Ability", "Ability Modifier", `Rank is greater than Max. Setting to ${returnRank}.`);
+        }
+
+        return returnRank;
+      }
+
+      determineResources(char) {
+        // Page 9: Initial Resources
+        let startRank = "Typical";
+
+        const originRow = ORIGINS.find(o => o.name === char.origin);
+        if (originRow.resourcesSet !== -1) {
+          const rankData = RANDOM_RANKS_TABLE.find(r => r.rankNumber === originRow.resourcesSet);
+          char.resources.rank = rankData.rank;
+          char.resources.number = rankData.rankNumber;
+
+          char.logRoll("Resources", "Base Rules", "Resources set to " + rankData.rank);
+          return;
+        }
+
+        if (originRow.resourcesStart !== -1) {
+          startRank = RANDOM_RANKS_TABLE.find(r => r.rankNumber === originRow.resourcesStart).rank;
+          char.logRoll("Resources", "Base Rules", "Resources set to " + startRank + " as Start");
+        }
+
+        if (char.origin === "Hi-Tech") {
+          if (this.hiTechToGood) {
+            startRank = "Good";
+            char.logRoll("Resources", "Base Rules Option", "Hi-Tech Resources set to Good");
+          }
+          else {
+            char.logRoll("Resources", "Base Rules Option", `Hi-Tech Resources set to ${startRank}`);
+          }
+        }
+
+        // Apply random modifier (Page 8 Ability Modifier Table logic usually applies, but text says "Modified by a roll")
+        const roll = this.resourceModifierRoll;
+        const modifier = ABILITY_MODIFIER_TABLE.find(r => r.maxRoll >= roll).modifier;
+        const finalAdjustment = originRow.resourcesAdjustment + modifier;
+        let resourceRank = this.getAbilityAfterModifier(char, startRank, finalAdjustment, originRow.resourcesMinimum, originRow.resourcesMaximum);
+
+        char.resources.rank = resourceRank;
+        const rankData = RANDOM_RANKS_TABLE.find(r => r.rank === resourceRank);
+        char.resources.number = rankData.rankNumber;
+        char.logRoll("Resources", roll, resourceRank);
+      }
+
+      determinePopularity(char) {
+        // Page 9
+        const originRow = ORIGINS.find(o => o.name === char.origin);
+
+        char.popularity = 10;
+        if (originRow.popularitySet !== -1) {
+          char.popularity = originRow.popularitySet;
+          char.logRoll("Popularity", "Base Rules", "Popularity set to " + originRow.popularitySet);
+          return;
+        }
+
+        if (originRow.popularityStart !== -1) {
+          char.popularity = originRow.popularityStart;
+          char.logRoll("Popularity", "Base Rules", "Popularity set to " + originRow.popularityStart);
+        }
+
+        // Secret ID logic (Page 9): If secret ID, -5 Pop. 
+        if (this.identitySecret) {
+          char.popularity -= 5;
+          char.logRoll("Popularity", "Secret ID", "Loss of Popularity (-5)");
+        }
+
+        if (!this.identitySecret) {
+          char.popularity += 10;
+          char.logRoll("Popularity", "Public ID", "Addition of Popularity (+10)");
+        }
+
+        if (originRow.popularityAdjustment !== 0) {
+          char.popularity += originRow.popularityAdjustment;
+          char.logRoll("Popularity", "Base Rules", "Popularity Adjusted by " + originRow.popularityAdjustment);
+        }
+
+        if (originRow.popularityMinimum !== -1 && char.popularity < originRow.popularityMinimum) {
+          char.popularity = originRow.popularityMinimum;
+          char.logRoll("Popularity", "Base Rules", "Popularity Adjusted to Minimum");
+        }
+
+        if (originRow.popularityMaximum !== -1 && char.popularity > originRow.popularityMaximum) {
+          char.popularity = originRow.popularityMaximum;
+          char.logRoll("Popularity", "Base Rules", "Popularity Adjusted to Maximum");
+        }
+
+        if (char.popularity < 0) char.popularity = 0;
+
+        char.logRoll("Popularity", "Base Rules", char.popularity);
+      }
+
+      determineSpecialAbilities(char) {
+        const pRoll = this.powerNumberRoll;
+        const pQtyRow = QUANTITY_TABLE.find(q => pRoll <= q.maxRoll);
+        const tRoll = this.talentNumberRoll;
+        const tQtyRow = QUANTITY_TABLE.find(q => tRoll <= q.maxRoll);
+        const cRoll = this.contactNumberRoll;
+        const cQtyRow = QUANTITY_TABLE.find(q => cRoll <= q.maxRoll);
+
+        char.powersCount = pQtyRow.powers.initial;
+        char.powersMax = pQtyRow.powers.maximum;
+        char.talentsCount = tQtyRow.talents.initial;
+        char.talentsMax = tQtyRow.talents.maximum;
+        char.contactsCount = cQtyRow.contacts.initial;
+        char.contactsMax = cQtyRow.contacts.maximum;
+
+        const originRow = ORIGINS.find(o => o.name === char.origin);
+        let powersCountSet = false;
+        let talentsCountSet = false;
+        let contactsCountSet = false;
+
+        if (originRow.powersCountSet !== -1) {
+          char.powersCount = originRow.powersCountSet;
+          char.logRoll("Power Slots", "Base Rules", `Powers Count Set: ${char.powersCount}`);
+          powersCountSet = true;
+        }
+        if (originRow.talentsCountSet !== -1) {
+          char.talentsCount = originRow.talentsCountSet;
+          char.logRoll("Talent Slots", "Base Rules", `Talents Count Set: ${char.talentsCount}`);
+          talentsCountSet = true;
+        }
+        if (originRow.contactsCountSet !== -1) {
+          char.contactsCount = originRow.contactsCountSet;
+          char.logRoll("Contact Slots", "Base Rules", `Contacts Count Set: ${char.contactsCount}`);
+          contactsCountSet = true;
+        }
+
+        if (!powersCountSet) {
+          if (originRow.powersCountAdjustment != 0) {
+            char.powersCount += originRow.powersCountAdjustment;
+            char.powersMax += originRow.powersCountAdjustment;
+            char.logRoll("Power Slots", "Base Rules", `Powers Count Adjusted: ${char.powersCount}`);
+          }
+          if (char.powersCount > pQtyRow.powers.max) char.powersCount = pQtyRow.powers.max;
+        }
+
+        if (!talentsCountSet) {
+          if (originRow.talentsCountAdjustment != 0) {
+            char.talentsCount += originRow.talentsCountAdjustment;
+            char.talentsMax += originRow.talentsCountAdjustment;
+            char.logRoll("Talent Slots", "Base Rules", `Talents Count Adjusted: ${char.talentsCount}`);
+            if (char.talentsCount > tQtyRow.talents.max) char.talentsCount = tQtyRow.talents.max;
+          }
+        }
+
+        if (!contactsCountSet) {
+          if (originRow.contactsCountAdjustment != 0) {
+            char.contactsCount += originRow.contactsCountAdjustment;
+            char.contactsMax += originRow.contactsCountAdjustment;
+            char.logRoll("Contact Slots", "Base Rules", `Contacts Count Adjusted: ${char.contactsCount}`);
+            if (char.contactsCount > cQtyRow.contacts.max) char.contactsCount = cQtyRow.contacts.max;
+          }
+        }
+
+        if (!powersCountSet) {
+          if (originRow.powersCountMinimum !== -1 && originRow.powersCountMinimum > char.powersCount) {
+            char.powersCount = originRow.powersCountMinimum;
+            char.powersMax = originRow.powersCountMinimum;
+            char.logRoll("Power Slots", "Base Rules", `Powers Count Minimum: ${char.contactsCount}`);
+          }
+
+          if (originRow.powersCountMaximum !== -1 && originRow.powersCountMaximum < char.powersCount) {
+            char.powersCount = originRow.powersCountMaximum;
+            char.powersMax = originRow.powersCountMaximum;
+            char.logRoll("Power Slots", "Base Rules", `Powers Count Maximum: ${char.powersCount}`);
+          }
+        }
+
+        if (!talentsCountSet) {
+          if (originRow.talentsCountMinimum !== -1 && originRow.talentsCountMinimum > char.talentsCount) {
+            char.talentsCount = originRow.talentsCountMinimum;
+            char.talentsMax = originRow.talentsCountMinimum;
+            char.logRoll("Talent Slots", "Base Rules", `Talents Count Minimum: ${char.contactsCount}`);
+          }
+          if (originRow.talentsCountMaximum !== -1 && originRow.talentsCountMaximum < char.talentsCount) {
+            char.talentsCount = originRow.talentsCountMaximum;
+            char.talentsMax = originRow.talentsCountMaximum;
+            char.logRoll("Talent Slots", "Base Rules", `Talents Count Maximum: ${char.talentsCount}`);
+          }
+        }
+
+        if (!contactsCountSet) {
+          if (originRow.contactsCountMinimum !== -1 && originRow.contactsCountMinimum > char.contactsCount) {
+            char.contactsCount = originRow.contactsCountMinimum;
+            char.contactsMax = originRow.contactsCountMinimum;
+            char.logRoll("Contact Slots", "Base Rules", `Contacts Count Minimum: ${char.contactsCount}`);
+          }
+          if (originRow.contactsCountMaximum !== -1 && originRow.contactsCountMaximum < char.contactsCount) {
+            char.contactsCount = originRow.contactsCountMaximum;
+            char.contactsMax = originRow.contactsCountMaximum;
+            char.logRoll("Contact Slots", "Base Rules", `Contacts Count Maximum: ${char.contactsCount}`);
+          }
+        }
+
+        char.powersSlots = char.powersCount;
+        char.talentsSlots = char.talentsCount;
+
+        char.logRoll("Power Slots", pRoll, `Powers: ${char.powersCount}/${char.powersMax}`);
+        char.logRoll("Talent Slots", tRoll, `Talents: ${char.talentsCount}/${char.talentsMax}`);
+        char.logRoll("Contact Slots", cRoll, `Contacts: ${char.contactsCount}/${char.contactsMax}`);
+
+        // Generate Powers
+        for (let i = 0; i < char.powersCount; i++) {
+          this.generateSinglePower(char, i);
+        }
+
+        // Generate Talents
+        for (let i = 0; i < char.talentsCount; i++) {
+          this.generateTalents(char, i);
+        }
+
+        // Generate Contacts
+        for (let i = char.contacts.length; i < char.contactsCount; i++) {
+          const ccRoll = this.contactCategoryRolls[i];
+          const category = CONTACT_CATEGORIES.find(c => ccRoll <= c.maxRoll).name;
+          const cRoll = this.contactRolls[i];
+          const c = CONTACT_TYPE_LIST.find(c => c.category === category && cRoll <= c.maxRoll);
+
+          char.logRoll("Contact Gen", `${ccRoll}/${cRoll}`, `${category}: ${c.name}`);
+
+          char.contacts.push({
+            category: category,
+            name: c.name,
+            description: c.description
+          });
+        }
+      }
+
+      generateTalents(char, talentIndex) {
+        const currentTalentSlots = char.talents.map(t => t.talentSlots).reduce((acc, value) => acc + value, 0);
+        const remainingTalentSlots = char.talentsCount - currentTalentSlots;
+
+        if (remainingTalentSlots <= 0) {
+          return;
+        }
+
+        const tcRoll = this.talentCategoryRolls[talentIndex];
+        const category = TALENT_CATEGORIES.find(c => tcRoll <= c.maxRoll).name;
+        let tRoll = this.talentRolls[talentIndex];
+        let t = TALENT_LIST.find(t => t.category === category && tRoll <= t.maxRoll);
+
+        let adjustIndex = 1;
+        while (remainingTalentSlots < t.talentCount && (currentTalentSlots + t.talentCount) > char.talentsMax) {
+          tRoll = this.talentRolls[talentIndex + adjustIndex];
+          t = TALENT_LIST.find(t => t.category === category && tRoll <= t.maxRoll);
+          adjustinIndex++;
+        }
+
+        char.logRoll("Talent Gen", `${tcRoll}/${tRoll}`, `${category}: ${t.name}`);
+
+        char.talents.push({
+          category: category,
+          name: t.name,
+          description: t.description,
+          talentSlots: t.talentCount,
+        });
+
+        if (t.bonusContactCount > 0) {
+          for (let cIndex = 0; cIndex < t.bonusContactCount; cIndex++) {
+            this.generateBonusContact(char, t.bonusContact);
+          }
+        }
+
+      }
+
+      generateBonusContact(char, bonusContactString) {
+        const contacts = bonusContactString.split("|");
+        for (let index = 0; index < contacts.length; index++) {
+          const parts = contacts[index].split("/");
+          const category = parts[0];
+          const otherParts = parts[1].split("(");
+          const type = otherParts[0];
+          const roll = +otherParts[1].replace(")", "");
+
+          contacts[index] = {
+            category: category,
+            type: type,
+            maxRoll: roll
+          };
+        }
+
+        const startIndex = char.contacts.length;
+        const roll = this.contactRolls[startIndex];
+        const contact = contacts.find(c => roll <= c.maxRoll);
+
+        const c = CONTACT_TYPE_LIST.find(c => c.category === contact.category && c.name === contact.type);
+
+        char.logRoll("Bonus Contact Gen", `Base Rules: ${roll}`, `${contact.category}: ${c.name}`);
+
+        if (char.contacts.length < char.contactsMax) {
+          char.contacts.push({
+            category: contact.category,
+            name: c.name,
+            description: c.description
+          });
+        }
+      }
+
+      isPowerAlreadyAssigned(char, powerRow) {
+        for (let index = 0; index < char.powers.length; index++) {
+          if (char.powers[index].name === powerRow.name) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      generateSinglePower(char, powerRollIndex) {
+        const currentSlots = char.powers.map(p => p.powerSlots).reduce((acc, value) => acc + value, 0);
+        const remainingSlots = char.powersCount - currentSlots;
+
+        if (remainingSlots <= 0) {
+          return;
+        }
+
+        // 1. Roll Category
+        let catRoll = this.powerCategoryRolls[powerRollIndex];
+        let category = POWER_CATEGORIES.find(c => catRoll <= c.maxRoll).name;
+
+        // 2. Pick Power from Category
+        let powerRoll = this.powerRolls[powerRollIndex];
+        let powerRow = POWER_LIST.find(r => r.category === category && powerRoll <= r.maxRoll);
+
+        // 3. Pick Power from Category
+        let indexAdjustment = 1;
+        while (this.isPowerAlreadyAssigned(char, powerRow)) {
+          char.logRoll("Power Gen", `Duplicate Power`, `Power: ${powerRow.name}`);
+          catRoll = this.powerCategoryRolls[powerRollIndex];
+          category = POWER_CATEGORIES.find(c => catRoll <= c.maxRoll).name;
+          powerRoll = this.powerRolls[powerRollIndex + indexAdjustment];
+          powerRow = POWER_LIST.find(r => r.category === category && powerRoll <= r.maxRoll);
+          indexAdjustment++;
+        }
+
+        while (powerRow.powerCount > remainingSlots && (currentSlots + powerRow.powerCount) > char.powersMax && !this.isPowerAlreadyAssigned(char, powerRow)) {
+          char.logRoll("Power Gen", `Too Many Powers`, `Power: ${powerRow.name}`);
+          catRoll = this.powerCategoryRolls[powerRollIndex];
+          category = POWER_CATEGORIES.find(c => catRoll <= c.maxRoll).name;
+          powerRoll = this.powerRolls[powerRollIndex + indexAdjustment];
+          powerRow = POWER_LIST.find(r => r.category === category && powerRoll <= r.maxRoll);
+          indexAdjustment++;
+        }
+
+        // 3. Determine Rank
+        // Power ranks are rolled on Column 4 (Page 10, source 412)
+        const rankRoll = this.powerRankRolls[powerRollIndex];
+        const rankRow = Utility.findRow(rankRoll, 3);
+
+        const rankNumber = rankRow.rankNumber;
+
+        char.powers.push({
+          name: powerRow.name,
+          category: category,
+          description: powerRow.description,
+          rank: rankRow.rank,
+          number: rankNumber,
+          powerSlots: powerRow.powerCount,
+        });
+
+        char.logRoll("Power Gen", `${catRoll}/${powerRoll}/${rankRoll}`, `${category}: ${powerRow.name} (${rankRow.rank})`);
+
+        if (powerRow.bonusPowerCount > 0) {
+          this.generateBonusPower(char, powerRow.bonusPower);
+        }
+      }
+
+      generateBonusPower(char, bonusPowerString) {
+        const powers = bonusPowerString.split("|");
+        for (let index = 0; index < powers.length; index++) {
+          const parts = powers[index].split("\\");
+          const category = parts[0];
+          const otherParts = parts[1].split("(");
+          const name = otherParts[0];
+          const roll = +otherParts[1].replace(")", "");
+
+          powers[index] = {
+            category: category,
+            name: name,
+            maxRoll: roll
+          };
+        }
+
+        const startIndex = char.powers.length;
+        const roll = this.powerRolls[startIndex];
+        const power = powers.find(c => roll <= c.maxRoll);
+
+        const p = POWER_LIST.find(c => c.category === power.category && c.name === power.name);
+
+        const rankRoll = this.powerRankRolls[startIndex];
+        const rankRow = Utility.findRow(rankRoll, 3);
+
+        const rankNumber = rankRow.rankNumber;
+
+        char.logRoll("Bonus Power Gen", `Base Rules: ${roll}/${rankRow}`, `${power.category}: ${p.name} (${rankRow.rank})`);
+console.log("Bonus Poweer")
+
+        if (char.powers.length < char.powersMax && !this.isPowerAlreadyAssigned(char, p)) {
+          char.powers.push({
+            category: p.category,
+            name: p.name,
+            description: p.description,
+            rank: rankRow.rank,
+            number: rankNumber,
+            powerSlots: p.powerCount,
+            bonusPower: true
+        });
+        }
+      }
+
+    }
+
+    class Utility {
+      static findRow(roll, column) {
+        for (let index = 0; index < RANDOM_RANKS_TABLE.length; index++) {
+          const row = RANDOM_RANKS_TABLE[index];
+          if (roll <= row.maxRolls[column]) {
+            return row;
+          }
+        }
+
+        return null;
+      }
+    }
+
+    class Renderer {
+      static render(char) {
+        const display = document.getElementById('display-area');
+
+        let powersHtml = char.powers.map(p => `<li class="power"><strong>${p.name}${p.powerSlots > 1 ? `*` : ``}${p.bonusPower ? ` (B)` : ``}</strong>: ${p.rank} &nbsp; <span class="power-description">${p.description}</span></li>`).join('');
+        let talentsHtml = char.talents.map(t => `<li class="talent"><strong>${t.category}: ${t.name}${t.talentSlots > 1 ? `*` : ``}</strong> &nbsp; <span class="talent-description">${t.description}</span></li>`).join('');
+        let contactsHtml = char.contacts.map(c => `<li class="contact">${c.category}/${c.name} &nbsp; <span class="contact-description">${c.description}</span></li>`).join('');
+        let logHtml = char.log.map(l => `<div>${l}</div>`).join('');
+
+        let powers = char.powers.map(item => item.powerSlots).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+        let talents = char.talents.map(item => item.talentSlots).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+        const html = `
+            <div class="character-sheet">
+                <div class="section-title">Identity</div>
+                <div class="info-header">
+                    <div class="info-item"><span>Name</span> ${char.name}</div>
+                    <div class="info-item"><span>Origin</span> ${char.origin}</div>
+                    <div class="info-item"><span>Identity</span> ${char.identity}</div>
+                </div>
+
+                <div class="section-title">Primary Abilities (FASERIP)</div>
+                <div class="stat-block">
+                    <span class="stat-label">Fighting</span>
+                    <span class="stat-rank">${char.primaryAbilities.Fighting.rank}</span>
+                    <span class="stat-number"></span>
+                </div>
+                <div class="stat-block">
+                    <span class="stat-label">Agility</span>
+                    <span class="stat-rank">${char.primaryAbilities.Agility.rank}</span>
+                    <span class="stat-number"></span>
+                </div>
+                <div class="stat-block">
+                    <span class="stat-label">Strength</span>
+                    <span class="stat-rank">${char.primaryAbilities.Strength.rank}</span>
+                    <span class="stat-number"></span>
+                </div>
+                <div class="stat-block">
+                    <span class="stat-label">Endurance</span>
+                    <span class="stat-rank">${char.primaryAbilities.Endurance.rank}</span>
+                    <span class="stat-number"></span>
+                </div>
+                <div class="stat-block">
+                    <span class="stat-label">Reason</span>
+                    <span class="stat-rank">${char.primaryAbilities.Reason.rank}</span>
+                    <span class="stat-number"></span>
+                </div>
+                <div class="stat-block">
+                    <span class="stat-label">Intuition</span>
+                    <span class="stat-rank">${char.primaryAbilities.Intuition.rank}</span>
+                    <span class="stat-number"></span>
+                </div>
+                <div class="stat-block">
+                    <span class="stat-label">Psyche</span>
+                    <span class="stat-rank">${char.primaryAbilities.Psyche.rank}</span>
+                    <span class="stat-number"></span>
+                </div>
+
+                <div class="section-title">Secondary Abilities</div>
+
+                <div class="side-by-side">
+                <div class="secondary-block">
+                    <div class="secondary-value">${char.health}</div>
+                    <div>Health</div>
+                </div>
+                <div class="secondary-block">
+                    <div class="secondary-value">${char.karma}</div>
+                    <div>Karma</div>
+                </div>
+                <div class="secondary-block">
+                    <div class="secondary-value">${char.resources.rank}</div>
+                    <div>Resources</div>
+                </div>
+                <div class="secondary-block">
+                    <div class="secondary-value">${char.popularity}</div>
+                    <div>Popularity</div>
+                </div>
+                </div>
+
+                <div class="section-title">Powers (${powers}/${char.powersMax})</div>
+                <div class="list-section"><ul>${powersHtml || "<li>None</li>"}</ul></div>
+
+                <div class="section-title">Talents (${talents}/${char.talentsMax})</div>
+                <div class="list-section"><ul>${talentsHtml || "<li>None</li>"}</ul></div>
+
+                <div class="section-title">Contacts (${char.contacts.length}/${char.contactsMax})</div>
+                <div class="list-section"><ul>${contactsHtml || "<li>None</li>"}</ul></div>
+
+                <div class="section-title no-print">Generation Log</div>
+                <div class="roll-log no-print">${logHtml}</div>
+            </div>
+        `;
+        display.innerHTML = html;
+      }
+    }
+
+    class Tester {
+      failureCount = 0;
+
+      static assert(condition, message) {
+        const line = this.getLineNumber();
+
+        const area = document.getElementById('test-area');
+        const div = document.createElement('div');
+        div.id = condition ? "pass" : "failure";
+        div.className = "test-output " + (condition ? "pass" : "fail");
+        div.innerText = `${condition ? "PASS" : "FAIL"}: (${line}) ${message}`;
+        this.failureCount += condition ? 0 : 1;
+        area.appendChild(div);
+      }
+
+      static assertEquals(expectedValue, actualValue, message) {
+        const line = this.getLineNumber();
+        const area = document.getElementById('test-area');
+        const div = document.createElement('div');
+        const condition = expectedValue === actualValue;
+        div.id = condition ? "pass" : "failure";
+        div.className = "test-output " + (condition ? "pass" : "fail");
+        div.innerText = `${condition ? "PASS" : "FAIL"}: (${line}) ${message} Expected: ${expectedValue}, Actual: ${actualValue}`;
+        this.failureCount += condition ? 0 : 1;
+        area.appendChild(div);
+      }
+
+      static getLineNumber() {
+        return (new Error).stack.split("\n")[3].split(":")[2];
+      }
+
+      static UtilityTests() {
+        let testRoll = 51;
+        let testColumn = 0; // Mutants
+        let foundRank = Utility.findRow(testRoll, testColumn).rank;
+        this.assert(foundRank === "Excellent", `findRank(${testRoll}, ${testColumn}) should return "Excellent"`);
+
+        testColumn = 1; // Humans
+        foundRank = Utility.findRow(testRoll, testColumn).rank;
+        this.assert(foundRank === "Typical", `findRank(${testRoll}, ${testColumn}) should return "Typical"`);
+
+        testColumn = 2; // Hi Tech
+        foundRank = Utility.findRow(testRoll, testColumn).rank;
+        this.assert(foundRank === "Good", `findRank(${testRoll}, ${testColumn}) should return "Good"`);
+
+        testColumn = 3; // Robots
+        foundRank = Utility.findRow(testRoll, testColumn).rank;
+        this.assert(foundRank === "Remarkable", `findRank(${testRoll}, ${testColumn}) should return "Remarkable"`);
+
+        testColumn = 4; // Aliens
+        foundRank = Utility.findRow(testRoll, testColumn).rank;
+        this.assert(foundRank === "Excellent", `findRank(${testRoll}, ${testColumn}) should return "Excellent"`);
+
+        testRoll = 95;
+        testColumn = 0;
+        foundRank = Utility.findRow(testRoll, testColumn).rank;
+        this.assert(foundRank === "Incredible", `findRank(${testRoll}, ${testColumn}) should return "Incredible"`);
+
+        testColumn = 1;
+        foundRank = Utility.findRow(testRoll, testColumn).rank;
+        this.assert(foundRank === "Good", `findRank(${testRoll}, ${testColumn}) should return "Good"`);
+
+        testColumn = 2;
+        foundRank = Utility.findRow(testRoll, testColumn).rank;
+        this.assert(foundRank === "Excellent", `findRank(${testRoll}, ${testColumn}) should return "Excellent"`);
+
+        testColumn = 3;
+        foundRank = Utility.findRow(testRoll, testColumn).rank;
+        this.assert(foundRank === "Amazing", `findRank(${testRoll}, ${testColumn}) should return "Amazing"`);
+
+        testColumn = 4;
+        foundRank = Utility.findRow(testRoll, testColumn).rank;
+        this.assert(foundRank === "Amazing", `findRank(${testRoll}, ${testColumn}) should return "Amazing"`);
+      }
+
+      static OriginTests(gen) {
+        const charOrigin = new Character();
+
+        gen.originRoll = 25;
+        gen.determineOrigin(charOrigin);
+        const validOrigins = ["Altered Human", "Mutant", "Hi-Tech", "Robot", "Alien"];
+        this.assert(validOrigins.includes(charOrigin.origin),
+          `Origin Roll: Generated '${charOrigin.origin}' is a valid origin type.`);
+        this.assert(charOrigin.origin == "Altered Human",
+          `Origin Roll: Generated '${charOrigin.origin}', which is correct.`);
+
+        gen.originRoll = 50;
+        gen.determineOrigin(charOrigin);
+        this.assert(validOrigins.includes(charOrigin.origin),
+          `Origin Roll: Generated '${charOrigin.origin}' is a valid origin type.`);
+        this.assert(charOrigin.origin == "Mutant",
+          `Origin Roll: Generated '${charOrigin.origin}', which is correct.`);
+
+        gen.originRoll = 75;
+        gen.determineOrigin(charOrigin);
+        this.assert(validOrigins.includes(charOrigin.origin),
+          `Origin Roll: Generated '${charOrigin.origin}' is a valid origin type.`);
+        this.assert(charOrigin.origin == "Hi-Tech",
+          `Origin Roll: Generated '${charOrigin.origin}', which is correct.`);
+
+        gen.originRoll = 95;
+        gen.determineOrigin(charOrigin);
+        this.assert(validOrigins.includes(charOrigin.origin),
+          `Origin Roll: Generated '${charOrigin.origin}' is a valid origin type.`);
+        this.assert(charOrigin.origin == "Robot",
+          `Origin Roll: Generated '${charOrigin.origin}', which is correct.`);
+
+        gen.originRoll = 99;
+        gen.determineOrigin(charOrigin);
+        this.assert(validOrigins.includes(charOrigin.origin),
+          `Origin Roll: Generated '${charOrigin.origin}' is a valid origin type.`);
+        this.assert(charOrigin.origin == "Alien",
+          `Origin Roll: Generated '${charOrigin.origin}', which is correct.`);
+      }
+
+      static PrimaryAbilityTests(gen) {
+        const charStats = new Character();
+        // Mock origin column to 0 (Altered Human/Mutant) for consistent testing
+        charStats.origin = "Altered Human";
+        charStats._originColumn = 0;
+
+        gen.primaryAbilityRolls["Fighting"] = 70;
+        gen.primaryAbilityRolls["Agility"] = 60;
+        gen.primaryAbilityRolls["Strength"] = 50;
+        gen.primaryAbilityRolls["Endurance"] = 40;
+        gen.primaryAbilityRolls["Reason"] = 30;
+        gen.primaryAbilityRolls["Intuition"] = 20;
+        gen.primaryAbilityRolls["Psyche"] = 10;
+
+        gen.determinePrimaryAbilities(charStats);
+
+        const abilities = ["Fighting", "Agility", "Strength", "Endurance", "Reason", "Intuition", "Psyche"];
+        let allStatsValid = true;
+        abilities.forEach(stat => {
+          const rank = charStats.primaryAbilities[stat].rank;
+          const num = charStats.primaryAbilities[stat].number;
+
+          if (num < 2 || num > 50 || rank === "") allStatsValid = false;
+        });
+        this.assert(allStatsValid,
+          `Primary Ability Rolls: All 7 FASERIP stats generated with valid ranks and numbers.`);
+
+        let rank = charStats.primaryAbilities["Fighting"].rank;
+        let num = charStats.primaryAbilities["Fighting"].number;
+        this.assertEquals("Remarkable", rank, `Primary Ability Rolls: Fighting generated with valid rank.`);
+        this.assertEquals(26, num, `Primary Ability Rolls: Fighting generated with valid number.`);
+
+        rank = charStats.primaryAbilities["Agility"].rank;
+        num = charStats.primaryAbilities["Agility"].number;
+        this.assertEquals("Excellent", rank, `Primary Ability Rolls: Agility generated with valid rank.`);
+        this.assertEquals(16, num, `Primary Ability Rolls: Agility generated with valid number.`);
+
+        rank = charStats.primaryAbilities["Strength"].rank;
+        num = charStats.primaryAbilities["Strength"].number;
+        this.assertEquals("Excellent", rank, `Primary Ability Rolls: Strength generated with valid rank.`);
+        this.assertEquals(16, num, `Primary Ability Rolls: Strength generated with valid number.`);
+
+        rank = charStats.primaryAbilities["Endurance"].rank;
+        num = charStats.primaryAbilities["Endurance"].number;
+        this.assertEquals("Good", rank, `Primary Ability Rolls: Endurance generated with valid rank.`);
+        this.assertEquals(8, num, `Primary Ability Rolls: Endurance generated with valid number.`);
+
+        rank = charStats.primaryAbilities["Reason"].rank;
+        num = charStats.primaryAbilities["Reason"].number;
+        this.assertEquals("Good", rank, `Primary Ability Rolls: Reason generated with valid rank.`);
+        this.assertEquals(8, num, `Primary Ability Rolls: Reason generated with valid number.`);
+
+        rank = charStats.primaryAbilities["Intuition"].rank;
+        num = charStats.primaryAbilities["Intuition"].number;
+        this.assertEquals("Typical", rank, `Primary Ability Rolls: Intuition generated with valid rank.`);
+        this.assertEquals(5, num, `Primary Ability Rolls: Intuition generated with valid number.`);
+
+        rank = charStats.primaryAbilities["Psyche"].rank;
+        num = charStats.primaryAbilities["Psyche"].number;
+        this.assertEquals("Poor", rank, `Primary Ability Rolls: Psyche generated with valid rank.`);
+        this.assertEquals(3, num, `Primary Ability Rolls: Psyche generated with valid number.`);
+      }
+
+      static SecondaryAbilityTests(gen) {
+        const charRes = new Character();
+        charRes.origin = "Altered Human";
+        charRes._originColumn = 0;
+
+        gen.resourceModifierRoll = 1;
+        gen.determineResources(charRes);
+
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Altered Human #1 as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Poor", charRes.resources.rank, `Resource Roll: Resources generated for Altered Human with valid rank.`);
+
+        gen.resourceModifierRoll = 16;
+        gen.determineResources(charRes);
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Altered Human #1 as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Typical", charRes.resources.rank, `Resource Roll: Resources generated for Altered Human with valid rank.`);
+
+        gen.resourceModifierRoll = 51;
+        gen.determineResources(charRes);
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Altered Human #1 as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Good", charRes.resources.rank, `Resource Roll: Resources generated for Altered Human with valid rank.`);
+
+        gen.resourceModifierRoll = 71;
+        gen.determineResources(charRes);
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Altered Human #1 as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Excellent", charRes.resources.rank, `Resource Roll: Resources generated for Altered Human with valid rank.`);
+
+        gen.resourceModifierRoll = 86;
+        gen.determineResources(charRes);
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Altered Human #1 as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Remarkable", charRes.resources.rank, `Resource Roll: Resources generated for Altered Human with valid rank.`);
+
+        gen.resourceModifierRoll = 96;
+        gen.determineResources(charRes);
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Altered Human #1 as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Incredible", charRes.resources.rank, `Resource Roll: Resources generated for Altered Human with valid rank.`);
+
+        charRes.origin = "Alien";
+        charRes._originColumn = 4;
+
+        gen.resourceModifierRoll = 1;
+        gen.determineResources(charRes);
+
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Alien as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Feeble", charRes.resources.rank, `Resource Roll: Resources generated for Alien with valid rank.`);
+
+        gen.resourceModifierRoll = 16;
+        gen.determineResources(charRes);
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Alien as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Poor", charRes.resources.rank, `Resource Roll: Resources generated for Alien with valid rank.`);
+
+        gen.resourceModifierRoll = 51;
+        gen.determineResources(charRes);
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Alien as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Typical", charRes.resources.rank, `Resource Roll: Resources generated for Alien with valid rank.`);
+
+        gen.resourceModifierRoll = 71;
+        gen.determineResources(charRes);
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Alien as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Good", charRes.resources.rank, `Resource Roll: Resources generated for Alien with valid rank.`);
+
+        gen.resourceModifierRoll = 86;
+        gen.determineResources(charRes);
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Alien as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Excellent", charRes.resources.rank, `Resource Roll: Resources generated for Alien with valid rank.`);
+
+        gen.resourceModifierRoll = 96;
+        gen.determineResources(charRes);
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Alien as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Remarkable", charRes.resources.rank, `Resource Roll: Resources generated for Alien with valid rank.`);
+
+        charRes.origin = "Mutant";
+
+        gen.resourceModifierRoll = 1;
+        gen.determineResources(charRes);
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Mutant as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Feeble", charRes.resources.rank, `Resource Roll: Resources generated for Mutant with valid rank.`);
+
+        gen.resourceModifierRoll = 16;
+        gen.determineResources(charRes);
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Mutant as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Poor", charRes.resources.rank, `Resource Roll: Resources generated for Mutant with valid rank.`);
+
+        gen.resourceModifierRoll = 51;
+        gen.determineResources(charRes);
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Mutant as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Typical", charRes.resources.rank, `Resource Roll: Resources generated for Mutant with valid rank.`);
+
+        gen.resourceModifierRoll = 71;
+        gen.determineResources(charRes);
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Mutant as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Good", charRes.resources.rank, `Resource Roll: Resources generated for Mutant with valid rank.`);
+
+        gen.resourceModifierRoll = 86;
+        gen.determineResources(charRes);
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Mutant as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Excellent", charRes.resources.rank, `Resource Roll: Resources generated for Mutant with valid rank.`);
+
+        gen.resourceModifierRoll = 96;
+        gen.determineResources(charRes);
+        this.assert(charRes.resources.number > 0 && charRes.resources.rank !== "",
+          `Resource Roll: Resources generated for Mutant as '${charRes.resources.rank}' (${charRes.resources.number}).`);
+        this.assertEquals("Remarkable", charRes.resources.rank, `Resource Roll: Resources generated for Mutant with valid rank.`);
+
+        // --- TEST POPULARITY CALCULATION ---
+        const charPop = new Character();
+        charPop.origin = "Mutant"; // Should force 0
+        gen.determinePopularity(charPop);
+        this.assert(charPop.popularity === 0,
+          `Popularity Roll: Mutant correctly defaults to 0 Popularity.`);
+
+        const charPop2 = new Character();
+        charPop2.origin = "Robot"; // Should force 0
+        gen.determinePopularity(charPop2);
+        this.assert(charPop2.popularity === 0,
+          `Popularity Roll: Robot correctly defaults to 0 Popularity.`);
+
+        const charPop3 = new Character();
+        charPop3.origin = "Altered Human"; // Should be 10 - 5 (Secret ID) = 5
+        gen.determinePopularity(charPop3);
+        this.assertEquals(5, charPop3.popularity,
+          `Popularity Roll: Altered Human correctly calculated (Base 10 - Secret ID 5 = 5).`);
+      }
+
+      static SinglePowerTests(gen) {
+        const char = new Character();
+        char.origin = "Altered Human";
+        char._originColumn = 0;
+        char.powersCount = 3;
+        char.powersSlots = 3;
+
+        gen.powerCategoryRolls = [2, 27, 19, 74];
+        gen.powerRolls = [2, 3, 4, 5];
+        gen.powerRankRolls = [74, 19, 27, 2];
+
+        gen.generateSinglePower(char, 0);
+        this.assertEquals(1, char.powers.length, `Power Quantity Roll: Generated ${char.powers.length} powers.`);
+        this.assertEquals("Resistances", char.powers[0].category, `Power Category Roll: Generated ${char.powers[0].category} category.`);
+        this.assertEquals("Resistance to Cold", char.powers[0].name, `Power Roll: Generated ${char.powers[0].name} name.`);
+        this.assertEquals("Incredible", char.powers[0].rank, `Power Rank Roll: Generated ${char.powers[0].rank} rank.`);
+
+        gen.generateSinglePower(char, 1);
+        this.assertEquals(2, char.powers.length, `Power Quantity Roll: Generated ${char.powers.length} powers.`);
+        this.assertEquals("Energy Control", char.powers[1].category, `Power Category Roll: Generated ${char.powers[1].category} category.`);
+        this.assertEquals("Electrical Manipulation", char.powers[1].name, `Power Roll: Generated ${char.powers[1].name} name.`);
+        this.assertEquals("Good", char.powers[1].rank, `Power Rank Roll: Generated ${char.powers[1].rank} rank.`);
+
+        gen.generateSinglePower(char, 2);
+        this.assertEquals(3, char.powers.length, `Power Quantity Roll: Generated ${char.powers.length} powers.`);
+        this.assertEquals("Matter Control", char.powers[2].category, `Power Category Roll: Generated ${char.powers[2].category} category.`);
+        this.assertEquals("Air Control", char.powers[2].name, `Power Roll: Generated ${char.powers[2].name} name.`);
+        this.assertEquals("Good", char.powers[2].rank, `Power Rank Roll: Generated ${char.powers[2].rank} rank.`);
+      }
+
+      static PowersTests(gen) {
+        // Test every power in POWER_LIST
+        for (const targetPower of POWER_LIST) {
+          const char = new Character();
+          char.origin = "Altered Human";
+          char._originColumn = 0;
+
+          gen.powerNumberRoll = 19;  // 2 powers
+          gen.talentNumberRoll = 91;
+          gen.contactNumberRoll = 74;
+          gen.talentCategoryRolls = [2, 27, 67, 91];
+          gen.talentRolls = [2, 3, 4, 5];
+          gen.contactNumberRoll = 74;
+          gen.contactCategoryRolls = [2, 27, 67, 91];
+          gen.contactRolls = [2, 3, 4, 5];
+
+          // Find correct category roll
+          const catIndex = POWER_CATEGORIES.findIndex(c => c.name === targetPower.category);
+          const catData = POWER_CATEGORIES[catIndex];
+          gen.powerCategoryRolls[0] = catData.maxRoll;
+          gen.powerCategoryRolls[1] = catIndex <= 4 ? POWER_CATEGORIES[catIndex + 1].maxRoll : POWER_CATEGORIES[POWER_CATEGORIES.length - 4].maxRoll;
+          gen.powerCategoryRolls[2] = catIndex <= 4 ? POWER_CATEGORIES[catIndex + 2].maxRoll : POWER_CATEGORIES[POWER_CATEGORIES.length - 3].maxRoll;
+          gen.powerCategoryRolls[3] = catIndex <= 4 ? POWER_CATEGORIES[catIndex + 3].maxRoll : POWER_CATEGORIES[POWER_CATEGORIES.length - 2].maxRoll;
+
+          const powerRow1 = catIndex <= 4 ? POWER_LIST.find(r => r.category === POWER_CATEGORIES[catIndex + 1].name) : POWER_LIST.find(r => r.category === POWER_CATEGORIES[POWER_CATEGORIES.length - 4].name);
+          const powerRow2 = catIndex <= 4 ? POWER_LIST.find(r => r.category === POWER_CATEGORIES[catIndex + 2].name) : POWER_LIST.find(r => r.category === POWER_CATEGORIES[POWER_CATEGORIES.length - 3].name);
+          const powerRow3 = catIndex <= 4 ? POWER_LIST.find(r => r.category === POWER_CATEGORIES[catIndex + 3].name) : POWER_LIST.find(r => r.category === POWER_CATEGORIES[POWER_CATEGORIES.length - 2].name);
+
+          // Set specific power roll
+          gen.powerRolls[0] = targetPower.maxRoll;
+          gen.powerRolls[1] = powerRow1.maxRoll;
+          gen.powerRolls[2] = powerRow2.maxRoll;
+          gen.powerRolls[3] = powerRow3.maxRoll;
+
+          // Set valid rank roll
+          gen.powerRankRolls[0] = 50;
+          gen.powerRankRolls[1] = 50;
+          gen.powerRankRolls[2] = 50;
+          gen.powerRankRolls[3] = 50;
+
+          // Run generation
+          gen.determineSpecialAbilities(char);
+
+          // Validate
+          if (char.powers.length === 0 || char.powers[0] === null) {
+            this.assertEquals("Power Tests", char.powers.length, `Power Failed to generate.`);
+          }
+
+          const p = char.powers[0];
+          this.assertEquals(targetPower.category, p.category, `Power Category Roll: Generated ${p.category} category.`);
+          this.assertEquals(targetPower.name, p.name, `Power Roll: Generated ${p.name} name.`);
+          this.assertEquals("Excellent", p.rank, `Power Rank Roll: Generated ${p.rank} rank.`);
+        }
+      }
+
+      static PowersTooManyTests(gen) {
+        const char = new Character();
+        char.origin = "Altered Human";
+        char._originColumn = 0;
+
+        gen.powerNumberRoll = 22;  // 3/4 powers
+        gen.powerCategoryRolls = [75, 2, 55, 27, 19, 74];
+        gen.powerRolls = [2, 2, 6, 3, 4, 5];
+        gen.powerRankRolls = [9, 19, 29, 39, 49, 59];
+
+        gen.talentNumberRoll = 91;
+        gen.contactNumberRoll = 74;
+        gen.talentCategoryRolls = [2, 27, 67, 91];
+        gen.talentRolls = [2, 3, 4, 5];
+        gen.contactNumberRoll = 74;
+        gen.contactCategoryRolls = [2, 27, 67, 91];
+        gen.contactRolls = [2, 3, 4, 5];
+
+        // Run generation
+        gen.determineSpecialAbilities(char);
+
+        // Validate
+        this.assertEquals(2, char.powers.length, `Test #1: Incorrect number of powers were generated.`);
+
+        let p = char.powers[0];
+        this.assertEquals("Mental Powers", p.category, `Test #1: Power Category Roll: Generated ${p.category} category.`);
+        this.assertEquals("Image Generation", p.name, `Test #1: Power Roll: Generated ${p.name} name.`);
+        this.assertEquals("Poor", p.rank, `Test #1: Power Rank Roll: Generated ${p.rank} rank.`);
+
+        p = char.powers[1];
+        this.assertEquals("Resistances", p.category, `Test #1: Power Category Roll: Generated ${p.category} category.`);
+        this.assertEquals("Resistance to Cold", p.name, `Test #1: Power Roll: Generated ${p.name} name.`);
+        this.assertEquals("Good", p.rank, `Test #1: Power Rank Roll: Generated ${p.rank} rank.`);
+
+        /******************************************************/
+
+        const char2 = new Character();
+        char2.origin = "Altered Human";
+        char2._originColumn = 0;
+
+        gen.powerNumberRoll = 22;  // 3/4 powers
+        gen.powerCategoryRolls = [75, 55, 2, 27, 19, 74];
+        gen.powerRolls = [2, 6, 2, 3, 4, 5];
+        gen.powerRankRolls = [9, 19, 29, 39, 49, 59];
+
+        gen.talentNumberRoll = 91;
+        gen.contactNumberRoll = 74;
+        gen.talentCategoryRolls = [2, 27, 67, 91];
+        gen.talentRolls = [2, 3, 4, 5];
+        gen.contactNumberRoll = 74;
+        gen.contactCategoryRolls = [2, 27, 67, 91];
+        gen.contactRolls = [2, 3, 4, 5];
+
+        // Run generation
+        gen.determineSpecialAbilities(char2);
+
+        // Validate
+        this.assertEquals(2, char2.powers.length, `Test #2: Incorrect number of powers were generated.`);
+
+        p = char2.powers[0];
+        this.assertEquals("Mental Powers", p.category, `Test #2: Power Category Roll: Generated ${p.category} category.`);
+        this.assertEquals("Image Generation", p.name, `Test #2: Power Roll: Generated ${p.name} name.`);
+        this.assertEquals("Poor", p.rank, `Test #2: Power Rank Roll: Generated ${p.rank} rank.`);
+
+        p = char2.powers[1];
+        this.assertEquals("Body Control", p.category, `Test #2: Power Category Roll: Generated ${p.category} category.`);
+        this.assertEquals("Body Transformation", p.name, `Test #2: Power Roll: Generated ${p.name} name.`);
+        this.assertEquals("Good", p.rank, `Test #2: Power Rank Roll: Generated ${p.rank} rank.`);
+
+        /******************************************************/
+
+        const char3 = new Character();
+        char3.origin = "Altered Human";
+        char3._originColumn = 0;
+
+        gen.powerNumberRoll = 100;  // 5/5 powers
+        gen.powerCategoryRolls = [15, 5, 75, 75, 55, 35];
+        gen.powerRolls = [6, 9, 1, 3, 6, 1];
+        gen.powerRankRolls = [9, 19, 29, 39, 49, 59, 69];
+
+        gen.talentNumberRoll = 91;
+        gen.contactNumberRoll = 74;
+        gen.talentCategoryRolls = [2, 27, 67, 91];
+        gen.talentRolls = [2, 3, 4, 5];
+        gen.contactNumberRoll = 74;
+        gen.contactCategoryRolls = [2, 27, 67, 91];
+        gen.contactRolls = [2, 3, 4, 5];
+
+        // Run generation
+        gen.determineSpecialAbilities(char3);
+
+        // Validate
+        this.assertEquals(5, char3.powers.length, `Test #3: Incorrect number of powers were generated.`);
+
+        p = char3.powers[0];
+        this.assertEquals("Movement", p.category, `Test #3: Power Category Roll: Generated ${p.category} category.`);
+        this.assertEquals("Wall-Crawling", p.name, `Test #3: Power Roll: Generated ${p.name} name.`);
+        this.assertEquals("Poor", p.rank, `Test #3: Power Rank Roll: Generated ${p.rank} rank.`);
+
+        p = char3.powers[1];
+        this.assertEquals("Resistances", p.category, `Test #3: Power Category Roll: Generated ${p.category} category.`);
+        this.assertEquals("Resistance to Magic Attacks", p.name, `Test #3: Power Roll: Generated ${p.name} name.`);
+        this.assertEquals("Good", p.rank, `Test #3: Power Rank Roll: Generated ${p.rank} rank.`);
+
+        p = char3.powers[2];
+        this.assertEquals("Mental Powers", p.category, `Test #3: Power Category Roll: Generated ${p.category} category.`);
+        this.assertEquals("Telepathy", p.name, `Test #3: Power Roll: Generated ${p.name} name.`);
+        this.assertEquals("Good", p.rank, `Test #3: Power Rank Roll: Generated ${p.rank} rank.`);
+
+        p = char3.powers[3];
+        this.assertEquals("Mental Powers", p.category, `Test #3: Power Category Roll: Generated ${p.category} category.`);
+        this.assertEquals("Telekinesis", p.name, `Test #3: Power Roll: Generated ${p.name} name.`);
+        this.assertEquals("Good", p.rank, `Test #3: Power Rank Roll: Generated ${p.rank} rank.`);
+
+        p = char3.powers[4];
+        this.assertEquals("Body Control", p.category, `Test #3: Power Category Roll: Generated ${p.category} category.`);
+        this.assertEquals("Growth", p.name, `Test #3: Power Roll: Generated ${p.name} name.`);
+        this.assertEquals("Excellent", p.rank, `Test #3: Power Rank Roll: Generated ${p.rank} rank.`);
+      }
+
+      static TalentsTests(gen) {
+        const charSlots = new Character();
+        charSlots.origin = "Altered Human";
+        charSlots._originColumn = 0;
+
+        gen.powerNumberRoll = 2;
+        gen.talentNumberRoll = 91;
+        gen.contactNumberRoll = 74;
+        gen.talentCategoryRolls = [2, 27, 67, 91];
+        gen.talentRolls = [2, 3, 4, 5];
+
+        gen.determineSpecialAbilities(charSlots);
+
+        // Limits from table (Min 2/1/0, Max 5/4/4)
+        const tCount = charSlots.talents.length;
+
+        this.assert(tCount >= 1 && tCount <= 4,
+          `Talent Quantity Roll: Generated ${tCount} talents (Valid range 1-4).`);
+
+        this.assertEquals(4, tCount, `Talent Quantity Roll: Generated ${tCount} talents.`);
+
+        this.assertEquals("Weapon Skills", charSlots.talents[0].category, `Talent Category Roll: Generated ${charSlots.talents[0].category} category.`);
+        this.assertEquals("Guns", charSlots.talents[0].name, `Talent Category Roll: Generated ${charSlots.talents[0].name} name.`);
+
+        this.assertEquals("Fighting Skills", charSlots.talents[1].category, `Talent Category Roll: Generated ${charSlots.talents[1].category} category.`);
+        this.assertEquals("Martial Arts C", charSlots.talents[1].name, `Talent Category Roll: Generated ${charSlots.talents[1].name} name.`);
+
+        this.assertEquals("Scientific Skills", charSlots.talents[2].category, `Talent Category Roll: Generated ${charSlots.talents[2].category} category.`);
+        this.assertEquals("Biology", charSlots.talents[2].name, `Talent Category Roll: Generated ${charSlots.talents[2].name} name.`);
+
+        this.assertEquals("Other Skills", charSlots.talents[3].category, `Talent Category Roll: Generated ${charSlots.talents[3].category} category.`);
+        this.assertEquals("First Aid", charSlots.talents[3].name, `Talent Category Roll: Generated ${charSlots.talents[3].name} name.`);
+      }
+
+      // This test is meaningless currently because no generated talent has multiple slots
+      static TalentsTooMany(gen) {
+        return;
+
+        /*
+        const charSlots = new Character();
+        charSlots.origin = "Altered Human";
+        charSlots._originColumn = 0;
+
+        gen.powerNumberRoll = 2; // 1/2
+        gen.talentNumberRoll = 91;
+        gen.contactNumberRoll = 74;
+        gen.talentCategoryRolls = [2, 27, 67, 91];
+        gen.talentRolls = [2, 3, 4, 5];
+
+        gen.determineSpecialAbilities(charSlots);
+
+        // Limits from table (Min 2/1/0, Max 5/4/4)
+        const tCount = charSlots.talents.length;
+
+        this.assert(tCount >= 1 && tCount <= 4,
+          `Talent Quantity Roll: Generated ${tCount} talents (Valid range 1-4).`);
+
+        this.assertEquals(4, tCount, `Talent Quantity Roll: Generated ${tCount} talents.`);
+
+        this.assertEquals("Weapon Skills", charSlots.talents[0].category, `Talent Category Roll: Generated ${charSlots.talents[0].category} category.`);
+        this.assertEquals("Guns", charSlots.talents[0].name, `Talent Category Roll: Generated ${charSlots.talents[0].name} name.`);
+
+        this.assertEquals("Fighting Skills", charSlots.talents[1].category, `Talent Category Roll: Generated ${charSlots.talents[1].category} category.`);
+        this.assertEquals("Martial Arts C", charSlots.talents[1].name, `Talent Category Roll: Generated ${charSlots.talents[1].name} name.`);
+
+        this.assertEquals("Scientific Skills", charSlots.talents[2].category, `Talent Category Roll: Generated ${charSlots.talents[2].category} category.`);
+        this.assertEquals("Biology", charSlots.talents[2].name, `Talent Category Roll: Generated ${charSlots.talents[2].name} name.`);
+
+        this.assertEquals("Other Skills", charSlots.talents[3].category, `Talent Category Roll: Generated ${charSlots.talents[3].category} category.`);
+        this.assertEquals("First Aid", charSlots.talents[3].name, `Talent Category Roll: Generated ${charSlots.talents[3].name} name.`);
+        */
+      }
+
+      static ContactsTests(gen) {
+        const char = new Character();
+        char.origin = "Altered Human";
+        char._originColumn = 0;
+
+        gen.powerNumberRoll = 19;
+        gen.powerCategoryRolls = [2, 27, 19, 91];
+        gen.powerRolls = [2, 3, 4, 5];
+        gen.powerRankRolls = [9, 19, 29, 39, 49, 59, 69, 79, 94, 99];
+
+        gen.talentNumberRoll = 91;
+        gen.talentCategoryRolls = [2, 27, 67, 91];
+        gen.talentRolls = [2, 3, 4, 5];
+
+        gen.contactNumberRoll = 74;
+        gen.contactCategoryRolls = [2, 27, 67, 91];
+        gen.contactRolls = [2, 3, 4, 5];
+
+        gen.determineSpecialAbilities(char);
+
+        let cCount = char.contacts.length;
+        this.assert(cCount >= 0 && cCount <= 4,
+          `Contact Quantity Roll: Generated ${cCount} contacts (Valid range 0-4).`);
+        this.assertEquals(2, cCount, `Contact Quantity Roll: Generated ${cCount} contacts.`);
+
+        gen.contactNumberRoll = 17;
+        char.powers = [];
+        char.talents = [];
+        char.contacts = [];
+        gen.determineSpecialAbilities(char);
+
+        cCount = char.contacts.length;
+        this.assert(cCount >= 0 && cCount <= 4,
+          `Contact Quantity Roll: Generated ${cCount} contacts (Valid range 0-4).`);
+        this.assertEquals(0, cCount, `Contact Quantity Roll: Generated ${cCount} contacts.`);
+
+        gen.contactNumberRoll = 25;
+        char.powers = [];
+        char.talents = [];
+        char.contacts = [];
+
+        gen.determineSpecialAbilities(char);
+
+        cCount = char.contacts.length;
+        this.assert(cCount >= 0 && cCount <= 4,
+          `Contact Quantity Roll: Generated ${cCount} contacts (Valid range 0-4).`);
+        this.assertEquals(1, cCount, `Contact Quantity Roll: Generated ${cCount} contacts.`);
+
+        gen.contactNumberRoll = 69;
+        char.powers = [];
+        char.talents = [];
+        char.contacts = [];
+        gen.determineSpecialAbilities(char);
+
+        cCount = char.contacts.length;
+        this.assert(cCount >= 0 && cCount <= 4,
+          `Contact Quantity Roll: Generated ${cCount} contacts (Valid range 0-4).`);
+        this.assertEquals(2, cCount, `Contact Quantity Roll: Generated ${cCount} contacts.`);
+      }
+
+      static ContactsTooMany(gen) {
+        const char = new Character();
+        char.origin = "Altered Human";
+        char._originColumn = 0;
+
+        gen.powerNumberRoll = 19;
+        gen.powerCategoryRolls = [2, 27, 19, 91];
+        gen.powerRolls = [2, 3, 4, 5];
+        gen.powerRankRolls = [9, 19, 29, 39, 49, 59, 69, 79, 94, 99];
+
+        gen.talentNumberRoll = 99; // 4/4 talents
+        gen.talentCategoryRolls = [64, 84, 64, 64, 64, 64, 64, 64, 64, 64];
+        gen.talentRolls = [5, 6, 2, 10, 2, 2, 2, 2, 2, 2, 2];
+
+        gen.contactNumberRoll = 99; // 3/4 contacts
+        gen.contactCategoryRolls = [2, 27, 67, 91, 37, 47];
+        gen.contactRolls = [2, 3, 4, 5, 6, 7];
+
+        gen.determineSpecialAbilities(char);
+
+        let cCount = char.contacts.length;
+        this.assert(cCount >= 0 && cCount <= 4,
+          `Contact Quantity Roll: Generated ${cCount} contacts (Valid range 0-4).`);
+        this.assertEquals(3, cCount, `Contact Quantity Roll: Generated ${cCount} contacts.`);
+
+        const char2 = new Character();
+        char2.origin = "Altered Human";
+        char2._originColumn = 0;
+
+        gen.powerNumberRoll = 19;
+        gen.powerCategoryRolls = [2, 27, 19, 91];
+        gen.powerRolls = [2, 3, 4, 5];
+        gen.powerRankRolls = [9, 19, 29, 39, 49, 59, 69, 79, 94, 99];
+
+        gen.talentNumberRoll = 99; // 4/4 talents
+        gen.talentCategoryRolls = [64, 84, 64, 64, 64, 64, 64, 64, 64, 64];
+        gen.talentRolls = [5, 6, 2, 10, 2, 2, 2, 2, 2, 2, 2];
+
+        gen.contactNumberRoll = 89; // 2/4 contacts
+        gen.contactCategoryRolls = [2, 27, 67, 91, 37, 47];
+        gen.contactRolls = [2, 3, 4, 5, 6, 7];
+
+        gen.determineSpecialAbilities(char);
+
+        let cCount2 = char.contacts.length;
+        this.assert(cCount2 >= 0 && cCount2 <= 4,
+          `Contact Quantity Roll: Generated ${cCount2} contacts (Valid range 0-4).`);
+        this.assertEquals(3, cCount2, `Contact Quantity Roll: Generated ${cCount2} contacts.`);
+
+      }
+
+      static run() {
+        document.getElementById('test-area').innerHTML = "<h3>Running Tests...</h3>";
+
+        this.failureCount = 0;
+
+        const gen = new CharacterGenerator();
+
+        this.UtilityTests();
+        this.OriginTests(gen);
+        this.PrimaryAbilityTests(gen);
+        this.SecondaryAbilityTests(gen);
+        this.SinglePowerTests(gen);
+        this.PowersTests(gen);
+        this.PowersTooManyTests(gen);
+        this.TalentsTests(gen);
+        this.TalentsTooMany(gen);
+        this.ContactsTests(gen);
+        this.ContactsTooMany(gen);
+
+        let alertMessage = "All Tests Passed!!!";
+        if (this.failureCount !== 0) {
+          alertMessage = `Tests Failed! ${this.failureCount} failures.`;
+          document.getElementById('failure').scrollIntoView();
+        }
+
+        alert(alertMessage);
+      }
+    }
+
+    // --- APP CONTROLLER ---
+
+    const app = {
+      generate: () => {
+        const generator = new CharacterGenerator();
+        generator.identitySecret = document.getElementById('identity_secret').checked;
+        generator.hiTechToGood = document.getElementById('hi_tech_good').checked;
+        const character = generator.generate();
+        Renderer.render(character);
+        document.getElementById('test-area').innerHTML = ""; // Clear tests
+      },
+      runTests: () => {
+        Tester.run();
+      }
+    };
+
+    // Initial Generation
+    app.generate();
+    //app.runTests();
+
+  </script>
+</body>
+
+</html>
