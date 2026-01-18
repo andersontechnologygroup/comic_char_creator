@@ -1,3 +1,4 @@
+// K2 to collapse
 class Tester {
   failureCount = 0;
   assertCount = 0;
@@ -24,8 +25,30 @@ class Tester {
     div.className = "test-output " + (condition ? "pass" : "fail");
     div.innerText = `${condition ? "PASS" : "FAIL"}: (${line}) ${message} Expected: ${expectedValue}, Actual: ${actualValue}`;
     this.failureCount += condition ? 0 : 1;
+    if (!condition) console.trace(`%cASSERT FAILED - ${div.innerText}`, "color: red; font-size: 18px");
     area.appendChild(div);
     this.assertCount++;
+  }
+
+  static assertGreaterOrEqual(expectedValue, actualValue, message) {
+    const line = this.getLineNumber();
+    const area = document.getElementById('test-area');
+    const div = document.createElement('div');
+    const condition = expectedValue <= actualValue;
+    div.id = condition ? "pass" : "failure";
+    div.className = "test-output " + (condition ? "pass" : "fail");
+    div.innerText = `${condition ? "PASS" : "FAIL"}: (${line}) ${message} Expected: ${expectedValue} (or more), Actual: ${actualValue}`;
+    this.failureCount += condition ? 0 : 1;
+    area.appendChild(div);
+    this.assertCount++;
+  }
+
+  static start() {
+    console.log("%cTESTING TESTING TESTING", "color: red; font-size: 24px");
+  }
+
+  static end() {
+    console.log("%cDONE DONE DONE", "color: green; font-size: 24px");
   }
 
   static getLineNumber() {
@@ -77,10 +100,11 @@ class Tester {
   }
 
   static GeneratorTests() {
-    //this.GeneratorGenericPhysicalFormTests();
-    //this.GeneratorAdvancedPhysicalFormTests();
+    this.GeneratorGenericPhysicalFormTests();
+    this.GeneratorAdvancedPhysicalFormTests();
     this.GeneratorUltimatePhysicalFormTests();
-    //this.GeneratorCompoundTests();
+    this.GeneratorCompoundTests();
+    this.GeneratorBonusContactTest();
   }
 
   static GeneratorGenericPhysicalFormTests() {
@@ -354,14 +378,12 @@ class Tester {
     gen.compoundRandomRanksColumnRoll = 35
     gen2.bodyTypeRolls = [1, 99, 33, 86, 87];
 
-    console.log("%cTESTING TESTING", "color: red")
     gen2.determinePhysicalForm(char2);
     this.assertEquals("Compound", char2.physicalForm, `Physical Form Roll (Ultimate): Generated '${char2.physicalForm}'.`);
     this.assertEquals(2, char2.bodyTypes.length, `Body Type Roll (Ultimate): Generated '${char2.bodyTypes.length}'.`);
     this.assertEquals("Normal Human", char2.bodyTypes[0], `Body Type Roll (Ultimate): Generated '${char2.bodyTypes[0]}'.`);
     this.assertEquals("Mutant - Random", char2.bodyTypes[1], `Body Type Roll (Ultimate): Generated '${char2.bodyTypes[1]}'.`);
     this.assertEquals(2, gen2.randomRanksColumn, `Random Ranks Column Roll (Ultimate): Generated '${char.randomRanksColumn}'.`);
-    console.log("%cDON DONE DONE", "color: red; font-weight: bold");
     const gen3 = new CharacterGenerator();
     const char3 = new Character();
     gen3.generatorMode = "ultimate";
@@ -379,6 +401,21 @@ class Tester {
     this.assertEquals("Mutant - Random", char3.bodyTypes[1], `Body Type Roll (Ultimate): Generated '${char3.bodyTypes[1]}'.`);
     this.assertEquals("Robot - Metamorphic", char3.bodyTypes[2], `Body Type Roll (Ultimate): Generated '${char3.bodyTypes[2]}'.`);
     this.assertEquals(2, gen3.randomRanksColumn, `Random Ranks Column Roll (Ultimate): Generated '${char.randomRanksColumn}'.`);
+  }
+
+  static GeneratorBonusContactTest() {
+    const gen = new CharacterGenerator();
+
+    gen.generatorMode = 'ultimate';
+    gen.throwAllRolls();
+
+    gen.physicalFormRoll = 35;
+
+    let char = gen.generateWithoutThrows();
+
+    this.assertEquals("Mutant - Breed", char.physicalForm, `Physical Form: Generated '${char.physicalForm}'.`);
+    this.assertGreaterOrEqual(1, char.contacts.length, `Contact Count (Ultimate): Generated '${char.contacts.length}'.`);
+    this.assertEquals("Tribe", char.contacts[0].name, `Contact (Ultimate): Generated '${char.contacts[0].name}'.`);
   }
 
   static OriginTests(gen) {
@@ -563,11 +600,10 @@ class Tester {
     gen.setTables();
 
     const charStats = new Character();
-    // Mock origin column to 0 (Altered Human/Mutant) for consistent testing
     charStats.physicalForm = "Altered Human";
     charStats.origin = "Altered Human";
-    charStats.randomRanksColumn = 1;
 
+    gen.randomRanksColumn = 1;
     gen.physicalAbilityRolls[0]["Fighting"] = 70;
     gen.physicalAbilityRolls[0]["Agility"] = 60;
     gen.physicalAbilityRolls[0]["Strength"] = 50;
@@ -578,7 +614,6 @@ class Tester {
 
     gen.determinePrimaryAbilities(charStats);
 
-    console.log(charStats.primaryAbilities);
     let allStatsValid = true;
     PHYSICAL_ABILITIES.forEach(stat => {
       const rank = charStats.primaryAbilities[0][stat].rank;
@@ -1279,33 +1314,39 @@ class Tester {
 
     // --- TEST POPULARITY CALCULATION ---
     const charPop = new Character();
-    charPop.physicalForm = "Altered Human";
-    charPop.origin = "Altered Human";
+    charPop.physicalForm = "Normal Human";
+    charPop.origin = "Normal Human";
+
+    gen.throwAllRolls();
+    gen.physicalFormRoll = 1;
+    gen.originRoll = 1;
 
     gen.identitySecret = true;
     gen.resourceModifierRoll = 10;
     gen.popularityRoll = 10;
+    gen.randomRanksColumn = 1;
     gen.determinePopularity(charPop);
-    this.assertEquals(11, charPop.popularity,
-      `Popularity Roll: Altered Human (Secret) correctly calculated.`);
+    this.assertEquals(0, charPop.popularity,
+      `Popularity Roll: Normal Human (Secret) correctly calculated.`);
 
     const charPopNS = new Character();
-    charPop.physicalForm = "Altered Human";
-    charPop.origin = "Altered Human";
+    charPop.physicalForm = "Normal Human";
+    charPop.origin = "Normal Human";
 
     gen.identitySecret = false;
     gen.determinePopularity(charPop);
-    this.assertEquals(26, charPop.popularity,
-      `Popularity Roll: Altered Human (Public) correctly calculated.`);
+    this.assertEquals(13, charPop.popularity,
+      `Popularity Roll: Normal Human (Public) correctly calculated.`);
 
     const charPop2 = new Character();
     charPop2.physicalForm = "Android";
     charPop2.origin = "Android";
 
     gen.identitySecret = true;
+    gen.randomRanksColumn = 4;
     gen.popularityRoll = 10;
     gen.determinePopularity(charPop2);
-    this.assertEquals(3, charPop2.popularity,
+    this.assertEquals(0, charPop2.popularity,
       `Popularity Roll: Android (Secret) correctly calculated.`);
 
     const charPop3 = new Character();
@@ -1313,8 +1354,9 @@ class Tester {
     charPop3.origin = "Android";
 
     gen.identitySecret = false;
+    gen.randomRanksColumn = 4;
     gen.determinePopularity(charPop3);
-    this.assertEquals(18, charPop3.popularity,
+    this.assertEquals(11, charPop3.popularity,
       `Popularity Roll: Android (Public) correctly calculated.`);
 
     const charPop4 = new Character();
@@ -1322,6 +1364,7 @@ class Tester {
     charPop4.origin = "Surgical Composite";
 
     gen.identitySecret = true;
+    gen.randomRanksColumn = 2;
     gen.popularityRoll = 10;
     gen.determinePopularity(charPop4);
     this.assertEquals(0, charPop4.popularity,
@@ -1332,8 +1375,9 @@ class Tester {
     charPop5.origin = "Surgical Composite";
 
     gen.identitySecret = false;
+    gen.randomRanksColumn = 2;
     gen.determinePopularity(charPop5);
-    this.assertEquals(10, charPop5.popularity,
+    this.assertEquals(13, charPop5.popularity,
       `Popularity Roll: Surgical Composite (Public) correctly calculated.`);
 
     const charPop6 = new Character();
@@ -1341,6 +1385,7 @@ class Tester {
     charPop6.origin = "Demihuman - Chiropteran";
 
     gen.identitySecret = true;
+    gen.randomRanksColumn = 2;
     gen.popularityRoll = 10;
     gen.determinePopularity(charPop6);
     this.assertEquals(0, charPop6.popularity,
@@ -1351,8 +1396,9 @@ class Tester {
     charPop7.origin = "Demihuman - Chiropteran";
 
     gen.identitySecret = false;
+    gen.randomRanksColumn = 2;
     gen.determinePopularity(charPop7);
-    this.assertEquals(11, charPop7.popularity,
+    this.assertEquals(13, charPop7.popularity,
       `Popularity Roll: Demihuman - Chiropteran (Public) correctly calculated.`);
 
     const charPop8 = new Character();
@@ -1361,9 +1407,10 @@ class Tester {
     charPop8.origin = "Angel/Demon";
 
     gen.identitySecret = true;
+    gen.randomRanksColumn = 5;
     gen.popularityRoll = 10;
     gen.determinePopularity(charPop8);
-    this.assertEquals(31, charPop8.popularity,
+    this.assertEquals(0, charPop8.popularity,
       `Popularity Roll: Angel (Secret) correctly calculated.`);
 
     const charPop9 = new Character();
@@ -1372,8 +1419,9 @@ class Tester {
     charPop9.origin = "Angel/Demon";
 
     gen.identitySecret = false;
+    gen.randomRanksColumn = 5;
     gen.determinePopularity(charPop9);
-    this.assertEquals(46, charPop9.popularity,
+    this.assertEquals(15, charPop9.popularity,
       `Popularity Roll: Angel (Public) correctly calculated.`);
 
     const charPop10 = new Character();
@@ -1382,6 +1430,7 @@ class Tester {
     charPop10.origin = "Angel/Demon";
 
     gen.identitySecret = true;
+    gen.randomRanksColumn = 5;
     gen.popularityRoll = 10;
     gen.determinePopularity(charPop10);
     this.assertEquals(0, charPop10.popularity,
@@ -1392,14 +1441,16 @@ class Tester {
     charPop11.subType = "Demon";
     charPop11.origin = "Angel/Demon";
 
+    gen.randomRanksColumn = 5;
     gen.identitySecret = false;
     gen.determinePopularity(charPop11);
-    this.assertEquals(15, charPop11.popularity,
+    this.assertEquals(11, charPop11.popularity,
       `Popularity Roll: Demon (Public) correctly calculated.`);
 
     // *****************************************
     // Test health
     // *****************************************
+    gen.throwAllRolls();
     gen.physicalAbilityRolls[0]["Fighting"] = 1;
     gen.physicalAbilityRolls[0]["Agility"] = 1;
     gen.physicalAbilityRolls[0]["Strength"] = 1;
@@ -1456,7 +1507,7 @@ class Tester {
     gen.randomRanksColumn = 1;
 
     gen.powerCategoryRolls = [2, 27, 19, 74];
-    gen.powerRolls = [2, 3, 4, 5];
+    gen.powerRolls = [20, 30, 40, 50];
     gen.powerRankRolls = [74, 19, 27, 2];
 
     gen.generateSinglePower(char, 0);
@@ -1491,7 +1542,7 @@ class Tester {
     char.powersSlots = 3;
 
     gen.powerCategoryRolls = [2, 27, 19, 74];
-    gen.powerRolls = [2, 3, 4, 5];
+    gen.powerRolls = [20, 30, 40, 50];
     gen.powerRankRolls = [74, 19, 27, 2];
 
     gen.generateSinglePower(char, 0);
@@ -1589,6 +1640,8 @@ class Tester {
     gen.generatorMode = 'generic';
     gen.setTables();
 
+    gen.throwAllRolls();
+
     // Test every power in POWER_LIST
     for (const targetPower of gen.powerListTable) {
       const char = new Character();
@@ -1599,24 +1652,49 @@ class Tester {
       gen.talentNumberRoll = 91;
       gen.contactNumberRoll = 74;
       gen.talentCategoryRolls = [2, 27, 67, 91];
-      gen.talentRolls = [2, 3, 4, 5];
+      gen.talentRolls = [20, 30, 40, 50];
       gen.contactNumberRoll = 74;
       gen.contactCategoryRolls = [2, 27, 67, 91];
-      gen.contactRolls = [2, 3, 4, 5];
+      gen.contactRolls = [20, 30, 40, 50];
 
-      // Find correct category roll
-      const catIndex = gen.powerCategoriesTable.findIndex(c => c.name === targetPower.category);
-      const catData = gen.powerCategoriesTable[catIndex];
+      if (targetPower.maxRoll > 100) {
+        continue;
+      }
+
+      const targetIndex = gen.powerListTable.findIndex(p => p.name === targetPower.name);
+      const catData = gen.powerCategoriesTable.find(c => c.name == targetPower.category);
+
+      let indexAdjustment = 1;
+
+      let powerRow1 = targetIndex <= 4 ? gen.powerListTable[targetIndex + 1] : gen.powerListTable[gen.powerListTable.length - 4];
+      while (powerRow1.maxRoll > 100) {
+        powerRow1 = targetIndex <= 4 ? gen.powerListTable[targetIndex + indexAdjustment] : gen.powerListTable[gen.powerListTable.length - indexAdjustment];
+        indexAdjustment++;
+      }
+
+      indexAdjustment = 1;
+      let powerRow2 = targetIndex <= 4 ? gen.powerListTable[targetIndex + 2] : gen.powerListTable[gen.powerListTable.length - 3];
+      while (powerRow2.maxRoll > 100) {
+        powerRow2 = targetIndex <= 4 ? gen.powerListTable[targetIndex + indexAdjustment] : gen.powerListTable[gen.powerListTable.length - indexAdjustment];
+        indexAdjustment++;
+      }
+
+      indexAdjustment = 1;
+      let powerRow3 = targetIndex <= 4 ? gen.powerListTable[targetIndex + 3] : gen.powerListTable[gen.powerListTable.length - 2];
+      while (powerRow3.maxRoll > 100) {
+        powerRow3 = targetIndex <= 4 ? gen.powerListTable[targetIndex + indexAdjustment] : gen.powerListTable[gen.powerListTable.length - indexAdjustment];
+        indexAdjustment++;
+      }
+
+      const catRow1 = gen.powerCategoriesTable.find(c => c.name === powerRow1.category);
+      const catRow2 = gen.powerCategoriesTable.find(c => c.name === powerRow2.category);
+      const catRow3 = gen.powerCategoriesTable.find(c => c.name === powerRow3.category);
+
       gen.powerCategoryRolls[0] = catData.maxRoll;
-      gen.powerCategoryRolls[1] = catIndex <= 4 ? gen.powerCategoriesTable[catIndex + 1].maxRoll : gen.powerCategoriesTable[gen.powerCategoriesTable.length - 4].maxRoll;
-      gen.powerCategoryRolls[2] = catIndex <= 4 ? gen.powerCategoriesTable[catIndex + 2].maxRoll : gen.powerCategoriesTable[gen.powerCategoriesTable.length - 3].maxRoll;
-      gen.powerCategoryRolls[3] = catIndex <= 4 ? gen.powerCategoriesTable[catIndex + 3].maxRoll : gen.powerCategoriesTable[gen.powerCategoriesTable.length - 2].maxRoll;
+      gen.powerCategoryRolls[1] = catRow1.maxRoll;
+      gen.powerCategoryRolls[2] = catRow2.maxRoll;
+      gen.powerCategoryRolls[3] = catRow3.maxRoll;
 
-      const powerRow1 = catIndex <= 4 ? gen.powerListTable.find(r => r.category === gen.powerCategoriesTable[catIndex + 1].name) : gen.powerListTable.find(r => r.category === gen.powerCategoriesTable[gen.powerCategoriesTable.length - 4].name);
-      const powerRow2 = catIndex <= 4 ? gen.powerListTable.find(r => r.category === gen.powerCategoriesTable[catIndex + 2].name) : gen.powerListTable.find(r => r.category === gen.powerCategoriesTable[gen.powerCategoriesTable.length - 3].name);
-      const powerRow3 = catIndex <= 4 ? gen.powerListTable.find(r => r.category === gen.powerCategoriesTable[catIndex + 3].name) : gen.powerListTable.find(r => r.category === gen.powerCategoriesTable[gen.powerCategoriesTable.length - 2].name);
-
-      // Set specific power roll
       gen.powerRolls[0] = targetPower.maxRoll;
       gen.powerRolls[1] = powerRow1.maxRoll;
       gen.powerRolls[2] = powerRow2.maxRoll;
@@ -1630,7 +1708,6 @@ class Tester {
 
       // Run generation
       gen.determineSpecialAbilities(char);
-
       // Validate
       if (char.powers.length === 0 || char.powers[0] === null) {
         this.assertEquals("Power Tests", char.powers.length, `Power Failed to generate.`);
@@ -1647,9 +1724,12 @@ class Tester {
     gen.generatorMode = 'advanced';
     gen.setTables();
 
+    gen.throwAllRolls();
+
     // Test every power in POWER_LIST
     for (const targetPower of gen.powerListTable) {
       const char = new Character();
+      char.physicalForm = "Altered Human";
       char.origin = "Altered Human";
       gen.randomRanksColumn = 1;
 
@@ -1657,24 +1737,49 @@ class Tester {
       gen.talentNumberRoll = 91;
       gen.contactNumberRoll = 74;
       gen.talentCategoryRolls = [2, 27, 67, 91];
-      gen.talentRolls = [2, 3, 4, 5];
+      gen.talentRolls = [20, 30, 40, 50];
       gen.contactNumberRoll = 74;
       gen.contactCategoryRolls = [2, 27, 67, 91];
-      gen.contactRolls = [2, 3, 4, 5];
+      gen.contactRolls = [20, 30, 40, 50];
 
-      // Find correct category roll
-      const catIndex = gen.powerCategoriesTable.findIndex(c => c.name === targetPower.category);
-      const catData = gen.powerCategoriesTable[catIndex];
+      if (targetPower.maxRoll > 100) {
+        continue;
+      }
+
+      const targetIndex = gen.powerListTable.findIndex(p => p.name === targetPower.name);
+      const catData = gen.powerCategoriesTable.find(c => c.name == targetPower.category);
+
+      let indexAdjustment = 1;
+
+      let powerRow1 = targetIndex <= 4 ? gen.powerListTable[targetIndex + 1] : gen.powerListTable[gen.powerListTable.length - 4];
+      while (powerRow1.maxRoll > 100) {
+        powerRow1 = targetIndex <= 4 ? gen.powerListTable[targetIndex + indexAdjustment] : gen.powerListTable[gen.powerListTable.length - indexAdjustment];
+        indexAdjustment++;
+      }
+
+      indexAdjustment = 1;
+      let powerRow2 = targetIndex <= 4 ? gen.powerListTable[targetIndex + 2] : gen.powerListTable[gen.powerListTable.length - 3];
+      while (powerRow2.maxRoll > 100) {
+        powerRow2 = targetIndex <= 4 ? gen.powerListTable[targetIndex + indexAdjustment] : gen.powerListTable[gen.powerListTable.length - indexAdjustment];
+        indexAdjustment++;
+      }
+
+      indexAdjustment = 1;
+      let powerRow3 = targetIndex <= 4 ? gen.powerListTable[targetIndex + 3] : gen.powerListTable[gen.powerListTable.length - 2];
+      while (powerRow3.maxRoll > 100) {
+        powerRow3 = targetIndex <= 4 ? gen.powerListTable[targetIndex + indexAdjustment] : gen.powerListTable[gen.powerListTable.length - indexAdjustment];
+        indexAdjustment++;
+      }
+
+      const catRow1 = gen.powerCategoriesTable.find(c => c.name === powerRow1.category);
+      const catRow2 = gen.powerCategoriesTable.find(c => c.name === powerRow2.category);
+      const catRow3 = gen.powerCategoriesTable.find(c => c.name === powerRow3.category);
+
       gen.powerCategoryRolls[0] = catData.maxRoll;
-      gen.powerCategoryRolls[1] = catIndex <= 4 ? gen.powerCategoriesTable[catIndex + 1].maxRoll : gen.powerCategoriesTable[gen.powerCategoriesTable.length - 4].maxRoll;
-      gen.powerCategoryRolls[2] = catIndex <= 4 ? gen.powerCategoriesTable[catIndex + 2].maxRoll : gen.powerCategoriesTable[gen.powerCategoriesTable.length - 3].maxRoll;
-      gen.powerCategoryRolls[3] = catIndex <= 4 ? gen.powerCategoriesTable[catIndex + 3].maxRoll : gen.powerCategoriesTable[gen.powerCategoriesTable.length - 2].maxRoll;
+      gen.powerCategoryRolls[1] = catRow1.maxRoll;
+      gen.powerCategoryRolls[2] = catRow2.maxRoll;
+      gen.powerCategoryRolls[3] = catRow3.maxRoll;
 
-      const powerRow1 = catIndex <= 4 ? gen.powerListTable.find(r => r.category === gen.powerCategoriesTable[catIndex + 1].name) : gen.powerListTable.find(r => r.category === gen.powerCategoriesTable[gen.powerCategoriesTable.length - 4].name);
-      const powerRow2 = catIndex <= 4 ? gen.powerListTable.find(r => r.category === gen.powerCategoriesTable[catIndex + 2].name) : gen.powerListTable.find(r => r.category === gen.powerCategoriesTable[gen.powerCategoriesTable.length - 3].name);
-      const powerRow3 = catIndex <= 4 ? gen.powerListTable.find(r => r.category === gen.powerCategoriesTable[catIndex + 3].name) : gen.powerListTable.find(r => r.category === gen.powerCategoriesTable[gen.powerCategoriesTable.length - 2].name);
-
-      // Set specific power roll
       gen.powerRolls[0] = targetPower.maxRoll;
       gen.powerRolls[1] = powerRow1.maxRoll;
       gen.powerRolls[2] = powerRow2.maxRoll;
@@ -1705,6 +1810,8 @@ class Tester {
     gen.generatorMode = 'ultimate';
     gen.setTables();
 
+    gen.throwAllRolls();
+
     // Test every power in POWER_LIST
     for (const targetPower of gen.powerListTable) {
       const char = new Character();
@@ -1716,17 +1823,39 @@ class Tester {
       gen.talentNumberRoll = 91;
       gen.contactNumberRoll = 74;
       gen.talentCategoryRolls = [2, 27, 67, 91];
-      gen.talentRolls = [2, 3, 4, 5];
+      gen.talentRolls = [20, 30, 40, 50];
       gen.contactNumberRoll = 74;
       gen.contactCategoryRolls = [2, 27, 67, 91];
-      gen.contactRolls = [2, 3, 4, 5];
+      gen.contactRolls = [20, 30, 40, 50];
+
+      if (targetPower.maxRoll > 100) {
+        continue;
+      }
 
       const targetIndex = gen.powerListTable.findIndex(p => p.name === targetPower.name);
       const catData = gen.powerCategoriesTable.find(c => c.name == targetPower.category);
 
-      const powerRow1 = targetIndex <= 4 ? gen.powerListTable[targetIndex + 1] : gen.powerListTable[gen.powerListTable.length - 4];
-      const powerRow2 = targetIndex <= 4 ? gen.powerListTable[targetIndex + 2] : gen.powerListTable[gen.powerListTable.length - 3];
-      const powerRow3 = targetIndex <= 4 ? gen.powerListTable[targetIndex + 3] : gen.powerListTable[gen.powerListTable.length - 2];
+      let indexAdjustment = 1;
+
+      let powerRow1 = targetIndex <= 4 ? gen.powerListTable[targetIndex + 1] : gen.powerListTable[gen.powerListTable.length - 4];
+      while (powerRow1.maxRoll > 100) {
+        powerRow1 = targetIndex <= 4 ? gen.powerListTable[targetIndex + indexAdjustment] : gen.powerListTable[gen.powerListTable.length - indexAdjustment];
+        indexAdjustment++;
+      }
+
+      indexAdjustment = 1;
+      let powerRow2 = targetIndex <= 4 ? gen.powerListTable[targetIndex + 2] : gen.powerListTable[gen.powerListTable.length - 3];
+      while (powerRow2.maxRoll > 100) {
+        powerRow2 = targetIndex <= 4 ? gen.powerListTable[targetIndex + indexAdjustment] : gen.powerListTable[gen.powerListTable.length - indexAdjustment];
+        indexAdjustment++;
+      }
+
+      indexAdjustment = 1;
+      let powerRow3 = targetIndex <= 4 ? gen.powerListTable[targetIndex + 3] : gen.powerListTable[gen.powerListTable.length - 2];
+      while (powerRow3.maxRoll > 100) {
+        powerRow3 = targetIndex <= 4 ? gen.powerListTable[targetIndex + indexAdjustment] : gen.powerListTable[gen.powerListTable.length - indexAdjustment];
+        indexAdjustment++;
+      }
 
       const catRow1 = gen.powerCategoriesTable.find(c => c.name === powerRow1.category);
       const catRow2 = gen.powerCategoriesTable.find(c => c.name === powerRow2.category);
@@ -1774,27 +1903,29 @@ class Tester {
     gen.generatorMode = 'generic';
     gen.setTables();
 
-    const char = new Character();
-    char.origin = "Altered Human";
-    gen.randomRanksColumn = 1;
+    gen.throwAllRolls();
 
+    const char = new Character();
+    char.physicalForm = "Altered Human";
+
+    gen.randomRanksColumn = 1;
     gen.powerNumberRoll = 22;  // 3/4 powers
     gen.powerCategoryRolls = [75, 2, 55, 27, 19, 74];
-    gen.powerRolls = [2, 2, 6, 3, 4, 5];
+    gen.powerRolls = [20, 20, 60, 30, 40, 50];
     gen.powerRankRolls = [9, 19, 29, 39, 49, 59];
 
     gen.talentNumberRoll = 91;
     gen.contactNumberRoll = 74;
     gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [2, 3, 4, 5];
+    gen.talentRolls = [20, 30, 40, 50];
     gen.contactNumberRoll = 74;
     gen.contactCategoryRolls = [2, 27, 67, 91];
-    gen.contactRolls = [2, 3, 4, 5];
+    gen.contactRolls = [20, 30, 40, 50];
 
     // Run generation
     gen.determineSpecialAbilities(char);
-
     // Validate
+
     this.assertEquals(2, char.powers.length, `Test #1: Incorrect number of powers were generated.`);
 
     let p = char.powers[0];
@@ -1805,6 +1936,7 @@ class Tester {
     p = char.powers[1];
     this.assertEquals("Resistances", p.category, `Test #1: Power Category Roll: Generated ${p.category} category.`);
     this.assertEquals("Resistance to Cold", p.name, `Test #1: Power Roll: Generated ${p.name} name.`);
+
     this.assertEquals("Good", p.rank, `Test #1: Power Rank Roll: Generated ${p.rank} rank.`);
 
     /******************************************************/
@@ -1815,16 +1947,16 @@ class Tester {
 
     gen.powerNumberRoll = 22;  // 3/4 powers
     gen.powerCategoryRolls = [75, 55, 2, 27, 19, 74];
-    gen.powerRolls = [2, 6, 2, 3, 4, 5];
+    gen.powerRolls = [20, 60, 20, 30, 40, 50];
     gen.powerRankRolls = [9, 19, 29, 39, 49, 59];
 
     gen.talentNumberRoll = 91;
     gen.contactNumberRoll = 74;
     gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [2, 3, 4, 5];
+    gen.talentRolls = [20, 30, 40, 50];
     gen.contactNumberRoll = 74;
     gen.contactCategoryRolls = [2, 27, 67, 91];
-    gen.contactRolls = [2, 3, 4, 5];
+    gen.contactRolls = [20, 30, 40, 50];
 
     // Run generation
     gen.determineSpecialAbilities(char2);
@@ -1845,21 +1977,24 @@ class Tester {
     /******************************************************/
 
     const char3 = new Character();
+    char3.physicalForm = "Altered Human";
     char3.origin = "Altered Human";
     char3.randomRanksColumn = 1;
 
+    gen.throwAllRolls();
+
     gen.powerNumberRoll = 100;  // 5/5 powers
     gen.powerCategoryRolls = [15, 5, 75, 75, 55, 35];
-    gen.powerRolls = [6, 9, 1, 3, 6, 1];
+    gen.powerRolls = [60, 90, 10, 30, 70, 10];
     gen.powerRankRolls = [9, 19, 29, 39, 49, 59, 69];
 
     gen.talentNumberRoll = 91;
     gen.contactNumberRoll = 74;
     gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [2, 3, 4, 5];
+    gen.talentRolls = [20, 30, 40, 50];
     gen.contactNumberRoll = 74;
     gen.contactCategoryRolls = [2, 27, 67, 91];
-    gen.contactRolls = [2, 3, 4, 5];
+    gen.contactRolls = [20, 30, 40, 50];
 
     // Run generation
     gen.determineSpecialAbilities(char3);
@@ -1889,7 +2024,7 @@ class Tester {
 
     p = char3.powers[4];
     this.assertEquals("Body Control", p.category, `Test #3: Power Category Roll: Generated ${p.category} category.`);
-    this.assertEquals("Growth", p.name, `Test #3: Power Roll: Generated ${p.name} name.`);
+    this.assertEquals("Animal Transformation - Self", p.name, `Test #3: Power Roll: Generated ${p.name} name.`);
     this.assertEquals("Excellent", p.rank, `Test #3: Power Rank Roll: Generated ${p.rank} rank.`);
   }
 
@@ -1897,27 +2032,29 @@ class Tester {
     gen.generatorMode = 'advanced';
     gen.setTables();
 
-    const char = new Character();
-    char.origin = "Altered Human";
-    gen.randomRanksColumn = 1;
+    gen.throwAllRolls();
 
+    const char = new Character();
+    char.physicalForm = "Altered Human";
+
+    gen.randomRanksColumn = 1;
     gen.powerNumberRoll = 22;  // 3/4 powers
     gen.powerCategoryRolls = [75, 2, 55, 27, 19, 74];
-    gen.powerRolls = [2, 2, 6, 3, 4, 5];
+    gen.powerRolls = [20, 20, 60, 30, 40, 50];
     gen.powerRankRolls = [9, 19, 29, 39, 49, 59];
 
     gen.talentNumberRoll = 91;
     gen.contactNumberRoll = 74;
     gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [2, 3, 4, 5];
+    gen.talentRolls = [20, 30, 40, 50];
     gen.contactNumberRoll = 74;
     gen.contactCategoryRolls = [2, 27, 67, 91];
-    gen.contactRolls = [2, 3, 4, 5];
+    gen.contactRolls = [20, 30, 40, 50];
 
     // Run generation
     gen.determineSpecialAbilities(char);
-
     // Validate
+
     this.assertEquals(2, char.powers.length, `Test #1: Incorrect number of powers were generated.`);
 
     let p = char.powers[0];
@@ -1928,6 +2065,7 @@ class Tester {
     p = char.powers[1];
     this.assertEquals("Resistances", p.category, `Test #1: Power Category Roll: Generated ${p.category} category.`);
     this.assertEquals("Resistance to Cold", p.name, `Test #1: Power Roll: Generated ${p.name} name.`);
+
     this.assertEquals("Good", p.rank, `Test #1: Power Rank Roll: Generated ${p.rank} rank.`);
 
     /******************************************************/
@@ -1938,16 +2076,16 @@ class Tester {
 
     gen.powerNumberRoll = 22;  // 3/4 powers
     gen.powerCategoryRolls = [75, 55, 2, 27, 19, 74];
-    gen.powerRolls = [2, 6, 2, 3, 4, 5];
+    gen.powerRolls = [20, 60, 20, 30, 40, 50];
     gen.powerRankRolls = [9, 19, 29, 39, 49, 59];
 
     gen.talentNumberRoll = 91;
     gen.contactNumberRoll = 74;
     gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [2, 3, 4, 5];
+    gen.talentRolls = [20, 30, 40, 50];
     gen.contactNumberRoll = 74;
     gen.contactCategoryRolls = [2, 27, 67, 91];
-    gen.contactRolls = [2, 3, 4, 5];
+    gen.contactRolls = [20, 30, 40, 50];
 
     // Run generation
     gen.determineSpecialAbilities(char2);
@@ -1968,21 +2106,24 @@ class Tester {
     /******************************************************/
 
     const char3 = new Character();
+    char3.physicalForm = "Altered Human";
     char3.origin = "Altered Human";
     char3.randomRanksColumn = 1;
 
+    gen.throwAllRolls();
+
     gen.powerNumberRoll = 100;  // 5/5 powers
     gen.powerCategoryRolls = [15, 5, 75, 75, 55, 35];
-    gen.powerRolls = [6, 9, 1, 3, 6, 1];
+    gen.powerRolls = [60, 90, 10, 30, 70, 10];
     gen.powerRankRolls = [9, 19, 29, 39, 49, 59, 69];
 
     gen.talentNumberRoll = 91;
     gen.contactNumberRoll = 74;
     gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [2, 3, 4, 5];
+    gen.talentRolls = [20, 30, 40, 50];
     gen.contactNumberRoll = 74;
     gen.contactCategoryRolls = [2, 27, 67, 91];
-    gen.contactRolls = [2, 3, 4, 5];
+    gen.contactRolls = [20, 30, 40, 50];
 
     // Run generation
     gen.determineSpecialAbilities(char3);
@@ -2012,7 +2153,7 @@ class Tester {
 
     p = char3.powers[4];
     this.assertEquals("Body Control", p.category, `Test #3: Power Category Roll: Generated ${p.category} category.`);
-    this.assertEquals("Growth", p.name, `Test #3: Power Roll: Generated ${p.name} name.`);
+    this.assertEquals("Animal Transformation - Self", p.name, `Test #3: Power Roll: Generated ${p.name} name.`);
     this.assertEquals("Excellent", p.rank, `Test #3: Power Rank Roll: Generated ${p.rank} rank.`);
   }
 
@@ -2032,10 +2173,10 @@ class Tester {
     gen.talentNumberRoll = 91;
     gen.contactNumberRoll = 74;
     gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [2, 3, 4, 5];
+    gen.talentRolls = [20, 30, 40, 50];
     gen.contactNumberRoll = 74;
     gen.contactCategoryRolls = [2, 27, 67, 91];
-    gen.contactRolls = [2, 3, 4, 5];
+    gen.contactRolls = [20, 30, 40, 50];
 
     // Run generation
     gen.determineSpecialAbilities(char);
@@ -2067,10 +2208,10 @@ class Tester {
     gen.talentNumberRoll = 91;
     gen.contactNumberRoll = 74;
     gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [2, 3, 4, 5];
+    gen.talentRolls = [20, 30, 40, 50];
     gen.contactNumberRoll = 74;
     gen.contactCategoryRolls = [2, 27, 67, 91];
-    gen.contactRolls = [2, 3, 4, 5];
+    gen.contactRolls = [20, 30, 40, 50];
 
     // Run generation
     gen.determineSpecialAbilities(char2);
@@ -2102,10 +2243,10 @@ class Tester {
     gen.talentNumberRoll = 91;
     gen.contactNumberRoll = 74;
     gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [2, 3, 4, 5];
+    gen.talentRolls = [20, 30, 40, 50];
     gen.contactNumberRoll = 74;
     gen.contactCategoryRolls = [2, 27, 67, 91];
-    gen.contactRolls = [2, 3, 4, 5];
+    gen.contactRolls = [20, 30, 40, 50];
 
     // Run generation
     gen.determineSpecialAbilities(char3);
@@ -2234,16 +2375,11 @@ class Tester {
     charSlots.origin = "Altered Human";
     charSlots.randomRanksColumn = 1;
 
-    gen.powerNumberRoll = 2;
+    gen.throwAllRolls();
+
     gen.talentNumberRoll = 91;
-    gen.contactNumberRoll = 74;
-
-    gen.powerCategoryRolls = [2, 27, 19, 74];
-    gen.powerRolls = [2, 3, 4, 5];
-    gen.powerRankRolls = [74, 19, 27, 2];
-
     gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [2, 3, 4, 5];
+    gen.talentRolls = [20, 30, 40, 50];
 
     gen.determineSpecialAbilities(charSlots);
 
@@ -2282,11 +2418,11 @@ class Tester {
     gen.contactNumberRoll = 74;
 
     gen.powerCategoryRolls = [2, 27, 19, 74];
-    gen.powerRolls = [2, 3, 4, 5];
+    gen.powerRolls = [20, 30, 40, 50];
     gen.powerRankRolls = [74, 19, 27, 2];
 
     gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [2, 3, 4, 5];
+    gen.talentRolls = [20, 30, 40, 50];
 
     gen.determineSpecialAbilities(charSlots);
 
@@ -2320,16 +2456,11 @@ class Tester {
     charSlots.origin = "Altered Human";
     charSlots.randomRanksColumn = 1;
 
-    gen.powerNumberRoll = 2;
+    gen.throwAllRolls();
+
     gen.talentNumberRoll = 91;
-    gen.contactNumberRoll = 74;
-
-    gen.powerCategoryRolls = [2, 27, 19, 74];
-    gen.powerRolls = [2, 3, 4, 5];
-    gen.powerRankRolls = [74, 19, 27, 2];
-
     gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [2, 3, 4, 5];
+    gen.talentRolls = [20, 30, 40, 50];
 
     gen.determineSpecialAbilities(charSlots);
 
@@ -2341,24 +2472,23 @@ class Tester {
 
     this.assertEquals(4, tCount, `Talent Quantity Roll: Generated ${tCount} talents.`);
 
-    this.assertEquals("Weapon Skills", charSlots.talents[0].category, `Talent Category Roll: Generated ${charSlots.talents[0].category} category.`);
-    this.assertEquals("Guns", charSlots.talents[0].name, `Talent Category Roll: Generated ${charSlots.talents[0].name} name.`);
+    this.assertEquals("Alternative Sciences", charSlots.talents[0].category, `Talent Category Roll: Generated ${charSlots.talents[0].category} category.`);
+    this.assertEquals("Catastrophism", charSlots.talents[0].name, `Talent Category Roll: Generated ${charSlots.talents[0].name} name.`);
 
-    this.assertEquals("Fighting Skills", charSlots.talents[1].category, `Talent Category Roll: Generated ${charSlots.talents[1].category} category.`);
-    this.assertEquals("Martial Arts C", charSlots.talents[1].name, `Talent Category Roll: Generated ${charSlots.talents[1].name} name.`);
+    this.assertEquals("Chemistry", charSlots.talents[1].category, `Talent Category Roll: Generated ${charSlots.talents[1].category} category.`);
+    this.assertEquals("Chemical Engineering", charSlots.talents[1].name, `Talent Category Roll: Generated ${charSlots.talents[1].name} name.`);
 
-    this.assertEquals("Scientific Skills", charSlots.talents[2].category, `Talent Category Roll: Generated ${charSlots.talents[2].category} category.`);
-    this.assertEquals("Biology", charSlots.talents[2].name, `Talent Category Roll: Generated ${charSlots.talents[2].name} name.`);
+    this.assertEquals("Medicine", charSlots.talents[2].category, `Talent Category Roll: Generated ${charSlots.talents[2].category} category.`);
+    this.assertEquals("Obstetrics and Gynecology", charSlots.talents[2].name, `Talent Category Roll: Generated ${charSlots.talents[2].name} name.`);
 
-    this.assertEquals("Other Skills", charSlots.talents[3].category, `Talent Category Roll: Generated ${charSlots.talents[3].category} category.`);
-    this.assertEquals("First Aid", charSlots.talents[3].name, `Talent Category Roll: Generated ${charSlots.talents[3].name} name.`);
+    this.assertEquals("Piloting", charSlots.talents[3].category, `Talent Category Roll: Generated ${charSlots.talents[3].category} category.`);
+    this.assertEquals("Helicopter", charSlots.talents[3].name, `Talent Category Roll: Generated ${charSlots.talents[3].name} name.`);
   }
 
   static TalentsTests(gen) {
     this.TalentsGenericTests(gen);
     this.TalentsAdvancedTests(gen);
-
-    //this.TalentsUltimateTests(gen);
+    this.TalentsUltimateTests(gen);
   }
 
   // This test is meaningless currently because no generated talent has multiple slots
@@ -2374,7 +2504,7 @@ class Tester {
     gen.talentNumberRoll = 91;
     gen.contactNumberRoll = 74;
     gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [2, 3, 4, 5];
+    gen.talentRolls = [20, 30, 40, 50];
 
     gen.determineSpecialAbilities(charSlots);
 
@@ -2411,16 +2541,16 @@ class Tester {
 
     gen.powerNumberRoll = 19;
     gen.powerCategoryRolls = [2, 27, 19, 91];
-    gen.powerRolls = [2, 3, 4, 5];
+    gen.powerRolls = [20, 30, 40, 50];
     gen.powerRankRolls = [9, 19, 29, 39, 49, 59, 69, 79, 94, 99];
 
     gen.talentNumberRoll = 91;
     gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [2, 3, 4, 5];
+    gen.talentRolls = [20, 30, 40, 50];
 
     gen.contactNumberRoll = 74;
     gen.contactCategoryRolls = [2, 27, 67, 91];
-    gen.contactRolls = [2, 3, 4, 5];
+    gen.contactRolls = [20, 30, 40, 50];
 
     gen.determineSpecialAbilities(char);
 
@@ -2475,16 +2605,16 @@ class Tester {
 
     gen.powerNumberRoll = 19;
     gen.powerCategoryRolls = [2, 27, 19, 91];
-    gen.powerRolls = [2, 3, 4, 5];
+    gen.powerRolls = [20, 30, 40, 50];
     gen.powerRankRolls = [9, 19, 29, 39, 49, 59, 69, 79, 94, 99];
 
     gen.talentNumberRoll = 91;
     gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [2, 3, 4, 5];
+    gen.talentRolls = [20, 30, 40, 50];
 
     gen.contactNumberRoll = 74;
     gen.contactCategoryRolls = [2, 27, 67, 91];
-    gen.contactRolls = [2, 3, 4, 5];
+    gen.contactRolls = [20, 30, 40, 50];
 
     gen.determineSpecialAbilities(char);
 
@@ -2531,36 +2661,33 @@ class Tester {
   static ContactsUltimateTests(gen) {
     gen.generatorMode = 'ultimate';
     gen.setTables();
+    gen.throwAllRolls();
 
     const char = new Character();
-    char.physicalForm = "Altered Human";
-    char.origin = "Altered Human";
-    gen.randomRanksColumn = 1;
-
-    gen.powerNumberRoll = 19;
-    gen.powerCategoryRolls = [2, 27, 19, 91];
-    gen.powerRolls = [2, 3, 4, 5];
-    gen.powerRankRolls = [9, 19, 29, 39, 49, 59, 69, 79, 94, 99];
-
-    gen.talentNumberRoll = 91;
-    gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [2, 3, 4, 5];
 
     gen.contactNumberRoll = 74;
     gen.contactCategoryRolls = [2, 27, 67, 91];
-    gen.contactRolls = [2, 3, 4, 5];
+    gen.contactRolls = [20, 30, 40, 50];
 
     gen.determineSpecialAbilities(char);
 
     let cCount = char.contacts.length;
     this.assert(cCount >= 0 && cCount <= 4,
       `Contact Quantity Roll: Generated ${cCount} contacts (Valid range 0-4).`);
-    this.assertEquals(2, cCount, `Contact Quantity Roll: Generated ${cCount} contacts.`);
+    this.assertEquals(3, cCount, `Contact Quantity Roll: Generated ${cCount} contacts.`);
+    this.assertEquals("Professional", char.contacts[0].category, `Contact Cateogry Roll: Generated ${char.contacts[0].category}.`);
+    this.assertEquals("Law Enforcement", char.contacts[0].name, `Contact Name Roll: Generated ${char.contacts[0].name}.`);
+    this.assertEquals("Professional", char.contacts[1].category, `Contact Cateogry Roll: Generated ${char.contacts[1].category}.`);
+    this.assertEquals("Business World", char.contacts[1].name, `Contact Name Roll: Generated ${char.contacts[1].name}.`);
+    this.assertEquals("Political", char.contacts[2].category, `Contact Cateogry Roll: Generated ${char.contacts[2].category}.`);
+    this.assertEquals("Local", char.contacts[2].name, `Contact Name Roll: Generated ${char.contacts[2].name}.`);
 
-    gen.contactNumberRoll = 17;
-    char.powers = [];
-    char.talents = [];
     char.contacts = [];
+    gen.physicalFormRoll = 1;
+    gen.contactNumberRoll = 1;
+    gen.contactCategoryRolls = [2, 27, 67, 91];
+    gen.contactRolls = [20, 30, 40, 50];
+
     gen.determineSpecialAbilities(char);
 
     cCount = char.contacts.length;
@@ -2568,35 +2695,29 @@ class Tester {
       `Contact Quantity Roll: Generated ${cCount} contacts (Valid range 0-4).`);
     this.assertEquals(0, cCount, `Contact Quantity Roll: Generated ${cCount} contacts.`);
 
-    gen.contactNumberRoll = 25;
-    char.powers = [];
-    char.talents = [];
     char.contacts = [];
+    gen.physicalFormRoll = 1;
+    gen.contactNumberRoll = 55;
+    gen.contactCategoryRolls = [91, 67, 27, 2];
+    gen.contactRolls = [70, 60, 50, 40];
 
-    gen.determineSpecialAbilities(char);
-
-    cCount = char.contacts.length;
-    this.assert(cCount >= 0 && cCount <= 4,
-      `Contact Quantity Roll: Generated ${cCount} contacts (Valid range 0-4).`);
-    this.assertEquals(1, cCount, `Contact Quantity Roll: Generated ${cCount} contacts.`);
-
-    gen.contactNumberRoll = 69;
-    char.powers = [];
-    char.talents = [];
-    char.contacts = [];
     gen.determineSpecialAbilities(char);
 
     cCount = char.contacts.length;
     this.assert(cCount >= 0 && cCount <= 4,
       `Contact Quantity Roll: Generated ${cCount} contacts (Valid range 0-4).`);
     this.assertEquals(2, cCount, `Contact Quantity Roll: Generated ${cCount} contacts.`);
+    this.assertEquals("Mystic Arts", char.contacts[0].category, `Contact Cateogry Roll: Generated ${char.contacts[0].category}.`);
+    this.assertEquals("Mythology", char.contacts[0].name, `Contact Name Roll: Generated ${char.contacts[0].name}.`);
+    this.assertEquals("Political", char.contacts[1].category, `Contact Cateogry Roll: Generated ${char.contacts[1].category}.`);
+    this.assertEquals("State", char.contacts[1].name, `Contact Name Roll: Generated ${char.contacts[1].name}.`);
   }
 
   static ContactsTests(gen) {
     this.ContactsGenericTests(gen);
     this.ContactsAdvancedTests(gen);
 
-    //this.ContractsUltimateTests(gen);
+    this.ContactsUltimateTests(gen);
   }
 
   static ContactsTooManyGenericTests(gen) {
@@ -2610,7 +2731,7 @@ class Tester {
 
     gen.powerNumberRoll = 19;
     gen.powerCategoryRolls = [2, 27, 19, 91];
-    gen.powerRolls = [2, 3, 4, 5];
+    gen.powerRolls = [20, 30, 40, 50];
     gen.powerRankRolls = [9, 19, 29, 39, 49, 59, 69, 79, 94, 99];
 
     gen.talentNumberRoll = 99; // 4/4 talents
@@ -2634,7 +2755,7 @@ class Tester {
 
     gen.powerNumberRoll = 19;
     gen.powerCategoryRolls = [2, 27, 19, 91];
-    gen.powerRolls = [2, 3, 4, 5];
+    gen.powerRolls = [20, 30, 40, 50];
     gen.powerRankRolls = [9, 19, 29, 39, 49, 59, 69, 79, 94, 99];
 
     gen.talentNumberRoll = 99; // 4/4 talents
@@ -2665,7 +2786,7 @@ class Tester {
 
     gen.powerNumberRoll = 19;
     gen.powerCategoryRolls = [2, 27, 19, 91];
-    gen.powerRolls = [2, 3, 4, 5];
+    gen.powerRolls = [20, 30, 40, 50];
     gen.powerRankRolls = [9, 19, 29, 39, 49, 59, 69, 79, 94, 99];
 
     gen.talentNumberRoll = 99; // 4/4 talents
@@ -2689,7 +2810,7 @@ class Tester {
 
     gen.powerNumberRoll = 19;
     gen.powerCategoryRolls = [2, 27, 19, 91];
-    gen.powerRolls = [2, 3, 4, 5];
+    gen.powerRolls = [20, 30, 40, 50];
     gen.powerRankRolls = [9, 19, 29, 39, 49, 59, 69, 79, 94, 99];
 
     gen.talentNumberRoll = 99; // 4/4 talents
@@ -2720,7 +2841,7 @@ class Tester {
 
     gen.powerNumberRoll = 19;
     gen.powerCategoryRolls = [2, 27, 19, 91];
-    gen.powerRolls = [2, 3, 4, 5];
+    gen.powerRolls = [20, 30, 40, 50];
     gen.powerRankRolls = [9, 19, 29, 39, 49, 59, 69, 79, 94, 99];
 
     gen.talentNumberRoll = 99; // 4/4 talents
@@ -2744,7 +2865,7 @@ class Tester {
 
     gen.powerNumberRoll = 19;
     gen.powerCategoryRolls = [2, 27, 19, 91];
-    gen.powerRolls = [2, 3, 4, 5];
+    gen.powerRolls = [20, 30, 40, 50];
     gen.powerRankRolls = [9, 19, 29, 39, 49, 59, 69, 79, 94, 99];
 
     gen.talentNumberRoll = 99; // 4/4 talents
@@ -2771,7 +2892,7 @@ class Tester {
     //this.ContactsTooManyUltimateTests(gen);
   }
 
-  static RenderGenericTest() {
+  static RenderGeneric_Altered_HumanTest() {
     const gen = new CharacterGenerator();
 
     gen.generatorMode = 'generic';
@@ -2781,10 +2902,9 @@ class Tester {
 
     let char = gen.generateWithoutThrows();
     Renderer.render(char, gen.generatorMode);
-    document.getElementById('test-area').innerHTML = ""; // Clear tests
   }
 
-  static RenderAdvancedTest() {
+  static RenderAdvanced_Altered_HumanTest() {
     const gen = new CharacterGenerator();
 
     gen.generatorMode = 'advanced';
@@ -2794,10 +2914,9 @@ class Tester {
 
     let char = gen.generateWithoutThrows();
     Renderer.render(char, gen.generatorMode);
-    document.getElementById('test-area').innerHTML = ""; // Clear tests
   }
 
-  static RenderUltimateTest() {
+  static RenderUltimate_Normal_HumanTest() {
     const gen = new CharacterGenerator();
 
     gen.generatorMode = 'ultimate';
@@ -2807,10 +2926,9 @@ class Tester {
 
     let char = gen.generateWithoutThrows();
     Renderer.render(char, gen.generatorMode);
-    document.getElementById('test-area').innerHTML = ""; // Clear tests
   }
 
-  static RenderRobotComputerTest() {
+  static RenderUltimate_Robot_ComputerTest() {
     const gen = new CharacterGenerator();
 
     gen.generatorMode = 'ultimate';
@@ -2820,10 +2938,9 @@ class Tester {
 
     let char = gen.generateWithoutThrows();
     Renderer.render(char, gen.generatorMode);
-    document.getElementById('test-area').innerHTML = ""; // Clear tests
   }
 
-  static RenderMutantInducedTest() {
+  static RenderUltimate_Mutant_InducedTest() {
     const gen = new CharacterGenerator();
 
     gen.generatorMode = 'ultimate';
@@ -2833,10 +2950,9 @@ class Tester {
 
     let char = gen.generateWithoutThrows();
     Renderer.render(char, gen.generatorMode);
-    document.getElementById('test-area').innerHTML = ""; // Clear tests
   }
 
-  static RenderAngelDemonTest() {
+  static RenderUltimate_Angel_DemonTest() {
     const gen = new CharacterGenerator();
 
     gen.generatorMode = 'ultimate';
@@ -2849,7 +2965,7 @@ class Tester {
     document.getElementById('test-area').innerHTML = ""; // Clear tests
   }
 
-  static RenderAbilitiesToGenerateTest() {
+  static RenderUltimate_AbilitiesToGenerateTest() {
     const gen = new CharacterGenerator();
 
     gen.generatorMode = 'ultimate';
@@ -2859,10 +2975,9 @@ class Tester {
 
     let char = gen.generateWithoutThrows();
     Renderer.render(char, gen.generatorMode);
-    document.getElementById('test-area').innerHTML = ""; // Clear tests
   }
 
-  static RenderSubTypeTest() {
+  static RenderUltimate_CompoundTest() {
     const gen = new CharacterGenerator();
 
     gen.generatorMode = 'ultimate';
@@ -2872,10 +2987,9 @@ class Tester {
 
     let char = gen.generateWithoutThrows();
     Renderer.render(char, gen.generatorMode);
-    document.getElementById('test-area').innerHTML = ""; // Clear tests
   }
 
-  static RenderCombinationsTest() {
+  static RenderUltimate_CombinationsTest() {
     const gen = new CharacterGenerator();
 
     gen.generatorMode = 'ultimate';
@@ -2885,20 +2999,24 @@ class Tester {
 
     let char = gen.generateWithoutThrows();
     Renderer.render(char, gen.generatorMode);
-    document.getElementById('test-area').innerHTML = ""; // Clear tests
   }
 
-  static RenderCombinationsTest() {
+  static RenderUltimate_BonusContactTest() {
     const gen = new CharacterGenerator();
 
     gen.generatorMode = 'ultimate';
     gen.throwAllRolls();
 
-    gen.physicalFormRoll = 99;
+    gen.physicalFormRoll = 35;
 
     let char = gen.generateWithoutThrows();
     Renderer.render(char, gen.generatorMode);
-    document.getElementById('test-area').innerHTML = ""; // Clear tests
+  }
+
+  static getRenderMethodNames() {
+    let methods = new Set();
+    var propertyNames = Object.getOwnPropertyNames(this);
+    return propertyNames.filter(x => x.toString().length > 6 && x.toString().substring(0, 6) === 'Render');
   }
 
   static run() {
@@ -2912,30 +3030,32 @@ class Tester {
     const ultimate = document.getElementById('generator_ultimate').checked;
 
     this.GeneratorTests();
-    // this.GeneratorCompoundTests();
+    this.GeneratorCompoundTests();
+    this.GeneratorBonusContactTest();
 
-    // this.UtilityTests(gen);
-    // this.OriginTests(gen);
-    // this.PrimaryAbilityTests(gen);
-    // this.SecondaryAbilityTests(gen);
-    // this.SinglePowerTests(gen);
-    // this.PowersTests(gen);
-    // this.PowersTooManyTests(gen);
+    this.UtilityTests(gen);
+    this.OriginTests(gen);
+    this.PrimaryAbilityTests(gen);
+    this.SecondaryAbilityTests(gen);
+    this.SinglePowerTests(gen);
+    this.PowersTests(gen);
+    this.PowersTooManyTests(gen);
     this.WeaknessTests(gen);
-    // this.TalentsTests(gen);
-    // this.TalentsTooManyTests(gen);
-    // this.ContactsTests(gen);
-    // this.ContactsTooManyTests(gen);
+    this.TalentsTests(gen);
+    this.TalentsTooManyTests(gen);
+    this.ContactsTests(gen);
+    this.ContactsTooManyTests(gen);
 
     // this.RenderGenericTest();
     // this.RenderAdvancedTest();
-    this.RenderUltimateTest();
+    // this.RenderUltimateTest();
     // this.RenderRobotComputerTest();
     // this.RenderMutantInducedTest();
     // this.RenderAngelDemonTest();
     // this.RenderAbilitiesToGenerateTest();
     // this.RenderSubTypeTest();
     // this.RenderCombinationsTest();
+    // this.RenderBonusContactTest();
 
     let alertMessage = `All Tests Passed!!!\r\n${this.assertCount} assertions.`;
     if (this.failureCount !== 0) {

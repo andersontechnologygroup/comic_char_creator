@@ -1016,7 +1016,7 @@ const CONTACT_TYPE_LIST_TABLE = [
         description: "The character with this Contact has some connection with a character in the fields of psychiatry or psycho-analysis, including doctors devoted to the curing of the criminal mind. "
     },
     {
-        category: "Professional", maxRoll: 95, name: "Espionage",
+        category: "Professional", maxRoll: 90, name: "Espionage",
         description: "The character with this Contact has connections with the world of espionage. This includes agencies such as the FBI, CIA, NSA, KGB, Interpol, or MI5."
     },
     {

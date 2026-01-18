@@ -58,11 +58,8 @@ class Character {
     setAbility(abilityName, rank, rankNumber, abilityIndex) {
         if (abilityIndex === undefined || abilityIndex === null) abilityIndex = 0;
 
-        console.log("Setting ability: " + abilityName + " to " + rank + " " + rankNumber + " for ability index " + abilityIndex);
-
         if (rank) {
             if ((abilityIndex > this.primaryAbilities.length - 1)) {
-                console.log("Created new ability object for ability index " + abilityIndex);
                 this.primaryAbilities[abilityIndex] =
                 {
                     Fighting: { rank: "", number: 0 },
@@ -76,18 +73,13 @@ class Character {
 
             }
 
-            console.log(this.primaryAbilities[abilityIndex]);
             this.primaryAbilities[abilityIndex][abilityName].rank = rank;
             this.primaryAbilities[abilityIndex][abilityName].number = rankNumber;
         }
     }
 
     getAbility(abilityName, abilityIndex) {
-        console.log("Getting ability: " + abilityName + " for ability index " + abilityIndex);
-        console.log(this.primaryAbilities[abilityIndex]);
         if (abilityIndex === undefined || abilityIndex === null) abilityIndex = 0;
-        console.log(this.primaryAbilities[abilityIndex]);
-        console.log(this.primaryAbilities[abilityIndex][abilityName]);
         return this.primaryAbilities[abilityIndex][abilityName];
     }
 

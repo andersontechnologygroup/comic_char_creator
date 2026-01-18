@@ -384,14 +384,19 @@
         generator and a set of rules that I created. The details of those rules are now lost to my childhood. Many years
         ago I came across the Marvel Super Heroes RPG by TSR and was immediately drawn to the system. I have never been
         an RPG player, but the system provided a simple character generation system.</p>
-      <p>This character generator is based (heavily) on the Marvel Super Heroes Advanced Rulebook. With v3.0, the generator 
-        mode can be switch between Generic, Advanced, and Ultimate mode, allowing you to generate characters for fun or for 
+      <p>This character generator is based (heavily) on the Marvel Super Heroes Advanced Rulebook. With v3.0, the
+        generator
+        mode can be switch between Generic, Advanced, and Ultimate mode, allowing you to generate characters for fun or
+        for
         RPG purposes.</p>
       <p>
-        I am still in th process of finishing up v3.0.  You can take a look at the TODO list to see what is left.  There are a small
-        handful of Physical Form attributes that are currently not working.  I also haven't put more than very generic descriptions for the Powers.
-        Currently, Ultimate mode is using the samee Talents as the Advanced mode.  I plan to add the unofficial Ultimate Talents 
-        to the Ultimate mode.  I will also be eenhancing the Contacts types for the Ultimate mode.  
+        I am still in th process of finishing up v3.0. You can take a look at the TODO list to see what is left. There
+        are a small
+        handful of Physical Form attributes that are currently not working. I also haven't put more than very generic
+        descriptions for the Powers.
+        Currently, Ultimate mode is using the samee Talents as the Advanced mode. I plan to add the unofficial Ultimate
+        Talents
+        to the Ultimate mode. I will also be eenhancing the Contacts types for the Ultimate mode.
       </p>
       <br>
       <p class="center">
@@ -422,11 +427,14 @@
       <div>
         <label>Generator:</label>
         <input type="radio" name="generator" id="generator_generic" value="generic" checked />
-        <label for="generator_generic" title="Generic mode provides a simple character generation system.  It is intended to be used for non-RPG purposes.  Powers, Talents, and Contacts have generic descriptions.   Abilities do not have rank values associated.">Generic</label>
+        <label for="generator_generic"
+          title="Generic mode provides a simple character generation system.  It is intended to be used for non-RPG purposes.  Powers, Talents, and Contacts have generic descriptions.   Abilities do not have rank values associated.">Generic</label>
         <input type="radio" name="generator" id="generator_advanced" value="advanced" />
-        <label for="generator_advanced" title="Advanced mode provides a more complex character generation system.  It is intended to be used for RPG purposes.  Powers, Talents, and Contacts have detailed descriptions.   Abilities have rank values associated.  Physical Forms, Powers, Talents, and Contacts are based on the Marvel Super Heroes Advanced Players Book.">Advanced</label>
-        <input type="radio" name="generator" id="generator_ultimate" value="ultimate"  />
-        <label for="generator_ultimate" title="Ultimate mode provides a more complex character generation system.  It is intended to be used for RPG purposes.  Powers, Talents, and Contacts have detailed descriptions.   Abilities have rank values associated.  Physical Forms, Powers, Talents, and Contacts are based on the Marvel Super Heroes The Ultimate Powers Book.">Ultimate</label>
+        <label for="generator_advanced"
+          title="Advanced mode provides a more complex character generation system.  It is intended to be used for RPG purposes.  Powers, Talents, and Contacts have detailed descriptions.   Abilities have rank values associated.  Physical Forms, Powers, Talents, and Contacts are based on the Marvel Super Heroes Advanced Players Book.">Advanced</label>
+        <input type="radio" name="generator" id="generator_ultimate" value="ultimate" />
+        <label for="generator_ultimate"
+          title="Ultimate mode provides a more complex character generation system.  It is intended to be used for RPG purposes.  Powers, Talents, and Contacts have detailed descriptions.   Abilities have rank values associated.  Physical Forms, Powers, Talents, and Contacts are based on the Marvel Super Heroes The Ultimate Powers Book.">Ultimate</label>
       </div>
     </div>
     <div>
@@ -443,6 +451,22 @@
         <label for="hi_tech_good">Set Resources to Good</label>
         <input type="radio" name="hi_tech" id="hi_tech_roll" />
         <label for="hi_tech_roll">Roll for Resources</label>
+      </div>
+    </div>
+    <div>
+      <div>
+        <label>Render Tests:</label>
+        <select id="render-tests">
+        </select>
+      </div>
+      <div>
+        <label>Tests to Run:</label>
+        <input type="radio" name="unit-tests-to-run" id="run-unit-tests" />
+        <label for="run-unit-tests">Unit Tests</label>
+        <input type="radio" name="unit-tests-to-run" id="run-render-tests" />
+        <label for="run-render-tests">Render Tests</label>
+        <input type="radio" name="unit-tests-to-run" id="run-both-tests" checked />
+        <label for="run-both-tests">Both</label>
       </div>
     </div>
   </details>
@@ -469,13 +493,13 @@
     ];
 
     const ALL_ABILITIES = [
-      {name: "Fighting", maxRoll: 14}, 
-      {name: "Agility", maxRoll: 29}, 
-      {name: "Strength", maxRoll: 43}, 
-      {name: "Endurance", maxRoll: 58}, 
-      {name: "Reason", maxRoll: 72}, 
-      {name: "Intuition", maxRoll: 86}, 
-      {name: "Psyche", maxRoll: 100}, 
+      { name: "Fighting", maxRoll: 14 },
+      { name: "Agility", maxRoll: 29 },
+      { name: "Strength", maxRoll: 43 },
+      { name: "Endurance", maxRoll: 58 },
+      { name: "Reason", maxRoll: 72 },
+      { name: "Intuition", maxRoll: 86 },
+      { name: "Psyche", maxRoll: 100 },
     ];
     const PHYSICAL_ABILITIES = ["Fighting", "Agility", "Strength", "Endurance"];
     const MENTAL_ABILITIES = ["Reason", "Intuition", "Psyche"];
@@ -635,7 +659,7 @@
                 </div>
                 </div>`;
 
-//        let powersHtml = char.powers.map(p => `<li class="power"><strong>${p.name}${p.powerSlots > 1 ? `*` : ``}${p.bonusPower ? ` (B)` : ``}</strong>: ${mode !== 'generic' ? `(${p.number})` : ``} &nbsp; <span class="power-description">${p.description}</span></li>`).join('');
+        //        let powersHtml = char.powers.map(p => `<li class="power"><strong>${p.name}${p.powerSlots > 1 ? `*` : ``}${p.bonusPower ? ` (B)` : ``}</strong>: ${mode !== 'generic' ? `(${p.number})` : ``} &nbsp; <span class="power-description">${p.description}</span></li>`).join('');
 
         if (mode === 'ultimate') {
           html += `
@@ -644,7 +668,7 @@
                 <li class="weakness"><strong>Effect: ${char.weakness.effect}</strong> &nbsp; <span class="power-description">${char.weakness.effectDescription}</span></li>
                 <li class="weakness"><strong>Duration: ${char.weakness.duration}</strong> &nbsp; <span class="power-description">${char.weakness.durationDescription}</span></li></ul></div>`;
 
-          if(char.weakness.stimulus === 'Finite Limit') {
+          if (char.weakness.stimulus === 'Finite Limit') {
             html = html.slice(0, -11);
 
             html += `
@@ -689,31 +713,43 @@
         document.getElementById('test-area').innerHTML = ""; // Clear tests
       },
       runTests: () => {
-        Tester.run();
+        const unitTests = document.getElementById('run-unit-tests').checked;
+        const renderTests = document.getElementById('run-render-tests').checked;
+        const bothTests = document.getElementById('run-both-tests').checked;
+
+        document.getElementById('display-area').innerHTML = "";
+        document.getElementById('test-area').innerHTML = "";
+
+        if (unitTests || bothTests) {
+          Tester.run();
+        }
+        if (renderTests || bothTests) {
+          const select = document.getElementById('render-tests').value;
+          Tester[select]();
+        }
+      },
+      populateRenderTests: () => {
+        const tests = Tester.getRenderMethodNames();
+        const select = document.getElementById('render-tests');
+        tests.forEach(test => {
+          const option = document.createElement('option');
+          option.value = test;
+          option.text = test.replace("Render", "").replace("Test", "").replace(/_/g, " ");
+          select.appendChild(option);
+        });
       }
     };
 
+    app.populateRenderTests();
+
     // Initial Generation
-    app.generate();
-    //app.runTests();
+    //app.generate();
+    app.runTests();
 
-    // TODO #15 Verify power list ultime table data
-    // TODO #12 Redo Unit Test Powers Single Ultimatee
-    // TODO #11 Redo Unit Test SpecialAbilities Powers Ultimate
-    // TODO #10 Finish PowersTooMany test for Ultimate
-    // TODO #9 build and test contactsForced
-
-    // TODO #8 Revisit contactsForceCount
-    // TODO #7 Add Ultimate Talent Categories Table
-    // TODO #6 Add Ultimate Talent List
-    // TODO #5 Finish these Talent Tests for Ultimate
-
-    // TODO #4 Add Ultimate Contact Categoriese table
-    // TODO #3 Add Ultimate Contact Types table
-    // TODO #2 Finish Ultimate Contacts Tests
-    // TODO #1 Finish Ultimatte Contacts Too Many Tests
-
-
+    // TODO #4 Verify power list ultime table data
+    // TODO #3 Redo Unit Test Powers Single Ultimatee
+    // TODO #2 Redo Unit Test SpecialAbilities Powers Ultimate
+    // TODO #1 Finish PowersTooMany test for Ultimate
 
   </script>
 </body>

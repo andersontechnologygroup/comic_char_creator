@@ -16,7 +16,6 @@ class Dice {
 
 class Utility {
   static findRow(gen, roll, column) {
-    console.log("findRow", gen, roll, column);
     for (let index = 0; index < gen.randomRanksTable.length; index++) {
       const row = gen.randomRanksTable[index];
       if (roll <= row.maxRolls[column - 1]) {

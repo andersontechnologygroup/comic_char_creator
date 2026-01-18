@@ -397,27 +397,27 @@ const POWER_LIST_ADVANCED_TABLE = [
         bonusPowerCount: 0
     },
     {
-        category: "Body Control", maxRoll: 11, name: "Density Manipulation - Self", powerCount: 1,
+        category: "Body Control", maxRoll: 110, name: "Density Manipulation - Self", powerCount: 1,
         description: "The hero with this Power can alter his mass at will. Density may range from Shift 0 (almost intangible) to the Power rank of the Ability. The hero who has altered mass weighs as much as a character with that strength could lift. (A hero with Feeble Density would weigh 50 lbs, while one with Shift 0 would be effectively weightless). An individual gains Body Armor equal to his current Power rank. In addition, the character may inflict charging damage using the Power rank instead of the Strength ability, and may affect materials of lesser material strength than the current Power rank. In the Shift 0 state the hero may not initially pass through solid items (see Phasing), but is immune to physical attacks (though not energy or force attacks). A high density may slow the character down. If the density of the character is higher than the individual's Endurance, both Fighting and Agility suffer a - 1CS penalty.",
         bonusPowerCount: 0
     },
     {
-        category: "Body Control", maxRoll: 12, name: "Phasing", powerCount: 1,
+        category: "Body Control", maxRoll: 120, name: "Phasing", powerCount: 1,
         description: "This is similar to Density Manipulation, save that it pulls the molecules of a body out of phase with those of the surrounding area, allowing the hero to phase through solid items. While phased, the hero is immune to physical and most energy attacks, but is still subject to the effects of mental attacks and magic. The hero may pass through other objects if the Power rank exceeds the material strength of the object, and may pass through force fields of lower material strength by making a green FEAT roll. The phasing individual may not pass through materials of greater material strength, or force fields of equal or greater material strength than the hero's Power rank. While the hero cannot be affected by physical attacks during a round, the hero may similarly not make physical attacks, with one major exception, which is treated as a Power Stunt. Phasing has a detrimental effect on electronic devices. Phasing through such a device (like a computer) will cause a malfunction. In affecting robotic beings or hi-tech heroes, use the hero's Endurance (for robots) or Reason (for equipment) to determine the effects. Failure of an Endurance or Reason FEAT results in the loss of an amount of Health equal to the Power rank. To otherwise attack, the hero may phase in, strike, and then phase back out (depending on initiative, this may take three turns).",
         bonusPowerCount: 0
     },
     {
-        category: "Body Control", maxRoll: 13, name: "Elongation", powerCount: 1,
+        category: "Body Control", maxRoll: 130, name: "Elongation", powerCount: 1,
         description: "Elongation is similar to the Power of Plasticity, but differs primarily in that it allows the character to extend his body and limbs over a number of areas (The character with this Power may attack non-adjacent foes in close combat types of attacks (slugfest, grappling, etc.). The target of these attacks may only make close attacks against the part of the opponent that is attacking, and as such may not benefit from Kill, Stun, and Slam results. A character with this Power may extend a number of yards equal to his Power rank number. ",
         bonusPowerCount: 0
     },
     {
-        category: "Body Control", maxRoll: 14, name: "Imitation", powerCount: 1,
+        category: "Body Control", maxRoll: 140, name: "Imitation", powerCount: 1,
         description: "Not the sincerest form of flattery, but a specialized form of Shape-shifting that allows the hero to duplicate the appearance of other humanoid forms, up to the limits of Shape-shifting (half-again or half of original size). The character with Imitation may duplicate the appearance, voice, and mannerisms (but not Powers, Talents, or abilities) of a specific individual. The hero must have seen the individual previously for a sufficient period to duplicate him. The success of the imitation is determined by a Power rank FEAT, against the Reason, Intuition, or Psyche of the person being fooled, whichever is lower. A hero with imitative Powers may attempt to duplicate a character with high Popularity and/or powerful Contacts. If successful, the character may be treated as if he has that Popularity, and his actions would be ascribed to the character he is imitating. ",
         bonusPowerCount: 0
     },
     {
-        category: "Body Control", maxRoll: 15, name: "Power Absorption", powerCount: 1,
+        category: "Body Control", maxRoll: 150, name: "Power Absorption", powerCount: 1,
         description: "This is not the absorption of energy, but the acquiring of other individuals' super-human Powers and abilities. Only those naturally occurring powers and abilities may be absorbed, though Robot PCs with this Power may duplicate items of technology as well. The character must touch the target in order to gain those abilities, and the target may make a Psyche or Endurance FEAT to avoid the effect. The type of FEAT is determined by the player when the character is created. The maximum of any ability so acquired is limited to the Power rank of the Power Absorption. If a Power or ability is of a higher rank, then the hero making the attempt must make a successful Psyche FEAT or be knocked out by the backlash for 1-10 rounds, and would only gain Good Strength in the process. A character starting with this Power may only acquire one Power or ability, stated before the attack is made. If a limitation on the Power absorption is taken, a second Power may be drained. Further Powers and abilities may be added as Power Stunts. While the Power-absorbing hero has the Power or ability of another, the character from whom he took it cannot use it if the character it was stolen from had a higher rank than the Power rank of the Power thief, that ability is reduced by that amount). Characters with basic abilities reduced to below Feeble are unconscious for 1-10 rounds.",
         bonusPowerCount: 0
     },
@@ -479,7 +479,7 @@ const POWER_LIST_ADVANCED_TABLE = [
     },
 
     {
-        category: "Mental Powers", maxRoll: 100, name: "Telepathy", powerCount: 1,
+        category: "Mental Powers", maxRoll: 10, name: "Telepathy", powerCount: 1,
         description: "The hero with Telepathic Power may establish mind-to-mind communication between himself and other individuals. The telepath only reads surface thoughts, but does so without visible or audible signs. The hero attempting to make telepathic contact must make a Power rank FEAT. Contact is automatic with willing targets and unwilling targets who have a lower Psyche than the hero's. Targets of equal Psyche require a yellow FEAT, and those with mental Powers or some form of psionic screening a red FEAT. Individuals with a higher Psyche who are unwilling to be contacted telepathically are impossible FEATS.   ",
         bonusPowerCount: 0
     },
@@ -529,57 +529,57 @@ const POWER_LIST_ADVANCED_TABLE = [
         bonusPowerCount: 0
     },
     {
-        category: "Mental Powers", maxRoll: 11, name: "Mind Control", powerCount: 2,
+        category: "Mental Powers", maxRoll: 110, name: "Mind Control", powerCount: 2,
         description: "Mind Control is the total overriding of the conscious mind. The character's personality remains, but his actions are controlled by the character with this power. The target may make a Psyche FEAT to avoid this effect against the Intensity of the Mind Control Power rank. If that FEAT fails, the conscious actions of the character are controlled. The target has no memory of the period he is under control. The attacker and target must be within 1 area initially to effect Mind Control, though the target and attacker may be separated by miles afterwards. The target will only obey the orders of the controller, though those orders may be verbal or telepathic (if the controlling character has that Power) in nature. The victim of a successful Mind Control gains an additonal Psyche FEAT roll each time he is placed in a Karma-losing situation. No Karma may be added to any FEATS while under the control of another, including this one. An additional Psyche FEAT is gained if the victim is placed in a life-threatening situation (that is, the situation threatens the victim). Karma may be added to this roll. Controlling another mind is the psychic equivalent of breaking and entering. The hero loses 10 Karma points whenever this Power is used. (Heroes may choose to lose more Karma as a limitation by which they can raise this Power.) If Karma is gained or lost as a result of the actions of a mind-controlled character, that gain or loss is ascribed to the hero, as if the mind-controlling hero had performed the action himself. (You mind-control the Vulture to bump off Electro. You lose all Karma for slaying Electro, even though Vulture, being a villain, would not normally lose Karma for doing so.) A character who has been Mind Controlled is unaware of his actions, knowing only that he has blanked out for a while. If a Player Character is under the effects of a Mind Control, run him normally, but all actions must be OKed by the controlling character. Naturally, the controlled PC cannot pass on the information of his state to others.",
         bonusPowerCount: 0
     },
     {
-        category: "Mental Powers", maxRoll: 12, name: "Emotion Control", powerCount: 2,
+        category: "Mental Powers", maxRoll: 120, name: "Emotion Control", powerCount: 2,
         description: "Emotion Control is a related form of Mind Control that acts upon 82 TM the subconscious fears and attractions to produce the required results. Targets of an Emotion Control attack must be in the same area as the character with this Power, and may make an Intuition FEAT to avoid the effects, which have a duration of 10-100 turns after the initial attack. The effects must diminish before another dose of Emotion Control may be applied. Robots and non-human alien beings are immune to the effects of Emotion Control. Only one type of emotion may be instilled in a target at a time. The character with this Power may modify any emotions, but gains a +2CS if he chooses to modify one emotion exclusively. Such a character is extremely powerful, but may not develop other types of Emotion Control as Power Stunts. Those heroes that do not limit themselves to one particular emotion begin play with two emotions they can modify, with others that may be developed as Emotions may be influenced to reflect on the user of the Power, or on another target. ",
         bonusPowerCount: 0
     },
     {
-        category: "Mental Powers", maxRoll: 13, name: "Mechanical Intuition", powerCount: 1,
+        category: "Mental Powers", maxRoll: 130, name: "Mechanical Intuition", powerCount: 1,
         description: "This is a specific form of Ultimate Skill that affects repairs, inventing, and building things. The character with this Power has a strong intuitive knowledge of machinery. Regardless of Reason, any rolls for determining whether an invention works or not are at Unearthly Rank. No modifiers may be added to this roll. The character with this Power must still provide Resources for these inventions in the standard fashion.     ",
         bonusPowerCount: 0
     },
     {
-        category: "Mental Powers", maxRoll: 14, name: "Animal Empathy", powerCount: 1,
+        category: "Mental Powers", maxRoll: 140, name: "Animal Empathy", powerCount: 1,
         description: "This specialized form of Empathy extends to all animals in a primitive form of Animal Communication. The hero with this Power may detect and influence the surface emotions of the animal involved, and instill in it fear, hunger, affection, exhaustion, or other emotions on a successful Power rank FEAT. ",
         bonusPowerCount: 0
     },
     {
-        category: "Mental Powers", maxRoll: 15, name: "Animate Drawings", powerCount: 1,
+        category: "Mental Powers", maxRoll: 150, name: "Animate Drawings", powerCount: 1,
         description: "The hero with this Power may animate flat drawings and other repesentations, causing them to become fully operational items. A character may attempt to animate any drawing, even one of his own creation, or animate a specific type or class of object. In the latter case, a + 1CS to Power rank is initially given, though the character loses the ability to animate other drawings (an example of this would be Tarot of the Hellions, who draws her animated figures from a Tarot deck). The animated drawings will have abilities and Powers according to their nature, but no Power or ability can exceed the Power rank number of the hero. No additional Powers can be given to the animation, unless the card shows those Powers in operation. In other words, animating a picture of the Invisible Woman would not give the animation force fields or invisibility Powers, unless those Powers were shown in the picture. (And how can you show invisibility in a picture?) Animated figures last for 1-10 rounds, the actual amount of time determined secretly by the Judge. They dissipate at that time, return to their original location, and may not be animated again for 24 hours. The figures also dissipate if they are destroyed or reduced to 0 Health. ",
         bonusPowerCount: 0
     },
     {
-        category: "Mental Powers", maxRoll: 16, name: "Possession", powerCount: 2,
+        category: "Mental Powers", maxRoll: 160, name: "Possession", powerCount: 2,
         description: "This Power is a specific form of Mind Control in which all actions of the character are assumed by the controller. The controller is in effect inside` the mind of the character, and as such controls all actions without having to give commands. Possession is only possible against targets with no greater Psyche than the hero's Power rank. The target may make a Psyche FEAT to avoid the Possession. A character who is possessed neither gains nor lose Karma when being possessed, though she may suffer from losses of Popularity while her body performs actions that are not heroic in nature. The character may make a Psyche FEAT to escape if placed in a life-threatening situation. The character possessing another may spend her own Karma (but not the Karma of the 84 possessed character) to influence actions.  ",
         bonusPowerCount: 0
     },
     {
-        category: "Mental Powers", maxRoll: 17, name: "Transferral", powerCount: 2,
+        category: "Mental Powers", maxRoll: 170, name: "Transferral", powerCount: 2,
         description: "Transferral is the ultimate form of Possession, in that it allows the complete transferral of consciousness with a target within one area. The target's consciousness is not put away in the back of the character's mind, but rather moved into the body of the character with the Transferral Power. Transferral always needs a red Power rank FEAT to succeed, and may be performed against creatures with higher Psyches, those with Mental Powers, and alien beings or robots. If the transfer fails, the attacker is unconscious for 1-10 rounds, and may not attempt again for one day. When characters transfer consciousness, they also trade the mental abilities, Powers, and Talents. They do not trade physical abilities or Powers, nor do they trade Popularity, Contacts, or Resources. The character performing the transferral also trades Karma amounts with the target.",
         bonusPowerCount: 0
     },
     {
-        category: "Mental Powers", maxRoll: 18, name: "Precognition", powerCount: 2,
+        category: "Mental Powers", maxRoll: 180, name: "Precognition", powerCount: 2,
         description: "An accurate divining of the future is impossible due to the nature of the Marvel Universe. There are a large variety of possible alternate futures diverging at any one point, all leading to different conclusions. The future is also mutable, such that the actions of today may bypass the future of the timeline that is viewed in this manner. If a character with Precognition (also called a precog) sees a Quinjet crash in the near future, and no one takes the Quinjets, thereby avoiding the crashes, that future is not totally negated; it occurs in another divergent future. In game terms, Precognition allows the character to scan these alternative futures up to a week in advance and choose from them an image that may or not come true, and use that information to form his own decisions. No farther than a week in the future may be scanned in this fashion. Precognition may not be used more than once a day. In addition, the character with Precognition must choose a limitation to that Power. ",
         bonusPowerCount: 0
     },
     {
-        category: "Mental Powers", maxRoll: 19, name: "Postcognition", powerCount: 1,
+        category: "Mental Powers", maxRoll: 190, name: "Postcognition", powerCount: 1,
         description: "The reverse of Precognition, but easier to handle, in that the past is fairly immutable. Postcognition only works on items the character handles. The Postcog makes a Power rank FEAT, the color required determined by the length of time scanned.",
         bonusPowerCount: 0
     },
     {
-        category: "Mental Powers", maxRoll: 20, name: "Plant Control", powerCount: 1,
+        category: "Mental Powers", maxRoll: 200, name: "Plant Control", powerCount: 1,
         description: "The hero with this Power can command the actions of plants, granting them temporary Powers of their own, including movement, growth, and a rudimentary intelligence. These abilities only exist as long as the hero concentrates.     The hero cannot control plants with a higher material strength than his Power rank. Plant-like creatures with intelligence receive a Reason FEAT against the hero's Power rank as Intensity to avoid being controlled. By mere control, the hero cannot have the plants perform any actions that would not be normally possible by the plants (this severely limits their usefulness). ",
         bonusPowerCount: 0
     },
     {
-        category: "Mental Powers", maxRoll: 21, name: "Ultimate Skill", powerCount: 1,
+        category: "Mental Powers", maxRoll: 210, name: "Ultimate Skill", powerCount: 1,
         description: "Ultimate Skill is a special Power possessed by the hero, making him literally 'the best at what he does.' The hero picks any one Talent on the following list. His ability in that Talent is considered Unearthly, as opposed to modifying the existing ability by a + 1 or + 2CS. ",
         bonusPowerCount: 0
     },
@@ -621,12 +621,12 @@ const POWER_LIST_ADVANCED_TABLE = [
         bonusPowerCount: 0
     },
     {
-        category: "Body Alterations/Offensive", maxRoll: 11, name: "Health-Drain Touch", powerCount: 2,
+        category: "Body Alterations/Offensive", maxRoll: 110, name: "Health-Drain Touch", powerCount: 2,
         description: "The touch of a character with this Power transfers a Power rank amount of Health from the target to the hero. Previous damage is healed in an equal amount, up to the maximum Health of the character. Drained Health above that point is lost. Characters drained to 0 Health must make an Endurance FEAT to avoid dying. If they do so, the attack has no further effect. Reversing this process, directing one's own Health into others, is a Power Stunt. ",
         bonusPowerCount: 0
     },
     {
-        category: "Body Alterations/Offensive", maxRoll: 12, name: "Blinding Touch", powerCount: 1,
+        category: "Body Alterations/Offensive", maxRoll: 120, name: "Blinding Touch", powerCount: 1,
         description: "The touch of this character can blind the unprotected target for 1-10 rounds. The hero with this Power must make a Stun or Slam result to blind. The target receives no attempt to avoid this touch, unless the target possesses Protected Senses or something similar to     prevent the touch (such as a helmet with covered eyeslits). ",
         bonusPowerCount: 0
     },
@@ -669,22 +669,22 @@ const POWER_LIST_ADVANCED_TABLE = [
         bonusPowerCount: 0
     },
     {
-        category: "Body Alterations/Defensive", maxRoll: 11, name: "Pheromones", powerCount: 1,
+        category: "Body Alterations/Defensive", maxRoll: 110, name: "Pheromones", powerCount: 1,
         description: "Pheromones are a specialized form of Emotion Control that affect the pleasure centers of the...ah...opposite sex. When this Power is in operation, female individuals (if the hero s male) or male individuals (if the hero is female) must make a Psyche FEAT against the Power rank number of this Power as Intensity or be considered Friendly to the character. Robots, aliens, and those unable to smell or be affected by the pheromones (behind a force field, for example) are not affected. Characters that are Hostile will still be attracted to the character, but that attraction will not stop them from putting the hero in a deathtrap, from which the only release is for the hero to profess his love for the Hostile character and join her in crime. ",
         bonusPowerCount: 0
     },
     {
-        category: "Body Alterations/Defensive", maxRoll: 12, name: "Damage Transfer", powerCount: 1,
+        category: "Body Alterations/Defensive", maxRoll: 120, name: "Damage Transfer", powerCount: 1,
         description: "This Power is a relative of the Health-Drain Touch, except Health      may be transferred between two separate targets on touch, in effect healing one while reducing the Health of the other. The hero may not regain any Health in this Damage Transfer. ",
         bonusPowerCount: 0
     },
     {
-        category: "Body Alterations/Defensive", maxRoll: 13, name: "Healing", powerCount: 1,
+        category: "Body Alterations/Defensive", maxRoll: 130, name: "Healing", powerCount: 1,
         description: "This Power allows the hero to restore lost Health and Endurance ranks to others (but not the hero himself). The Power rank indicates the maximum amount of Health that may be restored to one hero maximum, on any one day. For each attempt at healing, the hero must make an Endurance FEAT - failure indicates the loss of Karma equal to the amount of Health being healed. A character without Karma may not Heal. Endurance ranks may be similarly restored at a rate of one rank per day per hero. An Endurance FEAT is required for the healing hero, with the result of a failure being the loss of one Endurance Rank for the hero (the Endurance for the other is healed). This Endurance may only be healed naturally. If the Endurance drops below Feeble, the healer will perish. ",
         bonusPowerCount: 0
     },
     {
-        category: "Body Alterations/Defensive", maxRoll: 14, name: "Immortality", powerCount: 2,
+        category: "Body Alterations/Defensive", maxRoll: 140, name: "Immortality", powerCount: 2,
         description: "The character with this Power does not age or die in a normal fashion. Now, before you all run out and grab this Power for your young hero, note the fine print. The hero can still suffer loss of Endurance ranks as the result of wounds, poisons, and damages, but if the results call for perishing, then the character is left at Shift 0 Endurance but does not die. The character cannot move or act until Endurance reaches Feeble, however, so throwing an Immortal character into an active volcano will keep him out of the way for a while. (He cannot heal while taking damage.) If Endurance reaches Shift 0, or the character otherwise dies, the Immortal character loses all Karma, incuding that set aside for advancement. The character may be out of luck, but at least he has his Health. If an immortal character is part of a Karma pool, then an amount of Karma is subtracted as if the character had left the group. This is done each time the immortal character becomes dead.' This Power does not have a Power rank. It counts as two Powers for any hero who takes it, unless the character is alien in origin, in which case the cost is normal (this reflects that a large number of extra-dimensional aliens are effectively immortal). An immortal character's body will slowly regenerate lost parts and heal, so that short of atomizing the remains and spreading that collection of atoms through a large portion of space, the immortal character will return at some point in the future. Immortality is applicable to the Earth Dimension only (including all planets of this dimension). An immortal character in another dimension - such as Asgard or Olympus, but excluding variant or divergent earths —does not age, but may be killed normally while in that dimension.",
         bonusPowerCount: 0
     },

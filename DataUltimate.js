@@ -28,36 +28,47 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
     },
     {
         maxRoll: 35, name: "Mutant - Breed", column: 1, intuitionAdjustment: 1, enduranceAdjustment: 1,
-        contactsForced: "Tribe",
+        bonusContactsCount: 1,
+        bonusContact: "Political/Tribe(100)",
         description: "The hero's parents were Mutants, as were any number of preceding generations. Breed Mutants form tribes and have close-knit families; this is a defense mechanism born from generations spent hiding their true selves from normal society."
     },
     {
         maxRoll: 38, name: "Android", column: 4, popularityAdjustment: -1, anyPrimaryAbilityAdjustment: 1, powersCountAdjustment: 1,
-        contactsForced: "Lab/Scientist",
+        bonusContactsCount: 1,
+        bonusContact: "Scientific/Laboratory(100)",
         description: "These are artificially created organic beings. An android is made of laboratory-created protoplasm and grows to maturity in an artificial womb. More intricately made Androids can actually interbreed with Normal Humans."
     },
     {
         maxRoll: 46, name: "Humanoid Race", column: 5, anyPrimaryAbilityAdjustment: 1,
-        resourcesStart: 3 /* Poor */, contactsForced: "Race",
+        resourcesStart: 3 /* Poor */,
+        bonusContactsCount: 1,
+        bonusContact: "Political/Race(100)",
         description: "The hero is a normal member of a human-like race from \"somewhere else.\" This may be another world, era, dimension, or lost land hidden somewhere on the Earth. Most can pass as Normal Humans with a little disguise or explanation. "
     },
     {
         maxRoll: 47, name: "Surgical Composite", column: 2, strengthAdjustment: 1, fightingAdjustment: 1, enduranceAdjustment: 1,
         popularityStart: 0, resourcesStart: 3 /*Poor*/,
-        contactsForced: "Hospital",
+        bonusContactsCount: 1,
+        bonusContact: "Professional/Medicine(100)",
         description: "The hero was created in an operating room. His body contains parts taken from several bodies. Close examination reveals the scars from his creation.  Resistance to Mental Domination is reduced -1CS.  Composites heal twice as quickly as Normal Humans."
     },
     {
-        maxRoll: 49, name: "Modified Human - Organic", column: 1, contactsForced: "Org Responsible",
+        maxRoll: 49, name: "Modified Human - Organic", column: 1,
+        bonusContactsCount: 1,
+        bonusContact: "Scientific/Laboratory(100)",
         description: "This is someone who started life as a Normal Human and was later altered by some means. The change affected his body on a physical level but did not alter his DNA. Genetically, the hero is still very much human and cannot pass on his Powers to his descendants.  The hero's internal organs and nervous system have been altered.  Organics heal twice as fast as Normal Humans."
     },
     {
-        maxRoll: 51, name: "Modified Human - Muscular", column: 1, contactsForced: "Org Responsible",
+        maxRoll: 51, name: "Modified Human - Muscular", column: 1,
+        bonusContactsCount: 1,
+        bonusContact: "Scientific/Laboratory(100)",
         enduranceAdjustment: 1, strengthAdjustment: 1,
         description: "This is someone who started life as a Normal Human and was later altered by some means. The change affected his body on a physical level but did not alter his DNA. Genetically, the hero is still very much human and cannot pass on his Powers to his descendants. Muscular Modification is easy to detect; just look for a person with outrageous muscular development."
     },
     {
-        maxRoll: 53, name: "Modified Human - Skeletal", column: 1, contactsForced: "Org Responsible",
+        maxRoll: 53, name: "Modified Human - Skeletal", column: 1,
+        bonusContactsCount: 1,
+        bonusContact: "Scientific/Laboratory(100)",
         description: "This is someone who started life as a Normal Human and was later altered by some means. The change affected his body on a physical level but did not alter his DNA. Genetically, the hero is still very much human and cannot pass on his Powers to his descendants.  The hero's original skeletal structure has been replaced or augmented by artificial means.  Skeletals gain + 1CS Resistance to Physical Attacks."
     },
     {
@@ -126,7 +137,9 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
         description: "The hero's body is intact but is encased in a mechanical suit that provides him with life-support and Powers. The natural and artificial bodies exist in symbiosis. "
     },
     {
-        maxRoll: 76, name: "Cyborg - Mechanical Body", column: 4, intuitionAdjustment: -1, psycheAdjustment: -1, contactsForced: "Lab",
+        maxRoll: 76, name: "Cyborg - Mechanical Body", column: 4, intuitionAdjustment: -1, psycheAdjustment: -1,
+        bonusContactsCount: 1,
+        bonusContact: "Scientific/Laboratory(100)",
         description: "The only part of the hero's original body that remains is his brain and the nervous system. This is housed in a special life-support module that fills most of the brain's needs (oxygen, blood, nutrients). The life-support module is mated with a mechanical form that serves the brain as its new body. The nervous system is directly linked with the machine's control circuits, allowing both control and sensory feedback.  Mech Bodies have Monstrous Resistance to Disease and Poisons of all sorts."
     },
     {
@@ -153,7 +166,7 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
     },
     {
         maxRoll: 88, name: "Angel/Demon", column: 5, subType: "Angel(50)|Demon(100)", popularityAdjustment: "Angel(+2)|Demon(-2)",
-        allPhysicalAbilitiesAdjustment: 1, 
+        allPhysicalAbilitiesAdjustment: 1,
         bonusPowerCount: 1,
         bonusPowers: "Demon(Energy Emission\\Fire Generation\\Good)|Angel(Matter Creation\\Artifact Creation\\Good)",
         description: "These are magical beings from other planes of existence. They are both supernatural and corporeal in nature. The main difference between these types is their inherent personality. \"Angels\" are benevolent; \"demons\" are malevolent. Other than that, there isn't much differnce.  Such beings p o s s e s s a Psychological Weakness that Negates their Power."
@@ -173,7 +186,7 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
     {
         maxRoll: 91, name: "Vegetable", column: 1, resourcesSet: 1 /* Feeble */,
         bonusPowerCount: 1,
-        bonusPower: "Energy Control\\Absorption Power\\Good", 
+        bonusPower: "Energy Control\\Absorption Power\\Good",
         fightingAdjustment: -2, enduranceAdjustment: 2,
         description: "The hero is an intelligent, mobile plant. He can be of any nature but for game purposes the hero is assumed to be a man-shaped plant. His physiology is based on photosynthesis. The plant-man doesn't need to eat anything except a bit of fertilizer occasion- ally. Prolonged deprivation of light and water reduces the hero's Strength and Endurance - 1CS per day after an initial three days."
     },
@@ -194,7 +207,7 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
         description: "You know that the Normal Human body is 68% liquid? Well, this type is 100% liquid. However, it is composed of special liquids that remain together. The fluid body can be of any viscosity from gelatinous to watery. It can move at will by flowing through other liquids or along surfaces. It can even climb vertical surfaces"
     },
     {
-        maxRoll: 96, name: "Energy", column: 5, 
+        maxRoll: 96, name: "Energy", column: 5,
         bonusPowerCount: 2,
         bonusPowers: "Energy Emission\\Any\\Roll|Energy Control\\Any\Roll",
         description: "The hero is a field of coherent energy. The basis for this can be any Energy form found in the Energy Emission and Control sections.  "
@@ -626,241 +639,935 @@ const POWER_LIST_ULTIMATE_TABLE = [
 ];
 
 const TALENT_CATEGORIES_ULTIMATE_TABLE = [
-    { maxRoll: 20, name: "Weapon Skills" },
-    { maxRoll: 45, name: "Fighting Skills" },
-    { maxRoll: 65, name: "Professional Skills" },
-    { maxRoll: 85, name: "Scientific Skills" },
-    { maxRoll: 90, name: "Mystic and Mental Skills" },
-    { maxRoll: 100, name: "Other Skills" }
+    { maxRoll: 6, name: "Alternative Sciences" },
+    { maxRoll: 12, name: "Astronomy" },
+    { maxRoll: 20, name: "Biology" },
+    { maxRoll: 28, name: "Chemistry" },
+    { maxRoll: 34, name: "Crime and Law" },
+    { maxRoll: 38, name: "Cognitive Sciences & Humanities" },
+    { maxRoll: 45, name: "Computer Science" },
+    { maxRoll: 52, name: "Earth Sciences" },
+    { maxRoll: 59, name: "Engineering" },
+    { maxRoll: 66, name: "Fighting" },
+    { maxRoll: 70, name: "Medicine" },
+    { maxRoll: 74, name: "Mystic and Mental" },
+    { maxRoll: 79, name: "Other" },
+    { maxRoll: 86, name: "Physics" },
+    { maxRoll: 93, name: "Piloting" },
+    { maxRoll: 100, name: "Weapons" },
 ];
 
 const TALENT_LIST_ULTIMATE_TABLE = [
     {
-        category: "Weapon Skills", maxRoll: 20, name: "Guns", talentCount: 1,
-        description: "Individuals without this Talent fire guns (all handguns, rifles, and submachine guns, including laser, stun, and concussion varieties) at their Agility rank. Those with this Talent fire such weapons at + 1CS."
+        category: "Alternative Sciences", maxRoll: 25, name: "Catastrophism",
+        description: "The scientific belief system that attempts to pinpoint the end of the world or at least major catastrophes that could signifantly alter man's or the universe's history."
     },
     {
-        category: "Weapon Skills", maxRoll: 50, name: "Thrown Weapons", talentCount: 1,
-        description: "Characters with this Talent toss weapons designed to be thrown (including spears, daggers, shuriken, disks, and snowballs)"
+        category: "Alternative Sciences", maxRoll: 50, name: "Cryonics",
+        description: "The practice of freezing a dead diseased person in hopes of bringing him back in the future when the cure is found."
     },
     {
-        category: "Weapon Skills", maxRoll: 60, name: "Bows", talentCount: 1,
-        description: "Bows are tricky items to operate.  Those with this Talent gain a + 1CS to hit with all bows, including crossbows, and may fire and reload in a single round. They may fire multiple arrows on a successful Agility FEAT."
+        category: "Alternative Sciences", maxRoll: 75, name: "Paranormal Phenomena",
+        description: "The study of paranormal phenomena from a scientific standpoint."
     },
     {
-        category: "Weapon Skills", maxRoll: 80, name: "Blunt Weapons", talentCount: 1,
-        description: "Characters with this Talent gain a + 1CS to hit when attacking with a blunt weapon."
-    },
-    {
-        category: "Weapon Skills", maxRoll: 90, name: "Sharp Weapons", talentCount: 1,
-        description: "Characters with this Talent gain a + 1CS to hit when attacking with a sharp weapons.  This includes swords, daggers (unless thrown), and spears, but excludes claws and other natural extensions that inflict this type of damage."
-    },
-    {
-        category: "Weapon Skills", maxRoll: 100, name: "Oriental Weapons", talentCount: 1,
-        description: "This a special category that grants the character a + 1CS to Fighting or Agility when using the following weapons: shuriken, crossbows, sais (treat as swords), and oriental swords and daggers (including the katana and the kris)."
-    },
-    {
-        category: "Weapon Skills", maxRoll: 110, name: "Marksman", talentCount: 2,
-        description: "The character with this Talent gains a + 1CS to hit with any distance weapon that requires line of sight to hit (the character could benefit when firing heavy artillery, but not when controlling a tele-guided missile). Such a weapon in the hands of a.marksman does not suffer penalties to hit from range."
-    },
-    {
-        category: "Weapon Skills", maxRoll: 120, name: "Weapons Master", talentCount: 2,
-        description: "The character with this Talent gains a + 1CS to hit with any weapon that requires a Fighting FEAT to hit."
-    },
-    {
-        category: "Weapon Skills", maxRoll: 130, name: "Weapons Specialist", talentCount: 2,
-        description: "The character with this Talent gains a + 2CS with a single weapon of choice. This may be any type of weapon, missile or melee. The character who is a weapon specialist will also increase his initiative when using this weapon by 1."
+        category: "Alternative Sciences", maxRoll: 100, name: "Parapsychology",
+        description: "The study of psionics."
     },
 
     {
-        category: "Fighting Skills", maxRoll: 10, name: "Martial Arts A", talentCount: 1,
-        description: "This form of martial arts concentrates on using an opponent's strength against him, and is typical of oriental- American forms such as judo and karate. The practioner of this type of martial arts can Stun or Slam an opponent regardless of their comparative Strengths and Endurances."
+        category: "Astronomy", maxRoll: 20, name: "Astronautics",
+        description: "The science of the contruction and design of vehicles for travel in space beyond earth's atmosphere."
     },
     {
-        category: "Fighting Skills", maxRoll: 20, name: "Martial Arts B", talentCount: 1,
-        description: "This form of martial arts is keyed on offense and inflicting damage in short, quick bursts, and includes such disciplines as boxing. The practioner of this form of martial arts gains a + 1CS to Fighting ability when engaged in unarmed combat."
-    },
-    {
-        category: "Fighting Skills", maxRoll: 30, name: "Martial Arts C", talentCount: 1,
-        description: "This form of martial arts concentrates on holds and escapes. The practitioner of this form gains a + 1CS to his Strength for Grappling attacks (including damage), a + 1CS to Strength for Escaping and a + 1CS to Agility for purposes of Dodging. "
-    },
-    {
-        category: "Fighting Skills", maxRoll: 40, name: "Martial Arts D", talentCount: 1,
-        description: "This meditative form of martial arts searches out the weak spots of the opponent's defenses and strikes against them. The practioner of this form of attack may ignore the effects of Body Armor (though not force fields) for determining Stun and Slam results. The attack by the character with this Talent does not have to inflict damage to force a check for possible  Stun and Slam. The disadvantage is that the target of this attack must be studied for two rounds before the effects may be brought into play. The character with this Talent does not have to attack the character, only watch him in battle for two rounds previous to attacking. "
-    },
-    {
-        category: "Fighting Skills", maxRoll: 50, name: "Martial Arts E", talentCount: 1,
-        description: "This form of martial arts encourages quick striking to catch the opponent off-guard. Heroes with this form of Martial Arts are at a + 1 to initiative rolls in unarmed combat. "
-    },
-    {
-        category: "Fighting Skills", maxRoll: 60, name: "Wrestling", talentCount: 1,
-        description: "The hero with this Talent is proficient in applying holds . It includes familiar types of wrestling a s well as the sumo forms of the art. The hero with this Talent gains a +2CS when making Grappling attacks, but gains no benefit in damage. (A hero with Martial Arts B and this Talent gains a +3CS to hit in a Grappling attack, and a + 1CS for damage.) "
-    },
-    {
-        category: "Fighting Skills", maxRoll: 70, name: "Thrown Objects", talentCount: 1,
-        description: "The hero with this Talent gains a + 1CS with all Throwing attacks (both Edged and Blunt), and + 1CS on Catching. This applies to both thrown weapons and normal items. If the hero has the Thrown Weapons Talent as well, the modification is + 2CS when using thrown weapons. "
-    },
-    {
-        category: "Fighting Skills", maxRoll: 80, name: "Tumbling", talentCount: 1,
-        description: "The hero with this Talent knows how to fall and land without undue injury. Individuals with this Talent may make an Agility FEAT to land feet-first after any fall that does not inflict damage. "
-    },
-    {
-        category: "Fighting Skills", maxRoll: 90, name: "Unknown", talentCount: 1,
+        category: "Astronomy", maxRoll: 40, name: "Astrophotography",
         description: ""
     },
     {
-        category: "Fighting Skills", maxRoll: 100, name: "Acrobatics", talentCount: 1,
-        description: "The hero with this Talent is very limber and as such gains advantages when under attack. The hero has a + 1CS when dodging, evading, and escaping. "
+        category: "Astronomy", maxRoll: 60, name: "Astrophysics",
+        description: "Deals with the chemical and physical composition of celestial matter."
+    },
+    {
+        category: "Astronomy", maxRoll: 80, name: "Radio Astronomy",
+        description: "Astronomy dealing with electromagnetic radiations of radio frequency received from outside earth's atmosphere."
+    },
+    {
+        category: "Astronomy", maxRoll: 100, name: "Stellar Cartography	",
+        description: "Mapping space."
     },
 
     {
-        category: "Professional Skills", maxRoll: 10, name: "Law", talentCount: 1,
-        description: "The character with this Talent has an extensive background in law (the assumption being US Law, but this may vary according to the Judge's campaign). The hero may be a lawyer or capable of applying to pass the bar (Reason FEAT of Good Intensity). A character with Law as a Talent gains a + 1CS to all FEAT rolls involving the law, including correct legal procedure. A character without Law gains no benefit to Reason FEATs, and in addition, will have to make Reason FEATS more often than a character with Law Talent. "
-    },
-    {
-        category: "Professional Skills", maxRoll: 20, name: "Pilot", talentCount: 1,
-        description: "The character with this Talent has a working knowledge of most aircraft, and receives a + 1CS for all FEAT rolls involving an aircraft that character is controlling (including Control FEATs, Agility FEATS, and Reason FEAT's involving aircraft handling and design). A character with a background that would permit it (a hero who is an alien may extend this Talent to spacecraft as well. "
-    },
-    {
-        category: "Professional Skills", maxRoll: 30, name: "Military", talentCount: 1,
-        description: "The hero has had some dealings with one of the armed services. In military matters, the hero gets a + 1CS to all FEAT rolls, and in addition may take a member of the armed services as a Contact. "
-    },
-    {
-        category: "Professional Skills", maxRoll: 40, name: "Business/Finance", talentCount: 1,
-        description: "The hero is familiar with the world of business, corporate finance, and how money works. Initial resources are a minimum of Good, and the hero gains a + 1CS for FEAT rolls dealing with money. The hero gains a Contact in the Professional category. "
-    },
-    {
-        category: "Professional Skills", maxRoll: 50, name: "Journalism", talentCount: 1,
-        description: "The hero with this Talent gains an additional 2 Contacts to those already generated. The Contacts should be connected with the media in some fashion, such as at local newspapers, radio or TV stations, or as sources in law enforcement, political circles, or snitches of the criminal underworld. "
-    },
-    {
-        category: "Professional Skills", maxRoll: 60, name: "Engineering", talentCount: 1,
-        description: "Engineering includes all the varied types of that profession dedicated to the design of functional items: civil, chemical, mechanical, etc. A character with Engineering Talent gains a + 1CS to all FEATs involving building things, including the Resource FEAT to determine if an object can be built. "
-    },
-    {
-        category: "Professional Skills", maxRoll: 70, name: "Crime", talentCount: 1,
-        description: "The hero with this Talent has an understanding of the criminal mind and behavior, either from studies or first-hand observation. The character with this Talent gains a + 1CS on all Reason and Intuition FEATs involving criminal practices (If I were a crook, where would I hide?). The hero also gains a Contact in either the police or crime areas. The hero with this Talent has a background in studies of the mind, and as such gains a + 1CS on all FEATs involving the mind."
-    },
-    {
-        category: "Professional Skills", maxRoll: 80, name: "Psychiatry", talentCount: 1,
+        category: "Biology", maxRoll: 5, name: "Anatomy",
         description: ""
     },
     {
-        category: "Professional Skills", maxRoll: 90, name: "Unknown", talentCount: 1,
+        category: "Biology", maxRoll: 10, name: "Animal Behaviour",
         description: ""
     },
     {
-        category: "Professional Skills", maxRoll: 100, name: "Detective/Espionage", talentCount: 1,
-        description: "The hero with this Talent has been trained to notice small clues in solving crimes. The character with this Talent gains a + 1CS to discover clues to a crime, and in addition gains a Contact in either crime, law enforcement, law, or espionage."
+        category: "Biology", maxRoll: 15, name: "Bio-Physics",
+        description: "The application of physical principles to biological problems."
     },
     {
-        category: "Professional Skills", maxRoll: 110, name: "Medicine", talentCount: 2,
-        description: "The hero with this Talent has extensive knowledge of medicine, and as such limited Talents in healing. In general, a character losing Endurance Ranks as the result of a lethal situation can have those losses stopped by any character checking on him. The individual with Medicine Talent may bring back characters that have reached the Shift 0 level up to 20 turns after they have reached that level. A character with this Talent may restore one rank of Endurance to a wounded character per week, in addition to natural healing. Finally, the character with Medicine as a Talent is + 1CS on Reason FEATs that involve medical problems, medications, poisons, and surgery."
+        category: "Biology", maxRoll: 21, name: "Biotechnology",
+        description: "Application to biological and medical science of engineering principles or engineering equipment (as in the construction of artificial organs and bionics)."
     },
     {
-        category: "Professional Skills", maxRoll: 120, name: "Law-Enforcemeent", talentCount: 1,
-        description: "The character with this Talent has a background with law-enforcement authorities. This Talent includes both Gun and Law Talents, and the character, if still a member of a law-enforcement agency, may legally carry a gun and make arrests. "
-    },
-
-    {
-        category: "Scientific Skills", maxRoll: 20, name: "Chemistry", talentCount: 1,
-        description: "A +1CS on matters of chemistry, including developing new formulas, finding cures for inorganic poisons, and identifying chemicals by smell, touch, or taste. "
-    },
-    {
-        category: "Scientific Skills", maxRoll: 40, name: "Biology", talentCount: 1,
-        description: "A + 1CS on matters of biology, including animal and plant identification, finding cures for organic poisons, and researching diseases and their cures. "
-    },
-    {
-        category: "Scientific Skills", maxRoll: 60, name: "Geology", talentCount: 1,
-        description: "A + 1CS on matters involving the Earth, including volcanic activity, the geology of the surrounding land, types of rocks and their powers, and mineral identification. "
-    },
-    {
-        category: "Scientific Skills", maxRoll: 70, name: "Genetics", talentCount: 1,
-        description: "A + 1CS on matters involving the genes, including creating new life forms, understanding mutants, and researching diseases. "
-    },
-    {
-        category: "Scientific Skills", maxRoll: 80, name: "Archeology", talentCount: 1,
-        description: "A + 1CS on matters involving the past, including paeleontology, historical records, and ancient myths and legends. "
-    },
-    {
-        category: "Scientific Skills", maxRoll: 90, name: "Physics", talentCount: 1,
-        description: "A + 1CS on matters involving physics and astrophysics, including motion, flight, and the planets and stars. "
-    },
-    {
-        category: "Scientific Skills", maxRoll: 100, name: "Electronics", talentCount: 1,
-        description: "A + 1CS on matters involving electronic devices, including their creation and repair. "
-    },
-    {
-        category: "Scientific Skills", maxRoll: 110, name: "Computers", talentCount: 1,
-        description: "A + 1CS on matters involving computers, computer-controled equipment, and artificial intelligences. "
+        category: "Biology", maxRoll: 26, name: "Botany",
+        description: "The study of plant life."
     },
 
     {
-        category: "Mystic and Mental Skills", maxRoll: 20, name: "Trance", talentCount: 1,
-        description: "The character may place himself into a trance. While in a trance the character slows his body functions to such a level that he may be assumed to be deceased (Intuition FEAT for the character checking). A character in a trance reduces needs for food and water to a minimal level, and may regain Endurance ranks at one rank per day. "
+        category: "Biology", maxRoll: 31, name: "Ecology",
+        description: "The interrelationship of organisms and their environment."
     },
     {
-        category: "Mystic and Mental Skills", maxRoll: 50, name: "Mesmerism and Hypnosis", talentCount: 1,
-        description: "This Talent is a primitive form of Mind Control at the Power rank number equal to the Reason of the character with this Talent. Information can be gained as per a Mental Probe, and post-hypnotic suggestions may be implanted within the victim's mind. Any attempt to force an individual to do something that he would not normally do, or divulge information that he would not normally reveal, will cause the hypnotism to break. A hypnotic command fades in 1-10 hours after it is given. "
+        category: "Biology", maxRoll: 37, name: "Genetics",
+        description: "A branch of biology dealing with hereditary and variation of organisms. Genetics allows the recognition of signs of genetic tampering, ability to note genetic abnormalities, and conduct genetic experiments or projects."
     },
     {
-        category: "Mystic and Mental Skills", maxRoll: 70, name: "Sleight of Hand", talentCount: 1,
-        description: "This is a Talent developed by stage magicians which causes items to appear and disappear by a combination of misdirection and swift, fluid gestures. The character with this Talent may palm small items, making them appear or disappear with Agility + 1CS ability. "
+        category: "Biology", maxRoll: 42, name: "Immunology",
+        description: "The science dealing with the phenomena and causes of immunity and immune responses."
     },
     {
-        category: "Mystic and Mental Skills", maxRoll: 90, name: "Resist Domination", talentCount: 1,
-        description: "This is a Psi-Screen that may be developed by the individuals without that Power. This permits the character to resist mental attacks as if the character had a mental power of Psyche + 1CS. The Talent is passive in nature, and does not grant any other particular benefit. A character with Mental Probe may be able to discern where the character gained this Talent, but nothing else. "
+        category: "Biology", maxRoll: 48, name: "Marine Biology",
+        description: "The study of marine life."
     },
     {
-        category: "Mystic and Mental Skills", maxRoll: 100, name: "Occult Lore", talentCount: 1,
-        description: "The character with this Talent has a knowledge of magical societies, antiquities, runes, and a general understanding of forgotten lore. The character gains a + 1CS to Reason FEATS involving items of a magical nature. "
+        category: "Biology", maxRoll: 54, name: "Micro-Biology",
+        description: "The study of microscopic forms of life."
     },
     {
-        category: "Mystic and Mental Skills", maxRoll: 110, name: "Mystic Origin", talentCount: 2,
-        description: "In the Marvel Universe, all humankind has the potential for developing magical Powers. This Talent shows that the character has some background with magical forces. Heroes may have derived their powers from these forces if they choose this Talent. A character with this Talent may have Magical Powers, with the approval of the Judge."
+        category: "Biology", maxRoll: 61, name: "Neurosciences",
+        description: "Deals with nerves and nerve tissue and their relation to behavior and learning."
+    },
+    {
+        category: "Biology", maxRoll: 67, name: "Parasitology",
+        description: "The study of parasites on living creatures."
+    },
+    {
+        category: "Biology", maxRoll: 73, name: "Pharmacology",
+        description: "The science of drugs including materia medica, toxicology, and therapeutic."
+    },
+    {
+        category: "Biology", maxRoll: 79, name: "Phenology",
+        description: "The study of the reaction of species to environmental phenomenon."
+    },
+    {
+        category: "Biology", maxRoll: 85, name: "Physiology",
+        description: "Deals with the functions of living matter and of the physical and chemical phenomena."
+    },
+    {
+        category: "Biology", maxRoll: 90, name: "Psychobiology",
+        description: "The study of mental life and behavior in relation to other biological processes."
+    },
+    {
+        category: "Biology", maxRoll: 95, name: "Radiobiology",
+        description: "Deals with the interaction of biological systems and radiant energy or radioactive materials."
+    },
+    {
+        category: "Biology", maxRoll: 100, name: "Zoology",
+        description: "The study of animals."
     },
 
     {
-        category: "Other Skills", maxRoll: 20, name: "Artist", talentCount: 1,
-        description: "The character with an artist background creates works of art, either for himself or for sale to others. This includes painting, sculpting, and writing. A single work takes 1-10 weeks, and upon completion grants the artist Karma points equal to 10 times the number of weeks. The character must allocate some time daily at his work. "
+        category: "Chemistry", maxRoll: 11, name: "Alchemy",
+        description: "A medieval chemical science and speculative philosophy aiming to achieve the transmutation of the base elements into gold, the discovery of a universal cure for disease, and the discovery of a means of indefinitely prolonging life."
+    },
+
+    {
+        category: "Chemistry", maxRoll: 24, name: "Chemical and Biological Weapons",
+        description: ""
+    },
+
+    {
+        category: "Chemistry", maxRoll: 37, name: "Chemical Engineering",
+        description: "Engineering dealing with the industrial application of chemistry and development of new chemical technology."
+    },
+
+    {
+        category: "Chemistry", maxRoll: 50, name: "Electrochemistry",
+        description: "Deals with the relation of electricity to chemical changes and with the interconversion of chemical and electrical energy."
+    },
+
+    {
+        category: "Chemistry", maxRoll: 64, name: "Organic Chemistry",
+        description: "Deals with only chemical elements found occuring in natural substances."
+    },
+
+    {
+        category: "Chemistry", maxRoll: 77, name: "Polymers",
+        description: "The study of advanced chemical compounds to form other new materials."
+    },
+
+    {
+        category: "Chemistry", maxRoll: 88, name: "Sonochemistry",
+        description: "The effects of sonic energy on chemicals."
+    },
+
+    {
+        category: "Chemistry", maxRoll: 100, name: "Spectroscopy",
+        description: "Physics that deal with the theory and interpretation of interactions between matter and radiation."
+    },
+
+
+    {
+        category: "Crime and Law", maxRoll: 4, name: "Ballistics",
+        description: "Ballistics is the study of guns, knowing what bullet goes with what gun, where a shot could have come from, etc., etc. This is the kind of stuff you see TV detectives doing when they find powder burns and bullet holes. PC gets a +1CS to Reason when trying to figure out these kinds of things."
+    },
+
+    {
+        category: "Crime and Law", maxRoll: 7, name: "Camouflage",
+        description: "Allows a character +2CS to trying to camouflage equiptment, objects, and self. Requires a yellow Intuition FEAT for a person to find it."
+    },
+
+    {
+        category: "Crime and Law", maxRoll: 10, name: "Counterfeit Recognition",
+        description: "+1CS to Intuition for identifying false signatures, money, art, etc. A failed roll means that the character believes its genuine."
+    },
+
+    {
+        category: "Crime and Law", maxRoll: 12, name: "Clue Analysis",
+        description: "+1CS to Intuition/Reason on gathering information on clues."
+    },
+
+    {
+        category: "Crime and Law", maxRoll: 16, name: "Criminology",
+        description: "The hero with this Talent has an understanding of the criminal mind and behavior, either from studies or first-hand observation. The character with this Talent gains a +1CS on all Reason and Intuition FEATs involving criminal practices."
+    },
+
+    {
+        category: "Crime and Law", maxRoll: 22, name: "Demolitions",
+        description: "The PC gets +1CS to Reason when figuring out the best applications for explosives, or the creation of home made explosives. Allows a good chance to blow the vault door off the wall without collapsing the back half of the building."
+    },
+
+    {
+        category: "Crime and Law", maxRoll: 29, name: "Detective/Espionage",
+        bonusContactCount: 2,
+        bonusContactType: "Professional/Law(40)|Professional/Law Enforcement(75)|Professional/Crime(100)",
+        description: "Gains Clue Analysis, Counterfeit recognition, identification System, Law, and Police Procedure. This character is trained to notice small clues to a crime, and gains +1CS to find them."
+    },
+
+    {
+        category: "Crime and Law", maxRoll: 32, name: "Disguise",
+        description: "Disguise gives a +1CS to two stats...Intuition and Reason. When a PC gets in disguise, two situations could come up. One is where the disguise only has to pass at a glance. In this situation, anyone having cause to notice rolls an opposed FEAT between his Intuition and the character's Reason (+1CS). The other situation is where the character must adopt mannerisms to go with the disguise (disguising voice, affecting a limp, etc.). The person the character is trying to fool must make an opposed FEAT against the character's Intuition (+1CS) using either Reason or Intuition (whichever is higher). In either case, if the FEAT is failed, nothing is noticed. Green thru Red would signify anything from knowing something is wrong to recognizing the character."
     },
     {
-        category: "Other Skills", maxRoll: 40, name: "Languages", talentCount: 1,
-        description: "The character with this Talent has a natural understanding of languages. The character gains 1 additional language at start, and made add other languages at half the cost of a Talent (500 points regardless of who teaches it). Characters without languages Talent must gain this Talent first to learn other languages. The gaining of additional languages assumes someone is available to teach these languages. A Player character with this Talent does not have to assign a language at start, but may fill one in later as need be. "
+        category: "Crime and Law", maxRoll: 37, name: "Forensics",
+        description: "Forensics is the study of the science of crime scenes. It is the study of the body, the scene, and the evidence. A character with this talent can identify the cause of death, the manner of death, and the time of death."
     },
     {
-        category: "Other Skills", maxRoll: 60, name: "First Aid", talentCount: 1,
-        description: "The medicine Talent notes that the loss of Endurance ranks may be halted by someone checking on the dying character and administering some form of aid. The First Aid Talent grants the character this immediate halt to Endurance rank loss, the recovery of one rank immediately (one use only per situation), and in addition, the hero with this Talent can stabilize a dying character at Shift 0 Health up to 5 rounds after that character reaches that level. "
+        category: "Crime and Law", maxRoll: 42, name: "Forgery",
+        description: "Enables a character to create excellent copies of a signature or work of art."
     },
     {
-        category: "Other Skills", maxRoll: 80, name: "Repair/Tinkering", talentCount: 1,
-        description: "The character with this Talent gains a + 1CS to any Reason FEATs involving the repair and modfication of existing items, but not the building of new items. This + 1CS may be added to any other bonuses gained from other Talents, so that an Engineer with Tinkering Talent would gain a + 2CS on repair. This is a general category that covers any one subject desired by the character. On that subject, the character gains + 1CS to all Reason FEATS. (Say, the character is into collecting Spores and Fungus. A Trivia Talent would be: Trivia/ Spores and Fungus). Trivia categories should be specific (old movies, military history, sports, rock music, comic books) a s opposed to general (all knowledge) or covered by other Talents. "
+        category: "Crime and Law", maxRoll: 44, name: "Intimidation",
+        description: "A character with this talent knows how to inspire fear in an opponent either through the use of threats, brute strength, or imposing size and gains a +1CS to Intimidation."
     },
     {
-        category: "Other Skills", maxRoll: 100, name: "Trivia", talentCount: 1,
+        category: "Crime and Law", maxRoll: 47, name: "Interrogation",
+        description: "The character is well versed in extracting information from a subject gaining a +1CS to Interrogation."
+    },
+    {
+        category: "Crime and Law", maxRoll: 55, name: "Law",
+        description: "A character with law gains +1CS to all FEATs involving law"
+    },
+    {
+        category: "Crime and Law", maxRoll: 64, name: "Law Enforcement",
+        description: "Includes Gun and Law talents and the Police Procedure talent. If a characer is still with the Law Enforcement agency, he may carry a gun and make arrests legally"
+    },
+    {
+        category: "Crime and Law", maxRoll: 55, name: "Law",
+        description: "A character with law gains +1CS to all FEATs involving law"
+    },
+    {
+        category: "Crime and Law", maxRoll: 64, name: "Law Enforcement",
+        description: "Includes Gun and Law talents and the Police Procedure talent. If a characer is still with the Law Enforcement agency, he may carry a gun and make arrests legally"
+    },
+    {
+        category: "Crime and Law", maxRoll: 70, name: "Military",
+        bonusContactCount: 1,
+        bonusContactType: "Professional/Military(100)",
+        description: "Includes Camouflage, Cartography, Demolition, Electronic Countermeasures, guns, and Heavy Weapons and grants a +1CS to all military matters including army weapons. Gain one co ntact in the military."
+    },
+    {
+        category: "Crime and Law", maxRoll: 77, name: "Negotiations",
+        description: "+1CS to popularity in hostile situations."
+    },
+    {
+        category: "Crime and Law", maxRoll: 83, name: "Police Procedure",
+        description: "Enables a character to avoid both police conflict and security. For example; such a character could apprehend felons and gain access to a crime scene without being arrested."
+    },
+    {
+        category: "Crime and Law", maxRoll: 88, name: "Pick Pocket",
         description: ""
     },
     {
-        category: "Other Skills", maxRoll: 110, name: "Performer", talentCount: 1,
-        description: "The character is someone who acts, sings, dances, mimes, or otherwise uses his Talents to entertain (this is related to the Artist, the key difference being that the Artist may leave the scene of creation; the Performer is identified with that creation directly). A Performer receives 10 karma points for a week's worth of performance, whether in a play, doing a nightclub routine, or working for a movie. "
+        category: "Crime and Law", maxRoll: 92, name: "Security",
+        description: "This talent has two benefits. First, the PC gets a +1CS to Reason to create or remove Security devices, provided the PC has the proper background or a high enough Reason to begin with. Second, the PC gets a +1CS to Intuition for noticing installed security devices."
     },
     {
-        category: "Other Skills", maxRoll: 120, name: "Animal Training", talentCount: 2,
-        description: "The character with this Talent has the ability to train animals to perform certain stunts. The individual does not have Animal Empathy or Communications and Control, but may teach an animal a trick based on the Reason FEAT roll. If the hero with this Talent does have Animal Empathy or Animal Communications and Control as Powers, these Powers are raised by + 1CS. "
+        category: "Crime and Law", maxRoll: 96, name: "Stealth",
+        description: "Stealth is an Intuition based talent. It gives +1CS to intuiton and requires others to make an Intuition Feat at the intensity of the stealthy character's modified intuition in order to spot the character. Any movement requires additional Stealth FEAT's, or the watchers get another roll to detect the character. Detective/Espionage DOES give a bonus to spotting Stealthy characters."
     },
     {
-        category: "Other Skills", maxRoll: 130, name: "Heir to Fortune", talentCount: 2,
-        description: "This is not a Talent, but a situation which brings the character into a lot of money. The minimum Resources of a character with this Talent is Remarkable (if your character is making Excellent Resources or less, do not take this Talent)."
+        category: "Crime and Law", maxRoll: 96, name: "Stealth",
+        description: "Stealth is an Intuition based talent. It gives +1CS to intuiton and requires others to make an Intuition Feat at the intensity of the stealthy character's modified intuition in order to spot the character. Any movement requires additional Stealth FEAT's, or the watchers get another roll to detect the character. Detective/Espionage DOES give a bonus to spotting Stealthy characters."
     },
     {
-        category: "Other Skills", maxRoll: 140, name: "Student", talentCount: 2,
-        description: "The Student character has no other initial Talents, but may gain other Talents at a discounted price. New Talents cost 1000 Karma points if learned from another player character, if learned from outside. Students may maintain Advancement Totals for a Talent along with other forms of Advancement funds. "
-    },
-    {
-        category: "Other Skills", maxRoll: 150, name: "Leadership", talentCount: 2,
-        description: "The hero with this Talent has the brains and understanding of a cohesive group, such that he is a benefit to the team. Any Karma Pool to which the character belongs receives a 50-point bonus, provided the character with this Talent is recognized as the team leader. A Karma Pool may only have one recognized leader, though more than one character with Leadership may belong to one group. When the Leader of a group leaves, the 50 points are deducted from the Karma Pool, but the leader does not receive them for personal use the bonus points only exist as a part of the pool). "
+        category: "Crime and Law", maxRoll: 100, name: "Tracking",
+        description: "This skill allows you to track others and to cover your own trail with any earthbound target and through any type of terrain. When doing the tracking +1CS for tracking people +1CS for each person over one that you are tracking."
     },
 
+    {
+        category: "Cognitive Sciences & Humanities", maxRoll: 13, name: "Anthropology",
+        description: "Reason FEAT bonuses only if a specific culture is taken. However, an overview is known on the subject. More than one branch can be selected, each taking a talent slot."
+    },
+    {
+        category: "Cognitive Sciences & Humanities", maxRoll: 21, name: "Archaeology",
+        description: "Reason FEAT bonuses only if a specific culture is taken. However, an overview is known on the subject. More than one branch can be selected, each taking a talent slot."
+    },
+    {
+        category: "Cognitive Sciences & Humanities", maxRoll: 29, name: "Cartography",
+        description: "Enables a character ot draw and interpret maps and grants +1CS to all attempts."
+    },
+    {
+        category: "Cognitive Sciences & Humanities", maxRoll: 39, name: "History",
+        description: "This character can pick a specific branch of history to be an expert in (World War II, South African, Mayan, Neolithic) and gets a +1CS to Reason FEATs involving the branch. More than one branch can be selected, each taking a slot."
+    },
+    {
+        category: "Cognitive Sciences & Humanities", maxRoll: 52, name: "Philology (linguistics)",
+        description: "The study of human speech including the units, structure, modification of language. (Character gets to pick one language other than English to be fluent in.)"
+    },
+    {
+        category: "Cognitive Sciences & Humanities", maxRoll: 66, name: "Music Cognition",
+        description: "The study of musical development throughout human history. This does not automatically grant the character with the performer talent."
+    },
+    {
+        category: "Cognitive Sciences & Humanities", maxRoll: 80, name: "Philosophy",
+        description: ""
+    },
+    {
+        category: "Cognitive Sciences & Humanities", maxRoll: 100, name: "Psychology",
+        description: "+1CS in all FEATs involving the mind. A popular talent for those with mental powers. These character gain a +1CS on FEATs involving Mental Contact, Domination, Hypnosis, Emotion Control, and Mental Probe powers."
+    },
+
+
+    {
+        category: "Computer Science", maxRoll: 13, name: "Architecture",
+        description: "+1CS in architecture FEATs."
+    },
+    {
+        category: "Computer Science", maxRoll: 29, name: "Artificial Intelligence",
+        description: "The study and research of man made thinking systems."
+    },
+    {
+        category: "Computer Science", maxRoll: 45, name: "Computer Engineering",
+        description: "The design and construction of computer hardware."
+    },
+    {
+        category: "Computer Science", maxRoll: 51, name: "Electronic Counter Measures",
+        description: "Enables a character to understand, operate, and detect the use of bugs, jammers, and decoders. +1CS to Reason in using them, Intuition for finding them."
+    },
+    {
+        category: "Computer Science", maxRoll: 58, name: "Graphics",
+        description: "Web designer, advertising, printing product design and familiarity with the printing industry and various paper products and design tools."
+    },
+    {
+        category: "Computer Science", maxRoll: 75, name: "Security and Encryption",
+        description: ""
+    },
+    {
+        category: "Computer Science", maxRoll: 89, name: "Programming",
+        description: "The creation and development of computer software."
+    },
+    {
+        category: "Computer Science", maxRoll: 100, name: "Virtual Reality",
+        description: "An indepth knowledge of human's interaction with computer systems."
+    },
+
+
+    {
+        category: "Earth Sciences", maxRoll: 11, name: "Agriculture",
+        description: "Deals with field crop production and soil management Also, a combination of the producing operations of a farm, the manufacture and distribution of supplies, and the processing distribution and storage of such supplies. The development and repair of farm equipment, irrigation systems and landscape planning. Can also include forestry, the science of developing, caring for and cultivating forests and/or timberlands."
+    },
+    {
+        category: "Earth Sciences", maxRoll: 19, name: "Ecology",
+        description: "Ecology is the study of living things and how they interact in an ecological system. A PC with ecology will gain a +1CS to Reason to checks involving learning or reasoning out things about a natural balance, like what is throwing it off. Will be an expert on most ecological situations, and may guess at alien ones also."
+    },
+    {
+        category: "Earth Sciences", maxRoll: 26, name: "Geography",
+        description: "Mapping the earth and its surface."
+    },
+    {
+        category: "Earth Sciences", maxRoll: 38, name: "Geology",
+        description: "Deals with the history of the earth and its life esp. in rocks."
+    },
+    {
+        category: "Earth Sciences", maxRoll: 50, name: "Hydrology",
+        description: "Deals with the properties, distribution, and circulation of water on the surface of the land, in the soil and rocks, and in the atmosphere."
+    },
+    {
+        category: "Earth Sciences", maxRoll: 64, name: "Meteorology",
+        description: "Study of weather systems."
+    },
+    {
+        category: "Earth Sciences", maxRoll: 75, name: "Metallurgy",
+        description: "The study of metal and its practical uses."
+    },
+    {
+        category: "Earth Sciences", maxRoll: 90, name: "Oceanography",
+        description: "Study of the oceans movements and effects on land and atmosphere."
+    },
+    {
+        category: "Earth Sciences", maxRoll: 100, name: "Seismology",
+        description: "The study of earth movement. Includes glaciology and volcanology."
+    },
+
+
+
+    {
+        category: "Engineering", maxRoll: 6, name: "Aviation and Aeronautics Engineering",
+        description: "This is not piloting. It is the understanding and development of flight principles and aircraft design. There are people who know how to build planes but not fly them. Characters with this talent get the benefit of having their projects cost -1CS less in resource rank to build."
+    },
+    {
+        category: "Engineering", maxRoll: 11, name: "Astronautic Engineering",
+        description: "This allows the character to design, build and modify out of atmosphere space craft. Characters with this talent get the benefit of having their projects cost -1CS less in resource rank to build."
+    },
+    {
+        category: "Engineering", maxRoll: 16, name: "Automotive Engineering",
+        description: ""
+    },
+    {
+        category: "Engineering", maxRoll: 19, name: "Battlesuit Design",
+        description: "This skill allows the character +1CS to design and build battlesuits, harnesses, etc."
+    },
+    {
+        category: "Engineering", maxRoll: 21, name: "Civil Engineering",
+        description: "Deals with roads, city works, water systems, overpasses, etc."
+    },
+    {
+        category: "Engineering", maxRoll: 25, name: "Cybernetics/Bionics",
+        description: "Study of living systems with the intention of applying their principles to the design of engineering systems. Drawing on interdisciplinary research in the mechanical and life sciences, bionics has been used in audiovisual equipment based on human ear function, to design air and naval craft patterned after biological structure of birds and fish, and to incorporate principles of the human neurological system in data-processing systems. Another application has been the development of artificial limbs controlled by recognition of the electrical patterns in muscle tissue and direct electronic stimulation of the visual cortex via an implant and camera system. This talent allows the character the ability to design advanced cybernetic creations. With medicine/surgery, the character can actually perform surgery, allowing the construction of replacement organs, limbs, etc."
+    },
+    {
+        category: "Engineering", maxRoll: 28, name: "Demolitions",
+        description: "Precise knowledge of how to build, use and diffuse explosive devices."
+    },
+    {
+        category: "Engineering", maxRoll: 31, name: "Gadgetry",
+        description: "Can build gadgetry, and recieve a +1CS to all FEATs involving them."
+    },
+    {
+        category: "Engineering", maxRoll: 35, name: "Identify Gadgets",
+        description: "Enables a character to Identify and use Gadgets but not build them. Alien technology results in -1CS to -5CS"
+    },
+    {
+        category: "Engineering", maxRoll: 38, name: "Electrical Engineering",
+        description: ""
+    },
+    {
+        category: "Engineering", maxRoll: 38, name: "Electrical Engineering",
+        description: ""
+    },
+    {
+        category: "Engineering", maxRoll: 44, name: "Locksmith",
+        description: ""
+    },
+    {
+        category: "Engineering", maxRoll: 50, name: "Marine Engineering",
+        description: "Includes the building of ships, submarines and underwater constructs."
+    },
+    {
+        category: "Engineering", maxRoll: 57, name: "Mechanical Engineering",
+        description: "The character with talent is capable of building complex machines for an assortment of tasks."
+    },
+    {
+        category: "Engineering", maxRoll: 63, name: "Military Engineering",
+        description: ""
+    },
+    {
+        category: "Engineering", maxRoll: 69, name: "Nuclear Engineering",
+        description: "Deals with the construction and development of nuclear powered, manipulating and control devices."
+    },
+    {
+        category: "Engineering", maxRoll: 76, name: "Repair/Tinkering",
+        description: "Modification of existing machines or equipment."
+    },
+    {
+        category: "Engineering", maxRoll: 82, name: "Robotics",
+        description: "This skill allows a +1CS in dealing with Robotic construction, design, matianence, and theory. When used with the computer skill, the character can design AI constructions."
+    },
+    {
+        category: "Engineering", maxRoll: 88, name: "Structural Engineering",
+        description: "This allows the character to design, build and modify structural complexes (buildings, bases, tunnels, mines, etc.) Building bases or hideouts are -1CS to effective cost of course."
+    },
+    {
+        category: "Engineering", maxRoll: 95, name: "Weapons Engineering",
+        description: "Precise knowledge of how to build, use and modify guns, missiles and artillery. This talent does not include explosive devices. (see Demolitions.)"
+    },
+    {
+        category: "Engineering", maxRoll: 100, name: "Weapons Tinkering",
+        description: "Modification of existing weapons."
+    },
+
+
+    {
+        category: "Fighting", maxRoll: 3, name: "Aerial Combat",
+        description: "This skill allows a character +1CS to fighting when engages mid-air. The character has some knowledge of aerial tactics, and possesses keen ability to use such."
+    },
+    {
+        category: "Fighting", maxRoll: 7, name: "Underwater Combat",
+        description: "The Skill allows a character to operate in combat conditions without penality underwater.. Furthermore the character recieves a +1CS to all Fighting and Agility FEAT's whilst submerged"
+    },
+    {
+        category: "Fighting", maxRoll: 11, name: "Climbing",
+        description: "Allows you to climb trees, telephones , buildings cliffs, etc. +2CS to Agility when trying this. Failure can be painful."
+    },
+    {
+        category: "Fighting", maxRoll: 15, name: "Dodging",
+        description: "+1CS to dodging"
+    },
+    {
+        category: "Fighting", maxRoll: 19, name: "Gymnastics",
+        description: "Enables a character to perform flips, rolls, etc, and also allows a character to juggle. This skill will readily impress a crowd and increase the popularity of the hero +2 every time he works it into a battle where popularity is available."
+    },
+    {
+        category: "Fighting", maxRoll: 23, name: "Martial Arts A",
+        description: "This form of martial arts concentrates on using an opponent's strength against him, and is typical of oriental- American forms such as judo and karate. The practitioner of this type of martial arts can Stun or Slam an opponent regardless of their comparative Strengths and Endurances."
+    },
+    {
+        category: "Fighting", maxRoll: 27, name: "Martial Arts B",
+        description: "This form of martial arts is keyed on offense and inflicting damage in short, quick bursts, and includes such disciplines as boxing. The practitioner of this form of martial arts gains a +1CS to Fighting ability when engaged in unarmed combat."
+    },
+    {
+        category: "Fighting", maxRoll: 31, name: "Martial Arts C",
+        description: "This form of martial arts concentrates on holds and escapes. The practitioner of this form gains a +1CS to his Strength for Grappling attacks (including damage), a +1CS to Strength for Escaping and a +1CS to Agility for purposes of Dodging."
+    },
+    {
+        category: "Fighting", maxRoll: 34, name: "Martial Arts D",
+        description: "This meditative form of martial arts searches out the weak spots of the opponent's defenses and strikes against them. The practitioner of this form of attack may ignore the effects of Body Armor for determining Stun and Slam results. The attack by the character with this Talent does not have to inflict damage to force a check for possible Stun and Slam. The disadvantage is that the target of this attack must be studied for two rounds before the effects may be brought into play. The character with this Talent does not have to attack the character, only watch him in battle for two rounds previous to attacking."
+    },
+    {
+        category: "Fighting", maxRoll: 38, name: "Martial Arts E",
+        description: "This form of martial arts encourages quick striking to catch the opponent off-guard. Heroes with this form of Martial Arts are at +1CS to initiative rolls in unarmed combat."
+    },
+    {
+        category: "Fighting", maxRoll: 42, name: "Martial Arts F",
+        description: "This martial arts focuses on circular movements and deflecting. The character receives +1CS to strength for blocking and checks vs. Slams and Stuns. This form has no offensive applications, but instead keys in on defense by outlasting the opponent."
+    },
+    {
+        category: "Fighting", maxRoll: 45, name: "Martial Arts G",
+        description: "This fighting form relies more on intuition than intelligence. The practitioner of this form can wait until all actions have been declared before he or she must declare an action. This is limited to melee fighting situations only, and cannot be used to state anything but a fighting oriented action."
+    },
+    {
+        category: "Fighting", maxRoll: 49, name: "Martial Arts H",
+        description: "The martial artist has trained to have complete control and awareness of his body. He can use this martial art to apply a +2CS to Endurance for the purpose of healing lost health. Alternatively, he can apply a +2CS to endurance for the purposes of holding his/her breath underwater or under gas attacks, provided the martial artist does not move or attack while using this talent."
+    },
+    {
+        category: "Fighting", maxRoll: 53, name: "Martial Arts I",
+        description: "This martial arts is very unique. It allows a teacher (sensei) to gain karma from the actions of his/her pupils. A character with this martial art will gain 10% of karma gained from the student (s) and can channel their energies to allow a karma pool between himself and his student (s) even when the master is not nearby his student (s)."
+    },
+    {
+        category: "Fighting", maxRoll: 57, name: "Martial Arts J",
+        description: "This martial art involves using your surroundings to become an extension of yourself. The martial artist is totally aware of all furniture, props, natural objects etc in the surrounding area For example, slamming a refridgerator door on your opponent or pulling the carpet out from under their feet. The martial artist never needs to make a successful grab for any loose (not possessed by anyone) objects in the area while fighting despite being stressed. As well, any attacker must make a successful intuition feat. Failure means the attacker has struck a nearby item of the Martial Artist's choosing and may receive damage as per the rules on breaking things."
+    },
+    {
+        category: "Fighting", maxRoll: 61, name: "Martial Arts K",
+        description: "This martial art focuses on understanding the pressure points and weak spots of the human body. Characters with this talent may opt to strike a target during slugfest combat with a \"nerve pinch\". A yellow fighting feat roll is needed (the equivalent of a slugfest \"bullseye\" result). Instead of doing normal damage, the target must make a successful Endurance Feat vs Remarkable Intensity or fall unconscious for 1-10 rounds. If the target is Blindsided, treat the intensity as Incredible. Note: this martial art can only be used against human targets."
+    },
+    {
+        category: "Fighting", maxRoll: 65, name: "Martial Arts L",
+        description: "This Martial Art focuses on sumo wrestling and absorbing/redirecting force. The so called \"roll with the punches\", this martial art allows a character a +1CS to endurance for the purpose of checking for slam and stun results from slugfest combat only. This martial art can not be applied if the hero is blindsided."
+    },
+    {
+        category: "Fighting", maxRoll: 69, name: "Martial Arts M",
+        description: "This Talent focuses on fighting, for the purpose of evading. Allow a +1CS column shift to fighting for determining the effects of evasion only."
+    },
+    {
+        category: "Fighting", maxRoll: 73, name: "Martial Arts N",
+        description: "This martial Art involves putting all of your energy focused on to a single blow. An example would be a haymaker, or a long flying kick to finish an already shaky opponent. The good news is the effects of this attack are amplified. Apply a +1CS to damage rolled under the slugfest column. When the target is checking for effects the target must shift his endurance down -1CS for checking slams and stuns.  The Bad news is this attack requires a significant amount of timing and energy. The target is +1CS for evading this attack. As well, the martial artist must check for a red fighting feat. Failure indicates the attacker may not take any actions in the next round. As well, even if this feat is successful the attacker always loses initiative in the next combat round."
+    },
+    {
+        category: "Fighting", maxRoll: 77, name: "Martial Arts O",
+        description: "The martial artist has trained in the martial arts through it's original form, studying the movements of animals. The martial artist may apply a +1CS to the applicable ability (fighting for evading, strength for blocking etc.) for performing any offensive or defensive actions when fighting wild animals. Note: this martial art requires a talent feat. Automatic - Any animal indigineous to the area the martial artist has trained."
+    },
+    {
+        category: "Fighting", maxRoll: 81, name: "Martial Arts P",
+        description: "This martial art concentrates on working with teammates in a combined attack, where the stronger of two characters hurls/throws/tosses the other, either as a projectile to strike an opponent or to pass over, land upon or behind a specific target. The martial art allows the character to utilize the higher of the two individuals agility to determine success, regardless of who is projector or projected."
+    },
+    {
+        category: "Fighting", maxRoll: 85, name: "Martial Arts Q",
+        description: "The martial artist is trained as receving damage, such as breaking a wooden chair on his/her back without flinching. The martial artist must be standing still and requires a psyche feat. If these conditions are met, the martial artist will receive excellent body armour against blunt and slugfest attacks."
+    },
+    {
+        category: "Fighting", maxRoll: 89, name: "Martial Arts R",
+        description: "The martial artist is trained to break objects with his body such as wood, bricks, blocks of ice, etc. Apply a +1CS to damage for the purpose of breaking inanimate objects only. This martial art can be combined with Martial arts N to allow a +2CS to damage for breaking things but all of the limitations of martial arts N still apply."
+    },
+    {
+        category: "Fighting", maxRoll: 92, name: "Quick-Striking",
+        description: "Characters with this talent gain +1CS to Fighting FEATs involving trying for multiple attack rolls. Also gains a +1 on initiative rolls."
+    },
+    {
+        category: "Fighting", maxRoll: 94, name: "Wrestling",
+        description: "The hero with this Talent is proficient in applying holds. It includes familiar types of wrestling as well as the sumo forms of the art. The hero with this Talent gains a +2CS when making Grappling attacks, but gains no benefit in damage. A hero with Martial Arts B and this Talent gains a +3CS to hit in a Grappling attack, and a +1CS for damage."
+    },
+    {
+        category: "Fighting", maxRoll: 96, name: "Thrown Objects",
+        description: "The hero with this Talent gains a +1CS with all Throwing attacks, and +1CS on Catching. This applies to both thrown weapons and normal items. If the hero has the Thrown Weapons Talent as well, the modification is +2CS when using thrown weapons."
+    },
+    {
+        category: "Fighting", maxRoll: 98, name: "Acrobatics",
+        description: "The hero with this Talent is very limber and as such gains advantages when under attack. The hero has a +1CS when dodging, evading, and escaping."
+    },
+    {
+        category: "Fighting", maxRoll: 100, name: "Tumbling",
+        description: "The hero with this Talent knows how to fall and land without undue injury. Individuals with this Talent may make an Agility FEAT to land feet-first after any fall that does not inflict damage."
+    },
+
+
+    {
+        category: "Medicine", maxRoll: 5, name: "Acupuncture",
+        description: ""
+    },
+    {
+        category: "Medicine", maxRoll: 10, name: "Cardiology",
+        description: ""
+    },
+    {
+        category: "Medicine", maxRoll: 15, name: "Chiropractic",
+        description: ""
+    },
+    {
+        category: "Medicine", maxRoll: 20, name: "Dentistry",
+        description: ""
+    },
+    {
+        category: "Medicine", maxRoll: 25, name: "Emergency Medicine",
+        description: "This character is capable of working in a trauma unit, emergency room or any other kind of immediate care."
+    },
+    {
+        category: "Medicine", maxRoll: 33, name: "First Aid",
+        description: "This Talent grants the character the ability to immediately halt Endurance rank loss, the and the recovery of one rank immediately. In addition, the hero with this Talent can stabilize a dying character at Shift-0 Health up to 5 rounds after that character reaches that level."
+    },
+    {
+        category: "Medicine", maxRoll: 39, name: "Geriatrics",
+        description: "Medical care for older people."
+    },
+    {
+        category: "Medicine", maxRoll: 44, name: "Obstetrics and Gynecology",
+        description: "Women and babies and related problems."
+    },
+    {
+        category: "Medicine", maxRoll: 49, name: "Oncology",
+        description: "The study of cancer."
+    },
+    {
+        category: "Medicine", maxRoll: 54, name: "Pathology",
+        description: "The study of diseases and their nature."
+    },
+    {
+        category: "Medicine", maxRoll: 60, name: "Pediatrics",
+        description: "Children"
+    },
+    {
+        category: "Medicine", maxRoll: 65, name: "Pharmacology",
+        description: "The study of drugs"
+    },
+    {
+        category: "Medicine", maxRoll: 70, name: "Physical Therapy",
+        description: ""
+    },
+    {
+        category: "Medicine", maxRoll: 75, name: "Plastic Surgery",
+        description: ""
+    },
+    {
+        category: "Medicine", maxRoll: 81, name: "Psychiatry",
+        description: "Deals with mental, emotional and behavioral disorders. The hero with this Talent has a background in studies of the mind, and as such gains a + 1CS on all FEATs involving the mind."
+    },
+    {
+        category: "Medicine", maxRoll: 87, name: "Radiology",
+        description: "The use of radiation in the diagnosis and treatment of disease."
+    },
+    {
+        category: "Medicine", maxRoll: 93, name: "Sports Medicine",
+        description: ""
+    },
+    {
+        category: "Medicine", maxRoll: 98, name: "Surgery",
+        description: "Allows the charactre to repair extensive physical damage. Surgery skill gives you the ability to perform surgery and a +1CS to Reason FEATs while performing them. If the surgery is performed anywhere but a hospital type setting, the surgery is done at a -2CS. Extensive surgery on an Alien or other abnormal physiology there is also a -2CS. Surgery is very dangerous to the patient. If the Surgery is succesful the patient recieves twice his endurance points in health. If the surgery is unsuccessful the patient Loses three times his Endurance points. If the character reaches Shift-0 he may die. Completing a succesful surgery should be worth a lot of Karma."
+    },
+    {
+        category: "Medicine", maxRoll: 100, name: "Veterinary",
+        description: "Taking care of animals medical needs."
+    },
+
+
+    {
+        category: "Mystic and Mental", maxRoll: 8, name: "Bibliophile",
+        description: "The character has an extensive knowledge of magical books, scrolls, or other primarily informational items, and the lore concerning them. He has a +2CS when using or researching these."
+    },
+    {
+        category: "Mystic and Mental", maxRoll: 16, name: "Demonologist",
+        description: "The character has studied accounts of demons and he knows how dangerous and hostile they are. The character receives a +1CS in any situation involving demons, including research, communication, identification and combat."
+    },
+    {
+        category: "Mystic and Mental", maxRoll: 24, name: "Mesmerism and Hypnosis",
+        description: "This talent is a primitive form of Mind Control at the Power rank number equal to the Reason of the character with this Talent. Information can be gained as per a Mental Probe, and posthypnotic suggestions may be implanted within the victim's mind. Any attempt to force an individual to do something that he would not normally do, or divulge information that he would not normally reveal, will cause the hypnotism to break. A hypnotic command fades in 1-10 hours after it is given."
+    },
+    {
+        category: "Mystic and Mental", maxRoll: 32, name: "Mystic Background",
+        description: "This \"Talent\" shows that the character has some background with magical forces. A character with this Talent may have Magical Powers, with the approval of the Judge."
+    },
+    {
+        category: "Mystic and Mental", maxRoll: 40, name: "Occult Lore",
+        description: "The character has made extensive studies into the area of occult happenings, including: unexplained events and mysteries of the world, hauntings, and other manifestations of the spirit world. He has a +2CS when researching or dealing with occult events."
+    },
+    {
+        category: "Mystic and Mental", maxRoll: 48, name: "Resist Domination",
+        description: "This permits the character to resist mental attacks as if the character had a mental power of Psyche +1CS."
+    },
+    {
+        category: "Mystic and Mental", maxRoll: 54, name: "Ritual Magics",
+        description: "Reason FEAT to perform magical ceremonies. To do this you need knowledge of the ceremony (usually from a book), equiptment, and time. Time is 1d20 times 2 = rounds of spellcasting needed."
+    },
+    {
+        category: "Mystic and Mental", maxRoll: 61, name: "Runesmith",
+        description: "The character is a transcriber and translator of runes, especially ancient, magical runes. The character has a +2CS whenever studying, deciphering, or inscribing runes."
+    },
+    {
+        category: "Mystic and Mental", maxRoll: 69, name: "Scholar of Antiquities",
+        description: "The character has an extensive knowledge of antiques, especially ancient magical artifacts and lore concerning them. He gains a +2CS when dealing with them"
+    },
+    {
+        category: "Mystic and Mental", maxRoll: 77, name: "Sleight of Hand",
+        description: "The character with this Talent may palm small items, making them appear or disappear with Agility +1CS ability."
+    },
+    {
+        category: "Mystic and Mental", maxRoll: 85, name: "Theogony",
+        description: "The character has a +2CS when researching information on the powerful extradimensional beings and gods of the Marvel"
+    },
+    {
+        category: "Mystic and Mental", maxRoll: 93, name: "Trance",
+        description: "The character may place himself into a trance. While in a trance the character slows his body functions to such a level that he may be assumed to be deceased. A character in a trance reduces needs for food and water to a minimal level, and may regain Endurance ranks at one rank per day."
+    },
+    {
+        category: "Mystic and Mental", maxRoll: 100, name: "Zoologist of Magic",
+        description: "Allows a +1CS when attempting to identify magical creatures and their powers."
+    },
+
+
+    {
+        category: "Other", maxRoll: 5, name: "Accounting",
+        description: ""
+    },
+    {
+        category: "Other", maxRoll: 9, name: "Actor",
+        description: "This gives the ability to be used to disguise a character. An actor recieves a +1CS to all disguise attempts and opponents recieve a -1CS to seeing through the disguise"
+    },
+    {
+        category: "Other", maxRoll: 14, name: "Animal Training",
+        description: "This character may teach animals simple tricks. If the character has animal communication, control, or empathy they recieve a +1CS"
+    },
+    {
+        category: "Other", maxRoll: 19, name: "Artist",
+        description: "The character with an artist background creates works of art, either for himself or for sale to others. This includes painting, sculpting, and writing."
+    },
+    {
+        category: "Other", maxRoll: 25, name: "Business/Finance",
+        description: "The hero is familiar with the world of business, corporate finance, and how money works. Initial resources are a minimum of Good, and the hero gains a +1CS for FEAT rolls dealing with money."
+    },
+    {
+        category: "Other", maxRoll: 30, name: "Escape Artist",
+        description: "+1CS to strength in trying to escape holds or bonds."
+    },
+    {
+        category: "Other", maxRoll: 32, name: "Heir To A Fortune",
+        description: "This is not a Talent, but a situation which brings the character into a lot of money. The minimum Resources of a character with this Talent is Remarkable"
+    },
+    {
+        category: "Other", maxRoll: 36, name: "Instructor",
+        description: "Allows the character to teach a particular ability, allowing students the learning bonus. The teacher is given the same bonus for instruction, and is profficent (+1CS) in a particular skill"
+    },
+    {
+        category: "Other", maxRoll: 41, name: "Journalism",
+        bonusContactsCount: 2,
+        bonusContact: "Professional/Media(100)",
+        description: ""
+    },
+    {
+        category: "Other", maxRoll: 46, name: "Leadership",
+        description: "The Hero with this talent is a natural born leader. If this Ctd style=em haracter forms akarma pool with a team then that pool receives a 50 point bonus, provided that this character is recognized as the team leader. When the leader leaves, the 50 points go with him. The leader does not gain them, they simply leave the pool. Only one leader per team."
+    },
+    {
+        category: "Other", maxRoll: 52, name: "Performer",
+        description: "The character is someone who acts, sings, dances, mimes, or otherwise uses his Talents to entertain."
+    },
+    {
+        category: "Other", maxRoll: 57, name: "Persuasion",
+        description: "This talent provides the ability to convince someone to believe something or perform some action. Like Interrogation, a persuasion attempt normally requires 15 minutes."
+    },
+    {
+        category: "Other", maxRoll: 63, name: "Pick Pocketing",
+        description: "Allows the character the ability to \"borrow\" items from another person without their knowledge. Can grant as much as +2CS to Agility if item is in an accessible place (outside pocket of an overcoat.)"
+    },
+    {
+        category: "Other", maxRoll: 69, name: "Politics",
+        bonusContactsCount: 2,
+        description: "Being involved with politics in the public eye, you are either realy liked or really hated. If the charcter is already freindly you gain a +1CS in getting help, but if the character is unfriendly or hostile you recieve an additional -1CS. You gain 2 contacts, Usually your chief supporter"
+    },
+    {
+        category: "Other", maxRoll: 76, name: "Seduction",
+        description: "The character receives +1 to Persuasion attempts with members of the opposite sex"
+    },
+    {
+        category: "Other", maxRoll: 82, name: "Sewing and Tailoring",
+        description: ""
+    },
+    {
+        category: "Other", maxRoll: 89, name: "Streetsmart",
+        bonusContactsCount: 2,
+        description: "Character know the streets and how to survive theere. Character also gains 2 contacts at the street level"
+    },
+    {
+        category: "Other", maxRoll: 93, name: "Student",
+        description: "Similair to Heir to fortune, this talent may only be chosen at the start of play. The student character has no other initial talents, but may gain other talents at a discounted price.New talents cost 1000 karma points if learned from another player, 800 if learned from an outside source. Students may maintain Advancement totals for a Talent along with other forms of advancement funds."
+    },
+    {
+        category: "Other", maxRoll: 96, name: "Thief",
+        description: "Allows the ability to picklocks, access security, and safecracking"
+    },
+    {
+        category: "Other", maxRoll: 99, name: "Trivia",
+        description: "Pick a subject to be a know-it-all about."
+    },
+    {
+        category: "Other", maxRoll: 1, name: "",
+        description: "Enables a character to produce novel, screenplays, comic books, poetry, coloring books. Takes at least a week to complete."
+    },
+
+
+    {
+        category: "Physics", maxRoll: 15, name: "Acoustics",
+        description: "Deals with the study of noise control and Sonoluminescence, using sound to produce light in liquids."
+    },
+    {
+        category: "Physics", maxRoll: 32, name: "Atomic Physics",
+        description: "The study of solely atomic physics. Includes nuclear physics."
+    },
+    {
+        category: "Physics", maxRoll: 48, name: "Cryogenics",
+        description: "Deals with the production and effects of very low temperatures."
+    },
+    {
+        category: "Physics", maxRoll: 66, name: "Energy and Particle Physics",
+        description: "The study of the electromagnetic spectrum of energy and research into new power sources."
+    },
+    {
+        category: "Physics", maxRoll: 83, name: "Mathematics",
+        description: "The character with this talent is a math whiz, unbelievably good with numbers and as such gets a plus +1CS to all problems that can be solved mathematically."
+    },
+    {
+        category: "Physics", maxRoll: 100, name: "Quantum Physics",
+        talentCount: 2,
+        description: "Research and development into teleportation, worm holes, warp theory and other MARVELous ideas. The character can even start off by creating a new specialty field. Counts as two talents."
+    },
+
+    {
+        category: "Piloting", maxRoll: 15, name: "Airplane Pilot",
+        description: "Includes commercial jets, small planes and fighter jets."
+    },
+    {
+        category: "Piloting", maxRoll: 27, name: "Automobile Specialist",
+        description: "+1CS to driving and controlling cars, trains, tanks, hovercrafts, etc."
+    },
+    {
+        category: "Piloting", maxRoll: 38, name: "Boat Pilot",
+        description: "+1CS to all FEATs involving sailboats, aircraft carriers, submarines, tugboats, and so on."
+    },
+    {
+        category: "Piloting", maxRoll: 50, name: "Helicopter",
+        description: ""
+    },
+    {
+        category: "Piloting", maxRoll: 63, name: "Military Vehicle Specialist",
+        description: "Includes tanks, jeeps and other off-road warcraft."
+    },
+    {
+        category: "Piloting", maxRoll: 77, name: "Motorcycle",
+        description: ""
+    },
+    {
+        category: "Piloting", maxRoll: 89, name: "Spacecraft",
+        description: "Includes space shuttles and out of atmosphere ships."
+    },
+    {
+        category: "Piloting", maxRoll: 100, name: "Submersible Vehicle",
+        description: "Includes submarines, diving bells and other underwater vehicles."
+    },
+
+
+    {
+        category: "Weapons", maxRoll: 6, name: "Ancient Weapons",
+        description: "This skill gives the player the ability to use weaponry from a specific period and setting previous to the advent of gunpowder. Further, the Hero must pick the style and period of said weaponry, wheter it be Ancient egypt or Latter Rome."
+    },
+    {
+        category: "Weapons", maxRoll: 12, name: "Battlesuit operation",
+        description: "The Hero gains the ability to use a battlesuit without penality. This ability, while not conferring a +CS, eliminates the -CS for using unfamiliar technology, new weapons systems, or new versions of said suit."
+    },
+    {
+        category: "Weapons", maxRoll: 20, name: "Blunt Weapons",
+        description: "+1CS with Clubs, bats, etc."
+    },
+    {
+        category: "Weapons", maxRoll: 27, name: "Bows",
+        description: "With this talent gain a +1CS, and may fire and reload in a single round. They may fire multiple arrows on a successful Agility FEAT. Without this talent -1CS to Agility to hit when using bows"
+    },
+    {
+        category: "Weapons", maxRoll: 34, name: "Energy Weapons",
+        description: "The Hero gains a +1CS to using energy weapons, such as lasers, electrostun rifles, or plasma blasters, save for heavy weapons such as Laser Cannons and Vehicle Weapons."
+    },
+    {
+        category: "Weapons", maxRoll: 42, name: "Guns",
+        description: "+1CS to all hand guns and Rifles."
+    },
+    {
+        category: "Weapons", maxRoll: 49, name: "Marksmen",
+        description: "+1CS to hit with any distance weapon that requires line of sight to hit, and marksman takes no penalty for range."
+    },
+    {
+        category: "Weapons", maxRoll: 56, name: "Oriental Weapons",
+        description: "This grants the character a +1CS to fighting or agility when using the following; Shurikens, crossbows, sais, and oriental swords and daggers."
+    },
+    {
+        category: "Weapons", maxRoll: 63, name: "Heavy Weapons",
+        description: "Heavy Weapons allows the character +1CS for the operation of most heavy weapons, including vehicular mounted weapons and tripod mounted weapons."
+    },
+    {
+        category: "Weapons", maxRoll: 70, name: "Fencing",
+        description: "The Fencing skill allows the hero +1CS for the use of fencing, and also allows for the skills of parrying, disarming, and quickstrikes with a successful Yellow Agility FEAT."
+    },
+    {
+        category: "Weapons", maxRoll: 76, name: "Paired Weapons",
+        description: ""
+    },
+    {
+        category: "Weapons", maxRoll: 83, name: "Sharp Weapons",
+        description: "+1CS to hit with swords, daggers and spears (unless thrown). Does not include Claws and other natural extensions"
+    },
+    {
+        category: "Weapons", maxRoll: 90, name: "Thrown Weapons",
+        description: "+1CS to Agility for Spears, disks, shurikens, snowballs, etc."
+    },
+    {
+        category: "Weapons", maxRoll: 96, name: "Weapons Master",
+        description: "Character gains a +1CS to hit with any weapon that requires a Fighting FEAT to hit."
+    },
+    {
+        category: "Weapons", maxRoll: 100, name: "Weapons Specialist",
+        description: "Character gains +2CS with a single weapon of choice. Character also recieves a +1 to initiative when using that weapon."
+    },
 ];
 
 const CONTACT_CATEGORIES_ULTIMATE_TABLE = [
@@ -872,47 +1579,59 @@ const CONTACT_CATEGORIES_ULTIMATE_TABLE = [
 
 const CONTACT_TYPE_LIST_ULTIMATE_TABLE = [
     {
-        category: "Professional", maxRoll: 12, name: "Medicine",
+        category: "Professional", maxRoll: 9, name: "Medicine",
         description: "The hero with this Contact has a friend, ally or acquaintance with Medicine Talent, who will provide medical advice and services either for free or charge an affordable fee."
     },
     {
-        category: "Professional", maxRoll: 24, name: "Law",
+        category: "Professional", maxRoll: 18, name: "Law",
         description: "The hero with this Contact has a friend, ally, or acquaintance with Law Talent, who will provide legal assistance for a reduced fee and legal advice to the hero for free."
     },
     {
-        category: "Professional", maxRoll: 36, name: "Law Enforcement",
+        category: "Professional", maxRoll: 27, name: "Law Enforcement",
         description: "The hero with this Contact has a friend, ally, or acquaintance with Law-enforcement Talent, who is in addition a member of the law-enforcement profession."
     },
     {
-        category: "Professional", maxRoll: 50, name: "Business World",
+        category: "Professional", maxRoll: 36, name: "Business World",
         description: "The character has a Contact in the world of business or finance."
     },
     {
-        category: "Professional", maxRoll: 60, name: "Crime",
+        category: "Professional", maxRoll: 45, name: "Military",
+        description: "The character has a Contact in the military."
+    },
+    {
+        category: "Professional", maxRoll: 54, name: "Crime",
         description: "The character with this Contact has some connection with the criminal underworld. This ranges from having a snitch that passes on information about street action up to a Contact high in the hierarchy of organized crime."
     },
     {
-        category: "Professional", maxRoll: 70, name: "Engineering",
+        category: "Professional", maxRoll: 63, name: "Engineering",
         description: "The character with this Contact has some connection with someone who builds, either independently or for a larger corporation. The character may aid in the construction of devices. "
     },
     {
-        category: "Professional", maxRoll: 80, name: "Psychiatry",
+        category: "Professional", maxRoll: 72, name: "Psychiatry",
         description: "The character with this Contact has some connection with a character in the fields of psychiatry or psycho-analysis, including doctors devoted to the curing of the criminal mind. "
     },
     {
-        category: "Professional", maxRoll: 95, name: "Espionage",
+        category: "Professional", maxRoll: 82, name: "Espionage",
         description: "The character with this Contact has connections with the world of espionage. This includes agencies such as the FBI, CIA, NSA, KGB, Interpol, or MI5."
     },
     {
-        category: "Professional", maxRoll: 100, name: "Hero Group",
-        description: "The character has some connection with, or was or is a member of or an ally of some existing group of super-powered heroes, and a s such may enjoy the privileges thereof. This includes using their equipment, calling them in on an emergency, using their HQ, and benefitting from their training."
+        category: "Professional", maxRoll: 98, name: "Media",
+        description: "The character with this Contact has connections with his Tribe. , and as such may enjoy the privileges thereof. This includes using their equipment, calling them in on an emergency, and benefitting from their other resources."
     },
     {
-        category: "Scientific", maxRoll: 12, name: "Chemistry",
+        category: "Professional", maxRoll: 100, name: "Hero Group",
+        description: "The character has some connection with, or was or is a member of or an ally of some existing group of super-powered heroes, and as such may enjoy the privileges thereof. This includes using their equipment, calling them in on an emergency, using their HQ, and benefitting from their training."
+    },
+    {
+        category: "Scientific", maxRoll: 8, name: "Laboratory",
         description: "The character with this Contact has some connection with a character in the fields of chemistry."
     },
     {
-        category: "Scientific", maxRoll: 25, name: "Biology",
+        category: "Scientific", maxRoll: 14, name: "Chemistry",
+        description: "The character with this Contact has some connection with a character in the fields of chemistry."
+    },
+    {
+        category: "Scientific", maxRoll: 27, name: "Biology",
         description: "The character with this Contact has some connection with a character in the fields of biology."
     },
     {
@@ -940,6 +1659,10 @@ const CONTACT_TYPE_LIST_ULTIMATE_TABLE = [
         description: "The character with this Contact has some connection with a character in the fields of electronics."
     },
     {
+        category: "Political", maxRoll: 20, name: "Tribe",
+        description: "The hero has an ally in the local political scene: alderman, mayor, or councilman. The Contact may provide information on what is going on in the neighborhood. "
+    },
+    {
         category: "Political", maxRoll: 50, name: "Local",
         description: "The hero has an ally in the local political scene: alderman, mayor, or councilman. The Contact may provide information on what is going on in the neighborhood. "
     },
@@ -952,12 +1675,16 @@ const CONTACT_TYPE_LIST_ULTIMATE_TABLE = [
         description: "The hero has a Contact in national government — a congressional aide, a congressman, representative, member of the Executive Branch or one of the myriad number of agencies in the capital."
     },
     {
-        category: "Political", maxRoll: 95, name: "Other National",
+        category: "Political", maxRoll: 90, name: "Other National",
         description: "The hero has a Contact in national government — someone else's. The hero may be friendly with the leadership or government apparatus of any other nation, friend or foe. This Contact, if known to others, may create difficulties in dealing with other political Contacts. Resources available are as for National government, but the character must be able to communicate with the Contact to gain any materials. "
     },
     {
-        category: "Political", maxRoll: 99, name: "International",
+        category: "Political", maxRoll: 94, name: "International",
         description: "The hero has Contacts in the UN or in a similar multi-national organization, such as the Common Market of Europe."
+    },
+    {
+        category: "Political", maxRoll: 98, name: "Race",
+        description: "The hero has Contacts in the race of his origin. "
     },
     {
         category: "Political", maxRoll: 100, name: "Planetary",
@@ -972,5 +1699,3 @@ const CONTACT_TYPE_LIST_ULTIMATE_TABLE = [
         description: "The hero knows someone who studies recognized mythology and actions of the extra-dimensional beings known as gods (Olympians, Asgardians, etc.). The Contact will specialize in one pantheon of deities."
     },
 ];
-
-

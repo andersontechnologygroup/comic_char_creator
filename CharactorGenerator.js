@@ -38,7 +38,7 @@ class CharacterGenerator {
   weaknessStimulusRoll = 0;
   weaknessEffectRoll = 0;
   weaknessDurationRoll = 0;
-  weaknessRankRoll =  0;
+  weaknessRankRoll = 0;
 
   randomRanksColumn = -1;
 
@@ -131,28 +131,6 @@ class CharacterGenerator {
     char.identity = this.identitySecret ? "Secret" : "Public";
 
     return char;
-  }
-
-  determineHealth(char) {
-    const physicalFormRow = this.physicalFormTable.find(row => row.name === char.physicalForm);
-    const healthAdjustment = Utility.getValue(physicalFormRow, "healthAdjustment", 0);
-    if (Number.isInteger(healthAdjustment)) {
-      char.health += healthAdjustment;
-      char.logRoll("Health Adjustment", healthAdjustment, char.health);
-    }
-
-    if (!Number.isInteger(healthAdjustment)) {
-      switch (healthAdjustment.substring(0, 1)) {
-        case "*":
-          char.health *= parseInt(healthAdjustment.substring(1));
-          break;
-        case "/":
-          char.health /= parseInt(healthAdjustment.substring(1));
-          break;
-      }
-
-      char.logRoll("Health Adjustment", healthAdjustment, char.health);
-    }
   }
 
   throwAllRolls() {
@@ -281,15 +259,12 @@ class CharacterGenerator {
     }
 
     const combinations = Utility.getValue(physicalFormData, 'combinations', -1);
-    console.log("combinations", combinations);
     if (combinations !== -1) {
       char.bodyTypes = [];
 
       const possibleTypes = combinations.split('|');
       const roll = this.combinationsRoll;
       let bodyTypeTable = [];
-
-      console.log("roll", roll);
 
       char.logRoll("Physical Form Combinations", roll, "Combinations");
 
@@ -308,12 +283,8 @@ class CharacterGenerator {
         });
       }
 
-      console.log("bodyTypeTable", bodyTypeTable);
-
       // Get the row based on the roll
       let combinationRow = bodyTypeTable.find(o => roll <= o.maxRoll);
-
-      console.log("combinationRow", combinationRow);
 
       // Build a custom/temp ranks roll table for determining which body type to use for randomRanksColumn
       let tempRandomRanksColumnTable = [];
@@ -326,8 +297,6 @@ class CharacterGenerator {
         tempRandomRanksColumnTable[tempRandomRanksColumnTable.length] = 100;
       }
 
-      console.log("tempRandomRanksColumnTable", tempRandomRanksColumnTable);
-
       let thisBodyType = null;
       let thisRoll = 0;
       let thisValue = -1;
@@ -338,26 +307,13 @@ class CharacterGenerator {
         thisBodyType = this.physicalFormTable.find(o => thisRoll <= o.maxRoll);
         thisValue = Utility.getValue(thisBodyType, "combinations", -1);
 
-        console.log("rollIndex", rollIndex);
-        console.log("thisRoll", thisRoll);
-        console.log("thisBodyType", thisBodyType);
-        console.log("thisValue", thisValue);
-
         while (thisValue !== -1) {
-          console.log("Can't do double compound");
-          console.log("thisValue", thisValue);
-
           // We don't want to spiral out of control, so we can't
           // have a second combination
           rollIndex++;
           thisRoll = this.bodyTypeRolls[rollIndex];
           thisBodyType = this.physicalFormTable.find(o => thisRoll <= o.maxRoll);
           thisValue = Utility.getValue(thisBodyType, "combinations", -1);
-
-          console.log("rollIndex", rollIndex);
-          console.log("thisRoll", thisRoll);
-          console.log("thisBodyType", thisBodyType);
-          console.log("thisValue", thisValue);
         }
 
         rollIndex++;
@@ -367,22 +323,24 @@ class CharacterGenerator {
         char.logRoll("Physical Form Body Type", this.thisRoll, thisBodyType.name);
       }
 
-      console.log("compoundRandomRanksColumnRoll", this.compoundRandomRanksColumnRoll);
-      console.log("tempRandomRanksColumnTable", tempRandomRanksColumnTable);
-      console.log("tempRandomRanksColumnTable", tempRandomRanksColumnTable.findIndex(o => this.compoundRandomRanksColumnRoll <= o));
       const tempRandomRanksColumnIndex = tempRandomRanksColumnTable.findIndex(o => this.compoundRandomRanksColumnRoll <= o);
       const tempRRCRow = this.physicalFormTable.find(o => o.name === char.bodyTypes[tempRandomRanksColumnIndex]);
-      console.log("tempRRCRow", tempRRCRow);
       randomRanksColumn = tempRRCRow.column;
     }
-
-    console.log("randomRanksColumn", randomRanksColumn);
 
     this.randomRanksColumn = physicalFormData.column;
     if (randomRanksColumn !== -1) this.randomRanksColumn = randomRanksColumn;
 
     char.physicalForm = physicalFormData.name;
     char.logRoll("Physical Form", this.physicalFormRoll, char.physicalForm);
+
+    let value = Utility.getValue(physicalFormData, "bonusContactsCount", 0);
+    if (value !== 0) {
+      let bonusContact = Utility.getValue(physicalFormData, "bonusContact", "");
+      for (let index = 0; index < value; index++) {
+        this.generateBonusContact(char, bonusContact, true);
+      }
+    }
   }
 
   determineOrigin(char) {
@@ -418,7 +376,8 @@ class CharacterGenerator {
       rankRow = this.randomRanksTable.find(r => r.rank === value);
       char.logRoll(`Primary Ability: ${ability}`, "Base Rules", rankRow.rank + " as Start");
     }
-    else {
+
+    if (value === -1) {
       const roll = abilityRolls[ability];
 
       if (roll < 1 || roll > 100) {
@@ -426,10 +385,7 @@ class CharacterGenerator {
         return;
       }
 
-      console.log("roll", roll);
-      console.log("randomRanksColumn", this.randomRanksColumn);
       rankRow = Utility.findRow(this, roll, this.randomRanksColumn);
-      console.log("rankRow", rankRow);
       char.logRoll(`Primary Ability: ${ability}`, roll, rankRow.rank);
     }
 
@@ -451,14 +407,12 @@ class CharacterGenerator {
     // Map back to the correct row in the table being used
     const physicalFormRow = this.physicalFormTable.find(o => o.name === char.physicalForm);
 
-    console.log("Physical Form Row: ", physicalFormRow);
     this.physicalAbilitiesCount = 1;
     let value = Utility.getValue(physicalFormRow, 'abilitiesToGenerate', -1);
     if (value !== -1) {
       this.physicalAbilitiesCount = value;
     }
 
-    console.log("Physical Abilities Count: " + this.physicalAbilitiesCount);
     for (let index = 0; index < this.physicalAbilitiesCount; index++) {
       PHYSICAL_ABILITIES.forEach(ability => {
         const rankRow = this.determineAbility(char, ability, physicalFormRow, index);
@@ -546,6 +500,12 @@ class CharacterGenerator {
       char.logRoll("Ability", "Ability Modifier", `Rank is greater than Max. Setting to ${returnRank}.`);
     }
 
+    // Don't allow it to drop below Feeble
+    if (returnRank === "Shift 0") {
+      returnRank = "Feeble";
+      char.logRoll("Ability", "Ability Modifier", `Rank is less than Feeble. Setting to Feeble.`);
+    }
+
     return returnRank;
   }
 
@@ -598,6 +558,28 @@ class CharacterGenerator {
     char.logRoll("Resources", roll, resourceRank);
   }
 
+  determineHealth(char) {
+    const physicalFormRow = this.physicalFormTable.find(row => row.name === char.physicalForm);
+    const healthAdjustment = Utility.getValue(physicalFormRow, "healthAdjustment", 0);
+    if (Number.isInteger(healthAdjustment)) {
+      char.health += healthAdjustment;
+      char.logRoll("Health Adjustment", healthAdjustment, char.health);
+    }
+
+    if (!Number.isInteger(healthAdjustment)) {
+      switch (healthAdjustment.substring(0, 1)) {
+        case "*":
+          char.health *= parseInt(healthAdjustment.substring(1));
+          break;
+        case "/":
+          char.health /= parseInt(healthAdjustment.substring(1));
+          break;
+      }
+
+      char.logRoll("Health Adjustment", healthAdjustment, char.health);
+    }
+  }
+
   determinePopularityUltimate(char) {
     // Ultimate rules change this to a roll on the Random Ranks Table.   But the roll is then changed to a number.  
     // We use the rank number from the Random Ranks Table to set the Popularity.
@@ -605,23 +587,17 @@ class CharacterGenerator {
 
     let value = Utility.getValue(physicalFormRow, "popularitySet", -1);
     if (value !== -1) {
-      console.log("Set popularity:" + value);
       // A set value can be 0 or a number from the Random Ranks Table.  But that number is what will be assigned.
       // So for a set, we just assign whatever is set.
       char.popularity = value;
       char.logRoll("Popularity", "Base Rules", "Popularity set to " + value);
-      return;
     }
 
-    console.log("rolled popularity: " + this.popularityRoll);
-    console.log(this.randomRanksTable.find(r => this.popularityRoll <= r.maxRolls));
     const thisRow = Utility.findRow(this, this.popularityRoll, this.randomRanksColumn);
     let popularity = thisRow.rankNumber;
-    console.log("rolled popularity: " + popularity);
 
     value = Utility.getValue(physicalFormRow, "popularityStart", -1);
     if (value !== -1) {
-      console.log("Start popularity:" + value);
       // A start value can be 0 or a number from the Random Ranks Table.  For a start, we will roll a modifier
       // Ultimate has a Shift 0 that is unrollable.  That will be used for our starts that are 0, this allowing
       // normal  modifier adjustment to work correctly.
@@ -630,7 +606,6 @@ class CharacterGenerator {
     }
 
     if (popularity === null) {
-      console.log("Invalid Popularity");
       char.logRoll(`Popularity`, -1, "Invalid Popularity");
       return;
     }
@@ -678,43 +653,35 @@ class CharacterGenerator {
       char.logRoll("Popularity", "SubType Rules", "Popularity set to " + adjustment);
     }
 
-    console.log("Popularity:" + popularity + " Adjustment: " + adjustment + " Minimum: " + minimum + " Maximum: " + maximum);
-    let popularityRow = this.randomRanksTable.find(r => r.rankNumber === popularity);
-    const finalPopularity = this.getAbilityAfterModifier(char, popularityRow.rank, adjustment, minimum, maximum);
-    console.log("finalPopularity: " + finalPopularity);
-    popularityRow = this.randomRanksTable.find(r => r.rank === finalPopularity);
-    console.log("finalPopularityRow: ", popularityRow);
+    const finalPopularity = this.getAbilityAfterModifier(char, thisRow.rank, adjustment, minimum, maximum);
+    const popularityRow = this.randomRanksTable.find(r => r.rank === finalPopularity);
     popularity = popularityRow.rankNumber;
-    console.log("popularity after adjust/min/max: " + popularity);
 
     // Now that we have rolled the popularity, lets do secret, etc.
     if (this.identitySecret) {
       popularity -= 5;
-      console.log("secrrt");
       char.logRoll("Popularity", "Secret ID", "Loss of Popularity (-5)");
     }
 
     if (!this.identitySecret) {
       popularity += 10;
-      console.log("public");
       char.logRoll("Popularity", "Public ID", "Addition of Popularity (+10)");
     }
 
     // Double check that our min/max are still good.
     if (minimum !== -1 && popularity < minimum) {
-      console.log("popularity minimum: " + minimum);
       popularity = minimum;
       char.logRoll("Popularity", "Base Rules", "Popularity Adjusted to Minimum");
     }
 
     if (maximum !== -1 && popularity > maximum) {
-      console.log("popularity maximum: " + maximum);
       popularity = maximum;
       char.logRoll("Popularity", "Base Rules", "Popularity Adjusted to Maximum");
     }
 
-    console.log("popularity final: " + popularity);
-    if (popularity < 0) popularity = 0;
+    if (popularity < 0) {
+      popularity = 0;
+    }
 
     char.popularity = popularity;
     char.logRoll("Popularity", this.popularityRoll, char.popularity);
@@ -792,7 +759,7 @@ class CharacterGenerator {
     char.contactsCount = cQtyRow.contacts.initial;
     char.contactsMax = cQtyRow.contacts.maximum;
 
-    const physicalFormRow = this.originTable.find(o => o.name === char.physicalForm);
+    const physicalFormRow = this.physicalFormTable.find(o => o.name === char.physicalForm);
     let powersCountSet = false;
     let talentsCountSet = false;
     let contactsCountSet = false;
@@ -949,8 +916,7 @@ class CharacterGenerator {
     const effectRow = this.weaknessEffectTable.find(e => eRoll <= e.maxRoll);
     const durationRow = this.weaknessDurationTable.find(d => dRoll <= d.maxRoll);
     const rankRow = Utility.findRow(this, rRoll, this.randomRanksColumn);
-    
-    console.log("rankRow", rankRow);
+
     char.weakness.stimulus = stimulusRow.name;
     char.weakness.stimulusDescription = stimulusRow.description;
     char.weakness.effect = effectRow.name;
@@ -978,16 +944,14 @@ class CharacterGenerator {
     const category = this.talentCategoriesTable.find(c => tcRoll <= c.maxRoll).name;
     let tRoll = this.talentRolls[talentIndex];
 
-    console.log("talentListTable", this.talentListTable);
-    console.log("category", category);
-    console.log("tRoll", tRoll);
     let t = this.talentListTable.find(t => t.category === category && tRoll <= t.maxRoll);
-    console.log("t", t);
 
     let adjustIndex = 1;
-    while (remainingTalentSlots < t.talentCount && (currentTalentSlots + t.talentCount) > char.talentsMax) {
+    let value = Utility.getValue(t, "talentCount", 1);
+    while (remainingTalentSlots < value && (currentTalentSlots + value) > char.talentsMax) {
       tRoll = this.talentRolls[talentIndex + adjustIndex];
       t = this.talentListTable.find(t => t.category === category && tRoll <= t.maxRoll);
+      value = Utility.getValue(t, "talentCount", 1);
       adjustinIndex++;
     }
 
@@ -997,18 +961,22 @@ class CharacterGenerator {
       category: category,
       name: t.name,
       description: t.description,
-      talentSlots: t.talentCount,
+      talentSlots: value,
     });
 
-    if (t.bonusContactCount > 0) {
-      for (let cIndex = 0; cIndex < t.bonusContactCount; cIndex++) {
-        this.generateBonusContact(char, t.bonusContact);
+    value = Utility.getValue(t, "bonusContactCount", 0);
+    if (value > 0) {
+      for (let cIndex = 0; cIndex < value; cIndex++) {
+        let valueContact = Utility.getValue(t, "bonusContact", "");
+        if (valueContact !== "") {
+          this.generateBonusContact(char, t.bonusContact);
+        }
       }
     }
 
   }
 
-  generateBonusContact(char, bonusContactString) {
+  generateBonusContact(char, bonusContactString, forcedContact) {
     const contacts = bonusContactString.split("|");
     for (let index = 0; index < contacts.length; index++) {
       const parts = contacts[index].split("/");
@@ -1032,7 +1000,7 @@ class CharacterGenerator {
 
     char.logRoll("Bonus Contact Gen", `Base Rules: ${roll}`, `${contact.category}: ${c.name}`);
 
-    if (char.contacts.length < char.contactsMax) {
+    if (forcedContact || char.contacts.length < char.contactsMax) {
       char.contacts.push({
         category: contact.category,
         name: c.name,
@@ -1042,11 +1010,9 @@ class CharacterGenerator {
   }
 
   isPowerAlreadyAssigned(char, powerRow) {
-
     /*
                 return char.powers.some(p => p.name === powerRow.name);
     */
-
     for (let index = 0; index < char.powers.length; index++) {
       if (char.powers[index].name === powerRow.name) {
         return true;
@@ -1058,8 +1024,8 @@ class CharacterGenerator {
   generateSinglePower(char, powerRollIndex) {
     const currentSlots = char.powers.map(p => p.powerSlots).reduce((acc, value) => acc + value, 0);
     const remainingSlots = char.powersCount - currentSlots;
-
     if (remainingSlots <= 0) {
+      char.logRoll("Power Gen", "Base Rules", "No remaining slots");
       return;
     }
 
@@ -1067,26 +1033,29 @@ class CharacterGenerator {
     let catRoll = this.powerCategoryRolls[powerRollIndex];
     let category = this.powerCategoriesTable.find(c => catRoll <= c.maxRoll).name;
 
-    console.log("Category: " + category);
-    console.log("Power Rolle", this.powerRolls[powerRollIndex]);
-    console.log("Power List", this.powerListTable);
-    console.log("Power Possible Row", this.powerListTable.filter(r => r.category === category));
     // 2. Pick Power from Category
     let powerRoll = this.powerRolls[powerRollIndex];
+    let indexAdjustment = 1;
+    while (powerRoll > 100) {
+      powerRoll = this.powerRolls[powerRollIndex + indexAdjustment];
+      indexAdjustment++;
+    }
     let powerRow = this.powerListTable.find(r => r.category === category && powerRoll <= r.maxRoll);
 
+    // console.log(`category: ${category}, powerRoll: ${powerRoll}`);
     // 3. Pick Power from Category
-    let indexAdjustment = 1;
-    while (this.isPowerAlreadyAssigned(char, powerRow)) {
+    indexAdjustment = 1;
+    while (this.isPowerAlreadyAssigned(char, powerRow) || powerRoll > 100) {
       char.logRoll("Power Gen", `Duplicate Power`, `Power: ${powerRow.name}`);
-      catRoll = this.powerCategoryRolls[powerRollIndex];
+      catRoll = this.powerCategoryRolls[powerRollIndex + indexAdjustment];
       category = this.powerCategoriesTable.find(c => catRoll <= c.maxRoll).name;
       powerRoll = this.powerRolls[powerRollIndex + indexAdjustment];
       powerRow = this.powerListTable.find(r => r.category === category && powerRoll <= r.maxRoll);
       indexAdjustment++;
     }
 
-    while (powerRow.powerCount > remainingSlots && (currentSlots + powerRow.powerCount) > char.powersMax && !this.isPowerAlreadyAssigned(char, powerRow)) {
+    const powerCount = Utility.getValue(powerRow, "powerCount", 1);
+    while (powerCount > remainingSlots && (currentSlots + powerCount) > char.powersMax && !this.isPowerAlreadyAssigned(char, powerRow)) {
       char.logRoll("Power Gen", `Too Many Powers`, `Power: ${powerRow.name}`);
       catRoll = this.powerCategoryRolls[powerRollIndex];
       category = this.powerCategoriesTable.find(c => catRoll <= c.maxRoll).name;
@@ -1099,7 +1068,7 @@ class CharacterGenerator {
     // Power ranks are rolled on Column 4 (Page 10, source 412)
     const physicalFormRow = this.physicalFormTable.find(r => r.name === char.physicalForm);
     const rankRoll = this.powerRankRolls[powerRollIndex];
-    let rankRow = Utility.findRow(this, rankRoll, 3);
+    let rankRow = Utility.findRow(this, rankRoll, 4);
 
     let value = Utility.getValue(physicalFormRow, "allPowersRankAdjustment", 0);
     if (value !== 0) {
@@ -1141,7 +1110,13 @@ class CharacterGenerator {
     }
 
     const startIndex = char.powers.length;
-    const roll = this.powerRolls[startIndex];
+    let roll = this.powerRolls[startIndex];
+    let indexAdjustment = 1;
+    while (roll > 100) {
+      roll = this.powerRolls[startIndex + indexAdjustment];
+      indexAdjustment++;
+    }
+
     const power = powers.find(c => roll <= c.maxRoll);
 
     const p = this.powerListTable.find(c => c.category === power.category && c.name === power.name);
