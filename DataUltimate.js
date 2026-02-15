@@ -1136,71 +1136,72 @@ const POWER_LIST_ULTIMATE_TABLE = [
     // Physical Enhancement (P)
     {
         category: "Physical Enhancement", code: "P1", maxRoll: 14, name: "Armor Skin", powerCount: 1,
-        description: ""
+        description: "This is a form of Body Armor. The hero's skin is transformed into a damage-resistant form.  The Armor Skin may be permanent or temporary. The permanent form is a lasting modification to the hero's appearance and physiology. The temporary form allows the hero to retain his normal human appearance and identity. "
     },
     {
         category: "Physical Enhancement", code: "P2", maxRoll: 28, name: "Body Resistance", powerCount: 1,
-        description: ""
+        description: "This is the form of Body Armor most heroes want. The hero's body is composed of apparently normal flesh. However, the tissue of capable of withstanding major damage without showing any effects. The resistance covers physical and energy attacks only.  An Optional Power is Regeneration."
     },
     {
         category: "Physical Enhancement", code: "P3", maxRoll: 30, name: "Chemical Touch", powerCount: 1,
-        description: ""
+        description: "The hero's body secretes chemicals that are capable of a variety of effects on a target.  The chemicals can be automatically or consciously secreted. The range is always limited to Contact only."
     },
     {
         category: "Physical Enhancement", code: "P4", maxRoll: 33, name: "Digestive Adaptation", powerCount: 1,
-        description: ""
+        description: "The hero can swallow and digest any substance without harm. The digestive tract extracts useful materials and synthesizes new ones from the available material. Optional Powers include Lung Adaptability and Body Adaptation."
     },
     {
         category: "Physical Enhancement", code: "P5", maxRoll: 40, name: "Hyper-Speed", powerCount: 1,
-        description: ""
+        description: "The hero is capable of extremely fast motion and may even surpass lightspeed. Normally this Power includes a specific resistance to friction and lungs that are adapted to breathe high-velocity air."
     },
     {
         category: "Physical Enhancement", code: "P6", maxRoll: 42, name: "Hypnotic Voice", powerCount: 1,
-        description: ""
+        description: "The hero possesses a voice whose intrinsic qualities permit a hypnotic domination of the target's conscious and subconscious thoughts. The bulk of the hero's commands are sub-verbal in nature. The hero can effect anyone within the sound of her voice.  The Power comes in two varieties, automatic and deliberate. The automatic form is a permanent modification to the hero's voice."
     },
     {
         category: "Physical Enhancement", code: "P7", maxRoll: 45, name: "Lung Adaptability", powerCount: 1,
-        description: ""
+        description: "The hero can breathe any gaseous or liquid medium without harm. The lungs can extract required gases (oxygen for humans) or even create them by converting available elements. "
     },
     {
         category: "Physical Enhancement", code: "P8", maxRoll: 47, name: "Pheromones", powerCount: 1,
-        description: ""
+        description: "This is an aerosol version of Hypnotic Control. The hero's body can create and emit chemicals capable of altering a target's behavior. These chemicals vaporize instantly on contact with air and are received by the target's nose.  When the hero is created, the player must decide whether the Power functions automatically or deliberately. The automatic form lowers the Power rank -2CS."
     },
     {
         category: "Physical Enhancement", code: "P9", maxRoll: 60, name: "Regeneration", powerCount: 1,
-        description: ""
+        description: "The hero can rapidly recover from any wound. Cuts quickly close and disease symptoms disappear. The hero heals at an accelerated rate equal to the Power rank number times the normal amount of time."
     },
     {
         category: "Physical Enhancement", code: "P10", maxRoll: 62, name: "Self-Revival", powerCount: 1,
-        description: ""
+        description: "The hero's Power is so strong that it can repair fatal damage and actually return the hero to life. The power functions despite the absence of life in the body. It repairs the major damage and replaces lost tissues at the same rate as Regeneration. When the body is returned to minimum life sustaining condition, the hero comes back to life. "
     },
     {
         category: "Physical Enhancement", code: "P11", maxRoll: 67, name: "Self-Sustenance", powerCount: 1,
-        description: ""
+        description: "The hero can survive indefinitely without consuming air, water, or food. Bodily wastes are internally recycled back into useable materials. Normally the hero would not need to replenish himself when his power reached its limit."
     },
     {
         category: "Physical Enhancement", code: "P12", maxRoll: 71, name: "Stealth", powerCount: 1,
-        description: ""
+        description: "The hero can move in ways that cannot be detected, whether while moving or if subjected to later tracking. When the hero uses Stealth, his rank is subtracted from the efforts of those detecting him."
     },
     {
         category: "Physical Enhancement", code: "P13", maxRoll: 76, name: "Suspended Animation", powerCount: 1,
-        description: ""
+        description: "The hero can temporarily suspend all life functions and enter a death-like trance. The hero can later return to life and normal activity without harm. During this period, the hero's body can be subjected to normally fatal conditions and not suffer any, unless the body is actually damaged. If this happens, the hero cannot return to life until the damage is repaired. Under normal conditions, the hero can consciously decide when to reawaken. "
     },
     {
         category: "Physical Enhancement", code: "P14", maxRoll: 78, name: "True Invulnerability", powerCount: 1,
-        description: ""
+        description: "This is a combination of Resistances and Body Armor. The hero is immune to any physical harm, up to his rank's limit. The immunity includes the following resistances: fire, heat, cold, electricity, radiation, corrosives, disease, poison, brute force, sonics, and kinetic bolts."
     },
     {
         category: "Physical Enhancement", code: "P15", maxRoll: 82, name: "Vocal Control", powerCount: 1,
-        description: ""
+        description: "This might be considered a Talent rather than a Power, but here goes anyway. The hero has total control over his own voice and can use it to duplicate any desired voice of sound. The accuracy of the simulated sound is 100% within the Power's limit."
     },
     {
         category: "Physical Enhancement", code: "P16", maxRoll: 90, name: "Waterbreathing", powerCount: 1,
-        description: ""
+        description: "This may be a \"wimp Power,\" but it would be embarrassing for an extremely powerful character to drown while a relatively wimpish water breather went unharmed. This power may be permanent or temporary."
     },
     {
         category: "Physical Enhancement", code: "P17", maxRoll: 100, name: "Water Freedom", powerCount: 1,
-        description: ""
+        bonusPower: "Waterbreathing",
+        description: "The hero's body is adapted for movement in the water. The hero can move through water with the same ease that normal beings can move through air. Note: This power does not automatically include Water-Breathing."
     },
 
     // Power Control (PC)
