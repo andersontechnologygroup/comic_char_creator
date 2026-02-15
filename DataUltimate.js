@@ -1001,147 +1001,136 @@ const POWER_LIST_ULTIMATE_TABLE = [
     // Mental Enhancement (M)
     {
         category: "Mental Enhancement", code: "M1", maxRoll: 4, name: "Clairaudience", powerCount: 1,
-        description: ""
+        description: "The hero can \"hear\" distant sounds and voices despite any intervening distance or barriers. The Power is not hindered by factors that affect normal sound transmission, such as distance, time lag, muffling, distortion, or the absence of a transmitting medium. Because of this, Clairaudience has superior range over Hyper-Hearing. The Power is normally a voluntary Power that must be summoned.  The Optional Powers for this are Hyper-hearing, Clairvoyance, and Remote Sensing."
     },
     {
         category: "Mental Enhancement", code: "M2", maxRoll: 8, name: "Clairvoyance", powerCount: 1,
-        description: ""
+        description: "The hero can \"see\" distant sights without directly seeing it with his eyes. The hero receives a visual simulation of what he would see if he were actually present at the scene. The Power is not hindered by any of the factors that affect normal light transmission, such as distance, blockage, obscurement, and time lag. It can be used to see things that are impossible for a telescope or Telescopic Vision.  Normally the Power is consciously controlled.  Optional Powers include Clairaudience and Remote Sensing."
     },
     {
         category: "Mental Enhancement", code: "M3", maxRoll: 11, name: "Communicate with Animals", powerCount: 1,
-        description: ""
+        description: "The hero can understand and use the languages employed by animals and other non-sentient lifeforms. The Power can be used to communicate with non-sentient alien creatures but not intelligent aliens. Optional Powers include Linguistics and any of the Communication Powers."
     },
     {
         category: "Mental Enhancement", code: "M4", maxRoll: 12, name: "Communicate with Cybernetics", powerCount: 1,
-        description: ""
+        description: "The hero can directly communicate with complex machines, whether these are computers or machines not normally considered to have artificial intelligence. Any machine that possesses any kind of programming can be communicated with-calculators, digital watches, microwave ovens, even music boxes.  The Optional Power is Linguistics."
     },
     {
         category: "Mental Enhancement", code: "M5", maxRoll: 13, name: "Communicate with Non-Living", powerCount: 1,
-        description: ""
+        description: "This is a catch-all name for anything not covered by the other Communication Powers (M3, M4, M6). It will enable the hero to communicate with anything that had once been either sentient, cybernetic, or alive, as long as the target lacks those qualities now.  Optional Powers include Communications with Cybernetics."
     },
     {
         category: "Mental Enhancement", code: "M6", maxRoll: 15, name: "Communicate with Plants", powerCount: 1,
-        description: ""
+        description: "The hero can speak with plants. Anything that has a vegetable physiology can be affected by this Power, such as grass, and trees. Optional Powers include Communication with Animals, Communication with Non-living Matter, Plant Control, and Plant Growth."
     },
     {
         category: "Mental Enhancement", code: "M7", maxRoll: 16, name: "Cosmic Awareness", powerCount: 1,
-        description: ""
+        description: "The hero is in tune with the entire scope of reality. He possesses a detached, omniscient viewpoint that allows him to explore the entire existence of a chosen subject. Unfortunately, this causes such a massive overload of superfluous information that the hero is hard pressed to sort it all out.  The Optional Power is HyperIntelligence."
     },
     {
         category: "Mental Enhancement", code: "M8", maxRoll: 22, name: "Danger Sense", powerCount: 1,
-        description: ""
+        description: "This is also called Combat Sense. It is a combination of automatically functioning Psionic Powers (Telepathy, Empathy, and Precognition) that warns the hero about impending danger."
     },
     {
         category: "Mental Enhancement", code: "M9", maxRoll: 23, name: "Dreamtravel", powerCount: 1,
-        description: ""
+        description: "The hero can actually enter into the short-lived pocket dimensions created by a person's dreams and nightmares. These dream worlds are outside the boundaries of normal reality and exist solely as a reflection of the dreamer's imagination. The Dreamtraveler must be within ten feet of the dreamer in order for the Power to function at full rank.  The Dreamtraveler can suffer real damage as a result of events that affect him within the dreamworld. He might even die. Dreamworlds are not the same as the Dream Dimension. The Optional Power is a form of Telepathy limited to dreamers."
     },
     {
-        category: "Mental Enhancement", code: "M10", maxRoll: 16, name: "Cosmic Awareness", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M10", maxRoll: 26, name: "Empathy", powerCount: 1,
+        description: "The hero can detect the surface emotions of others. The hero can detect the target's emotional state and further refine that knowledge to discover the target's physical state, surroundings, and location, in-so-far as these have an influence on the emotions. He can transmit his own emotional state but he cannot impose this on others. Optional Powers include Clairvoyance and Emotion Control."
     },
     {
-        category: "Mental Enhancement", code: "M11", maxRoll: 22, name: "Danger Sense", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M11", maxRoll: 27, name: "Free Spirit", powerCount: 1,
+        description: "The hero's soul is capable of independent existence in the real world. The Free Spirit can leave the hero's body and travel independently; it is often mistaken for an Astral Body. The Free Spirit can even survive the death of the physical body without being immediately drawn into an afterlife dimension. Free Spirits possess all the Mental Abilities, Talents, and Powers of the whole being. "
     },
     {
-        category: "Mental Enhancement", code: "M12", maxRoll: 23, name: "Dreamtravel", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M12", maxRoll: 31, name: "Hallucinations", powerCount: 1,
+        description: "The hero can create illusions directly within the target's mind. Such illusions are telepathic, not holographic, in nature. As such, they cannot be mechanically detected or recorded except by devices that simulate Telepathy or human thought patterns. Hallucinations can only be seen by the target of this Power.  The hero can use one additional Power simultaneously with this one."
     },
     {
-        category: "Mental Enhancement", code: "M13", maxRoll: 26, name: "Empathy", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M13", maxRoll: 40, name: "Hyper-Intelligence", powerCount: 1,
+        description: "Normally a character's Intelligence is determined in the Character Generation Process. The hyper-intelligent character is a genius of awesome potential. He can quickly master new subjects, retain that knowledge indefinitely, and easily succeed in any mental endeavor. Optional Powers include Hyperinvention and Total Memory."
     },
     {
-        category: "Mental Enhancement", code: "M14", maxRoll: 27, name: "Free Spirit", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M14", maxRoll: 47, name: "Hyper-Invention", powerCount: 1,
+        description: "This is a special form of Hyper-intelligence that is common enough to merit its own classification. It is a permanent enhancement of the hero's overall intelligence that is channeled into the field of mechanical design and engineering. The hero is an Edison-like genius who take existing materials and technologies and use them to create new devices or applied technologies. He can repair previously operational devices, even if the device was of anunknown type. The hero can learn new technologies at a rate determined by his rank, the complexity of the technology, and the amount of instruction available. Optional Powers include Weapons Tinkering, Machine Animation, Molding, Artifact Creation, and Machine Creation."
     },
     {
-        category: "Mental Enhancement", code: "M15", maxRoll: 31, name: "Hallucinations", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M15", maxRoll: 48, name: "Incarnation Awareness", powerCount: 1,
+        description: "This Power is based on the idea that a spirit enters countless reincarnations throughout eternity but that the memory of each past life is usually lost somewhere in the transition from one life to another. This Power allows the hero to remember the details of his more recent lives and to actually communicate with them. Such communications include the transmission of the complete range of senses and thoughts.  The Optional Powers include either Time Travel limited to any past lifetime, a combination of Time Travel and Free Spirit that enables the present-self to possess the bodies of other selves, or a specialized form of Time Travel that enables the present self to draw other selves from their times to the present."
     },
     {
-        category: "Mental Enhancement", code: "M16", maxRoll: 40, name: "Hyper-Intelligence", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M16", maxRoll: 58, name: "Iron Will", powerCount: 1,
+        description: "The hero has complete conscious control over his mind and body. By using his Iron Will, the hero can temporarily halt the damage done by mental or physical attacks; he can even postpone his own death. Iron Will can be used in place of any lower-ranked Ability to determine Resistance to an attack."
     },
     {
-        category: "Mental Enhancement", code: "M17", maxRoll: 47, name: "Hyper-Invention", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M17", maxRoll: 65, name: "Linguistics", powerCount: 1,
+        description: "This is a specialized form of Hyper-intelligence. The hero has the ability to rapidly learn any language if sufficient material is available for him to work with. Once the language is mastered, the hero is fluent in that language, provided he is physically capable of communicating in it. The Optional Power is Hyperintelligence."
     },
     {
-        category: "Mental Enhancement", code: "M18", maxRoll: 48, name: "Incarnation Awareness", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M18", maxRoll: 66, name: "Mental Duplication", powerCount: 1,
+        description: "This is a combination of Powers that enables the hero to psionically study a subject's mind and then create a simulation of that mind within the hero's own brain. This is a great way to learn secrets and interrogate subjects who would otherwise be rather uncooperative. The duplicated mind contains the personality of the original, most memories, and possibly the mental or psionic Powers of the original. The subject is unaffected by the Power and loses none of his own mental abilities.  Optional Powers include Mind Drain and Power Duplication."
     },
     {
-        category: "Mental Enhancement", code: "M19", maxRoll: 58, name: "Iron Will", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M19", maxRoll: 67, name: "Mental Invisibility", powerCount: 1,
+        description: "The hero has the ability to render his own mental energies undetectable by external means. Such means can be technological (EEG scans), psionic, Magical, or Power-based in nature. It is Invisibility in telepathic terms. The Power protects the hero from discovery by outside forces."
     },
     {
-        category: "Mental Enhancement", code: "M20", maxRoll: 65, name: "Linguistics", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M20", maxRoll: 69, name: "Mental Probe", powerCount: 1,
+        description: "The hero can telepathically probe a living mind or a psionic phenomenon to gain a detailed analysis of the target. Living minds can be searched for specific images and thoughts, although the hero must have a basic idea beforehand of what she is looking for.  Optional Powers include Telepathy and Sensory Link."
     },
     {
-        category: "Mental Enhancement", code: "M21", maxRoll: 66, name: "Mental Duplication", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M21", maxRoll: 72, name: "Mind Blast", powerCount: 1,
+        description: "The hero can create bolts of pure psionic energy that can be used to directly damage a target's neural system.  Optional Powers include Telepathy and Mental Probe."
     },
     {
-        category: "Mental Enhancement", code: "M22", maxRoll: 67, name: "Mental Invisibility", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M22", maxRoll: 73, name: "Mind Drain", powerCount: 1,
+        description: "The hero can deplete, negate, or even destroy a target's mental faculties. This alters the target's personality, memory, thought process (Reason and Intuition), and any Mental or Psionic Powers the target had.  Optional Powers include Telepathy, Mental Probe, Mental Duplication, and Mind Blast."
     },
     {
-        category: "Mental Enhancement", code: "M23", maxRoll: 69, name: "Mental Probe", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M23", maxRoll: 74, name: "Postcognition", powerCount: 1,
+        description: "The hero has the ability to \"see\" the past. The Power requires the hero to have physical contact with the target whose history is being examined. The hero can mentally examine a person, item, or site and mentally re-live a specific moment of history from the target's point-of-view. As such, it only reveals factors that somehow affected the target. Postcognition can be used to gain information on what an item is and who may have handled it. It cannot provide a detailed analysis of the item's internal structure or as-yet-unrealized potential.  Optional Powers include modified forms of Telepathy and Time Travel."
     },
     {
-        category: "Mental Enhancement", code: "M24", maxRoll: 72, name: "Mind Blast", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M24", maxRoll: 75, name: "Precognition", powerCount: 1,
+        description: "The hero can see into the future. The Power gives the hero sufficiently clear insight into upcoming events that he might be able to use that foreknowledge to his advantage. Precognition is an awesome Power and thus has more limits than the Hulk can shake a stick at.  The Power can normally be used only once per day at full rank. Second, the player must choose a limitation on the Power. Short-range Precog can be useful in combat. The hero can use his Power to discover his opponent's next move.  Optional Powers include modified forms of Telepathy and Time Travel."
     },
     {
-        category: "Mental Enhancement", code: "M25", maxRoll: 73, name: "Mind Drain", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M25", maxRoll: 76, name: "Psionic Vampirism", powerCount: 1,
+        description: "The Psi-vampire can drain the mental energies of his victim. He then uses the purloined energy to increase his own Strength, Endurance, Psyche, and his own Power's rank. The Psi-vampire distributes the gained energy among his Strength, Endurance, Psyche, and whatever Powers he has. Psi-vampires lose energy at a frightful rate. The rank numbers for Strength, Endurance, Psyche, and all his Powers (except this one) each drop one point per hour. The Psi-vampire must feed in order to return the affected Abilities to their original ranks. "
     },
     {
-        category: "Mental Enhancement", code: "M26", maxRoll: 74, name: "Postcognition", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M26", maxRoll: 78, name: "Remote Sensing", powerCount: 1,
+        description: "This is a catch-all name for any Power that enables the hero to psionically extend the range of any sense. The senses include taste, smell, touch, balance (including gravity sensing), and temperature. The exceptions are sight and hearing. Optional Powers include additional forms of this Power, Clairaudience, and Clairvoyance."
     },
     {
-        category: "Mental Enhancement", code: "M27", maxRoll: 75, name: "Precognition", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M27", maxRoll: 79, name: "Sensory Link", powerCount: 1,
+        description: "The hero can telepathically link his senses with those of another being. He can use the information gained from the other's senses as if it came from the hero's own senses.  The Power is crucial to sense-impaired characters.  An Optional Power is Telepathy."
     },
     {
-        category: "Mental Enhancement", code: "M28", maxRoll: 76, name: "Psionic Vampirism", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M28", maxRoll: 80, name: "Serial Immortality", powerCount: 1,
+        description: "A character with this Power can suffer damage, get sick, age, and even die. None of it is permanent to the character, though. When the hero's body dies from any cause, the unique nature of his lifeforce enables it to transfer to a new body. He can also transfer some but not all of his Powers to the new body."
     },
     {
-        category: "Mental Enhancement", code: "M29", maxRoll: 78, name: "Remote Sensing", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M29", maxRoll: 81, name: "Speechthrowing", powerCount: 1,
+        bonusPower: "Clairaudience",
+        description: "This is best described as \"super-ventriloquism.\" Although it is radically different in execution from the Talent of Ventriloquism, the effect at low levels is similar.  Simply put, the hero can make his voice audible in a distant location, without the vocal soundwaves actually traveling the intervening distance. The Power is actually a specialized form of Telekinesis which allows the hero to agitate the distant molecules in a way that simulates sound transmission. Optional Powers include Clairvoyance, Vocal Control, Hyper-hearing, and Sensory-Link."
     },
     {
-        category: "Mental Enhancement", code: "M30", maxRoll: 79, name: "Sensory Link", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M30", maxRoll: 85, name: "Telekinesis", powerCount: 1,
+        description: "The hero can handle material objects without having to make direct or indirect physical contact. The hero can perform any action that could be accomplished using normal Strength.  Optional Powers include Matter Animation, Molding, Clairvoyance, Remote Sensing/ Touch, Levitation, and True Flight."
     },
     {
-        category: "Mental Enhancement", code: "M31", maxRoll: 80, name: "Serial Immortality", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M31", maxRoll: 86, name: "Telelocation", powerCount: 1,
+        description: "The hero can Psionically locate a chosen target. This differs from normal Tracking in that no physical or sensory contact, however tenuous, is required. Consequently, the Power is not hampered by the concealment, erasure, or absence of the target's \"scent.\" Telelocation can operate over immense distances.  Optional Powers include Clairvoyance (limited to already located quarries) and Extradimensional Detection (whichautomatically combines with this Power to extend its range into other dimensions)."
     },
     {
-        category: "Mental Enhancement", code: "M32", maxRoll: 81, name: "Speechthrowing", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M32", maxRoll: 96, name: "Telepathy", powerCount: 1,
+        description: "The hero can communicate on a direct mind-to-mind basis. This is automatic with willing minds or Psyches with ranks lower than the Power rank. Optional Powers include Empathy, Hallucinations, Mental Invisibility, Mental Probe, Mind Blast, Mind Drain, Sensory Link, and Psionic Detection."
     },
     {
-        category: "Mental Enhancement", code: "M33", maxRoll: 85, name: "Telekinesis", powerCount: 1,
-        description: ""
-    },
-    {
-        category: "Mental Enhancement", code: "M34", maxRoll: 86, name: "Telelocation", powerCount: 1,
-        description: ""
-    },
-    {
-        category: "Mental Enhancement", code: "M35", maxRoll: 96, name: "Telepathy", powerCount: 1,
-        description: ""
-    },
-    {
-        category: "Mental Enhancement", code: "M36", maxRoll: 100, name: "Total Memory", powerCount: 1,
-        description: ""
+        category: "Mental Enhancement", code: "M33", maxRoll: 100, name: "Total Memory", powerCount: 1,
+        description: "The hero has the ability to remember anything that he has ever experienced. This could be a book he's read, the faces of everyone he saw on Tuesday, what birth was like, and so on. Optional Powers include HyperInvention, Hyper-intelligence, and Weapons Tinkering."
     },
 
     // Physical Enhancement (P)
