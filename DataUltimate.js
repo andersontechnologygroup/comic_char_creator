@@ -1207,59 +1207,59 @@ const POWER_LIST_ULTIMATE_TABLE = [
     // Power Control (PC)
     {
         category: "Power Control", code: "PC1", maxRoll: 8, name: "Control", powerCount: 1,
-        description: ""
+        description: "The hero can alter the behavior of pure Power, whether it is in a raw or applied state. The hero can control the actions of any Powers within his range and capability. "
     },
     {
         category: "Power Control", code: "PC2", maxRoll: 12, name: "Creation", powerCount: 1,
-        description: ""
+        description: "The hero has the ability to create new Powers and invest them into sentient beings for their own use. The new Powers can be of any nature and can be any of the listings.  The hero is limited in the number and ranks of the Powers he can create."
     },
     {
         category: "Power Control", code: "PC3", maxRoll: 18, name: "Domination", powerCount: 1,
-        description: ""
+        description: "This is a form of Mind Control. The hero can control the actions of other super-beings in regards to the use of their own Powers. The hero can force the victim to use his Powers in any manner the hero desires. The hero cannot alter the actual characteristics of the other's Powers. Optional Powers include Mind Control and Magic Domination."
     },
     {
         category: "Power Control", code: "PC4", maxRoll: 23, name: "Duplication", powerCount: 1,
-        description: ""
+        description: "If the hero acquires this Power, the player should immediately set aside all his previously generated Powers and not roll any more. The hero can use his Macro-Power to duplicate the characteristics of any other Power. The Power ranks for the duplicated Powers is equal to the Macro Power's own rank. Unfortunately, the hero can only Duplicate a single Power at any one time. Switching Powers takes three turns. The hero must be exposed to a Power in order to later duplicate it."
     },
     {
         category: "Power Control", code: "PC5", maxRoll: 37, name: "Energy Source", powerCount: 1,
-        description: ""
+        description: "The hero draws his Powers from a special source that provides him withb all the energy he can handle. As long as the hero can maintain his link with this source, he can continue to use his Powers. The nature of the source and its link varies with each hero.  If you roll this Power, go ahead and roll an additional Power."
     },
     {
         category: "Power Control", code: "PC6", maxRoll: 39, name: "Energy Source Creation", powerCount: 1,
-        description: ""
+        description: "The hero can create items that can in turn provide Powers to other people. The hero is able to charge a target with raw Power. The target must be non-living or nonsentient. The target is transformed into a battery that can harmlessly store raw Power indefinitely until needed by the target's new possessor. The hero can store any Power except this one."
     },
     {
         category: "Power Control", code: "PC7", maxRoll: 49, name: "Focus", powerCount: 1,
-        description: ""
+        description: "The hero can channel all his raw energy into a single burst of a chosen Ability or Power. All his Power and Ability rank numbers are totaled together. This rank number replaces the rank number for a chosen Power. Upon the completion of releasing the Power, all the hero's Abilities and Powers temporarily drop to Feeble. Okay, this isn't really a Power either. Roll again for an additional Power."
     },
     {
         category: "Power Control", code: "PC8", maxRoll: 55, name: "Gestalt", powerCount: 1,
-        description: ""
+        description: "Two or more users can combine to create a new Power. The Power can be of any nature; its Power rank is equal to this one. When the hero generates this Power, he must first select another hero with whom his hero forms the Gestalt. Second, both heros must randomly determine what the Gestalt-created Power actually is. Roll for additional Power; this is the Gestalt."
     },
     {
         category: "Power Control", code: "PC9", maxRoll: 60, name: "Nemesis", powerCount: 1,
-        description: ""
+        description: "When this Power is generated, it replaces all other Powers the hero might have otherwise had.  The basis for Nemesis is the ability to automatically analyze an opponent's Powers and Weakness. The hero then instantly generates a Power that can defeat the opponent.  The only Power that a Nemesis cannot Generate is Power Control/Negation."
     },
     {
         category: "Power Control", code: "PC10", maxRoll: 64, name: "Power Transferral", powerCount: 1,
-        description: ""
+        description: "The hero can transfer some or all of his Powers to another sentient being. The transferral can be any combination of Powers and ranks. Only this Power cannot be transferred. Each transferred Power rank diminishes the hero's own rank for that Power. The optimum range for Power Transferral is contact.  Optional Powers include Mind Transferral and Magic Transferral."
     },
     {
         category: "Power Control", code: "PC11", maxRoll: 73, name: "Power Vampirism", powerCount: 1,
-        description: ""
+        description: "The Power Vampire can drain the raw Power from a victim and convert that energy into extra Strength, Endurance, Psyche, and ranks forother Powers the Vampire has. The Power Vampire can force a nonliving, nonsentient target to release all its raw Power.  Power Vampires lose energy at a depressing rate. The rank numbers for Strength, Endurance, Psyche, and all Powers except this one decrease one point per hour. The Power Vampire must feed to survive. A Power Vampire cannot actually starve to death if denied a sufficient supply of victims. Power Vampirism is communicable. "
     },
     {
         category: "Power Control", code: "PC12", maxRoll: 83, name: "Residual Absorption", powerCount: 1,
-        description: ""
+        description: "The hero can duplicate a Power by absorbing the traces left behind whenever a Power is used. The residue may be in anything that was near the target of a Power's emission. "
     },
     {
         category: "Power Control", code: "PC13", maxRoll: 96, name: "Selection", powerCount: 1,
-        description: ""
+        description: "The hero can possess any number of Powers but can only use a single one at a given time. Switching between Powers takes three turns. When the player generates this Power, he gets to generate an additional Power as well."
     },
     {
         category: "Power Control", code: "PC14", maxRoll: 100, name: "Weakness Creation", powerCount: 1,
-        description: ""
+        description: "The hero can bestow a weakness on a victim that is just as dangerous as if the victim as always possessed that Weakness. "
     },
 
     // Self-Alteration (S)
