@@ -1359,95 +1359,98 @@ const POWER_LIST_ULTIMATE_TABLE = [
     // Travel (T)
     {
         category: "Travel", code: "T1", maxRoll: 2, name: "Astral Body", powerCount: 1,
-        description: ""
+        description: "The hero can send his astral form off to any destination. The physical body doesn't go anywhere; it remains in a comatose state until the astral body returns. The astral body is intangible and invisible to normal senses. In the Earth dimension it can use any of the hero's mental or Psionic Powers but not the physical ones. In other dimensions the astral body regains visibility, solidity, and the physical Powers. A magical silver cord connects the astral and physical bodies. While it can stretcha great distance, it is not infinite. Optional Powers include any of the Magic Powers and Extradimensional Detection."
     },
     {
         category: "Travel", code: "T2", maxRoll: 6, name: "Carrier Wave", powerCount: 1,
-        description: ""
+        description: "The hero can manipulate energy currents to support and propel his body, thus attaining a form of Flight. The energy can be any type found in the hero'senvironment, such as magnetism, sound, light, heat, and electricity. The hero can use only one form. The Carrier Wave can support the hero and an additional load. The maximum speed is that of normal energy of the type composing the wave.  The Optional Power is Energy Detection and an Energy Control Power of the same type as the Carrier Wave."
     },
     {
         category: "Travel", code: "T3", maxRoll: 10, name: "Dimension Travel", powerCount: 1,
-        description: ""
+        description: "The hero can travel into a number of other Dimensions. Transit to a random dimension normally occurs automatically but the Power is weakened by adrenalin. The return trip is easier. Returning at a random location on the homeworld is automatic.  The hero initially has two dimensions he can travel to, his home and one other realm."
     },
     {
         category: "Travel", code: "T4", maxRoll: 12, name: "Energy Path", powerCount: 1,
-        description: ""
+        description: "This is a combination of Energy Body and Carrier Wave. The hero is transformed into energy and is propelled at Power rank speed along currents of that energy. The maximum speed is that normal Energy. The hero is limited to places where the energy currents flow.  Upon reaching the destination or the limit of the energy current, the hero safely rematerializes. Travel can be affected by anything that disrupts the current.  The hero can transform and tow along an additional mass.  While in an energized state, the hero is extremely vulnerable to the energy altering Powers.  Optional Powers include Energy Detection and either Energy Emission or Control for the appropriate type of energy."
     },
     {
         category: "Travel", code: "T5", maxRoll: 14, name: "Floating Disc", powerCount: 1,
-        description: ""
+        description: "The hero can create a glowing platform of solid light. The disc materializes to support any part of the hero's body; generally this is under the feet or posterior. The disc is a part of the hero's Power and has no independent existence beyond him. The disc can automatically support the hero and additional mass.  The Optional Power is Kinetic Bolt. "
     },
     {
         category: "Travel", code: "T6", maxRoll: 20, name: "Gateway", powerCount: 1,
-        description: ""
+        description: "The hero can travel to any point in space, time, or other dimensions by traveling along bridges she creates herself. She can travel along a bridge from her current location to a location in space, time, and other dimensions. The destination of each Gateway is a fixed point in space but the departure end always moves with the hero. The Gateway forms within ten feet of the hero. It can maintain its existence for as long as the hero concentrates on it or until he passes through it."
     },
     {
         category: "Travel", code: "T7", maxRoll: 26, name: "Gliding", powerCount: 1,
-        description: ""
+        description: "The hero can travel on air currents. In normal air currents, the hero drops one story for each turn she is in the air.  The glider can climb by using updrafts.  She can carry aloft an additional mass. Gliding can be affected by high winds or the Powers of Weather Control and Air Animation.  Optional Powers include Weather Control and Air Animation."
     },
     {
         category: "Travel", code: "T8", maxRoll: 28, name: "Hyper-Digging", powerCount: 1,
-        description: ""
+        bonusPower: "Natural Weaponry/Claws or Body Resistance",
+        description: "The hero can travel swiftly through the earth by burrowing a tunnel at Power rank speed (land movement rate). The Power can be used indefinitely as Hyper-digging has the side-effect of increasing the hero's Strength and Endurance.  Burrowing remains the hero's preferred mode of transportation. Optional Powers include Hyperstrength, Hyper-endurance, Armor Skin, or Body Resistance."
     },
     {
         category: "Travel", code: "T9", maxRoll: 34, name: "Hyper-Leaping", powerCount: 1,
-        description: ""
+        minRank: "Strength + 1CS",
+        description: "The hero can jump great distances. By repeated leaps, the hero can rapidly cover large distances. Innate safeguards in this Power enable the hero to safely land."
     },
     {
         category: "Travel", code: "T10", maxRoll: 42, name: "Hyper-Running", powerCount: 1,
-        description: ""
+        description: "The hero can run at Power rank speed for extended amounts of time. The Power has the side-effect of raising the Ability rank number of Endurance by this Power's rank number. It includes protection to wind resistance and windburn; this protection extends to anything the hero is carrying. The hero's lungs are modified to breath high velocity air. If the hero stumbles, he continues on a ballistic trajectory until he regains his footing or rolls to a halt. To cut down on the chance of this, the Power increase the hero's reaction time to be able cope with impending problems. This side-effect enables the hero to dodge or even catch things like bullets and missiles."
     },
     {
         category: "Travel", code: "T11", maxRoll: 46, name: "Hyper-Swimming", powerCount: 1,
-        description: ""
+        bonusPower: "Water-breathing | Water Freedom",
+        description: "The hero can cover large distances by swimming at Power rank speed. The Power does not free the hero from the need to breathe. The hero can tow other objects in his wake at a decreased speed. This assumes the towed object has a buoyancy equal to the hero's body. Bonus Powers include a choice of Waterbreathing or Water Freedom. Theremaining on e is available as a Optional Power. The Nemesis is Matter Animation/ Water."
     },
     {
         category: "Travel", code: "T12", maxRoll: 52, name: "Levitation", powerCount: 1,
-        description: ""
+        description: "The hero can freely resist the pull of gravity. She can move vertically at Power rank speed, hover in place, or drift with the wind. Limited horizontal movement is possible by pushing off from other objects. The maximum distances are determined the same way anormal leap is.  A hero with this Power can never fall unlesss he is unconscious or purposely decides to succumb to gravity.  The Optional Powers is Telekinesis."
     },
     {
         category: "Travel", code: "T13", maxRoll: 56, name: "Rocket", powerCount: 1,
-        description: ""
+        description: "The hero flies by means of a rocket-like exhaust that propels him at Power rank speed. The rocket blast is created by a thermo-chemical reaction generated by the hero's body. The Power converts whatever material is around him into fuel and oxidant, then it shapes the exhaust into astream to propel him. If the hero is in a vacuum, the Power creates fuel out of virtual nothingness. "
     },
     {
         category: "Travel", code: "T14", maxRoll: 58, name: "Skywalk", powerCount: 1,
-        description: ""
+        description: "This is a peculiar form of flying. The hero can walk along an invisible path that he creates in the air. The path only serves the hero and only exists as long as he concentrates on maintaining its existence. The path is intangible to others unless the hero can extend its benefits to them by such means as a Power Stunt, Power Transferral, or Telekinesis.  Note: the average incline is 30 degrees; sharper angles are harder to climb. The Power offers Power rank resistance to high winds and sudden fluctuations in gravity, whether natural or Power-based. The Optional Power is Telekinesis."
     },
     {
         category: "Travel", code: "T15", maxRoll: 64, name: "Spiderclimb", powerCount: 1,
-        description: ""
+        description: "The hero can travel along vertical or inverted surfaces with only minor difficulty. The maximum speed, assuming the hero is using all his limbs to Spiderclimb, is the same as the hero's normal ground movement rate. "
     },
     {
         category: "Travel", code: "T16", maxRoll: 72, name: "Teleport Self", powerCount: 1,
-        description: ""
+        description: "The hero can vanish at one location and instantly reappear at a distant site. He does not physically cross the intervening distance and is not not affected by most physical barriers. Normal safeguards prevent the hero from consciously Teleporting into a solid mass.  Certain conditions can prevent the hero from Teleporting. If the hero doesn't know where he is, psychological blockage may prevent him from consciously Teleporting. Extremely dense materials like Neutronium or black holes are impassable. Barriers that incorporate such Powers as Power Negation, Force Field vs. either Energy or Magic, or True Invulnerability are also impassable at higher rank. The Optional Powers are Teleport Others and Clairvoyance."
     },
     {
         category: "Travel", code: "T17", maxRoll: 76, name: "Teleport Others", powerCount: 1,
-        description: ""
+        description: "The hero can make any target except his own body vanish and instantly reappear at a distant site. The target does not physically cross the intervening distance and is unaffected by most physical barriers. Teleportation always occurs if the passenger is immobile or touching the hero. Optional Powers include Teleport Self and Clairvoyance."
     },
     {
         category: "Travel", code: "T18", maxRoll: 78, name: "Telereformation", powerCount: 1,
-        description: ""
+        description: "This is a peculiar form of Self Teleportation. The hero can disintegrate his body, transport his lifeforce any distance, and then create a new body out of materials available at the destination site. The Power shapes these into a form that resembles the hero's self-image but whose physical properties may be those of the materials that compose the new body. Obviously, most heroes with this Power cannot carry objects, passengers, or clothing.  Optional Powers include Clairvoyance, Free Spirit, and Serial Immortality/ Creation."
     },
     {
         category: "Travel", code: "T19", maxRoll: 80, name: "Time Travel", powerCount: 1,
-        description: ""
+        description: "The hero can travel in time to reach any point in the past or future. The maximum range the hero can reach is varies depending on which direction he's traveling. Travel into the past is easy because it already exists from the hero's point of view. The maximum range is equal to the Power rank number times 1000 years. Travel into the future is harder (at least, if you're planning a return trip). The maximum range into the future is equal to the Power rank number times 10 years. The Power can transport a mass whose weight is equal to the hero's Strength.  Optional Powers include Dimension Travel, Precognition, Postcognition, and Reality Alteration."
     },
     {
         category: "Travel", code: "T20", maxRoll: 82, name: "Troubleseeker", powerCount: 1,
-        description: ""
+        description: "The Power combines Teleportation with automatically functioning Mental and Detection Powers. The hero subconsciously detects a crisis somewhere within his range and automatically teleports to the vicinity. He usually arrives without any idea of what the problem is that drew him. His only warning is the dreaded feel of the Power beginning to function. Nothing can prevent the hero from teleporting into a crisis area. His unwanted appearance can only be prevented by nullifying the Power before it functions. To compensate for the constant demands the Power places on the hero, it increase the hero's Endurance by this Power's rank number. The Power automatically transports anything the hero considers part of his self image. If the hero possesses Dimension Travel, it is automatically incorporated into this Power to extend its range. If the hero possesses Time Travel, the Power can usurp control of this as well. The screening mechanism never draws the hero to a crisis that is beyond his ability to handle, though he might not think so at the time. "
     },
     {
         category: "Travel", code: "T21", maxRoll: 93, name: "True Flight", powerCount: 1,
-        description: ""
+        description: "The hero can fly through air and space without an apparent means of propulsion. This is the most desired Power in the history of the world.  True Flight includes as a side effect Power rank resistance to atmospheric friction and lungs adapted to breathe high velocity wind.  Optional Powers include Body Resistance, Armor Skin, Self-Sustenance, and Telekinesis."
     },
     {
         category: "Travel", code: "T22", maxRoll: 97, name: "Water Walking", powerCount: 1,
-        description: ""
+        description: "The hero can temporarily solidity the surface of the water to enable him to walk on it without getting more than his feet wet. The pathway smoothes the water's surface to an average wave height and is not affected by waves of equal or less Intensity. The path slides along the water'ssurface. This permits the hero to travel at Power rank speed and the Water Movement rate. The Path only exists for the hero to use. It is intangible to others unless the hero can physically carry them or directly extend his Power to them.  The Power normally functions only when the hero is consciously using it."
     },
     {
         category: "Travel", code: "T23", maxRoll: 100, name: "Whirlwind", powerCount: 1,
-        description: ""
+        description: "The hero can fly by creating a small cyclone that carries him through the air. Maneuverability is determined by the hero's Agility. In addition to the hero's body, the Whirlwind can support additional weight.  Passengers are not battered by the high winds but are safely held aloft by updrafts in the cyclone's interior. High winds can affect the hero. If the wind is powerful enough, the Whirlwind can be dispersed.  Optional Powers include Weather Control and Matter Animation/Air."
     },
 ];
 
