@@ -1265,91 +1265,95 @@ const POWER_LIST_ULTIMATE_TABLE = [
     // Self-Alteration (S)
     {
         category: "Self-Alteration", code: "S1", maxRoll: 2, name: "Age-Shift", powerCount: 1,
-        description: ""
+        description: "The hero can alter his apparent age at will.  His body and physiology change to simulate any age, younger or older. Mental facilities remain unaffected. "
     },
     {
         category: "Self-Alteration", code: "S2", maxRoll: 16, name: "Alter Ego", powerCount: 1,
-        description: ""
+        description: "The hero has two different forms. One is a normal, powerless being; the other is the powerful, heroic self. When creating the hero, the player has to create two different beings. The statistics for the primary self should be fairly routine (all physical abilities ranging from Feeble to Good). All bets are off for the heroic self. Something many people never consider is that the heroic self might be a relatively normal human, while the normal self is something a little lower on the evolutionary ladder. "
     },
     {
         category: "Self-Alteration", code: "S3", maxRoll: 18, name: "Anatomical Separation", powerCount: 1,
-        description: ""
+        description: "This is the most grotesque Power available but it has its advantages nevertheless. With this Power the hero can spontaneously and harmlessly separate his body into independently functioning segments. Physiological functions like blood flow and neural activity continue in the same manner as if the body were whole. Detached parts cannot regenerate if the body is destroyed unless the hero has a regenerative Power."
     },
     {
         category: "Self-Alteration", code: "S4", maxRoll: 20, name: "Animal Transformation", powerCount: 1,
-        description: ""
+        description: "The hero can alter his appearance, form, and dimensions to appear as any desired animal form. This Power can also be used to assume alien appearances. The only limitation is that the hero's basic physiology remains unchanged."
     },
     {
         category: "Self-Alteration", code: "S5", maxRoll: 26, name: "Animal Mimicry", powerCount: 1,
-        description: ""
+        description: "This is a form of Power Duplication. The hero can duplicate the natural abilities of any animal. The hero's body does not significantly change; instead, existing flesh changes the way it functions."
     },
     {
         category: "Self-Alteration", code: "S6", maxRoll: 30, name: "Blending", powerCount: 1,
-        description: ""
+        description: "The hero has the ability to match his color exactly to his surroundings. This Power functions as a practical invisibility. The body's outline and contours are still detectable if the observer is very careful. The Power is most effective if the hero is in low light or at a distance from the viewer. "
     },
     {
         category: "Self-Alteration", code: "S7", maxRoll: 34, name: "Body Adaptation", powerCount: 1,
-        description: ""
+        description: "This is related to Life Support. The hero's body automatically adapts its physiology to enable it to survive in hostile environments. Unlike many of the other Powers that also permit this, Body Adaptation physically changes the hero's body. The Power changes the hero into a form that has primary abilities proportional to the new environment."
     },
     {
         category: "Self-Alteration", code: "S8", maxRoll: 42, name: "Body Transformation", powerCount: 1,
-        description: ""
+        description: "The hero can alter the nature of elements and compounds within his own body. Innate safeguards in this Power maintain the hero's lifeforce in any altered state. Altered states may not necessarily be mobile, or may move in new ways."
     },
     {
         category: "Self-Alteration", code: "S9", maxRoll: 48, name: "Body Coating", powerCount: 1,
-        description: ""
+        description: "The hero can surround himself witha flexible layer of a protective substance not normally found on his body. The body coat provides protection and allows the hero's Powers to manifest. Any damage to the coating can be quickly repaired by the hero's body secreting more of the coating material. The degree of protection and the speed of repair to the coating are determined by the Power rank."
     },
     {
         category: "Self-Alteration", code: "S10", maxRoll: 52, name: "Chemical Mimicry", powerCount: 1,
-        description: ""
+        description: "This is related to both S7/Body Transformation-Self and to Power Duplication. The hero can duplicate the chemical properties of any element or compound without his own body actually changing in composition. The hero's flesh simply acts as if it were the desired substance. "
     },
     {
         category: "Self-Alteration", code: "S11", maxRoll: 56, name: "Energy Body", powerCount: 1,
-        description: ""
+        description: "The hero can transform his body into a coherent energy field that supports his lifeforce and is capable of controlled actions. The energy can be of any type."
     },
     {
         category: "Self-Alteration", code: "S12", maxRoll: 62, name: "Energy Sheath", powerCount: 1,
-        description: ""
+        description: "The hero can surround himself with an energy field. This field provides protection, lifesupport, and a means of manifesting the hero's other Powers. The energy field can be of any type."
     },
     {
         category: "Self-Alteration", code: "S13", maxRoll: 64, name: "Evolution", powerCount: 1,
-        description: ""
+        description: "The hero can alter his mind and body to simulate any stage of the evolutionary path of his species."
     },
     {
         category: "Self-Alteration", code: "S14", maxRoll: 74, name: "Imitation", powerCount: 1,
-        description: ""
+        description: "The hero can change his superficial appearance but cannot alter his basic form or dimensions. The hero has conscious control over the movement and placement of muscles, cartilage, and minor bones and can alter the color and appearance of his skin and hair."
     },
     {
-        category: "Self-Alteration", code: "S15", maxRoll: 82, name: "Invisibility", powerCount: 1,
-        description: ""
+        category: "Self-Alteration", code: "S15", maxRoll: 81, name: "Humanoid Changling", powerCount: 1,
+        description: "The hero can alter his appearance, form, and dimensions to appear in any desired human or humanoid shape. The hero may either imitate a known being or assume a created appearance. This Power does not allow the hero to imitate Powers, Talents, or mannerisms."
     },
     {
-        category: "Self-Alteration", code: "S16", maxRoll: 84, name: "Physical Gestalt", powerCount: 1,
-        description: ""
+        category: "Self-Alteration", code: "S16", maxRoll: 83, name: "Invisibility", powerCount: 1,
+        description: "With this Power a hero can render himself undetectable by normal, consciously willed sight. There are four very different means of accomplishing thiseffect. Each form has unique characteristics regarding such factors as the area made invisible, protection against light-based attacks, mechanical detection, and detection by other means."
     },
     {
-        category: "Self-Alteration", code: "S17", maxRoll: 86, name: "Plant Mimicry", powerCount: 1,
-        description: ""
+        category: "Self-Alteration", code: "S17", maxRoll: 85, name: "Physical Gestalt", powerCount: 1,
+        description: "This is a variation of S2/Alter Ego. Two or more relatively normal people actually merge their bodies to form a single, powerful being—the hero. When a player rolls this Power, he has to create three different characters. The Gestalt hero may physically resemble a blending of features from each of the merged characters, or have a completely different appearance. In any case, the Gestalt hero will have a  normal appearance. No two-headed, split torsoed freak results, unless this Power is distorted in some way. Interference by such Powers as Magic or Power Control may result in the Gestalt hero forming as a freak. The hero can still revert to his normal selves, though, no matter how weird he gets. Both or all normal selves ar erequired to form the Gestalt. If one is unavailable, the Power cannot function. Damage to a normal self is carried over to the Gestalt self. However, the Gestalt hero's superior recuperative faculties can quickly repair any such illness. The normal and Gestalt selves never co-exist except under extraordinary circumstances. The Gestalt mind may be a schizoid combination of each of the normal minds, or be a completely independent mind. In the latter case, the Gestalt may have full, partial, or no knowledge of his component selves. Likewise, the normal selves may not have any idea of what their Gestalt self is up to."
     },
     {
-        category: "Self-Alteration", code: "S18", maxRoll: 88, name: "Prehensile Hair", powerCount: 1,
-        description: ""
+        category: "Self-Alteration", code: "S18", maxRoll: 87, name: "Plant Mimicry", powerCount: 1,
+        description: "This is a form of Power duplication. The hero can duplicate the natural abilities of any plant. The body does not significantly change, aside from the instantaneous appearance of chlorophyll in the hero's skin whenever he uses this Power."
     },
     {
-        category: "Self-Alteration", code: "S19", maxRoll: 90, name: "Self-Duplication", powerCount: 1,
-        description: ""
+        category: "Self-Alteration", code: "S19", maxRoll: 89, name: "Prehensile Hair", powerCount: 1,
+        description: "The Power gives the hero's hair the capability of independent, controlled movement, as if each strand were a tiny tentacle. It is also a Power that apparently only women possess.  The basis for this may be cultural rather than genetic. Using her Prehensile Hair, the heroine can perform a variety of tasks with the hairs combining to form one or more appendages. She can handle objects, pick locks, ensnare a target, and even deliver a powerful blow with a silken fist. In a blunt combat the hair functions as one or more attacks."
     },
     {
-        category: "Self-Alteration", code: "S20", maxRoll: 92, name: "Self-Vegetation", powerCount: 1,
-        description: ""
+        category: "Self-Alteration", code: "S20", maxRoll: 91, name: "Self-Duplication", powerCount: 1,
+        description: "The hero can spontaneously generate exact copies of himself. The new bodies are usually semi-independent; each possessing an independent mind but all are linked telepathically so all Duplicates are aware of each other's actions. Each Duplicate possesses the same Powers as the original, except for possible lacking this Power. If a Duplicate is killed, the hero doesn't lose any Health, though he might lose Karma if the hero deliberately sent his Duplicate into a certain-death situation."
     },
     {
-        category: "Self-Alteration", code: "S21", maxRoll: 98, name: "Shapeshifting", powerCount: 1,
-        description: ""
+        category: "Self-Alteration", code: "S21", maxRoll: 93, name: "Self-Vegetation", powerCount: 1,
+        description: "The hero can alter both his shape and physiology to become any desired plant form. The degree of change can vary wildly. At the least, the hero's body changes into a similarly-shaped \"plantman;\" at higher ranks the hero may assume normal or alien plant shapes. When in plant-form, the hero is immune to attacks that specifically affect animal life but is vulnerable to attacks that affect plant life.  When in plant form, the hero doesn't need to eat normal food; rather he uses photosynthesis to gain desired energy."
     },
     {
-        category: "Self-Alteration", code: "S22", maxRoll: 100, name: "Spirit Gestalt", powerCount: 1,
-        description: ""
+        category: "Self-Alteration", code: "S22", maxRoll: 98, name: "Shapeshifting", powerCount: 1,
+        description: "The hero can drastically alter all of his physical parameters to achieve any desired shape. Despite appearances, the hero retains his basic chemical composition unless other Powers are used simultaneously, such as S8/Body Transformation—Self."
+    },
+    {
+        category: "Self-Alteration", code: "S23", maxRoll: 100, name: "Spirit Gestalt", powerCount: 1,
+        description: "The hero can transform into a heroic Alter Ego by joining his mind and body with one or more disembodied beings. The joining of these disparate beings generates the Power possessed by the Gestalt hero."
     },
 
     // Travel (T)
@@ -1445,6 +1449,21 @@ const POWER_LIST_ULTIMATE_TABLE = [
         category: "Travel", code: "T23", maxRoll: 100, name: "Whirlwind", powerCount: 1,
         description: ""
     },
+];
+
+const INVISIBILITY_FORM_TABLE = [
+    { maxRoll: 25, name: "Physics", 
+        description: "The hero's body is totally transparent to the visible light spectrum. He cannot be mechanically detected or recorded."
+    },
+    { maxRoll: 50, name: "Telepathic",
+        description: "The hero is actually visible but is ignored and immediately forgotten by beings whowould otherwise be capable of detecting his presence. He is also immune to detection by other senses. He can be mechanically detected and recorded.  He can extend this invisibility to anyone in physical contact with him.  "
+    },
+    { maxRoll: 75, name: "Hallucinatory",
+        description: "The hero is actually visible but is surrounded by a telepathic field that makes others see an empty spot where the hero is. The Hallucination can incorporate the hero's surroundings and affect real-time viewers at a great distance. In other words, the hero can disguise the area around himself and this disguise will fool anyone looking at the area, even if they are miles away. However, this Power doesn't fool film or videotape; these record the scene as it really is. Hallucination also prevents detection by other senses. The hero can be mechanically detected and recorded; as with the Telepathic form, anyone within range of the effect ignores the hero. Robots and cybernetic beings can also detect him."
+    },
+    { maxRoll: 100, name: "Holographic",
+        description: "The hero is actually visible but has surrounded himself with a holographic image of empty space. The holograph can incorporate a wide area and affects anyone within line of sight. The holograph can be mechanically detected and recorded as if it were real. It will not prevent detection by other senses. Robots and cybernetic life accept the holographas real."
+    }
 ];
 
 const BIOPHYSICAL_CONTROL_FORM_TABLE = [
