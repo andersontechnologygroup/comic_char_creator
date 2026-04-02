@@ -43,6 +43,29 @@ class Tester {
     this.assertCount++;
   }
 
+  static assertHasPower(expectedValue, powersList, message) {
+    const line = this.getLineNumber();
+    const area = document.getElementById('test-area');
+    const div = document.createElement('div');
+
+    let found = false;
+    for(let index = 0; index < powersList.length; index ++) {
+      if(powersList[index].name === expectedValue) {
+        found = true;
+        break;
+      }
+    }
+
+    const condition = found;
+
+    div.id = condition ? "pass" : "failure";
+    div.className = "test-output " + (condition ? "pass" : "fail");
+    div.innerText = `${condition ? "PASS" : "FAIL"}: (${line}) ${message} Expected Power: ${expectedValue}`;
+    this.failureCount += condition ? 0 : 1;
+    area.appendChild(div);
+    this.assertCount++;
+  }
+
   static start() {
     console.log("%cTESTING TESTING TESTING", "color: red; font-size: 24px");
   }
@@ -177,177 +200,71 @@ class Tester {
     gen.generatorMode = "ultimate";
     gen.setTables();
 
-    gen.physicalFormRoll = 25;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Normal Human", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
+    for(let index = 0; index < gen.physicalFormTable.length; index++) {
+      gen.throwAllRolls();
+      gen.physicalFormRoll = gen.physicalFormTable[index].maxRoll;
+      const char = gen.generateWithoutThrows();
+      this.assertEquals(gen.physicalFormTable[index].name, char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
 
-    gen.physicalFormRoll = 30;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Mutant - Induced", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 33;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Mutant - Random", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 35;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Mutant - Breed", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 38;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Android", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 46;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Humanoid Race", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 47;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Surgical Composite", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 49;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Modified Human - Organic", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 51;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Modified Human - Muscular", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 53;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Modified Human - Skeletal", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 57;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Modified Human - Extra Parts", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 58;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Demihuman - Centaur", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 59;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Demihuman - Equiman", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 60;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Demihuman - Faun", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 62;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Demihuman - Felinoid", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 64;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Demihuman - Lupinoid", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 65;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Demihuman - Avian (Angelic)", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 66;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Demihuman - Avian (Harpie)", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 67;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Demihuman - Chiropteran", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 68;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Demihuman - Lamian", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 69;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Demihuman - Merhuman", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 70;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Demihuman - Other", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 72;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Cyborg - Artificial limbs/organs", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 74;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Cyborg - Exoskeleton", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 76;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Cyborg - Mechanical Body", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 79;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Cyborg - Mechanically Augmented", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 82;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Robot - human shape", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 84;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Robot - Usuform", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 86;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Robot - Metamorphic", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 87;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Robot - Computer", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 88;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Angel/Demon", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 89;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Deity", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 90;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Animal", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 91;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Vegetable", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 92;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Abnormal Chemistry", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 93;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Mineral", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 94;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Gaseous", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 95;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Liquid", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 96;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Energy", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 97;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Ethereal", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 98;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Undead", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 99;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Compound", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
-
-    gen.physicalFormRoll = 100;
-    gen.determinePhysicalForm(char);
-    this.assertEquals("Changeling", char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
+      switch(char.physicalForm) {
+        case "Demihuman - Chiropteran":
+          {
+            this.assertHasPower('Sonar (Active)', char.powers, 'Demihuman - Chiropteran has bonus power of Sonar (Active).')
+            const power = char.powers.find(p => p.name === "Sonar (Active)");
+            this.assertEquals("Good", power.rank, "Demihuman - Chiropteran Sonar (Active) must be Good rank.")
+          }
+          break;
+        case "Demihuman - Merhuman":
+          {
+            this.assertHasPower('Water Freedom', char.powers, 'Demihuman - Merhuman has bonus power of Water Freedom.')
+          }
+          break;
+        case "Angel/Demon":
+          {
+            if(char.subType === "Angel") {
+              this.assertHasPower('Artifact Creation', char.powers, 'Angel has bonus power of Artifact Creation.')
+              const power = char.powers.find(p => p.name === "Artifact Creation");
+              this.assertEquals("Good", power.rank, "Angel Artifact Creation must be Good rank.")
+            }
+            else if(char.subType === "Demon") {
+              this.assertHasPower('Fire Generation', char.powers, 'Demon has bonus power of Fire Generation.')
+              const power = char.powers.find(p => p.name === "Fire Generation");
+              this.assertEquals("Good", power.rank, "Demon Fire Generation must be Good rank.")
+            }
+          }
+          break;
+        case "Deity":
+          {
+            const power = char.powers.find(p => p.category === "Travel");
+            this.assertEquals('Travel', power.category, 'Deity has bonus power of category Travel.')
+          }
+          break;
+        case "Animal":
+          {
+            const power = char.powers.filter(p => p.category === "Detection");
+            this.assertEquals(2, power.length, "Animal has 2 bonus powers of category Detection.");
+            this.assertEquals("Good", power[0].rank, "Animal has bonus power(1) of category Detection at Good rank.");
+            this.assertEquals("Good", power[1].rank, "Animal has bonus power(2) of category Detection at Good rank.");
+          }
+          break;
+        case "Vegetable":
+          {
+              this.assertHasPower('Absorption Power', char.powers, 'Vegetable has bonus power of Absorption Power.')
+              const power = char.powers.find(p => p.name === "Absorption Power");
+              this.assertEquals("Good", power.rank, "Vegetable Absorption Power must be Good rank.")
+          }
+          break;
+        case "Energy":
+          {
+            const power1 = char.powers.filter(p => p.category === "Energy Emission");
+            const power2 = char.powers.filter(p => p.category === "Energy Control");
+            const power1L = (power1 !== undefined) ? power1.length : 0;
+            const power2L = (power1 !== undefined) ? power2.length : 0;
+            this.assertGreaterOrEqual(2, power1L + power2L, "Energy has 2 bonus powers of category Energy Emission and/or Energy Control.");
+          }
+          break;
+      }
+    }
   }
 
   static GeneratorCompoundTests() {
@@ -1890,6 +1807,120 @@ class Tester {
       this.assertEquals(targetPower.category, p.category, `Power Category Roll: Generated ${p.category} category.`);
       this.assertEquals(targetPower.name, p.name, `Power Roll: Generated ${p.name} name.`);
       this.assertEquals("Excellent", p.rank, `Power Rank Roll: Generated ${p.rank} rank.`);
+
+      // Validate Bonus Powers
+      switch(targetPower.code) {
+        case "EC3":
+          this.assertGreaterOrEqual(2, char.powers.length, "If Coldshaping, there should be at least 2 powers due to Bonus Power.");
+          this.assertEquals("Cold Generation", char.powers[1].name, "If Coldshaping, also has Cold Generation.");
+          break;
+        case "EC13":
+          this.assertGreaterOrEqual(2, char.powers.length, "If Kinetic Control, there should be at least 2 powers due to Bonus Power.");
+          this.assert(char.powers[1].name === "Telekinesis" || char.powers[1].name === "Kinetic Bolt", "If Kinetic Control, also has Telekinesis or Kinetic Bolt.");
+          break;
+        case "EC17":
+          this.assertGreaterOrEqual(2, char.powers.length, "If Radiowave Control, there should be at least 2 powers due to Bonus Power.");
+          this.assertEquals("Radiowave Generation", char.powers[1].name, "If Radiowave Control, also has Radiowave Generation.");
+          break;
+        case "EC18":
+          this.assertGreaterOrEqual(2, char.powers.length, "If Shadowshaping, there should be at least 2 powers due to Bonus Power.");
+          this.assertEquals("Shadowcasting", char.powers[1].name, "If Shadowshaping, also has Shadowcasting.");
+          break;
+        case "EC19":
+          this.assertGreaterOrEqual(2, char.powers.length, "If Sound Manipulation, there should be at least 2 powers due to Bonus Power.");
+          this.assertEquals("Sonic Generation", char.powers[1].name, "If Sound Manipulation, also has Sonic Generation.");
+          break;
+        case "L2":
+          this.assertGreaterOrEqual(2, char.powers.length, "If Bio-Vampirism, there should be at least 2 powers due to Bonus Power.");
+          this.assertEquals("Mind Control", char.powers[1].name, "If Bio-Vampirism, also has Mind Control.");
+          break;
+        case "M29":
+          this.assertGreaterOrEqual(2, char.powers.length, "If Speechthrowing, there should be at least 2 powers due to Bonus Power.");
+          this.assertEquals("Clairaudience", char.powers[1].name, "If Speechthrowing, also has Clairaudience.");
+          break;
+        case "P17":
+          this.assertGreaterOrEqual(2, char.powers.length, "If Water Freedom, there should be at least 2 powers due to Bonus Power.");
+          this.assertEquals("Waterbreathing", char.powers[1].name, "If Water Freedom, also has Waterbreathing.");
+          break;
+        case "T8":
+          this.assertGreaterOrEqual(2, char.powers.length, "If Hyper-Digging, there should be at least 2 powers due to Bonus Power.");
+          this.assert(char.powers[1].name === "Natural Weaponry" || char.powers[1].name === "Body Resistance", "If Hyper-Digging, also has Natural Weaponry or Body Resistance.");
+          break;
+        case "T11":
+          this.assertGreaterOrEqual(2, char.powers.length, "If Hyper-Swimming, there should be at least 2 powers due to Bonus Power.");
+          this.assert(char.powers[1].name === "Waterbreathing" || char.powers[1].name === "Water Freedom", "If Hyper-Swimming, also has Waterbreathing or Water Freedom.");
+          break;      
+      }
+
+    // Validate optionalPowers
+    /*
+        category: "Energy Control", code: "EC3", maxRoll: 15, name: "Coldshaping",
+        optionalPowers: "Energy Control\\Thermal Control|Matter Control\\Molding|Self-Alteration\\Body Coating",
+
+        category: "Energy Control", code: "EC7", maxRoll: 31, name: "Energy Solidification",
+        optionalPowers: "Energy Emission\\Any",
+        
+        category: "Energy Control", code: "EC10", maxRoll: 45, name: "Fire Control",
+        optionalPowers: "Energy Emission\\Fire Generation|Energy Control\\Thermal Control|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
+
+        category: "Energy Control", code: "EC12", maxRoll: 53, name: "Hard Radiation Control",
+        optionalPowers: "Energy Emission\\Hard Radiation|Energy Emission\\Energy Doppelganger|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
+
+        category: "Energy Control", code: "EC13", maxRoll: 59, name: "Kinetic Control",
+        optionalPowers: "Mental Enhancement\\Telekinesis|Energy Emission\\Kinetic Bolt",
+
+        category: "Energy Control", code: "EC14", maxRoll: 66, name: "Light Control",
+        optionalPowers: "Energy Emission\\Light Emission|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave|Illusionary\\Illusion Casting",
+
+        category: "Energy Control", code: "EC16", maxRoll: 77, name: "Plasma Control",
+        optionalPowers: "Energy Emission\\Plasma Generation|Energy Emission\\Energy Doppelganger|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
+
+        category: "Energy Control", code: "EC17", maxRoll: 80, name: "Radiowave Control",
+        optionalPowers: "Energy Emission\\Energy Doppelganger|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave",
+
+        category: "Energy Control", code: "EC18", maxRoll: 84, name: "Shadowshaping",
+        optionalPowers: "Energy Control\\Light Control|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
+
+        category: "Energy Control", code: "EC19", maxRoll: 90, name: "Sound Manipulation",
+        optionalPowers: "Energy Emission\\Vibration|Energy Control\\Vibration Control",
+
+        category: "Energy Control", code: "EC20", maxRoll: 97, name: "Thermal Control",
+        optionalPowers: "Energy Emission\\Heat|Energy Emission\\Fire Generation|Energy Emission\\Cold Generation|Energy Control\\Fire Control|Energy Control\\Coldshaping",
+
+        category: "Energy Control", code: "EC21", maxRoll: 100, name: "Vibration Control",
+        optionalPowers: "Energy Emission\\Vibration|Energy Emission\\Sonic Generation|Energy Control\\Sound Manipulation",
+
+        category: "Energy Emission", code: "EE1", maxRoll: 10, name: "Cold Generation", powerCount: 1,
+        optionalPowers: "Energy Control\\Coldshaping|Energy Control\\Energy Solidification|Matter Control\\Molding",
+
+        category: "Energy Emission", code: "EE7", maxRoll: 52, name: "Kinetic Bolt", powerCount: 1,
+        optionalPowers: "Energy Control\\Kinetic Control|Mental Enhancement\\Telekinesis",
+    
+        category: "Energy Emission", code: "EE11", maxRoll: 78, name: "Radiowave Generation", powerCount: 1,
+        optionalPowers: "Energy Emission\\Radiowave Generation|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave",
+
+        category: "Energy Emission", code: "EE12", maxRoll: 83, name: "Shadowcasting", powerCount: 1,
+        optionalPowers: "Energy Control\\Shadowshaping|Energy Control\\Darkforce Manipulation",
+
+        category: "Energy Emission", code: "EE13", maxRoll: 93, name: "Sonic Generation", powerCount: 1,
+        optionalPowers: "Energy Control\\Sound Manipulation|Energy Emission\\Vibration|Energy Control\\Vibration Control",
+        
+        category: "Energy Emission", code: "EE14", maxRoll: 100, name: "Vibration", powerCount: 1,
+        optionalPowers: "Energy Control\\Vibration Control|Energy Emission\\Sonic Generation",
+
+        category: "Fighting", code: "F2", maxRoll: 60, name: "Martial Supremacy", powerCount: 1,
+        optionalPowers: "Mental Enhancement\\Iron Will|Fighting\\Weapons Creation",
+
+        category: "Illusionary", code: "I1", maxRoll: 15, name: "Animate Image", powerCount: 1,
+        optionalPowers: "Detection\\Telescopic Vision~Mental Enhancement\\Clairvoyance|Energy Control\\Energy Solidification|Matter Creation\\Elemental Creation~Matter Creation\\Molecular Creation",
+
+        category: "Illusionary", code: "I2", maxRoll: 70, name: "Illusion Casting", powerCount: 1,
+        optionalPowers: "Energy Control\\Energy Solidification|Detection\\Telescopic Vision|Mental Enhancement\\Clairvoyance",
+
+        category: "Illusionary", code: "I3", maxRoll: 85, name: "Illusory Invisibility", powerCount: 1,
+        optionalPowers: "Energy Control\\Light Control|Energy Emission\\Light Emission",
+    */
+
     }
   }
 
@@ -2491,45 +2522,6 @@ class Tester {
     this.TalentsUltimateTests(gen);
   }
 
-  // This test is meaningless currently because no generated talent has multiple slots
-  static TalentsTooManyTests(gen) {
-    return;
-
-    /*
-    const charSlots = new Character();
-    charSlots.origin = "Altered Human";
-    charSlots.randomRanksColumn = 1;
-
-    gen.powerNumberRoll = 2; // 1/2
-    gen.talentNumberRoll = 91;
-    gen.contactNumberRoll = 74;
-    gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [20, 30, 40, 50];
-
-    gen.determineSpecialAbilities(charSlots);
-
-    // Limits from table (Min 2/1/0, Max 5/4/4)
-    const tCount = charSlots.talents.length;
-
-    this.assert(tCount >= 1 && tCount <= 4,
-      `Talent Quantity Roll: Generated ${tCount} talents (Valid range 1-4).`);
-
-    this.assertEquals(4, tCount, `Talent Quantity Roll: Generated ${tCount} talents.`);
-
-    this.assertEquals("Weapon Skills", charSlots.talents[0].category, `Talent Category Roll: Generated ${charSlots.talents[0].category} category.`);
-    this.assertEquals("Guns", charSlots.talents[0].name, `Talent Category Roll: Generated ${charSlots.talents[0].name} name.`);
-
-    this.assertEquals("Fighting Skills", charSlots.talents[1].category, `Talent Category Roll: Generated ${charSlots.talents[1].category} category.`);
-    this.assertEquals("Martial Arts C", charSlots.talents[1].name, `Talent Category Roll: Generated ${charSlots.talents[1].name} name.`);
-
-    this.assertEquals("Scientific Skills", charSlots.talents[2].category, `Talent Category Roll: Generated ${charSlots.talents[2].category} category.`);
-    this.assertEquals("Biology", charSlots.talents[2].name, `Talent Category Roll: Generated ${charSlots.talents[2].name} name.`);
-
-    this.assertEquals("Other Skills", charSlots.talents[3].category, `Talent Category Roll: Generated ${charSlots.talents[3].category} category.`);
-    this.assertEquals("First Aid", charSlots.talents[3].name, `Talent Category Roll: Generated ${charSlots.talents[3].name} name.`);
-    */
-  }
-
   static ContactsGenericTests(gen) {
     gen.generatorMode = 'generic';
     gen.setTables();
@@ -2716,7 +2708,6 @@ class Tester {
   static ContactsTests(gen) {
     this.ContactsGenericTests(gen);
     this.ContactsAdvancedTests(gen);
-
     this.ContactsUltimateTests(gen);
   }
 
@@ -2888,7 +2879,6 @@ class Tester {
   static ContactsTooManyTests(gen) {
     this.ContactsTooManyGenericTests(gen);
     this.ContactsTooManyAdvancedTests(gen);
-
     //this.ContactsTooManyUltimateTests(gen);
   }
 
@@ -3042,7 +3032,8 @@ class Tester {
     this.PowersTooManyTests(gen);
     this.WeaknessTests(gen);
     this.TalentsTests(gen);
-    this.TalentsTooManyTests(gen);
+    // Currently there are no talents that count as 2, so this isn't needed.
+    //this.TalentsTooManyTests(gen);
     this.ContactsTests(gen);
     this.ContactsTooManyTests(gen);
 

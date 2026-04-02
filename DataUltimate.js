@@ -111,7 +111,7 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
     {
         maxRoll: 67, name: "Demihuman - Chiropteran", column: 2,
         bonusPowerCount: 1,
-        bonusPower: "Detection\\Sonar (Active)\\Good", popularityStart: 1 /* Feeble */,
+        bonusPower: "Detection\\Sonar (Active)\\Good(100)", popularityStart: 1 /* Feeble */,
         description: "Demihumans can be unique individuals or members of a race that inhabits a different place or time.  Chiropterans are similar to angelic humans except that they combine the human parts with those of a bat. Their arms also serve as leathery wings, their feet have elongated toes that can serve as hands, and in addition they possess large ears."
     },
     {
@@ -121,7 +121,7 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
     {
         maxRoll: 69, name: "Demihuman - Merhuman", column: 2,
         bonusPowerCount: 1,
-        bonusPowers: "Physical Enhancement\\Water Freedom\\Roll", popularityAdjustment: 1,
+        bonusPower: "Physical Enhancement\\Water Freedom(100)", popularityAdjustment: 1,
         description: "Demihumans can be unique individuals or members of a race that inhabits a different place or time.  Merhumans are amphibious relatives of lamians. The body is human from the waist up; the rest is a flexible fish-tail. Merhumans possess both lungs and gills, but can only stay away from water a limited time because their bodies quickly dry out. Movement on dry land is limited to crawling or dependence on vehicles."
     },
     {
@@ -168,25 +168,25 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
         maxRoll: 88, name: "Angel/Demon", column: 5, subType: "Angel(50)|Demon(100)", popularityAdjustment: "Angel(+2)|Demon(-2)",
         allPhysicalAbilitiesAdjustment: 1,
         bonusPowerCount: 1,
-        bonusPowers: "Demon(Energy Emission\\Fire Generation\\Good)|Angel(Matter Creation\\Artifact Creation\\Good)",
+        bonusPower: "Demon(Energy Emission\\Fire Generation\\Good(100))|Angel(Matter Creation\\Artifact Creation\\Good(100))",
         description: "These are magical beings from other planes of existence. They are both supernatural and corporeal in nature. The main difference between these types is their inherent personality. \"Angels\" are benevolent; \"demons\" are malevolent. Other than that, there isn't much differnce.  Such beings p o s s e s s a Psychological Weakness that Negates their Power."
     },
     {
         maxRoll: 89, name: "Deity", column: 5, allPrimaryAbilitiesAdjustment: 2, powersCountAdjustment: 2, popularityAdjustment: 2,
         bonusPowerCount: 1,
-        bonusPower: "Travel\\Any\\Roll",
+        bonusPower: "Travel\\Any(100)",
         description: "This is an \"Entity of Great Power\" —or rather, was such a being. The deity was an actual god, demigod, or close relative who was actually worshipped at some point in the past. Now his powers have waned because the religion which was devoted to him is no longer practiced. His followers have disappeared into the annals of history."
     },
     {
         maxRoll: 90, name: "Animal", column: 1, powersCountAdjustment: -1,
         bonusPowerCount: 2,
-        bonusPowers: "Detection\\Any\\Good|Detection\\Any\Good", resourcesSet: 1 /* Feeble */,
+        bonusPower: "Detection\\Any\\Good(50)|Detection\\Any\\Good(100)", resourcesSet: 1 /* Feeble */,
         description: "This is a catch-all category that includes fish, mammals, birds, reptiles, and the rest of Earth's fauna, in addition to aliens that do not fit into any other category."
     },
     {
         maxRoll: 91, name: "Vegetable", column: 1, resourcesSet: 1 /* Feeble */,
         bonusPowerCount: 1,
-        bonusPower: "Energy Control\\Absorption Power\\Good",
+        bonusPower: "Energy Control\\Absorption Power\\Good(100)",
         fightingAdjustment: -2, enduranceAdjustment: 2,
         description: "The hero is an intelligent, mobile plant. He can be of any nature but for game purposes the hero is assumed to be a man-shaped plant. His physiology is based on photosynthesis. The plant-man doesn't need to eat anything except a bit of fertilizer occasion- ally. Prolonged deprivation of light and water reduces the hero's Strength and Endurance - 1CS per day after an initial three days."
     },
@@ -209,7 +209,7 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
     {
         maxRoll: 96, name: "Energy", column: 5,
         bonusPowerCount: 2,
-        bonusPowers: "Energy Emission\\Any\\Roll|Energy Control\\Any\Roll",
+        bonusPower: "Energy Emission\\Any(50)|Energy Control\\Any(100)",
         description: "The hero is a field of coherent energy. The basis for this can be any Energy form found in the Energy Emission and Control sections.  "
     },
     {
@@ -523,9 +523,9 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Energy Control", code: "EC3", maxRoll: 15, name: "Coldshaping",
-        powerCount: 1,
-        bonusPowers: "Cold Generation",
-        optionalPowers: "Thermal Control|Condensation|Molding|Body Coating",
+        powerCount: 1, bonusPowerCount: 1,
+        bonusPower: "Energy Emission\\Cold Generation(100)",
+        optionalPowers: "Energy Control\\Thermal Control|Matter Control\\Molding|Self-Alteration\\Body Coating",
         description: "The hero can control any force that actively decreases the temperature of something else. This can be used to increase or decrease the cold's Intensity by this Power's rank number. There are two primary functions to this Power. The first is to counteract or supplement cold-based Powers.  The hero can also redirect such Powers. The hero can shape fields of intense cold and produce useful results."
     },
     {
@@ -546,7 +546,7 @@ const POWER_LIST_ULTIMATE_TABLE = [
     {
         category: "Energy Control", code: "EC7", maxRoll: 31, name: "Energy Solidification",
         powerCount: 1,
-        optionalPowers: "any Energy",
+        optionalPowers: "Energy Emission\\Any",
         description: "The hero can transform energy into a matrix that simulates solid matter. This matrix may be any shape the hero desires, although greater complexity requires a higher Intensity FEAT to create."
     },
     {
@@ -562,7 +562,7 @@ const POWER_LIST_ULTIMATE_TABLE = [
     {
         category: "Energy Control", code: "EC10", maxRoll: 45, name: "Fire Control",
         powerCount: 1,
-        optionalPowers: "FireGEneration|Thermral Control|Energy Sheath|Energy Body",
+        optionalPowers: "Energy Emission\\Fire Generation|Energy Control\\Thermal Control|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
         description: "The hero can control existing flames, whether natural or Power-based. He can alter any factor involved in combustion without direct physical contact. The hero can increase or decrease the flame's Intensity up to his Power rank and reduce fire damage by his rank number. This Power includes Power rank Resistance to Fire and Heat. The most important aspect of this Power is enabling the hero to reshape flame into any form he desires."
     },
     {
@@ -573,20 +573,20 @@ const POWER_LIST_ULTIMATE_TABLE = [
     {
         category: "Energy Control", code: "EC12", maxRoll: 53, name: "Hard Radiation Control",
         powerCount: 1,
-        optionalPowers: "Hard Radiation Emission|Energy Doppleganger|Energy Sheath|Energy Body|Energy Sustenance",
+        optionalPowers: "Energy Emission\\Hard Radiation|Energy Emission\\Energy Doppelganger|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
         description: "The hero can control existing radiation, including X-rays, alpha, beta, gamma, and cosmic rays. The hero can increase or decrease theradiation's Intensity, up to his Power rank, and reduce the damage done by radiation up to his Power rank number. The hero can direct the flow of radiation and can alter its nature by converting any form of radiation to any other form."
     },
     {
         category: "Energy Control", code: "EC13", maxRoll: 59, name: "Kinetic Control",
-        powerCount: 1,
-        bonusPowers: "Telekinesis or Kinetic Bolt",
-        optionalPowers: "Telekinesis or Kinetic Bolt",
+        powerCount: 1, bonusPowerCount: 1,
+        bonusPower: "Mental Enhancement\\Telekinesis(50)|Energy Emission\\Kinetic Bolt(100)",
+        optionalPowers: "Mental Enhancement\\Telekinesis|Energy Emission\\Kinetic Bolt",
         description: "The hero can control the energy of motion itself. He can increase or decrease kinetic energy's Intensity by his Power rank number.  He can impart momentum as if he physically pushed the target.  The primary purpose of Kinetic Control is to control Telekinesis and Kinetic Bolts. "
     },
     {
         category: "Energy Control", code: "EC14", maxRoll: 66, name: "Light Control",
         powerCount: 1,
-        optionalPowers: "Light Generation|Energy Sheath|Carrier Wave|Illusion Casting.",
+        optionalPowers: "Energy Emission\\Light Emission|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave|Illusionary\\Illusion Casting",
         description: "The hero can manipulate existing light. This can be visible, infrared, or ultraviolet light. The hero can alter the intensity, frequency (color, in other words), and coherence of light. The hero can actually change the direction of light and form crude holograms."
     },
     {
@@ -597,47 +597,47 @@ const POWER_LIST_ULTIMATE_TABLE = [
     {
         category: "Energy Control", code: "EC16", maxRoll: 77, name: "Plasma Control",
         powerCount: 1,
-        optionalPowers: "Plasma Generation|Energy Doppelganger|Energy Sheath|Energy Body",
+        optionalPowers: "Energy Emission\\Plasma Generation|Energy Emission\\Energy Doppelganger|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
         description: "The hero can control fields of highly-charged particles. The hero can increase or decrease the plasma's Intensity and reduce its damage by his Power rank number. The Power has two main uses. The first is shaping plasma fields into any shape desired.  The second use of Plasma Control enables the hero to counteract plasma related Powers."
     },
     {
         category: "Energy Control", code: "EC17", maxRoll: 80, name: "Radiowave Control",
-        powerCount: 1,
-        bonusPowers: "Radiowave Generation",
-        optionalPowers: "Energy Doppelganger|Energy Sheath|Carrier Wave",
+        powerCount: 1, bonusPowerCount: 1,
+        bonusPower: "Energy Emission\\Radiowave Generation(100)",
+        optionalPowers: "Energy Emission\\Energy Doppelganger|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave",
         description: "The hero can control existing radiowaves, whether AM, FM, or microwaves. The hero can increase or decrease the radiowaves' Intensity by his Power rank number. The Power really comes into its own when used as a form of electronic age Illusion-Casting. That is, the hero creates complex signals that simulate an actual broadcast."
     },
     {
         category: "Energy Control", code: "EC18", maxRoll: 84, name: "Shadowshaping",
-        powerCount: 1,
-        bonusPowers: "Shadowcasting",
-        optionalPowers: "Light Control|Energy Sheath|Energy Body",
+        powerCount: 1, bonusPowerCount: 1,
+        bonusPower: "Energy Emission\\Shadowcasting(100)",
+        optionalPowers: "Energy Control\\Light Control|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
         description: "This Power enables the hero to affect normal shadows and, indirectly, light as well. The hero can shift the location and size of normal shadows. He can form them into two-dimensional images that can do Power rank damage to real targets. The hero can also Remote Sense through these shadow-constructs. "
     },
     {
         category: "Energy Control", code: "EC19", maxRoll: 90, name: "Sound Manipulation",
-        powerCount: 1,
-        bonusPowers: "Sound Generation",
-        optionalPowers: "Vibration|Vibration Control",
+        powerCount: 1, bonusPowerCount: 1,
+        bonusPower: "Energy Emission\\Sonic Generation(100)",
+        optionalPowers: "Energy Emission\\Vibration|Energy Control\\Vibration Control",
         description: "The hero can control existing sound. This also provides the hero with Resistance to sound-based Powers."
     },
     {
         category: "Energy Control", code: "EC20", maxRoll: 97, name: "Thermal Control",
         powerCount: 1,
-        optionalPowers: "Heat Generation|Fire Generation|Cold Generation|Fire Control|Coldshaping",
+        optionalPowers: "Energy Emission\\Heat|Energy Emission\\Fire Generation|Energy Emission\\Cold Generation|Energy Control\\Fire Control|Energy Control\\Coldshaping",
         description: "The hero can control applied heat or cold; that is, he can control any force that actively changes the temperature of something else. This includes any source of heat or cold, whether natural, artificial, or Powerbased. The Power overlaps both Heat and Cold Generation but it also differs from them in that this Power cannot alter the natural temperature of a target of alter the local temperature to suit the hero's whim."
     },
     {
         category: "Energy Control", code: "EC21", maxRoll: 100, name: "Vibration Control",
         powerCount: 1,
-        optionalPowers: "Vibration|Sonic Generation|Sound Manipulation",
+        optionalPowers: "Energy Emission\\Vibration|Energy Emission\\Sonic Generation|Energy Control\\Sound Manipulation",
         description: "The hero can control existing vibrations. These may be natural or Power-based. The hero can increase or decrease the Intensity of the vibration by his Power rank number."
     },
 
     // Energy Emission (EE)
     {
         category: "Energy Emission", code: "EE1", maxRoll: 10, name: "Cold Generation", powerCount: 1,
-        optionalPowers: "Coldshaping, Condensation, Solidification, and Molding",
+        optionalPowers: "Energy Control\\Coldshaping|Energy Control\\Energy Solidification|Matter Control\\Molding",
         description: "This Power is the pure form of Ice Generation and one it is often confused with. The hero can emit a field that decreases thermal energy and infra-red radiation. The Power decreases the temperature of the target. The only limitation is that the temperature cannot drop lower than absolute zero ( - 273 degrees Celsius or - 459.4 degrees Fahrenheit). The power has the side-effect of cooling the air between the hero and the target."
     },
     {
@@ -663,7 +663,7 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Energy Emission", code: "EE7", maxRoll: 52, name: "Kinetic Bolt", powerCount: 1,
-        optionalPowers: "Kinetic Control and Telekinesis",
+        optionalPowers: "Energy Control\\Kinetic Control|Mental Enhancement\\Telekinesis",
         description: "This is a crude form of M30/Telekinesis. The hero can strike a target with a surge of force at Power rank range and damage. The Kinetic Bolt can be shaped as desired by the hero. It can be a wide cylinder, or an incredibly fine needle. Its effect is the same as if the target had been struck by a solid object of equal material strength."
     },
     {
@@ -680,22 +680,22 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Energy Emission", code: "EE11", maxRoll: 78, name: "Radiowave Generation", powerCount: 1,
-        optionalPowers: "Radiowave Control, Energy Sheath, and Carrier Wave",
+        optionalPowers: "Energy Emission\\Radiowave Generation|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave",
         description: "The hero can generate radiowaves, including AM and FM signals and microwaves. This Power primarily affects broadcasting and electronics; the Power can do rank damage over rank range to these. The Power can also be used to directly affect any target by internally heating it through microwave bombardment."
     },
     {
         category: "Energy Emission", code: "EE12", maxRoll: 83, name: "Shadowcasting", powerCount: 1,
-        optionalPowers: "Shadowshaping and Darkforce Manipulation",
+        optionalPowers: "Energy Control\\Shadowshaping|Energy Control\\Darkforce Manipulation",
         description: "The hero can emit a field that decreases light and radiation. The obscured energy's Intensity is lowered by the Power's rank taken as Intensity. The energy forms that can be affected by this Power are Light, Heat, Hard Radiation, Radiowaves, Energy Doppelgangers, and Energy Bodies. "
     },
     {
         category: "Energy Emission", code: "EE13", maxRoll: 93, name: "Sonic Generation", powerCount: 1,
-        optionalPowers: "Sonic Control, Vibration, and Vibration Control",
+        optionalPowers: "Energy Control\\Sound Manipulation|Energy Emission\\Vibration|Energy Control\\Vibration Control",
         description: "The hero can generate intense sound and make attacks of Power rank range and damage. This Power can generate frequencies normally inaudible. The hero can disrupt other sound-based Powers by creating dissonance as his harmonics clash with the second Power's harmonics."
     },
     {
         category: "Energy Emission", code: "EE14", maxRoll: 100, name: "Vibration", powerCount: 1,
-        optionalPowers: "Vibration Control and Sonic Gener",
+        optionalPowers: "Energy Control\\Vibration Control|Energy Emission\\Sonic Generation",
         description: "The hero can generate non-audible vibrations. These can alter existing harmonics, effectively negating any sonic- or vocal-based Power. The hero can cause tremors at Power rank range and damage. The Power can even be used to incapacitate living targets; effects can vary from motion sickness (nausea and vomiting) to death by internal hemmorhaging. "
     },
 
@@ -706,7 +706,7 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Fighting", code: "F2", maxRoll: 60, name: "Martial Supremacy", powerCount: 1,
-        optionalPowers: "Iron Will and Weapons Creation",
+        optionalPowers: "Mental Enhancement\\Iron Will|Fighting\\Weapons Creation",
         description: "This Power increases the hero's already-mastered Martial Arts to dramatically higher levels and allows him to perform actions that would otherwise be impossible."
     },
     {
@@ -725,17 +725,17 @@ const POWER_LIST_ULTIMATE_TABLE = [
     // Illusory (I)
     {
         category: "Illusionary", code: "I1", maxRoll: 15, name: "Animate Image", powerCount: 1,
-        optionalPowers: "either Telescopic Vision or Clairvoyance, Energy Solidification, and either Elemental or Molecular Creation",
+        optionalPowers: "Detection\\Telescopic Vision~Mental Enhancement\\Clairvoyance|Energy Control\\Energy Solidification|Matter Creation\\Elemental Creation~Matter Creation\\Molecular Creation",
         description: "This is a specialized form of Illusion-casting that enables the hero to apparently bring any flat image to life. Whatever the original nature of the image- drawing, painting, photograph, print— the image gains three dimensionality and independent movement. A blank white area now fills the area formerly occupied by the newly solidified Image. The hero has to be able to clearly see both the Image and its surroundings. When either is beyond his vision, the believability of the Image drops drastically. When the Image gets beyond the hero's field of clear vision, he can no longer make it realistically conform to the surroundings."
     },
     {
         category: "Illusionary", code: "I2", maxRoll: 70, name: "Illusion Casting", powerCount: 1,
-        optionalPowers: "Energy Solidification, Telescopic Vision, and Clairvoyance",
+        optionalPowers: "Energy Control\\Energy Solidification|Detection\\Telescopic Vision|Mental Enhancement\\Clairvoyance",
         description: "The hero can create realistic holographic images that have apparent solidity. These Illusions can be mechanically detected and recorded by such means as photography or television. The Illusion can take any size or appearance the hero desires and is limited only by his imagination . The Illusion can be a realistic simulation, a fanciful creation direct from the hero's mind, or an abstract display of light. The hero is playing with light itself and can create anything that is visible. Since most people depend on vision to gain information on their surroundings, this Power presents the awesome ability to apparently alter the nature of reality."
     },
     {
         category: "Illusionary", code: "I3", maxRoll: 85, name: "Illusory Invisibility", powerCount: 1,
-        optionalPowers: "Light Control and Light Emission",
+        optionalPowers: "Energy Control\\Light Control|Energy Emission\\Light Emission",
         description: "This is not true Invisibility but is actually a clever simulation. The effects are nearly the same, anyway; the hero becomes effectively invisible to any living or artificial being. The hero actually remains visible but he can now surround himself witha holographic Illusion of empty space. This field can be limited to the hero's body or increased to cover a large area. Within the Illusory Invisibility, things remain visible. From the point of view of anyone within the Power's protection, it appears that the area has been surrounded by a irregularly-shaped transparent balloon that causes weird tricks of light. Outside the \"balloon\" a viewer sees only the Illusion of empty space, even if the viewer has just stepped out of the invisibility field. The \"empty space\" is only what the hero imagines such an empty space to look like. As the hero tries to hide more area, the problems of realism multiply. If the Illusory Invisibility and the viewer move in relationship to each other, the viewer might be able to detect a slight distortion of light at the edge of the field. Since the Invisibility is holographic in nature, it can be mechanically detected and recorded by such means as photography, television, and the mechanical senses of artificial beings. It can also be seen at any distance and will deceive telescopes, remote cameras, and Telescopic Visionbused outside the field's effect. Simple physical contact can alert a viewer to the hero's presence, whether the hero accidentally envelops him in the field or the hero makes a distance attack at the target. A spray of a coating material will temporarily reveal the extent of the field; in the middle of an obscuring cloud, the field shows as a silhouette of clear air."
     },
     {
@@ -750,7 +750,8 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Lifeform Control", code: "L2", maxRoll: 15, name: "Bio-Vampirism", powerCount: 1,
-        bonusPower: "Power of Mind Control/Puppetry",
+        bonusPowerCount: 1,
+        bonusPower: "Lifeform Control\\Mind Control(100)",
         description: "The character is a super-carnivore able to increase his Strength, Endurance, Psyche, and Power ranks by consuming living biological materials. The most common examples of Bio-Vampires are the traditional blood-suckers like Dracula. As a new type of Bio-Vampire, your character need not follow the traditional abilities and limitations associated with the old Vampires. The Bio-Vampire must feed in order to maintain his life. Even if the Bio-Vampire is deprived of victims, he never actually starves to death. Bio-Vampirism is communicable."
     },
     {
@@ -1113,7 +1114,8 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Mental Enhancement", code: "M29", maxRoll: 81, name: "Speechthrowing", powerCount: 1,
-        bonusPower: "Clairaudience",
+        bonusPowerCount: 1,
+        bonusPower: "Mental Enhancement\\Clairaudience(100)",
         description: "This is best described as \"super-ventriloquism.\" Although it is radically different in execution from the Talent of Ventriloquism, the effect at low levels is similar.  Simply put, the hero can make his voice audible in a distant location, without the vocal soundwaves actually traveling the intervening distance. The Power is actually a specialized form of Telekinesis which allows the hero to agitate the distant molecules in a way that simulates sound transmission. Optional Powers include Clairvoyance, Vocal Control, Hyper-hearing, and Sensory-Link."
     },
     {
@@ -1200,7 +1202,8 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Physical Enhancement", code: "P17", maxRoll: 100, name: "Water Freedom", powerCount: 1,
-        bonusPower: "Waterbreathing",
+        bonusPowerCount: 1,
+        bonusPower: "Physical Enhancement\\Waterbreathing(100)",
         description: "The hero's body is adapted for movement in the water. The hero can move through water with the same ease that normal beings can move through air. Note: This power does not automatically include Water-Breathing."
     },
 
@@ -1387,7 +1390,8 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Travel", code: "T8", maxRoll: 28, name: "Hyper-Digging", powerCount: 1,
-        bonusPower: "Natural Weaponry/Claws or Body Resistance",
+        bonusPowerCount: 1,
+        bonusPower: "Fighting\\Natural Weaponry(50)|Physical Enhancement\\Body Resistance(100)",
         description: "The hero can travel swiftly through the earth by burrowing a tunnel at Power rank speed (land movement rate). The Power can be used indefinitely as Hyper-digging has the side-effect of increasing the hero's Strength and Endurance.  Burrowing remains the hero's preferred mode of transportation. Optional Powers include Hyperstrength, Hyper-endurance, Armor Skin, or Body Resistance."
     },
     {
@@ -1401,7 +1405,8 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Travel", code: "T11", maxRoll: 46, name: "Hyper-Swimming", powerCount: 1,
-        bonusPower: "Water-breathing | Water Freedom",
+        bonusPowerCount: 1,
+        bonusPower: "Physical Enhancement\\Waterbreathing(50)|Physical Enhancement\\Water Freedom(100)",
         description: "The hero can cover large distances by swimming at Power rank speed. The Power does not free the hero from the need to breathe. The hero can tow other objects in his wake at a decreased speed. This assumes the towed object has a buoyancy equal to the hero's body. Bonus Powers include a choice of Waterbreathing or Water Freedom. Theremaining on e is available as a Optional Power. The Nemesis is Matter Animation/ Water."
     },
     {
@@ -1455,16 +1460,20 @@ const POWER_LIST_ULTIMATE_TABLE = [
 ];
 
 const INVISIBILITY_FORM_TABLE = [
-    { maxRoll: 25, name: "Physics", 
+    {
+        maxRoll: 25, name: "Physics",
         description: "The hero's body is totally transparent to the visible light spectrum. He cannot be mechanically detected or recorded."
     },
-    { maxRoll: 50, name: "Telepathic",
+    {
+        maxRoll: 50, name: "Telepathic",
         description: "The hero is actually visible but is ignored and immediately forgotten by beings whowould otherwise be capable of detecting his presence. He is also immune to detection by other senses. He can be mechanically detected and recorded.  He can extend this invisibility to anyone in physical contact with him.  "
     },
-    { maxRoll: 75, name: "Hallucinatory",
+    {
+        maxRoll: 75, name: "Hallucinatory",
         description: "The hero is actually visible but is surrounded by a telepathic field that makes others see an empty spot where the hero is. The Hallucination can incorporate the hero's surroundings and affect real-time viewers at a great distance. In other words, the hero can disguise the area around himself and this disguise will fool anyone looking at the area, even if they are miles away. However, this Power doesn't fool film or videotape; these record the scene as it really is. Hallucination also prevents detection by other senses. The hero can be mechanically detected and recorded; as with the Telepathic form, anyone within range of the effect ignores the hero. Robots and cybernetic beings can also detect him."
     },
-    { maxRoll: 100, name: "Holographic",
+    {
+        maxRoll: 100, name: "Holographic",
         description: "The hero is actually visible but has surrounded himself with a holographic image of empty space. The holograph can incorporate a wide area and affects anyone within line of sight. The holograph can be mechanically detected and recorded as if it were real. It will not prevent detection by other senses. Robots and cybernetic life accept the holographas real."
     }
 ];

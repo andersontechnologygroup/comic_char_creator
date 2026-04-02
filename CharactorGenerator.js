@@ -64,7 +64,7 @@ class CharacterGenerator {
 
   generateWithoutThrows() {
     const char = new Character();
-
+    
     this.setTables();
 
     // 1. Determine Physical Form (for Ultimate)
@@ -98,38 +98,8 @@ class CharacterGenerator {
   }
 
   generate() {
-    const char = new Character();
-
     this.throwAllRolls();
-    this.setTables();
-
-    // 1. Determine Physical Form (for Ultimate)
-    this.determinePhysicalForm(char);
-
-    // 2. Determine Origin
-    this.determineOrigin(char);
-
-    // 3. Determine Primary Abilities (FASERIP)
-    this.determinePrimaryAbilities(char);
-
-    // 4. Secondary Abilities Setup
-    this.determineResources(char);
-    this.determinePopularity(char);
-
-    // 5. Special Abilities (Powers, Talents, Contacts)
-    this.determineSpecialAbilities(char);
-
-    // 6. Weakness (Ultimate Only)
-    if (this.generatorMode === 'ultimate') {
-      this.determineWeakness(char);
-    }
-
-    // Final Calculation
-    char.calculateSecondary();
-    this.determineHealth(char);
-
-    char.identity = this.identitySecret ? "Secret" : "Public";
-
+    const char = this.generateWithoutThrows();
     return char;
   }
 
@@ -764,111 +734,10 @@ class CharacterGenerator {
     let talentsCountSet = false;
     let contactsCountSet = false;
 
-    let value = Utility.getValue(physicalFormRow, "powersCountSet", -1);
-    if (value !== -1) {
-      char.powersCount = value;
-      char.logRoll("Power Slots", "Base Rules", `Powers Count Set: ${char.powersCount}`);
-      powersCountSet = true;
-    }
-
-    value = Utility.getValue(physicalFormRow, "talentsCountSet", -1);
-    if (value !== -1) {
-      char.talentsCount = value;
-      char.logRoll("Talent Slots", "Base Rules", `Talents Count Set: ${char.talentsCount}`);
-      talentsCountSet = true;
-    }
-
-    value = Utility.getValue(physicalFormRow, "contactsCountSet", -1);
-    if (value !== -1) {
-      char.contactsCount = value;
-      char.logRoll("Contact Slots", "Base Rules", `Contacts Count Set: ${char.contactsCount}`);
-      contactsCountSet = true;
-    }
-
-    if (!powersCountSet) {
-      value = Utility.getValue(physicalFormRow, "powersCountAdjustment", 0);
-      if (value !== 0) {
-        char.powersCount += value;
-        char.powersMax += value;
-        char.logRoll("Power Slots", "Base Rules", `Powers Count Adjusted: ${char.powersCount}`);
-      }
-      if (char.powersCount > pQtyRow.powers.max) char.powersCount = pQtyRow.powers.max;
-    }
-
-    if (!talentsCountSet) {
-      value = Utility.getValue(physicalFormRow, "talentsCountAdjustment", 0);
-      if (value !== 0) {
-        char.talentsCount += value;
-        char.talentsMax += value;
-        char.logRoll("Talent Slots", "Base Rules", `Talents Count Adjusted: ${char.talentsCount}`);
-        if (char.talentsCount > tQtyRow.talents.max) char.talentsCount = tQtyRow.talents.max;
-      }
-    }
-
-    if (!contactsCountSet) {
-      value = Utility.getValue(physicalFormRow, "contactsCountAdjustment", 0);
-      if (value !== 0) {
-        char.contactsCount += value;
-        char.contactsMax += value;
-        char.logRoll("Contact Slots", "Base Rules", `Contacts Count Adjusted: ${char.contactsCount}`);
-        if (char.contactsCount > cQtyRow.contacts.max) char.contactsCount = cQtyRow.contacts.max;
-      }
-    }
-
-    if (!powersCountSet) {
-      value = Utility.getValue(physicalFormRow, "powersCountMinimum", -1);
-      if (value !== -1 && value > char.powersCount) {
-        char.powersCount = value;
-        char.powersMax = value;
-        char.logRoll("Power Slots", "Base Rules", `Powers Count Minimum: ${char.contactsCount}`);
-      }
-
-      value = Utility.getValue(physicalFormRow, "powersCountMaximum", -1);
-      if (value !== -1 && value < char.powersCount) {
-        char.powersCount = value;
-        char.powersMax = value;
-        char.logRoll("Power Slots", "Base Rules", `Powers Count Maximum: ${char.powersCount}`);
-      }
-    }
-
-    if (!talentsCountSet) {
-      value = Utility.getValue(physicalFormRow, "talentsCountMinimum", -1);
-      if (value !== -1 && value > char.talentsCount) {
-        char.talentsCount = value;
-        char.talentsMax = value;
-        char.logRoll("Talent Slots", "Base Rules", `Talents Count Minimum: ${char.contactsCount}`);
-      }
-
-      value = Utility.getValue(physicalFormRow, "talentsCountMaximum", -1);
-      if (value !== -1 && value < char.talentsCount) {
-        char.talentsCount = value;
-        char.talentsMax = value;
-        char.logRoll("Talent Slots", "Base Rules", `Talents Count Maximum: ${char.talentsCount}`);
-      }
-    }
-
-    if (!contactsCountSet) {
-      value = Utility.getValue(physicalFormRow, "contactsCountMinimum", -1);
-      if (value !== -1 && value > char.contactsCount) {
-        char.contactsCount = value;
-        char.contactsMax = value;
-        char.logRoll("Contact Slots", "Base Rules", `Contacts Count Minimum: ${char.contactsCount}`);
-      }
-
-      value = Utility.getValue(physicalFormRow, "contactsCountMaximum", -1);
-      if (value !== -1 && value < char.contactsCount) {
-        char.contactsCount = value;
-        char.contactsMax = value;
-        char.logRoll("Contact Slots", "Base Rules", `Contacts Count Maximum: ${char.contactsCount}`);
-      }
-
-      value = Utility.getValue(physicalFormRow, "contactsCountMaximum", -1);
-      if (value !== -1 && value < char.contactsCount) {
-        char.contactsCount = value;
-        char.contactsMax = value;
-        char.logRoll("Contact Slots", "Base Rules", `Contacts Count Maximum: ${char.contactsCount}`);
-      }
-    }
+    let value;
+    powersCountSet = this.determineSpecialPowerAdjustment(physicalFormRow, char, pQtyRow);
+    talentsCountSet = this.determineSpecialTalentAdjustment(physicalFormRow, char, tQtyRow);
+    contactsCountSet = this.determineSpecialContactAdjustment(physicalFormRow, char, cQtyRow);
 
     char.powersSlots = char.powersCount;
     char.talentsSlots = char.talentsCount;
@@ -877,7 +746,16 @@ class CharacterGenerator {
     char.logRoll("Talent Slots", tRoll, `Talents: ${char.talentsCount}/${char.talentsMax}`);
     char.logRoll("Contact Slots", cRoll, `Contacts: ${char.contactsCount}/${char.contactsMax}`);
 
-    // Generate Powers
+    // Generate Bonus Power
+    value = Utility.getValue(physicalFormRow, 'bonusPowerCount', 0);
+    if(value !== 0) {
+      let bonusPower = Utility.getValue(physicalFormRow, 'bonusPower', '');
+      for(let index = 0; index < value; index++) {
+        this.generatorBonusPowerOfPhysicalForm(char, bonusPower);
+      }
+    }
+
+    // Generate rolled Powers
     for (let i = 0; i < char.powersCount; i++) {
       this.generateSinglePower(char, i);
     }
@@ -902,6 +780,130 @@ class CharacterGenerator {
         description: c.description
       });
     }
+  }
+
+  determineSpecialContactAdjustment(physicalFormRow, char, cQtyRow) {
+    let contactsCountSet = false;
+    let value = Utility.getValue(physicalFormRow, "contactsCountSet", -1);
+    if (value !== -1) {
+      char.contactsCount = value;
+      char.logRoll("Contact Slots", "Base Rules", `Contacts Count Set: ${char.contactsCount}`);
+      contactsCountSet = true;
+    }
+
+    if (!contactsCountSet) {
+      value = Utility.getValue(physicalFormRow, "contactsCountAdjustment", 0);
+      if (value !== 0) {
+        char.contactsCount += value;
+        char.contactsMax += value;
+        char.logRoll("Contact Slots", "Base Rules", `Contacts Count Adjusted: ${char.contactsCount}`);
+        if (char.contactsCount > cQtyRow.contacts.max) {
+          char.contactsCount = cQtyRow.contacts.max;
+          char.logRoll("Contact Slots", "Base Rules", `Contacts Count Adjusted (too high): ${char.contactsCount}`);
+        }
+      }
+    }
+
+    if (!contactsCountSet) {
+      value = Utility.getValue(physicalFormRow, "contactsCountMinimum", -1);
+      if (value !== -1 && value > char.contactsCount) {
+        char.contactsCount = value;
+        char.contactsMax = value;
+        char.logRoll("Contact Slots", "Base Rules", `Contacts Count Minimum: ${char.contactsCount}`);
+      }
+
+      value = Utility.getValue(physicalFormRow, "contactsCountMaximum", -1);
+      if (value !== -1 && value < char.contactsCount) {
+        char.contactsCount = value;
+        char.contactsMax = value;
+        char.logRoll("Contact Slots", "Base Rules", `Contacts Count Maximum: ${char.contactsCount}`);
+      }
+    }
+
+    return contactsCountSet;
+  }
+
+  determineSpecialTalentAdjustment(physicalFormRow, char, tQtyRow) {
+    let talentsCountSet = false;
+    let value = Utility.getValue(physicalFormRow, "talentsCountSet", -1);
+    if (value !== -1) {
+      char.talentsCount = value;
+      char.logRoll("Talent Slots", "Base Rules", `Talents Count Set: ${char.talentsCount}`);
+      talentsCountSet = true;
+    }
+
+    if (!talentsCountSet) {
+      value = Utility.getValue(physicalFormRow, "talentsCountAdjustment", 0);
+      if (value !== 0) {
+        char.talentsCount += value;
+        char.talentsMax += value;
+        char.logRoll("Talent Slots", "Base Rules", `Talents Count Adjusted: ${char.talentsCount}`);
+        if (char.talentsCount > tQtyRow.talents.max) {
+          char.talentsCount = tQtyRow.talents.max;
+          char.logRoll("Talent Slots", "Base Rules", `Talens Count Adjusted (too high): ${char.talentsCount}`);
+        }
+      }
+    }
+
+    if (!talentsCountSet) {
+      value = Utility.getValue(physicalFormRow, "talentsCountMinimum", -1);
+      if (value !== -1 && value > char.talentsCount) {
+        char.talentsCount = value;
+        char.talentsMax = value;
+        char.logRoll("Talent Slots", "Base Rules", `Talents Count Minimum: ${char.contactsCount}`);
+      }
+
+      value = Utility.getValue(physicalFormRow, "talentsCountMaximum", -1);
+      if (value !== -1 && value < char.talentsCount) {
+        char.talentsCount = value;
+        char.talentsMax = value;
+        char.logRoll("Talent Slots", "Base Rules", `Talents Count Maximum: ${char.talentsCount}`);
+      }
+    }
+
+    return talentsCountSet;
+  }
+
+  determineSpecialPowerAdjustment(physicalFormRow, char, pQtyRow) {
+    let powersCountSet = false;
+    let value = Utility.getValue(physicalFormRow, "powersCountSet", -1);
+    if (value !== -1) {
+      char.powersCount = value;
+      char.logRoll("Power Slots", "Base Rules", `Powers Count Set: ${char.powersCount}`);
+      powersCountSet = true;
+    }
+
+    if (!powersCountSet) {
+      value = Utility.getValue(physicalFormRow, "powersCountAdjustment", 0);
+      if (value !== 0) {
+        char.powersCount += value;
+        char.powersMax += value;
+        char.logRoll("Power Slots", "Base Rules", `Powers Count Adjusted: ${char.powersCount}`);
+      }
+      if (char.powersCount > pQtyRow.powers.max) {
+        char.powersCount = pQtyRow.powers.max;
+        char.logRoll("Power Slots", "Base Rules", `Powers Count Adjusted (too high): ${char.powersCount}`);
+      }
+    }
+
+    if (!powersCountSet) {
+      value = Utility.getValue(physicalFormRow, "powersCountMinimum", -1);
+      if (value !== -1 && value > char.powersCount) {
+        char.powersCount = value;
+        char.powersMax = value;
+        char.logRoll("Power Slots", "Base Rules", `Powers Count Minimum: ${char.contactsCount}`);
+      }
+
+      value = Utility.getValue(physicalFormRow, "powersCountMaximum", -1);
+      if (value !== -1 && value < char.powersCount) {
+        char.powersCount = value;
+        char.powersMax = value;
+        char.logRoll("Power Slots", "Base Rules", `Powers Count Maximum: ${char.powersCount}`);
+      }
+    }
+
+    return powersCountSet;
+
   }
 
   determineWeakness(char) {
@@ -952,7 +954,7 @@ class CharacterGenerator {
       tRoll = this.talentRolls[talentIndex + adjustIndex];
       t = this.talentListTable.find(t => t.category === category && tRoll <= t.maxRoll);
       value = Utility.getValue(t, "talentCount", 1);
-      adjustinIndex++;
+      adjustIndex++;
     }
 
     char.logRoll("Talent Gen", `${tcRoll}/${tRoll}`, `${category}: ${t.name}`);
@@ -1009,12 +1011,9 @@ class CharacterGenerator {
     }
   }
 
-  isPowerAlreadyAssigned(char, powerRow) {
-    /*
-                return char.powers.some(p => p.name === powerRow.name);
-    */
-    for (let index = 0; index < char.powers.length; index++) {
-      if (char.powers[index].name === powerRow.name) {
+  isPowerAlreadyAssigned(powers, powerRow) {
+    for (let index = 0; index < powers.length; index++) {
+      if (powers[index].name === powerRow.name) {
         return true;
       }
     }
@@ -1045,7 +1044,7 @@ class CharacterGenerator {
     // console.log(`category: ${category}, powerRoll: ${powerRoll}`);
     // 3. Pick Power from Category
     indexAdjustment = 1;
-    while (this.isPowerAlreadyAssigned(char, powerRow) || powerRoll > 100) {
+    while (this.isPowerAlreadyAssigned(char.powers, powerRow) || powerRoll > 100) {
       char.logRoll("Power Gen", `Duplicate Power`, `Power: ${powerRow.name}`);
       catRoll = this.powerCategoryRolls[powerRollIndex + indexAdjustment];
       category = this.powerCategoriesTable.find(c => catRoll <= c.maxRoll).name;
@@ -1055,7 +1054,7 @@ class CharacterGenerator {
     }
 
     const powerCount = Utility.getValue(powerRow, "powerCount", 1);
-    while (powerCount > remainingSlots && (currentSlots + powerCount) > char.powersMax && !this.isPowerAlreadyAssigned(char, powerRow)) {
+    while (powerCount > remainingSlots && (currentSlots + powerCount) > char.powersMax && !this.isPowerAlreadyAssigned(char.powers, powerRow)) {
       char.logRoll("Power Gen", `Too Many Powers`, `Power: ${powerRow.name}`);
       catRoll = this.powerCategoryRolls[powerRollIndex];
       category = this.powerCategoriesTable.find(c => catRoll <= c.maxRoll).name;
@@ -1088,8 +1087,96 @@ class CharacterGenerator {
 
     char.logRoll("Power Gen", `${catRoll}/${powerRoll}/${rankRoll}`, `${category}: ${powerRow.name} (${rankRow.rank})`);
 
-    if (powerRow.bonusPowerCount > 0) {
+    value = Utility.getValue(powerRow, 'bonusPowerCount', 0);
+    if (value > 0) {
       this.generateBonusPower(char, powerRow.bonusPower);
+    }
+  }
+
+  generatorBonusPowerOfPhysicalForm(char, bonusPowerString) {
+    let indexAdjustment = 0;
+    const powers = bonusPowerString.split("|");
+    let powersToPickFrom = [];
+
+    for (let index = 0; index < powers.length; index++) {
+      const parts = powers[index].split("\\");
+      const otherParts = (parts.length === 3) ? parts[2].split("(") : parts[1].split("(");
+      let subType = null;
+
+      const subTypePos = parts[0].indexOf('(');
+      if(subTypePos !== 0) {
+        subType = parts[0].substring(0, subTypePos);
+        parts[0] = parts[0].substring(subTypePos + 1);
+      }
+
+      const category = parts[0];
+      let name = (parts.length === 3) ? parts[1] : otherParts[0];
+      const assignedRank = (parts.length === 3) ? otherParts[0] : null;
+      const roll = +otherParts[1].replace(/\)/g, ""); 
+
+      if(name === "Any") {
+        while(true) {
+          let thisRoll = this.powerRolls[char.powers.length + indexAdjustment];
+          while (thisRoll > 100) {
+            thisRoll = this.powerRolls[char.powers.length + indexAdjustment];
+            indexAdjustment++;
+          }
+          const p = this.powerListTable.find(c => c.category === category && thisRoll <= c.maxRoll);
+          name = p.name;
+
+          if(this.isPowerAlreadyAssigned(char.powers, p) || this.isPowerAlreadyAssigned(powersToPickFrom, p)) {
+            indexAdjustment++;
+          }
+          else {
+            break;
+          }
+        }
+      }
+
+      let addThisPower = true;
+      if(char.subType !== null && char.subType !== '' && subType !== null && subType !== '' && char.subType !== subType) {
+        addThisPower = false;
+      }
+
+      if(addThisPower) {
+        powersToPickFrom[powersToPickFrom.length] = {
+          category: category,
+          name: name,
+          maxRoll: roll, 
+          rank: assignedRank
+        };
+      }
+    }
+
+    const startIndex = char.powers.length;
+    let roll = this.powerRolls[startIndex];
+    while (roll > 100) {
+      roll = this.powerRolls[startIndex + indexAdjustment];
+      indexAdjustment++;
+    }
+
+    const power = powersToPickFrom.find(c => roll <= c.maxRoll);
+
+    const p = this.powerListTable.find(c => c.category === power.category && c.name === power.name);
+
+    const rankRoll = power.rank === null ? this.powerRankRolls[startIndex] : null;
+    const rankRow = power.rank === null ? Utility.findRow(this, rankRoll, 3) : this.randomRanksTable.find(r => r.rank === power.rank);
+
+    const rankNumber = rankRow.rankNumber;
+
+    char.logRoll("Bonus Power Gen", `Base Rules: ${roll}/${rankRow}`, `${power.category}: ${p.name} (${rankRow.rank})`);
+
+    if (char.powers.length < char.powersMax) {
+      char.powers.push({
+        category: p.category,
+        name: p.name,
+        code: p.code,
+        description: p.description,
+        rank: rankRow.rank,
+        number: rankNumber,
+        powerSlots: p.powerCount,
+        bonusPower: true
+      });
     }
   }
 
@@ -1128,7 +1215,7 @@ class CharacterGenerator {
 
     char.logRoll("Bonus Power Gen", `Base Rules: ${roll}/${rankRow}`, `${power.category}: ${p.name} (${rankRow.rank})`);
 
-    if (char.powers.length < char.powersMax && !this.isPowerAlreadyAssigned(char, p)) {
+    if (char.powers.length < char.powersMax && !this.isPowerAlreadyAssigned(char.powers, p)) {
       char.powers.push({
         category: p.category,
         name: p.name,
@@ -1142,5 +1229,127 @@ class CharacterGenerator {
     }
   }
 
+  generateOptionalPower(char, optionalPowersString) {
+
+    /*
+        category: "Energy Control", code: "EC3", maxRoll: 15, name: "Coldshaping",
+        optionalPowers: "Energy Control\\Thermal Control|Matter Control\\Molding(66)|Self-Alteration\\Body Coating",
+
+        category: "Energy Control", code: "EC7", maxRoll: 31, name: "Energy Solidification",
+        optionalPowers: "Energy Emission\\Any",
+
+        category: "Energy Control", code: "EC10", maxRoll: 45, name: "Fire Control",
+        optionalPowers: "Energy Emission\\Fire Generation|Energy Control\\Thermal Control|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
+
+        category: "Energy Control", code: "EC12", maxRoll: 53, name: "Hard Radiation Control",
+        optionalPowers: "Energy Emission\\Hard Radiation|Energy Emission\\Energy Doppelganger|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
+
+        category: "Energy Control", code: "EC13", maxRoll: 59, name: "Kinetic Control",
+        optionalPowers: "Mental Enhancement\\Telekinesis|Energy Emission\\Kinetic Bolt",
+
+        category: "Energy Control", code: "EC14", maxRoll: 66, name: "Light Control",
+        optionalPowers: "Energy Emission\\Light Emission|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave|Illusionary\\Illusion Casting",
+
+        category: "Energy Control", code: "EC16", maxRoll: 77, name: "Plasma Control",
+        optionalPowers: "Energy Emission\\Plasma Generation|Energy Emission\\Energy Doppelganger|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
+
+        category: "Energy Control", code: "EC17", maxRoll: 80, name: "Radiowave Control",
+        optionalPowers: "Energy Emission\\Energy Doppelganger|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave",
+
+        category: "Energy Control", code: "EC18", maxRoll: 84, name: "Shadowshaping",
+        optionalPowers: "Energy Control\\Light Control|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
+
+        category: "Energy Control", code: "EC19", maxRoll: 90, name: "Sound Manipulation",
+        optionalPowers: "Energy Emission\\Vibration|Energy Control\\Vibration Control",
+
+        category: "Energy Control", code: "EC20", maxRoll: 97, name: "Thermal Control",
+        optionalPowers: "Energy Emission\\Heat|Energy Emission\\Fire Generation|Energy Emission\\Cold Generation|Energy Control\\Fire Control|Energy Control\\Coldshaping",
+
+        category: "Energy Control", code: "EC21", maxRoll: 100, name: "Vibration Control",
+        optionalPowers: "Energy Emission\\Vibration|Energy Emission\\Sonic Generation|Energy Control\\Sound Manipulation",
+
+        category: "Energy Emission", code: "EE1", maxRoll: 10, name: "Cold Generation", powerCount: 1,
+        optionalPowers: "Energy Control\\Coldshaping|Energy Control\\Energy Solidification|Matter Control\\Molding",
+
+        category: "Energy Emission", code: "EE7", maxRoll: 52, name: "Kinetic Bolt", powerCount: 1,
+        optionalPowers: "Energy Control\\Kinetic Control|Mental Enhancement\\Telekinesis",
+
+        category: "Energy Emission", code: "EE11", maxRoll: 78, name: "Radiowave Generation", powerCount: 1,
+        optionalPowers: "Energy Emission\\Radiowave Generation|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave",
+
+        category: "Energy Emission", code: "EE12", maxRoll: 83, name: "Shadowcasting", powerCount: 1,
+        optionalPowers: "Energy Control\\Shadowshaping|Energy Control\\Darkforce Manipulation",
+
+        category: "Energy Emission", code: "EE13", maxRoll: 93, name: "Sonic Generation", powerCount: 1,
+        optionalPowers: "Energy Control\\Sound Manipulation|Energy Emission\\Vibration|Energy Control\\Vibration Control",
+        
+        category: "Energy Emission", code: "EE14", maxRoll: 100, name: "Vibration", powerCount: 1,
+        optionalPowers: "Energy Control\\Vibration Control|Energy Emission\\Sonic Generation",
+
+        category: "Fighting", code: "F2", maxRoll: 60, name: "Martial Supremacy", powerCount: 1,
+        optionalPowers: "Mental Enhancement\\Iron Will|Fighting\\Weapons Creation",
+
+        category: "Illusionary", code: "I1", maxRoll: 15, name: "Animate Image", powerCount: 1,
+        optionalPowers: "Detection\\Telescopic Vision~Mental Enhancement\\Clairvoyance|Energy Control\\Energy Solidification|Matter Creation\\Elemental Creation~Matter Creation\\Molecular Creation",
+
+        category: "Illusionary", code: "I2", maxRoll: 70, name: "Illusion Casting", powerCount: 1,
+        optionalPowers: "Energy Control\\Energy Solidification|Detection\\Telescopic Vision|Mental Enhancement\\Clairvoyance",
+
+        category: "Illusionary", code: "I3", maxRoll: 85, name: "Illusory Invisibility", powerCount: 1,
+        optionalPowers: "Energy Control\\Light Control|Energy Emission\\Light Emission",
+    */
+
+    // This will work sort of like the bonus.  Except will will fill up any power slots using optional powers
+    // This means we aren't rolling to determine which optional power, but we will roll for the rank.  
+     
+    /*
+    const powers = bonusPowerString.split("|");
+    for (let index = 0; index < powers.length; index++) {
+      const parts = powers[index].split("\\");
+      const category = parts[0];
+      const otherParts = parts[1].split("(");
+      const name = otherParts[0];
+      const roll = +otherParts[1].replace(")", "");
+
+      powers[index] = {
+        category: category,
+        name: name,
+        maxRoll: roll
+      };
+    }
+
+    const startIndex = char.powers.length;
+    let roll = this.powerRolls[startIndex];
+    let indexAdjustment = 1;
+    while (roll > 100) {
+      roll = this.powerRolls[startIndex + indexAdjustment];
+      indexAdjustment++;
+    }
+
+    const power = powers.find(c => roll <= c.maxRoll);
+
+    const p = this.powerListTable.find(c => c.category === power.category && c.name === power.name);
+
+    const rankRoll = this.powerRankRolls[startIndex];
+    const rankRow = Utility.findRow(this, rankRoll, 3);
+
+    const rankNumber = rankRow.rankNumber;
+
+    char.logRoll("Bonus Power Gen", `Base Rules: ${roll}/${rankRow}`, `${power.category}: ${p.name} (${rankRow.rank})`);
+
+    if (char.powers.length < char.powersMax && !this.isPowerAlreadyAssigned(char.powers, p)) {
+      char.powers.push({
+        category: p.category,
+        name: p.name,
+        code: p.code,
+        description: p.description,
+        rank: rankRow.rank,
+        number: rankNumber,
+        powerSlots: p.powerCount,
+        bonusPower: true
+      });
+    }
+    */
+  }
 }
 
