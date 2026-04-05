@@ -580,6 +580,7 @@ const POWER_LIST_ULTIMATE_TABLE = [
         category: "Energy Control", code: "EC13", maxRoll: 59, name: "Kinetic Control",
         powerCount: 1, bonusPowerCount: 1,
         bonusPower: "Mental Enhancement\\Telekinesis(50)|Energy Emission\\Kinetic Bolt(100)",
+        optionalPowersMax: 1,
         optionalPowers: "Mental Enhancement\\Telekinesis|Energy Emission\\Kinetic Bolt",
         description: "The hero can control the energy of motion itself. He can increase or decrease kinetic energy's Intensity by his Power rank number.  He can impart momentum as if he physically pushed the target.  The primary purpose of Kinetic Control is to control Telekinesis and Kinetic Bolts. "
     },
@@ -680,7 +681,7 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Energy Emission", code: "EE11", maxRoll: 78, name: "Radiowave Generation", powerCount: 1,
-        optionalPowers: "Energy Emission\\Radiowave Generation|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave",
+        optionalPowers: "Energy Control\\Radiowave Control|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave",
         description: "The hero can generate radiowaves, including AM and FM signals and microwaves. This Power primarily affects broadcasting and electronics; the Power can do rank damage over rank range to these. The Power can also be used to directly affect any target by internally heating it through microwave bombardment."
     },
     {
@@ -834,7 +835,8 @@ const POWER_LIST_ULTIMATE_TABLE = [
     // Magic (MG)
     {
         category: "Magic", code: "MG1", maxRoll: 8, name: "Enchantment", powerCount: 1,
-        description: "The Mage is able to invest a target with Magical Power. The target must be a non-sentient being or even non-living matter. The Mage is able to turn the Enchanted item into a battery that can harmlessly store Magic. Any spell stored within the item can be retained indefinitely in a state of readiness until the spell is somehow released. The Mage can store any spell he already possesses with the sole exception of this Power; a Mage cannot Enchant something that will then Enchant something else later on. Enchantment can store any number of spells, within the limit imposed by Enchantment's rank number. Optional Powers include Elemental Conversion, Molecular Conversion, and Molding. Nemeses include Force Field vs. Magic, Resistance to Magic, Magic Control, or Magic Domination."
+        optionalPowers: "Matter Conversion\\Elemental Conversion|Matter Conversion\\Molecular Conversion|Matter Control\\Molding",
+        description: "The Mage is able to invest a target with Magical Power. The target must be a non-sentient being or even non-living matter. The Mage is able to turn the Enchanted item into a battery that can harmlessly store Magic. Any spell stored within the item can be retained indefinitely in a state of readiness until the spell is somehow released. The Mage can store any spell he already possesses with the sole exception of this Power; a Mage cannot Enchant something that will then Enchant something else later on. Enchantment can store any number of spells, within the limit imposed by Enchantment's rank number. Nemeses include Force Field vs. Magic, Resistance to Magic, Magic Control, or Magic Domination."
     },
     {
         category: "Magic", code: "MG2", maxRoll: 15, name: "Energy Source", powerCount: 0,
@@ -842,7 +844,9 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Magic", code: "MG3", maxRoll: 17, name: "Internal Limbo", powerCount: 1,
-        description: "The Mage can create a pocket dimension whose gateway is his own body. This is a timeless space of near-infinite volume. The Mage can shape conditions within the Internal Limbo and create an yenvironment he desires. The Mage can also control the basic attitudes and emotions of any being within this Limbo. The Emotion-altering aspect of Internal Limbo functions as +6CS Emotion Control. If the Mage possesses such Powers as Energy Doppelganger, Illusory Duplication, Lifeform Creation, Free Spirit, Anatomical Separation, Self-Duplication, or Astral Body, then he can send a part or a representation of himself into his little world while the rest of himself stays in the outer world. Without such an ability, the Mage is limited to only basic awareness of conditions within the Internal Limbo. Optional Powers includes any one of the following— Energy Doppelganger, Illusory Duplication, Lifeform Creation, Free Spirit, Anatomical Separation, Self Duplication, and Astral Body."
+        optionalPowersMax: 1,
+        optionalPowers: "Energy Emission\\Energy Doppelganger|Illusionary\\Illusory Duplication|Matter Creation\\Lifeform Creation|Mental Enhancement\\Free Spirit|Self-Alteration\\Anatomical Separation|Self-Alteration\\Self-Duplication|Travel\\Astral Body",
+        description: "The Mage can create a pocket dimension whose gateway is his own body. This is a timeless space of near-infinite volume. The Mage can shape conditions within the Internal Limbo and create any environment he desires. The Mage can also control the basic attitudes and emotions of any being within this Limbo. The Emotion-altering aspect of Internal Limbo functions as +6CS Emotion Control. If the Mage possesses such Powers as Energy Doppelganger, Illusory Duplication, Lifeform Creation, Free Spirit, Anatomical Separation, Self-Duplication, or Astral Body, then he can send a part or a representation of himself into his little world while the rest of himself stays in the outer world. Without such an ability, the Mage is limited to only basic awareness of conditions within the Internal Limbo."
     },
     {
         category: "Magic", code: "MG4", maxRoll: 25, name: "Magic Control", powerCount: 1,
@@ -850,15 +854,18 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Magic", code: "MG5", maxRoll: 28, name: "Magic Creation", powerCount: 1,
-        description: "The Mage has the ability to create new Magical Powers and invest them into sentient beings for their own use. The new Magic can be of any nature, including any of the listings in this book, so long as they are treated as Magical rather than normal Powers. The Magical Powers she confers are nowhere near as high ranked as those the Mage possesses. Optional Powers include Hyper Intelligence and Total Memory."
+        optionalPowers: "Mental Enhancement\\Hyper-Intelligence|Mental Enhancement\\Total Memory", 
+        description: "The Mage has the ability to create new Magical Powers and invest them into sentient beings for their own use. The new Magic can be of any nature, including any of the listings in this book, so long as they are treated as Magical rather than normal Powers. The Magical Powers she confers are nowhere near as high ranked as those the Mage possesses."
     },
     {
         category: "Magic", code: "MG6", maxRoll: 33, name: "Magic Domination", powerCount: 1,
-        description: "This is a form of Mind Control. The Mage can control the actions of other Mages in regards to the casting and use of Magic spells. The Mage acts as a Puppetmaster who can control the physical actions but not the conscious mind of his victim. The Mage can force his puppet to cast any Magic he possesses in any way the controlling Mage desires. The Mage cannot control the actual characteristics of the puppet Mage's Magic. Optional Powers include Mind Control and Power Domination."
+        optionalPowers: "Lifeform Control\\Mind Control|Power Control\\Domination", 
+        description: "This is a form of Mind Control. The Mage can control the actions of other Mages in regards to the casting and use of Magic spells. The Mage acts as a Puppetmaster who can control the physical actions but not the conscious mind of his victim. The Mage can force his puppet to cast any Magic he possesses in any way the controlling Mage desires. The Mage cannot control the actual characteristics of the puppet Mage's Magic."
     },
     {
         category: "Magic", code: "MG7", maxRoll: 39, name: "Magic Transferral", powerCount: 1,
-        description: "The Mage can transfer some or all of her Magic to another sentient being. Only this Power cannot be transferred. Any combination of Powers and ranks can be transferred. The rank of each spell decreases the rank for that spell still held by the Mage. Optional Powers include Mind Transferral and Power Transferral."
+        optionalPowers: "Lifeform Control\\Mind Transferral|Power Control\\Power Transferral", 
+        description: "The Mage can transfer some or all of her Magic to another sentient being. Only this Power cannot be transferred. Any combination of Powers and ranks can be transferred. The rank of each spell decreases the rank for that spell still held by the Mage."
     },
     {
         category: "Magic", code: "MG8", maxRoll: 41, name: "Magic Vampirism", powerCount: 1,
@@ -870,11 +877,13 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Magic", code: "MG10", maxRoll: 77, name: "Reality Alteration", powerCount: 1,
-        description: "The Mage can reshape time itself in order to achieve a desired situation. Optional Powers include Precognition for Alter Future, Clairvoyance for Alter Present, and Retrocognition for Alter Past."
+        optionalPowers: "Mental Enhancement\\Precognition|Mental Enhancement\\Clairvoyance|Mental Enhancement\\Postcognition",
+        description: "The Mage can reshape time itself in order to achieve a desired situation."
     },
     {
         category: "Magic", code: "MG11", maxRoll: 79, name: "Spirit Vampirism", powerCount: 1,
-        description: "The Mage can drain the Intuition and Psyche from a target and use the absorbed energy to increase his own Strength, Endurance, Psyche, and other Powers he possesses. Spirit Vampires lose energy at a dreadful rate. Their rank numbers for Strength, Endurance, Psyche, and all their Powers except this one drop one point per hour. The Spirit Vampire must feed in order to bring these back to at least their original levels. Even if deprived of victims, a Spirit Vampire will not starve to death. Spirit Vampirism is communicable. The Optional Power is concurrent BioVampirism."
+        optionalPowers: "Lifeform Control\\Bio-Vampirism",
+        description: "The Mage can drain the Intuition and Psyche from a target and use the absorbed energy to increase his own Strength, Endurance, Psyche, and other Powers he possesses. Spirit Vampires lose energy at a dreadful rate. Their rank numbers for Strength, Endurance, Psyche, and all their Powers except this one drop one point per hour. The Spirit Vampire must feed in order to bring these back to at least their original levels. Even if deprived of victims, a Spirit Vampire will not starve to death. Spirit Vampirism is communicable."
     },
     {
         category: "Magic", code: "MG12", maxRoll: 95, name: "Sympathetic Magic", powerCount: 1,
@@ -888,15 +897,18 @@ const POWER_LIST_ULTIMATE_TABLE = [
     // Matter Control (MC)
     {
         category: "Matter Control", code: "MC1", maxRoll: 5, name: "Bonding", powerCount: 1,
-        description: "The hero has the ability to join two or more targets together on a molecular level. The effect is the same as if the targets were glued or welded together. In actuality, the hero has induced molecular adhesion. The Bonding is so powerful that attempting to sever its effect results in physical damage to either of the Bonded targets because the only way to forcibly separate two Bonded objects is to tear the surface of one or both of them. This is a Power that readily combines with many of the other listings in this book. The Power can only affect solids. Liquid, gaseous, ethereal, and Phasing matter are immune to this Power's effects.  Optional Powers include Missile Creation, Spray, Webcasting, and Weapons Tinkering."
+        optionalPowers: "Matter Creation\\Missile Creation|Matter Creation\\Spray|Matter Creation\\Webcasting|Fighting\\Weapons Tinkering", 
+        description: "The hero has the ability to join two or more targets together on a molecular level. The effect is the same as if the targets were glued or welded together. In actuality, the hero has induced molecular adhesion. The Bonding is so powerful that attempting to sever its effect results in physical damage to either of the Bonded targets because the only way to forcibly separate two Bonded objects is to tear the surface of one or both of them. This is a Power that readily combines with many of the other listings in this book. The Power can only affect solids. Liquid, gaseous, ethereal, and Phasing matter are immune to this Power's effects."
     },
     {
         category: "Matter Control", code: "MC2", maxRoll: 17, name: "Collection", powerCount: 1,
-        description: "The hero can cause any desired material to collect in a specific location. This material must already be present and diffused throughout the hero's vicinity, whether in the air, water, soil, or scattered across the ground. Optional Powers include Crystallization, Matter Animation, MicroEnvironment, Molding, Weather, Combustion, Elemental Conversion, and Molecular Conversion."
+        optionalPowers: "Matter Control\\Crystallization|Matter Control\\Matter Animation|Matter Control\\Micro-Environment|Matter Control\\Molding|Matter Control\\Weather|Matter Conversion\\Elemental Conversion|Matter Conversion\\Molecular Conversion",
+        description: "The hero can cause any desired material to collect in a specific location. This material must already be present and diffused throughout the hero's vicinity, whether in the air, water, soil, or scattered across the ground."
     },
     {
         category: "Matter Control", code: "MC3", maxRoll: 22, name: "Crystallization", powerCount: 1,
-        description: "The hero can transform any target material into a gemlike material that possesses Power rank material strength. Crystallization occurs because the hero has the ability to shape the molecular bonds of normally amorphous matter into a crystal matrix of great strength. The Crystallization can occur at any site within the hero's line of sight and range. The newly-formed Crystal is initially stationary. Crystal can be formed in any shape the hero desires. Optional Powers include Weapons Creation (limited to Crystal weapons only), Collection, Matter Animation, Missile Creation, and Spray. "
+        optionalPowers: "Fighting\\Weapons Creation|Matter Control\\Collection|Matter Control\\Matter Animation|Matter Creation\\Missile Creation|Matter Creation\\Spray",
+        description: "The hero can transform any target material into a gemlike material that possesses Power rank material strength. Crystallization occurs because the hero has the ability to shape the molecular bonds of normally amorphous matter into a crystal matrix of great strength. The Crystallization can occur at any site within the hero's line of sight and range. The newly-formed Crystal is initially stationary. Crystal can be formed in any shape the hero desires."
     },
     {
         category: "Matter Control", code: "MC4", maxRoll: 29, name: "Diminution", powerCount: 1,
@@ -920,7 +932,8 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Matter Control", code: "MC9", maxRoll: 68, name: "Machine Animation", powerCount: 1,
-        description: "The hero can control the movement of anything mechanical. It is as if the hero were a combination remote-control panel and power source. The machines can only perform those functions for which they were designed. While under the influence of the Power, the affected machines can function even in the absence of a normal power supply, such as would be provided by an electric cord, wound spring, or miniature nuclear generator. The only new function the hero can give a machine is limited ground movement. Optional Powers include Communication with Cybernetics, Communication with Non-Living Matter (limited to machines only), and Matter Animation."
+        optionalPowers: "Mental Enhancement\\Communicate with Cybernetics|Mental Enhancement\\Communicate with Non-Living|Matter Control\\Matter Animation",
+        description: "The hero can control the movement of anything mechanical. It is as if the hero were a combination remote-control panel and power source. The machines can only perform those functions for which they were designed. While under the influence of the Power, the affected machines can function even in the absence of a normal power supply, such as would be provided by an electric cord, wound spring, or miniature nuclear generator. The only new function the hero can give a machine is limited ground movement."
     },
     {
         category: "Matter Control", code: "MC10", maxRoll: 73, name: "Micro-Environment", powerCount: 1,
@@ -928,25 +941,30 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Matter Control", code: "MC11", maxRoll: 83, name: "Molding", powerCount: 1,
-        description: "The hero can shape any solid material into any desired shape. The shaped material retains its original chemical nature. If the target is living, its internal anatomy is rearranged in such a way that permits life to continue without loss of Health. The new shape can be of any complexity; even intricate machines can be created if the proper materials are available. Molded targets retain their basic Material Strength. Optional Powers include Elemental and Molecular Conversion, Collection, and Crystallization."
+        optionalPowers: "Matter Conversion\\Elemental Conversion|Matter Conversion\\Molecular Conversion|Matter Control\\Collection|Matter Control\\Crystallization", 
+        description: "The hero can shape any solid material into any desired shape. The shaped material retains its original chemical nature. If the target is living, its internal anatomy is rearranged in such a way that permits life to continue without loss of Health. The new shape can be of any complexity; even intricate machines can be created if the proper materials are available. Molded targets retain their basic Material Strength."
     },
     {
         category: "Matter Control", code: "MC12", maxRoll: 93, name: "Weather", powerCount: 1,
-        description: "The hero has complete control over the weather. He can sense those factors in the air that create weather and alter any aspect of them at his desire. Any of these factors can produce both physical and psychological effects on humans. He can control temperature. Optional Powers include Environmental Awareness and either True Flight, Whirlwind, or Gliding."
+        optionalPowers: "Detection\\Environmental Awareness|Travel\\True Flight~Travel\\Whirlwind~Travel\\Gliding",
+        description: "The hero has complete control over the weather. He can sense those factors in the air that create weather and alter any aspect of them at his desire. Any of these factors can produce both physical and psychological effects on humans. He can control temperature."
     },
     {
         category: "Matter Control", code: "MC13", maxRoll: 100, name: "Zombie Animation", powerCount: 1,
-        description: "This is a macabre Power that is definitely more at home in the horror genre than in the heroic genre. The hero, um…..well, the character with this Power can Animate any previously living body. Normally, the Power is used to Animate relatively intact cadavers, since these are capable of a greater variety of actions. Part of the Power is used to halt the process of decay and to maintain the structural integrity of the remaining body parts.  This Power is not Biophysical Control/ Revival. The Zombies are not alive.  The popular misconception is that Zombies are inherently evil. This is not true. Zombies are only a reflection of their Animator's personality.  Optional Powers include Extradimensional Detection (limited to detecting spirit realms), Forced Reincarnation, Summoning (Spirits only), Undead Control, and Communication with Non-living Matter."
+        optionalPowers: "Detection\\Extradimensional|Lifeform Control\\Forced Reincarnation|Lifeform Control\\Summoning|Lifeform Control\\Undead Control|Mental Enhancement\\Communicate with Non-Living",
+        description: "This is a macabre Power that is definitely more at home in the horror genre than in the heroic genre. The hero, um…..well, the character with this Power can Animate any previously living body. Normally, the Power is used to Animate relatively intact cadavers, since these are capable of a greater variety of actions. Part of the Power is used to halt the process of decay and to maintain the structural integrity of the remaining body parts.  This Power is not Biophysical Control/ Revival. The Zombies are not alive.  The popular misconception is that Zombies are inherently evil. This is not true. Zombies are only a reflection of their Animator's personality."
     },
 
     // Matter Conversion (MCo)
     {
         category: "Matter Conversion", code: "MCo1", maxRoll: 10, name: "Coloration", powerCount: 1,
-        description: "The hero has total control over the coloration and color transmitting abilities of any target substance, whether solid. liquid, or gaseous. This Power enables the hero to alter basic physics and the chemical properties of any target. The Power operates in either of these two modes. In the first mode, the hero can consciously alter the frequency and intensity of light itself. The second operating mode for the Power is altering the physical coloration of the target material. Optional Powers include Light Control."
+        optionalPowers: "Energy Control\\Light Control", 
+        description: "The hero has total control over the coloration and color transmitting abilities of any target substance, whether solid. liquid, or gaseous. This Power enables the hero to alter basic physics and the chemical properties of any target. The Power operates in either of these two modes. In the first mode, the hero can consciously alter the frequency and intensity of light itself. The second operating mode for the Power is altering the physical coloration of the target material."
     },
     {
         category: "Matter Conversion", code: "MCo2", maxRoll: 25, name: "Combustion", powerCount: 1,
-        description: "The hero has the ability to transform any target into combustible material. Once this Power has been used, spontaneous combustion occurs. Only the surface layer of matter is converted by this Power. Optional Powers include Fire Generation and Control."
+        optionalPowers: "Energy Emission\\Fire Generation|Energy Control\\Fire Control",
+        description: "The hero has the ability to transform any target into combustible material. Once this Power has been used, spontaneous combustion occurs. Only the surface layer of matter is converted by this Power."
     },
     {
         category: "Matter Conversion", code: "MCo3", maxRoll: 45, name: "Disintegration", powerCount: 1,
@@ -954,7 +972,8 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Matter Conversion", code: "MCo4", maxRoll: 70, name: "Elemental Conversion", powerCount: 1,
-        description: "The hero can convert any matter into a specific element. The matter to be converted can be any one element or a combination of elements. The resulting element can be any of the hundred-odd natural, artificial, and mythical elements.  Optional Powers include Matter Animation and Molding."
+        optionalPowers: "Matter Control\\Matter Animation|Matter Control\\Molding",
+        description: "The hero can convert any matter into a specific element. The matter to be converted can be any one element or a combination of elements. The resulting element can be any of the hundred-odd natural, artificial, and mythical elements."
     },
     {
         category: "Matter Conversion", code: "MCo5", maxRoll: 80, name: "Ionization", powerCount: 1,
@@ -962,25 +981,30 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Matter Conversion", code: "MCo6", maxRoll: 100, name: "Molecular Conversion", powerCount: 1,
-        description: "The hero can transform any material into a desired compound. This Power is an enhanced version of Elemental Conversion. Whereas that Power could only create a single specified element, this Power can create a number of elements simultaneously and arrange them in a desired molecular configuration. Optional Powers include Matter Animation and Molding."
+        optionalPowers: "Matter Control\\Matter Animation|Matter Control\\Molding",
+        description: "The hero can transform any material into a desired compound. This Power is an enhanced version of Elemental Conversion. Whereas that Power could only create a single specified element, this Power can create a number of elements simultaneously and arrange them in a desired molecular configuration."
     },
 
     // Matter Creation (MCr)
     {
         category: "Matter Creation", code: "MCr1", maxRoll: 10, name: "Artifact Creation", powerCount: 1,
-        description: "The hero can create a desired object from virtually nothing. The artifact can be of any substance, and is limited to being composed of a single piece. Although the Power can create facsimilies of more complex construction, close examination reveals that all the smaller pieces are fused together. However, the hero can create complex items by forming them one piece at a time. The hero must have detailed knowledge of the design of whatever he wants to create. He can only store a finite number of designs in his mind at any one time. The hero can materialize the artifact at any site within one area. The artifact is initially stationary. The hero can create facsimilies of living matter, but such facsimilies are not themselves capable of living.  Optional Powers include a form of Matter Animation that is limited to matter created by the hero, and Hyper Intelligence."
+        optionalPowers: "Matter Control\\Matter Animation|Mental Enhancement\\Hyper-Intelligence", 
+        description: "The hero can create a desired object from virtually nothing. The artifact can be of any substance, and is limited to being composed of a single piece. Although the Power can create facsimilies of more complex construction, close examination reveals that all the smaller pieces are fused together. However, the hero can create complex items by forming them one piece at a time. The hero must have detailed knowledge of the design of whatever he wants to create. He can only store a finite number of designs in his mind at any one time. The hero can materialize the artifact at any site within one area. The artifact is initially stationary. The hero can create facsimilies of living matter, but such facsimilies are not themselves capable of living."
     },
     {
         category: "Matter Creation", code: "MCr2", maxRoll: 24, name: "Elemental Creation", powerCount: 1,
-        description: "The hero can create pure elements from virtually nothing. The hero can create any desired element in any shape or at any location within one area. Optional Powers include Matter Animation (any single form) and Mechanical Animation."
+        optionalPowers: "Matter Control\\Matter Animation|Matter Control\\Machine Animation",
+        description: "The hero can create pure elements from virtually nothing. The hero can create any desired element in any shape or at any location within one area."
     },
     {
         category: "Matter Creation", code: "MCr3", maxRoll: 29, name: "Lifeform Creation", powerCount: 1,
-        description: "The hero can create living matter and even complete bio-organisms from virtually nothing. The new life can be of any nature, although it can only possess Powers that are intrinsic to its physical structure. The hero can materialize his creation at any site within one area. The new life is initially stationary but can immediately begin to move under its own power. Optional Powers include forms of Telepathy, Mental Domination, Animal Control, and Plant Control, all limited to lifeforms created by the hero."
+        optionalPowers: "Mental Enhancement\\Telepathy|Lifeform Control\\Mind Control|Lifeform Control\\Plant Control",
+        description: "The hero can create living matter and even complete bio-organisms from virtually nothing. The new life can be of any nature, although it can only possess Powers that are intrinsic to its physical structure. The hero can materialize his creation at any site within one area. The new life is initially stationary but can immediately begin to move under its own power."
     },
     {
         category: "Matter Creation", code: "MCr4", maxRoll: 35, name: "Mechanical Creation", powerCount: 1,
-        description: "The hero can create complex mechanical devices from virtually nothing. The newly created machine originally forms in one mass, then separates into its components. Heavier machines have to be assembled in several turns. The hero can materialize the machine at any site within one area. The machine is initially stationary but if it is self powered, it can immediately begin to move on its own.  The Power cannot create actual living beings.  Optional Powers include a form of Mechanical Animation limited to those machines created by the hero, HyperIntelligence, and Hyper-Invention."
+        optionalPowers: "Matter Control\\Machine Animation|Mental Enhancement\\Hyper-Intelligence|Mental Enhancement\\Hyper-Invention", 
+        description: "The hero can create complex mechanical devices from virtually nothing. The newly created machine originally forms in one mass, then separates into its components. Heavier machines have to be assembled in several turns. The hero can materialize the machine at any site within one area. The machine is initially stationary but if it is self powered, it can immediately begin to move on its own.  The Power cannot create actual living beings."
     },
     {
         category: "Matter Creation", code: "MCr5", maxRoll: 59, name: "Missile Creation", powerCount: 1,
@@ -988,7 +1012,8 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Matter Creation", code: "MCr6", maxRoll: 69, name: "Molecular Creation", powerCount: 1,
-        description: "This is a more powerful form of Elemental Creation. The hero can form several elements simultaneously and form them into any desired compound. The hero can form this on any target within one area. Each ounce the hero creates temporarily costs him one point of Health.  Optional Powers include Matter Animation in any single form and Mechanical Animation."
+        optionalPowers: "Matter Control\\Matter Animation|Matter Control\\Machine Animation", 
+        description: "This is a more powerful form of Elemental Creation. The hero can form several elements simultaneously and form them into any desired compound. The hero can form this on any target within one area. Each ounce the hero creates temporarily costs him one point of Health."
     },
     {
         category: "Matter Creation", code: "MCr7", maxRoll: 88, name: "Spray", powerCount: 1,
@@ -1002,31 +1027,38 @@ const POWER_LIST_ULTIMATE_TABLE = [
     // Mental Enhancement (M)
     {
         category: "Mental Enhancement", code: "M1", maxRoll: 4, name: "Clairaudience", powerCount: 1,
-        description: "The hero can \"hear\" distant sounds and voices despite any intervening distance or barriers. The Power is not hindered by factors that affect normal sound transmission, such as distance, time lag, muffling, distortion, or the absence of a transmitting medium. Because of this, Clairaudience has superior range over Hyper-Hearing. The Power is normally a voluntary Power that must be summoned.  The Optional Powers for this are Hyper-hearing, Clairvoyance, and Remote Sensing."
+        optionalPowers: "Detection\\Hyper-Hearing|Mental Enhancement\\Clairvoyance|Mental Enhancement\\Remote Sensing", 
+        description: "The hero can \"hear\" distant sounds and voices despite any intervening distance or barriers. The Power is not hindered by factors that affect normal sound transmission, such as distance, time lag, muffling, distortion, or the absence of a transmitting medium. Because of this, Clairaudience has superior range over Hyper-Hearing. The Power is normally a voluntary Power that must be summoned."
     },
     {
         category: "Mental Enhancement", code: "M2", maxRoll: 8, name: "Clairvoyance", powerCount: 1,
-        description: "The hero can \"see\" distant sights without directly seeing it with his eyes. The hero receives a visual simulation of what he would see if he were actually present at the scene. The Power is not hindered by any of the factors that affect normal light transmission, such as distance, blockage, obscurement, and time lag. It can be used to see things that are impossible for a telescope or Telescopic Vision.  Normally the Power is consciously controlled.  Optional Powers include Clairaudience and Remote Sensing."
+        optionalPowers: "Mental Enhancement\\Clairaudience|Mental Enhancement\\Remote Sensing", 
+        description: "The hero can \"see\" distant sights without directly seeing it with his eyes. The hero receives a visual simulation of what he would see if he were actually present at the scene. The Power is not hindered by any of the factors that affect normal light transmission, such as distance, blockage, obscurement, and time lag. It can be used to see things that are impossible for a telescope or Telescopic Vision.  Normally the Power is consciously controlled."
     },
     {
         category: "Mental Enhancement", code: "M3", maxRoll: 11, name: "Communicate with Animals", powerCount: 1,
-        description: "The hero can understand and use the languages employed by animals and other non-sentient lifeforms. The Power can be used to communicate with non-sentient alien creatures but not intelligent aliens. Optional Powers include Linguistics and any of the Communication Powers."
+        optionalPowers: "Mental Enhancement\\Linguistics|Mental Enhancement\\Communicate with Cybernetics~Mental Enhancement\\Communicate with Non-Living~Mental Enhancement\\Communicate with Plants", 
+        description: "The hero can understand and use the languages employed by animals and other non-sentient lifeforms. The Power can be used to communicate with non-sentient alien creatures but not intelligent aliens."
     },
     {
         category: "Mental Enhancement", code: "M4", maxRoll: 12, name: "Communicate with Cybernetics", powerCount: 1,
-        description: "The hero can directly communicate with complex machines, whether these are computers or machines not normally considered to have artificial intelligence. Any machine that possesses any kind of programming can be communicated with-calculators, digital watches, microwave ovens, even music boxes.  The Optional Power is Linguistics."
+        optionalPowers: "Mental Enhancement\\Linguistics",
+        description: "The hero can directly communicate with complex machines, whether these are computers or machines not normally considered to have artificial intelligence. Any machine that possesses any kind of programming can be communicated with-calculators, digital watches, microwave ovens, even music boxes."
     },
     {
         category: "Mental Enhancement", code: "M5", maxRoll: 13, name: "Communicate with Non-Living", powerCount: 1,
-        description: "This is a catch-all name for anything not covered by the other Communication Powers (M3, M4, M6). It will enable the hero to communicate with anything that had once been either sentient, cybernetic, or alive, as long as the target lacks those qualities now.  Optional Powers include Communications with Cybernetics."
+        optionalPowers: "Mental Enhancement\\Communicate with Cybernetics",
+        description: "This is a catch-all name for anything not covered by the other Communication Powers (M3, M4, M6). It will enable the hero to communicate with anything that had once been either sentient, cybernetic, or alive, as long as the target lacks those qualities now."
     },
     {
         category: "Mental Enhancement", code: "M6", maxRoll: 15, name: "Communicate with Plants", powerCount: 1,
-        description: "The hero can speak with plants. Anything that has a vegetable physiology can be affected by this Power, such as grass, and trees. Optional Powers include Communication with Animals, Communication with Non-living Matter, Plant Control, and Plant Growth."
+        optionalPowers: "Mental Enhancement\\Communicate with Animals|Mental Enhancement\\Communicate with Non-Living|Lifeform Control\\Plant Control|Lifeform Control\\Plant Growth",
+        description: "The hero can speak with plants. Anything that has a vegetable physiology can be affected by this Power, such as grass, and trees."
     },
     {
         category: "Mental Enhancement", code: "M7", maxRoll: 16, name: "Cosmic Awareness", powerCount: 1,
-        description: "The hero is in tune with the entire scope of reality. He possesses a detached, omniscient viewpoint that allows him to explore the entire existence of a chosen subject. Unfortunately, this causes such a massive overload of superfluous information that the hero is hard pressed to sort it all out.  The Optional Power is HyperIntelligence."
+        optionalPowers: "Mental Enhancement\\Hyper-Intelligence",
+        description: "The hero is in tune with the entire scope of reality. He possesses a detached, omniscient viewpoint that allows him to explore the entire existence of a chosen subject. Unfortunately, this causes such a massive overload of superfluous information that the hero is hard pressed to sort it all out."
     },
     {
         category: "Mental Enhancement", code: "M8", maxRoll: 22, name: "Danger Sense", powerCount: 1,
@@ -1034,11 +1066,13 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Mental Enhancement", code: "M9", maxRoll: 23, name: "Dreamtravel", powerCount: 1,
-        description: "The hero can actually enter into the short-lived pocket dimensions created by a person's dreams and nightmares. These dream worlds are outside the boundaries of normal reality and exist solely as a reflection of the dreamer's imagination. The Dreamtraveler must be within ten feet of the dreamer in order for the Power to function at full rank.  The Dreamtraveler can suffer real damage as a result of events that affect him within the dreamworld. He might even die. Dreamworlds are not the same as the Dream Dimension. The Optional Power is a form of Telepathy limited to dreamers."
+        optionalPowers: "Mental Enhancement\\Telepathy",
+        description: "The hero can actually enter into the short-lived pocket dimensions created by a person's dreams and nightmares. These dream worlds are outside the boundaries of normal reality and exist solely as a reflection of the dreamer's imagination. The Dreamtraveler must be within ten feet of the dreamer in order for the Power to function at full rank.  The Dreamtraveler can suffer real damage as a result of events that affect him within the dreamworld. He might even die. Dreamworlds are not the same as the Dream Dimension."
     },
     {
         category: "Mental Enhancement", code: "M10", maxRoll: 26, name: "Empathy", powerCount: 1,
-        description: "The hero can detect the surface emotions of others. The hero can detect the target's emotional state and further refine that knowledge to discover the target's physical state, surroundings, and location, in-so-far as these have an influence on the emotions. He can transmit his own emotional state but he cannot impose this on others. Optional Powers include Clairvoyance and Emotion Control."
+        optionalPowers: "Mental Enhancement\\Clairvoyance|Lifeform Control\\Emotion Control",
+        description: "The hero can detect the surface emotions of others. The hero can detect the target's emotional state and further refine that knowledge to discover the target's physical state, surroundings, and location, in-so-far as these have an influence on the emotions. He can transmit his own emotional state but he cannot impose this on others."
     },
     {
         category: "Mental Enhancement", code: "M11", maxRoll: 27, name: "Free Spirit", powerCount: 1,
@@ -1050,15 +1084,18 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Mental Enhancement", code: "M13", maxRoll: 40, name: "Hyper-Intelligence", powerCount: 1,
-        description: "Normally a character's Intelligence is determined in the Character Generation Process. The hyper-intelligent character is a genius of awesome potential. He can quickly master new subjects, retain that knowledge indefinitely, and easily succeed in any mental endeavor. Optional Powers include Hyperinvention and Total Memory."
+        optionalPowers: "Mental Enhancement\\Hyper-Invention|Mental Enhancement\\Total Memory", 
+        description: "Normally a character's Intelligence is determined in the Character Generation Process. The hyper-intelligent character is a genius of awesome potential. He can quickly master new subjects, retain that knowledge indefinitely, and easily succeed in any mental endeavor."
     },
     {
         category: "Mental Enhancement", code: "M14", maxRoll: 47, name: "Hyper-Invention", powerCount: 1,
-        description: "This is a special form of Hyper-intelligence that is common enough to merit its own classification. It is a permanent enhancement of the hero's overall intelligence that is channeled into the field of mechanical design and engineering. The hero is an Edison-like genius who take existing materials and technologies and use them to create new devices or applied technologies. He can repair previously operational devices, even if the device was of anunknown type. The hero can learn new technologies at a rate determined by his rank, the complexity of the technology, and the amount of instruction available. Optional Powers include Weapons Tinkering, Machine Animation, Molding, Artifact Creation, and Machine Creation."
+        optionalPowers: "Fighting\\Weapons Tinkering|Matter Control\\Machine Animation|Matter Control\\Molding|Matter Creation\\Artifact Creation|Matter Creation\\Mechanical Creation",
+        description: "This is a special form of Hyper-intelligence that is common enough to merit its own classification. It is a permanent enhancement of the hero's overall intelligence that is channeled into the field of mechanical design and engineering. The hero is an Edison-like genius who take existing materials and technologies and use them to create new devices or applied technologies. He can repair previously operational devices, even if the device was of anunknown type. The hero can learn new technologies at a rate determined by his rank, the complexity of the technology, and the amount of instruction available."
     },
     {
         category: "Mental Enhancement", code: "M15", maxRoll: 48, name: "Incarnation Awareness", powerCount: 1,
-        description: "This Power is based on the idea that a spirit enters countless reincarnations throughout eternity but that the memory of each past life is usually lost somewhere in the transition from one life to another. This Power allows the hero to remember the details of his more recent lives and to actually communicate with them. Such communications include the transmission of the complete range of senses and thoughts.  The Optional Powers include either Time Travel limited to any past lifetime, a combination of Time Travel and Free Spirit that enables the present-self to possess the bodies of other selves, or a specialized form of Time Travel that enables the present self to draw other selves from their times to the present."
+        optionalPowers: "Travel\\Time Travel", 
+        description: "This Power is based on the idea that a spirit enters countless reincarnations throughout eternity but that the memory of each past life is usually lost somewhere in the transition from one life to another. This Power allows the hero to remember the details of his more recent lives and to actually communicate with them. Such communications include the transmission of the complete range of senses and thoughts."
     },
     {
         category: "Mental Enhancement", code: "M16", maxRoll: 58, name: "Iron Will", powerCount: 1,
@@ -1066,11 +1103,13 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Mental Enhancement", code: "M17", maxRoll: 65, name: "Linguistics", powerCount: 1,
-        description: "This is a specialized form of Hyper-intelligence. The hero has the ability to rapidly learn any language if sufficient material is available for him to work with. Once the language is mastered, the hero is fluent in that language, provided he is physically capable of communicating in it. The Optional Power is Hyperintelligence."
+        optionalPowers: "Mental Enhancement\\Hyper-Intelligence",
+        description: "This is a specialized form of Hyper-intelligence. The hero has the ability to rapidly learn any language if sufficient material is available for him to work with. Once the language is mastered, the hero is fluent in that language, provided he is physically capable of communicating in it."
     },
     {
         category: "Mental Enhancement", code: "M18", maxRoll: 66, name: "Mental Duplication", powerCount: 1,
-        description: "This is a combination of Powers that enables the hero to psionically study a subject's mind and then create a simulation of that mind within the hero's own brain. This is a great way to learn secrets and interrogate subjects who would otherwise be rather uncooperative. The duplicated mind contains the personality of the original, most memories, and possibly the mental or psionic Powers of the original. The subject is unaffected by the Power and loses none of his own mental abilities.  Optional Powers include Mind Drain and Power Duplication."
+        optionalPowers: "Mental Enhancement\\Mind Drain|Power Control\\Duplication",
+        description: "This is a combination of Powers that enables the hero to psionically study a subject's mind and then create a simulation of that mind within the hero's own brain. This is a great way to learn secrets and interrogate subjects who would otherwise be rather uncooperative. The duplicated mind contains the personality of the original, most memories, and possibly the mental or psionic Powers of the original. The subject is unaffected by the Power and loses none of his own mental abilities."
     },
     {
         category: "Mental Enhancement", code: "M19", maxRoll: 67, name: "Mental Invisibility", powerCount: 1,
@@ -1078,23 +1117,28 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Mental Enhancement", code: "M20", maxRoll: 69, name: "Mental Probe", powerCount: 1,
-        description: "The hero can telepathically probe a living mind or a psionic phenomenon to gain a detailed analysis of the target. Living minds can be searched for specific images and thoughts, although the hero must have a basic idea beforehand of what she is looking for.  Optional Powers include Telepathy and Sensory Link."
+        optionalPowers: "Mental Enhancement\\Telepathy|Mental Enhancement\\Sensory Link", 
+        description: "The hero can telepathically probe a living mind or a psionic phenomenon to gain a detailed analysis of the target. Living minds can be searched for specific images and thoughts, although the hero must have a basic idea beforehand of what she is looking for."
     },
     {
         category: "Mental Enhancement", code: "M21", maxRoll: 72, name: "Mind Blast", powerCount: 1,
-        description: "The hero can create bolts of pure psionic energy that can be used to directly damage a target's neural system.  Optional Powers include Telepathy and Mental Probe."
+        optionalPowers: "Mental Enhancement\\Telepathy|Mental Enhancement\\Mental Probe", 
+        description: "The hero can create bolts of pure psionic energy that can be used to directly damage a target's neural system."
     },
     {
         category: "Mental Enhancement", code: "M22", maxRoll: 73, name: "Mind Drain", powerCount: 1,
-        description: "The hero can deplete, negate, or even destroy a target's mental faculties. This alters the target's personality, memory, thought process (Reason and Intuition), and any Mental or Psionic Powers the target had.  Optional Powers include Telepathy, Mental Probe, Mental Duplication, and Mind Blast."
+        optionalPowers: "Mental Enhancement\\Telepathy|Mental Enhancement\\Mental Probe|Mental Enhancement\\Mental Duplication|Mental Enhancement\\Mind Blast", 
+        description: "The hero can deplete, negate, or even destroy a target's mental faculties. This alters the target's personality, memory, thought process (Reason and Intuition), and any Mental or Psionic Powers the target had."
     },
     {
         category: "Mental Enhancement", code: "M23", maxRoll: 74, name: "Postcognition", powerCount: 1,
-        description: "The hero has the ability to \"see\" the past. The Power requires the hero to have physical contact with the target whose history is being examined. The hero can mentally examine a person, item, or site and mentally re-live a specific moment of history from the target's point-of-view. As such, it only reveals factors that somehow affected the target. Postcognition can be used to gain information on what an item is and who may have handled it. It cannot provide a detailed analysis of the item's internal structure or as-yet-unrealized potential.  Optional Powers include modified forms of Telepathy and Time Travel."
+        optionalPowers: "Mental Enhancement\\Telepathy|Travel\\Time Travel", 
+        description: "The hero has the ability to \"see\" the past. The Power requires the hero to have physical contact with the target whose history is being examined. The hero can mentally examine a person, item, or site and mentally re-live a specific moment of history from the target's point-of-view. As such, it only reveals factors that somehow affected the target. Postcognition can be used to gain information on what an item is and who may have handled it. It cannot provide a detailed analysis of the item's internal structure or as-yet-unrealized potential."
     },
     {
         category: "Mental Enhancement", code: "M24", maxRoll: 75, name: "Precognition", powerCount: 1,
-        description: "The hero can see into the future. The Power gives the hero sufficiently clear insight into upcoming events that he might be able to use that foreknowledge to his advantage. Precognition is an awesome Power and thus has more limits than the Hulk can shake a stick at.  The Power can normally be used only once per day at full rank. Second, the player must choose a limitation on the Power. Short-range Precog can be useful in combat. The hero can use his Power to discover his opponent's next move.  Optional Powers include modified forms of Telepathy and Time Travel."
+        optionalPowers: "Mental Enhancement\\Telepathy|Travel\\Time Travel", 
+        description: "The hero can see into the future. The Power gives the hero sufficiently clear insight into upcoming events that he might be able to use that foreknowledge to his advantage. Precognition is an awesome Power and thus has more limits than the Hulk can shake a stick at.  The Power can normally be used only once per day at full rank. Second, the player must choose a limitation on the Power. Short-range Precog can be useful in combat. The hero can use his Power to discover his opponent's next move."
     },
     {
         category: "Mental Enhancement", code: "M25", maxRoll: 76, name: "Psionic Vampirism", powerCount: 1,
@@ -1102,11 +1146,13 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Mental Enhancement", code: "M26", maxRoll: 78, name: "Remote Sensing", powerCount: 1,
-        description: "This is a catch-all name for any Power that enables the hero to psionically extend the range of any sense. The senses include taste, smell, touch, balance (including gravity sensing), and temperature. The exceptions are sight and hearing. Optional Powers include additional forms of this Power, Clairaudience, and Clairvoyance."
+        optionalPowers: "Mental Enhancement\\Clairaudience|Mental Enhancement\\Clairvoyance",
+        description: "This is a catch-all name for any Power that enables the hero to psionically extend the range of any sense. The senses include taste, smell, touch, balance (including gravity sensing), and temperature. The exceptions are sight and hearing."
     },
     {
         category: "Mental Enhancement", code: "M27", maxRoll: 79, name: "Sensory Link", powerCount: 1,
-        description: "The hero can telepathically link his senses with those of another being. He can use the information gained from the other's senses as if it came from the hero's own senses.  The Power is crucial to sense-impaired characters.  An Optional Power is Telepathy."
+        optionalPowers: "Mental Enhancement\\Telepathy", 
+        description: "The hero can telepathically link his senses with those of another being. He can use the information gained from the other's senses as if it came from the hero's own senses.  The Power is crucial to sense-impaired characters."
     },
     {
         category: "Mental Enhancement", code: "M28", maxRoll: 80, name: "Serial Immortality", powerCount: 1,
@@ -1116,23 +1162,28 @@ const POWER_LIST_ULTIMATE_TABLE = [
         category: "Mental Enhancement", code: "M29", maxRoll: 81, name: "Speechthrowing", powerCount: 1,
         bonusPowerCount: 1,
         bonusPower: "Mental Enhancement\\Clairaudience(100)",
-        description: "This is best described as \"super-ventriloquism.\" Although it is radically different in execution from the Talent of Ventriloquism, the effect at low levels is similar.  Simply put, the hero can make his voice audible in a distant location, without the vocal soundwaves actually traveling the intervening distance. The Power is actually a specialized form of Telekinesis which allows the hero to agitate the distant molecules in a way that simulates sound transmission. Optional Powers include Clairvoyance, Vocal Control, Hyper-hearing, and Sensory-Link."
+        optionalPowers: "Mental Enhancement\\Clairvoyance|Physical Enhancement\\Vocal Control|Detection\\Hyper-Hearing|Mental Enhancement\\Sensory Link", 
+        description: "This is best described as \"super-ventriloquism.\" Although it is radically different in execution from the Talent of Ventriloquism, the effect at low levels is similar.  Simply put, the hero can make his voice audible in a distant location, without the vocal soundwaves actually traveling the intervening distance. The Power is actually a specialized form of Telekinesis which allows the hero to agitate the distant molecules in a way that simulates sound transmission."
     },
     {
         category: "Mental Enhancement", code: "M30", maxRoll: 85, name: "Telekinesis", powerCount: 1,
-        description: "The hero can handle material objects without having to make direct or indirect physical contact. The hero can perform any action that could be accomplished using normal Strength.  Optional Powers include Matter Animation, Molding, Clairvoyance, Remote Sensing/ Touch, Levitation, and True Flight."
+        optionalPowers: "Matter Control\\Matter Animation|Matter Control\\Molding|Mental Enhancement\\Clairvoyance|Mental Enhancement\\Remote Sensing|Travel\\Levitation|Travel\\True Flight", 
+        description: "The hero can handle material objects without having to make direct or indirect physical contact. The hero can perform any action that could be accomplished using normal Strength."
     },
     {
         category: "Mental Enhancement", code: "M31", maxRoll: 86, name: "Telelocation", powerCount: 1,
-        description: "The hero can Psionically locate a chosen target. This differs from normal Tracking in that no physical or sensory contact, however tenuous, is required. Consequently, the Power is not hampered by the concealment, erasure, or absence of the target's \"scent.\" Telelocation can operate over immense distances.  Optional Powers include Clairvoyance (limited to already located quarries) and Extradimensional Detection (whichautomatically combines with this Power to extend its range into other dimensions)."
+        optionalPowers: "Mental Enhancement\\Clairvoyance|Detection\\Extradimensional",
+        description: "The hero can Psionically locate a chosen target. This differs from normal Tracking in that no physical or sensory contact, however tenuous, is required. Consequently, the Power is not hampered by the concealment, erasure, or absence of the target's \"scent.\" Telelocation can operate over immense distances."
     },
     {
         category: "Mental Enhancement", code: "M32", maxRoll: 96, name: "Telepathy", powerCount: 1,
-        description: "The hero can communicate on a direct mind-to-mind basis. This is automatic with willing minds or Psyches with ranks lower than the Power rank. Optional Powers include Empathy, Hallucinations, Mental Invisibility, Mental Probe, Mind Blast, Mind Drain, Sensory Link, and Psionic Detection."
+        optionalPowers: "Mental Enhancement\\Empathy|Mental Enhancement\\Hallucinations|Mental Enhancement\\Mental Invisibility|Mental Enhancement\\Mental Probe|Mental Enhancement\\Mind Blast|Mental Enhancement\\Mind Drain|Mental Enhancement\\Sensory Link|Detection\\Psionic Detection", 
+        description: "The hero can communicate on a direct mind-to-mind basis. This is automatic with willing minds or Psyches with ranks lower than the Power rank."
     },
     {
         category: "Mental Enhancement", code: "M33", maxRoll: 100, name: "Total Memory", powerCount: 1,
-        description: "The hero has the ability to remember anything that he has ever experienced. This could be a book he's read, the faces of everyone he saw on Tuesday, what birth was like, and so on. Optional Powers include HyperInvention, Hyper-intelligence, and Weapons Tinkering."
+        optionalPowers: "Mental Enhancement\\Hyper-Invention|Mental Enhancement\\Hyper-Intelligence|Fighting\\Weapons Tinkering", 
+        description: "The hero has the ability to remember anything that he has ever experienced. This could be a book he's read, the faces of everyone he saw on Tuesday, what birth was like, and so on."
     },
 
     // Physical Enhancement (P)
@@ -1142,7 +1193,8 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Physical Enhancement", code: "P2", maxRoll: 28, name: "Body Resistance", powerCount: 1,
-        description: "This is the form of Body Armor most heroes want. The hero's body is composed of apparently normal flesh. However, the tissue of capable of withstanding major damage without showing any effects. The resistance covers physical and energy attacks only.  An Optional Power is Regeneration."
+        optionalPowers: "Physical Enhancement\\Regeneration", 
+        description: "This is the form of Body Armor most heroes want. The hero's body is composed of apparently normal flesh. However, the tissue of capable of withstanding major damage without showing any effects. The resistance covers physical and energy attacks only."
     },
     {
         category: "Physical Enhancement", code: "P3", maxRoll: 30, name: "Chemical Touch", powerCount: 1,
@@ -1150,7 +1202,8 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Physical Enhancement", code: "P4", maxRoll: 33, name: "Digestive Adaptation", powerCount: 1,
-        description: "The hero can swallow and digest any substance without harm. The digestive tract extracts useful materials and synthesizes new ones from the available material. Optional Powers include Lung Adaptability and Body Adaptation."
+        optionalPowers: "Physical Enhancement\\Lung Adaptability|Self-Alteration\\Body Adaptation", 
+        description: "The hero can swallow and digest any substance without harm. The digestive tract extracts useful materials and synthesizes new ones from the available material."
     },
     {
         category: "Physical Enhancement", code: "P5", maxRoll: 40, name: "Hyper-Speed", powerCount: 1,
@@ -1218,7 +1271,8 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Power Control", code: "PC3", maxRoll: 18, name: "Domination", powerCount: 1,
-        description: "This is a form of Mind Control. The hero can control the actions of other super-beings in regards to the use of their own Powers. The hero can force the victim to use his Powers in any manner the hero desires. The hero cannot alter the actual characteristics of the other's Powers. Optional Powers include Mind Control and Magic Domination."
+        optionalPowers: "Lifeform Control\\Mind Control|Magic\\Magic Domination", 
+        description: "This is a form of Mind Control. The hero can control the actions of other super-beings in regards to the use of their own Powers. The hero can force the victim to use his Powers in any manner the hero desires. The hero cannot alter the actual characteristics of the other's Powers."
     },
     {
         category: "Power Control", code: "PC4", maxRoll: 23, name: "Duplication", powerCount: 1,
@@ -1246,7 +1300,8 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Power Control", code: "PC10", maxRoll: 64, name: "Power Transferral", powerCount: 1,
-        description: "The hero can transfer some or all of his Powers to another sentient being. The transferral can be any combination of Powers and ranks. Only this Power cannot be transferred. Each transferred Power rank diminishes the hero's own rank for that Power. The optimum range for Power Transferral is contact.  Optional Powers include Mind Transferral and Magic Transferral."
+        optionalPowers: "Lifeform Control\\Mind Transferral|Magic\\Magic Transferral",
+        description: "The hero can transfer some or all of his Powers to another sentient being. The transferral can be any combination of Powers and ranks. Only this Power cannot be transferred. Each transferred Power rank diminishes the hero's own rank for that Power. The optimum range for Power Transferral is contact."
     },
     {
         category: "Power Control", code: "PC11", maxRoll: 73, name: "Power Vampirism", powerCount: 1,
@@ -1362,11 +1417,13 @@ const POWER_LIST_ULTIMATE_TABLE = [
     // Travel (T)
     {
         category: "Travel", code: "T1", maxRoll: 2, name: "Astral Body", powerCount: 1,
-        description: "The hero can send his astral form off to any destination. The physical body doesn't go anywhere; it remains in a comatose state until the astral body returns. The astral body is intangible and invisible to normal senses. In the Earth dimension it can use any of the hero's mental or Psionic Powers but not the physical ones. In other dimensions the astral body regains visibility, solidity, and the physical Powers. A magical silver cord connects the astral and physical bodies. While it can stretcha great distance, it is not infinite. Optional Powers include any of the Magic Powers and Extradimensional Detection."
+        optionalPowers: "Magic\\Any|Detection\\Extradimensional", 
+        description: "The hero can send his astral form off to any destination. The physical body doesn't go anywhere; it remains in a comatose state until the astral body returns. The astral body is intangible and invisible to normal senses. In the Earth dimension it can use any of the hero's mental or Psionic Powers but not the physical ones. In other dimensions the astral body regains visibility, solidity, and the physical Powers. A magical silver cord connects the astral and physical bodies. While it can stretcha great distance, it is not infinite."
     },
     {
         category: "Travel", code: "T2", maxRoll: 6, name: "Carrier Wave", powerCount: 1,
-        description: "The hero can manipulate energy currents to support and propel his body, thus attaining a form of Flight. The energy can be any type found in the hero'senvironment, such as magnetism, sound, light, heat, and electricity. The hero can use only one form. The Carrier Wave can support the hero and an additional load. The maximum speed is that of normal energy of the type composing the wave.  The Optional Power is Energy Detection and an Energy Control Power of the same type as the Carrier Wave."
+        optionalPowers: "Detection\\Energy Detection", 
+        description: "The hero can manipulate energy currents to support and propel his body, thus attaining a form of Flight. The energy can be any type found in the hero'senvironment, such as magnetism, sound, light, heat, and electricity. The hero can use only one form. The Carrier Wave can support the hero and an additional load. The maximum speed is that of normal energy of the type composing the wave."
     },
     {
         category: "Travel", code: "T3", maxRoll: 10, name: "Dimension Travel", powerCount: 1,
@@ -1374,11 +1431,13 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Travel", code: "T4", maxRoll: 12, name: "Energy Path", powerCount: 1,
-        description: "This is a combination of Energy Body and Carrier Wave. The hero is transformed into energy and is propelled at Power rank speed along currents of that energy. The maximum speed is that normal Energy. The hero is limited to places where the energy currents flow.  Upon reaching the destination or the limit of the energy current, the hero safely rematerializes. Travel can be affected by anything that disrupts the current.  The hero can transform and tow along an additional mass.  While in an energized state, the hero is extremely vulnerable to the energy altering Powers.  Optional Powers include Energy Detection and either Energy Emission or Control for the appropriate type of energy."
+        optionalPowers: "Detection\\Energy Detection",
+        description: "This is a combination of Energy Body and Carrier Wave. The hero is transformed into energy and is propelled at Power rank speed along currents of that energy. The maximum speed is that normal Energy. The hero is limited to places where the energy currents flow.  Upon reaching the destination or the limit of the energy current, the hero safely rematerializes. Travel can be affected by anything that disrupts the current.  The hero can transform and tow along an additional mass.  While in an energized state, the hero is extremely vulnerable to the energy altering Powers."
     },
     {
         category: "Travel", code: "T5", maxRoll: 14, name: "Floating Disc", powerCount: 1,
-        description: "The hero can create a glowing platform of solid light. The disc materializes to support any part of the hero's body; generally this is under the feet or posterior. The disc is a part of the hero's Power and has no independent existence beyond him. The disc can automatically support the hero and additional mass.  The Optional Power is Kinetic Bolt. "
+        optionalPowers: "Energy Emission\\Kinetic Bolt", 
+        description: "The hero can create a glowing platform of solid light. The disc materializes to support any part of the hero's body; generally this is under the feet or posterior. The disc is a part of the hero's Power and has no independent existence beyond him. The disc can automatically support the hero and additional mass."
     },
     {
         category: "Travel", code: "T6", maxRoll: 20, name: "Gateway", powerCount: 1,
@@ -1386,13 +1445,15 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Travel", code: "T7", maxRoll: 26, name: "Gliding", powerCount: 1,
-        description: "The hero can travel on air currents. In normal air currents, the hero drops one story for each turn she is in the air.  The glider can climb by using updrafts.  She can carry aloft an additional mass. Gliding can be affected by high winds or the Powers of Weather Control and Air Animation.  Optional Powers include Weather Control and Air Animation."
+        optionalPowers: "Matter Control\\Weather|Matter Control\\Matter Animation", 
+        description: "The hero can travel on air currents. In normal air currents, the hero drops one story for each turn she is in the air.  The glider can climb by using updrafts.  She can carry aloft an additional mass. Gliding can be affected by high winds or the Powers of Weather Control and Air Animation."
     },
     {
         category: "Travel", code: "T8", maxRoll: 28, name: "Hyper-Digging", powerCount: 1,
         bonusPowerCount: 1,
         bonusPower: "Fighting\\Natural Weaponry(50)|Physical Enhancement\\Body Resistance(100)",
-        description: "The hero can travel swiftly through the earth by burrowing a tunnel at Power rank speed (land movement rate). The Power can be used indefinitely as Hyper-digging has the side-effect of increasing the hero's Strength and Endurance.  Burrowing remains the hero's preferred mode of transportation. Optional Powers include Hyperstrength, Hyper-endurance, Armor Skin, or Body Resistance."
+        optionalPowers: "Physical Enhancement\\Armor Skin|Physical Enhancement\\Body Resistance", 
+        description: "The hero can travel swiftly through the earth by burrowing a tunnel at Power rank speed (land movement rate). The Power can be used indefinitely as Hyper-digging has the side-effect of increasing the hero's Strength and Endurance.  Burrowing remains the hero's preferred mode of transportation."
     },
     {
         category: "Travel", code: "T9", maxRoll: 34, name: "Hyper-Leaping", powerCount: 1,
@@ -1407,11 +1468,14 @@ const POWER_LIST_ULTIMATE_TABLE = [
         category: "Travel", code: "T11", maxRoll: 46, name: "Hyper-Swimming", powerCount: 1,
         bonusPowerCount: 1,
         bonusPower: "Physical Enhancement\\Waterbreathing(50)|Physical Enhancement\\Water Freedom(100)",
-        description: "The hero can cover large distances by swimming at Power rank speed. The Power does not free the hero from the need to breathe. The hero can tow other objects in his wake at a decreased speed. This assumes the towed object has a buoyancy equal to the hero's body. Bonus Powers include a choice of Waterbreathing or Water Freedom. Theremaining on e is available as a Optional Power. The Nemesis is Matter Animation/ Water."
+        optionalPowersMax: 1,
+        optionalPowers: "Physical Enhancement\\Waterbreathing|Physical Enhancement\\Water Freedom",
+        description: "The hero can cover large distances by swimming at Power rank speed. The Power does not free the hero from the need to breathe. The hero can tow other objects in his wake at a decreased speed. This assumes the towed object has a buoyancy equal to the hero's body. The Nemesis is Matter Animation/ Water."
     },
     {
         category: "Travel", code: "T12", maxRoll: 52, name: "Levitation", powerCount: 1,
-        description: "The hero can freely resist the pull of gravity. She can move vertically at Power rank speed, hover in place, or drift with the wind. Limited horizontal movement is possible by pushing off from other objects. The maximum distances are determined the same way anormal leap is.  A hero with this Power can never fall unlesss he is unconscious or purposely decides to succumb to gravity.  The Optional Powers is Telekinesis."
+        optionalPowers: "Mental Enhancement\\Telekinesis", 
+        description: "The hero can freely resist the pull of gravity. She can move vertically at Power rank speed, hover in place, or drift with the wind. Limited horizontal movement is possible by pushing off from other objects. The maximum distances are determined the same way anormal leap is.  A hero with this Power can never fall unlesss he is unconscious or purposely decides to succumb to gravity."
     },
     {
         category: "Travel", code: "T13", maxRoll: 56, name: "Rocket", powerCount: 1,
@@ -1419,7 +1483,8 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Travel", code: "T14", maxRoll: 58, name: "Skywalk", powerCount: 1,
-        description: "This is a peculiar form of flying. The hero can walk along an invisible path that he creates in the air. The path only serves the hero and only exists as long as he concentrates on maintaining its existence. The path is intangible to others unless the hero can extend its benefits to them by such means as a Power Stunt, Power Transferral, or Telekinesis.  Note: the average incline is 30 degrees; sharper angles are harder to climb. The Power offers Power rank resistance to high winds and sudden fluctuations in gravity, whether natural or Power-based. The Optional Power is Telekinesis."
+        optionalPowers: "Mental Enhancement\\Telekinesis", 
+        description: "This is a peculiar form of flying. The hero can walk along an invisible path that he creates in the air. The path only serves the hero and only exists as long as he concentrates on maintaining its existence. The path is intangible to others unless the hero can extend its benefits to them by such means as a Power Stunt, Power Transferral, or Telekinesis.  Note: the average incline is 30 degrees; sharper angles are harder to climb. The Power offers Power rank resistance to high winds and sudden fluctuations in gravity, whether natural or Power-based."
     },
     {
         category: "Travel", code: "T15", maxRoll: 64, name: "Spiderclimb", powerCount: 1,
@@ -1427,19 +1492,23 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Travel", code: "T16", maxRoll: 72, name: "Teleport Self", powerCount: 1,
-        description: "The hero can vanish at one location and instantly reappear at a distant site. He does not physically cross the intervening distance and is not not affected by most physical barriers. Normal safeguards prevent the hero from consciously Teleporting into a solid mass.  Certain conditions can prevent the hero from Teleporting. If the hero doesn't know where he is, psychological blockage may prevent him from consciously Teleporting. Extremely dense materials like Neutronium or black holes are impassable. Barriers that incorporate such Powers as Power Negation, Force Field vs. either Energy or Magic, or True Invulnerability are also impassable at higher rank. The Optional Powers are Teleport Others and Clairvoyance."
+        optionalPowers: "Travel\\Teleport Others|Mental Enhancement\\Clairvoyance", 
+        description: "The hero can vanish at one location and instantly reappear at a distant site. He does not physically cross the intervening distance and is not not affected by most physical barriers. Normal safeguards prevent the hero from consciously Teleporting into a solid mass.  Certain conditions can prevent the hero from Teleporting. If the hero doesn't know where he is, psychological blockage may prevent him from consciously Teleporting. Extremely dense materials like Neutronium or black holes are impassable. Barriers that incorporate such Powers as Power Negation, Force Field vs. either Energy or Magic, or True Invulnerability are also impassable at higher rank."
     },
     {
         category: "Travel", code: "T17", maxRoll: 76, name: "Teleport Others", powerCount: 1,
-        description: "The hero can make any target except his own body vanish and instantly reappear at a distant site. The target does not physically cross the intervening distance and is unaffected by most physical barriers. Teleportation always occurs if the passenger is immobile or touching the hero. Optional Powers include Teleport Self and Clairvoyance."
+        optionalPowers: "Travel\\Teleport Self|Mental Enhancement\\Clairvoyance", 
+        description: "The hero can make any target except his own body vanish and instantly reappear at a distant site. The target does not physically cross the intervening distance and is unaffected by most physical barriers. Teleportation always occurs if the passenger is immobile or touching the hero."
     },
     {
         category: "Travel", code: "T18", maxRoll: 78, name: "Telereformation", powerCount: 1,
-        description: "This is a peculiar form of Self Teleportation. The hero can disintegrate his body, transport his lifeforce any distance, and then create a new body out of materials available at the destination site. The Power shapes these into a form that resembles the hero's self-image but whose physical properties may be those of the materials that compose the new body. Obviously, most heroes with this Power cannot carry objects, passengers, or clothing.  Optional Powers include Clairvoyance, Free Spirit, and Serial Immortality/ Creation."
+        optionalPowers: "Mental Enhancement\\Clairvoyance|Mental Enhancement\\Free Spirit|Mental Enhancement\\Serial Immortality", 
+        description: "This is a peculiar form of Self Teleportation. The hero can disintegrate his body, transport his lifeforce any distance, and then create a new body out of materials available at the destination site. The Power shapes these into a form that resembles the hero's self-image but whose physical properties may be those of the materials that compose the new body. Obviously, most heroes with this Power cannot carry objects, passengers, or clothing."
     },
     {
         category: "Travel", code: "T19", maxRoll: 80, name: "Time Travel", powerCount: 1,
-        description: "The hero can travel in time to reach any point in the past or future. The maximum range the hero can reach is varies depending on which direction he's traveling. Travel into the past is easy because it already exists from the hero's point of view. The maximum range is equal to the Power rank number times 1000 years. Travel into the future is harder (at least, if you're planning a return trip). The maximum range into the future is equal to the Power rank number times 10 years. The Power can transport a mass whose weight is equal to the hero's Strength.  Optional Powers include Dimension Travel, Precognition, Postcognition, and Reality Alteration."
+        optionalPowers: "Travel\\Dimension Travel|Mental Enhancement\\Precognition|Mental Enhancement\\Postcognition|Magic\\Reality Alteration", 
+        description: "The hero can travel in time to reach any point in the past or future. The maximum range the hero can reach is varies depending on which direction he's traveling. Travel into the past is easy because it already exists from the hero's point of view. The maximum range is equal to the Power rank number times 1000 years. Travel into the future is harder (at least, if you're planning a return trip). The maximum range into the future is equal to the Power rank number times 10 years. The Power can transport a mass whose weight is equal to the hero's Strength."
     },
     {
         category: "Travel", code: "T20", maxRoll: 82, name: "Troubleseeker", powerCount: 1,
@@ -1447,7 +1516,8 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Travel", code: "T21", maxRoll: 93, name: "True Flight", powerCount: 1,
-        description: "The hero can fly through air and space without an apparent means of propulsion. This is the most desired Power in the history of the world.  True Flight includes as a side effect Power rank resistance to atmospheric friction and lungs adapted to breathe high velocity wind.  Optional Powers include Body Resistance, Armor Skin, Self-Sustenance, and Telekinesis."
+        optionalPowers: "Physical Enhancement\\Body Resistance|Physical Enhancement\\Armor Skin|Physical Enhancement\\Self-Sustenance|Mental Enhancement\\Telekinesis", 
+        description: "The hero can fly through air and space without an apparent means of propulsion. This is the most desired Power in the history of the world.  True Flight includes as a side effect Power rank resistance to atmospheric friction and lungs adapted to breathe high velocity wind."
     },
     {
         category: "Travel", code: "T22", maxRoll: 97, name: "Water Walking", powerCount: 1,
@@ -1455,7 +1525,8 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Travel", code: "T23", maxRoll: 100, name: "Whirlwind", powerCount: 1,
-        description: "The hero can fly by creating a small cyclone that carries him through the air. Maneuverability is determined by the hero's Agility. In addition to the hero's body, the Whirlwind can support additional weight.  Passengers are not battered by the high winds but are safely held aloft by updrafts in the cyclone's interior. High winds can affect the hero. If the wind is powerful enough, the Whirlwind can be dispersed.  Optional Powers include Weather Control and Matter Animation/Air."
+        optionalPowers: "Matter Control\\Weather|Matter Control\\Matter Animation", 
+        description: "The hero can fly by creating a small cyclone that carries him through the air. Maneuverability is determined by the hero's Agility. In addition to the hero's body, the Whirlwind can support additional weight.  Passengers are not battered by the high winds but are safely held aloft by updrafts in the cyclone's interior. High winds can affect the hero. If the wind is powerful enough, the Whirlwind can be dispersed."
     },
 ];
 

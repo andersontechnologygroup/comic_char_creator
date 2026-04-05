@@ -659,8 +659,6 @@
                 </div>
                 </div>`;
 
-        //        let powersHtml = char.powers.map(p => `<li class="power"><strong>${p.name}${p.powerSlots > 1 ? `*` : ``}${p.bonusPower ? ` (B)` : ``}</strong>: ${mode !== 'generic' ? `(${p.number})` : ``} &nbsp; <span class="power-description">${p.description}</span></li>`).join('');
-
         if (mode === 'ultimate') {
           html += `
                 <div class="section-title">Weakness</div>
@@ -743,13 +741,30 @@
     app.populateRenderTests();
 
     // Initial Generation
-    app.generate();
-    //app.runTests();
+    //app.generate();
+    app.runTests();
 
-    // TODO #6 Add optionalPower functionality for Ultimate (check description too)
-    // TODO #5 Add othere special attributes (physical forms, powers, origin, etc)
-    // TODO #4 Redo Unit Test Powers Single Ultimate
-    // TODO #3 Redo Unit Test SpecialAbilities Powers Ultimate
+    // TODO #23 Verify all attributes for Physical Form
+    // TODO #22 Add Unit Tests for each Physical Form attribute
+    // TODO #21 Verify all attributes for Wekaness Stimulus
+    // TODO #20 Add Unit Tests for each Wekaness Stimulus attribute
+    // TODO #19 Verify all attributes for Powers
+    // TODO #18 Add Unit Tests for each Powers attribute
+    // TOFO #17 Add option to not include Optional Powers
+    // TODO #16 Add Powers Special Rolls for Invisibility Form
+    // TODO #15 Add Powers Special Rolls for BioPhyiscal Control
+    // TODO #14 Add Powers Special Rolls for Emission Point
+    // TODO #13 Add Powers Special Rolls for Magic Mechanism
+    // TODO #12 Add Powers Special Rolls for Ritual Control
+    // TODO #11 Add Powers Special Rolls for Magic Control
+    // TODO #10 Add Powers Special Rolls for Magic Reality Alteration
+    // TODO #9 Add Powers Special Rolls for Diminution Mechanism
+    // TODO #8 Add Powers Special Rolls for Enlargement Mechanism
+    // TODO #7 Add Powers Special Rolls for Matter Animation Form
+    // TODO #6 Add Powers Special Rolls for Mental Duplication Form
+    // TODO #5 Add Powers Special Rolls for Serial Immortality Form
+    // TODO #4 Add Powers Special Rolls for Armor SKin Form
+    // TODO #3 Add Powers Special Rolls for Control Form
     // TODO #2 Finish PowersTooMany test for Ultimate
     // TODO #1 Finish ContactsTooMany test for Ultimate
 

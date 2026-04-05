@@ -1041,7 +1041,6 @@ class CharacterGenerator {
     }
     let powerRow = this.powerListTable.find(r => r.category === category && powerRoll <= r.maxRoll);
 
-    // console.log(`category: ${category}, powerRoll: ${powerRoll}`);
     // 3. Pick Power from Category
     indexAdjustment = 1;
     while (this.isPowerAlreadyAssigned(char.powers, powerRow) || powerRoll > 100) {
@@ -1090,6 +1089,12 @@ class CharacterGenerator {
     value = Utility.getValue(powerRow, 'bonusPowerCount', 0);
     if (value > 0) {
       this.generateBonusPower(char, powerRow.bonusPower);
+    }
+
+    value = Utility.getValue(powerRow, 'optionalPowers', '');
+    if(value !== '') {
+      value = Utility.getValue(powerRow, 'optionalPowersMax', 100)
+      this.generateOptionalPower(char, value, powerRow.optionalPowers);
     }
   }
 
@@ -1229,127 +1234,85 @@ class CharacterGenerator {
     }
   }
 
-  generateOptionalPower(char, optionalPowersString) {
-
-    /*
-        category: "Energy Control", code: "EC3", maxRoll: 15, name: "Coldshaping",
-        optionalPowers: "Energy Control\\Thermal Control|Matter Control\\Molding(66)|Self-Alteration\\Body Coating",
-
-        category: "Energy Control", code: "EC7", maxRoll: 31, name: "Energy Solidification",
-        optionalPowers: "Energy Emission\\Any",
-
-        category: "Energy Control", code: "EC10", maxRoll: 45, name: "Fire Control",
-        optionalPowers: "Energy Emission\\Fire Generation|Energy Control\\Thermal Control|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
-
-        category: "Energy Control", code: "EC12", maxRoll: 53, name: "Hard Radiation Control",
-        optionalPowers: "Energy Emission\\Hard Radiation|Energy Emission\\Energy Doppelganger|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
-
-        category: "Energy Control", code: "EC13", maxRoll: 59, name: "Kinetic Control",
-        optionalPowers: "Mental Enhancement\\Telekinesis|Energy Emission\\Kinetic Bolt",
-
-        category: "Energy Control", code: "EC14", maxRoll: 66, name: "Light Control",
-        optionalPowers: "Energy Emission\\Light Emission|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave|Illusionary\\Illusion Casting",
-
-        category: "Energy Control", code: "EC16", maxRoll: 77, name: "Plasma Control",
-        optionalPowers: "Energy Emission\\Plasma Generation|Energy Emission\\Energy Doppelganger|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
-
-        category: "Energy Control", code: "EC17", maxRoll: 80, name: "Radiowave Control",
-        optionalPowers: "Energy Emission\\Energy Doppelganger|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave",
-
-        category: "Energy Control", code: "EC18", maxRoll: 84, name: "Shadowshaping",
-        optionalPowers: "Energy Control\\Light Control|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
-
-        category: "Energy Control", code: "EC19", maxRoll: 90, name: "Sound Manipulation",
-        optionalPowers: "Energy Emission\\Vibration|Energy Control\\Vibration Control",
-
-        category: "Energy Control", code: "EC20", maxRoll: 97, name: "Thermal Control",
-        optionalPowers: "Energy Emission\\Heat|Energy Emission\\Fire Generation|Energy Emission\\Cold Generation|Energy Control\\Fire Control|Energy Control\\Coldshaping",
-
-        category: "Energy Control", code: "EC21", maxRoll: 100, name: "Vibration Control",
-        optionalPowers: "Energy Emission\\Vibration|Energy Emission\\Sonic Generation|Energy Control\\Sound Manipulation",
-
-        category: "Energy Emission", code: "EE1", maxRoll: 10, name: "Cold Generation", powerCount: 1,
-        optionalPowers: "Energy Control\\Coldshaping|Energy Control\\Energy Solidification|Matter Control\\Molding",
-
-        category: "Energy Emission", code: "EE7", maxRoll: 52, name: "Kinetic Bolt", powerCount: 1,
-        optionalPowers: "Energy Control\\Kinetic Control|Mental Enhancement\\Telekinesis",
-
-        category: "Energy Emission", code: "EE11", maxRoll: 78, name: "Radiowave Generation", powerCount: 1,
-        optionalPowers: "Energy Emission\\Radiowave Generation|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave",
-
-        category: "Energy Emission", code: "EE12", maxRoll: 83, name: "Shadowcasting", powerCount: 1,
-        optionalPowers: "Energy Control\\Shadowshaping|Energy Control\\Darkforce Manipulation",
-
-        category: "Energy Emission", code: "EE13", maxRoll: 93, name: "Sonic Generation", powerCount: 1,
-        optionalPowers: "Energy Control\\Sound Manipulation|Energy Emission\\Vibration|Energy Control\\Vibration Control",
-        
-        category: "Energy Emission", code: "EE14", maxRoll: 100, name: "Vibration", powerCount: 1,
-        optionalPowers: "Energy Control\\Vibration Control|Energy Emission\\Sonic Generation",
-
-        category: "Fighting", code: "F2", maxRoll: 60, name: "Martial Supremacy", powerCount: 1,
-        optionalPowers: "Mental Enhancement\\Iron Will|Fighting\\Weapons Creation",
-
-        category: "Illusionary", code: "I1", maxRoll: 15, name: "Animate Image", powerCount: 1,
-        optionalPowers: "Detection\\Telescopic Vision~Mental Enhancement\\Clairvoyance|Energy Control\\Energy Solidification|Matter Creation\\Elemental Creation~Matter Creation\\Molecular Creation",
-
-        category: "Illusionary", code: "I2", maxRoll: 70, name: "Illusion Casting", powerCount: 1,
-        optionalPowers: "Energy Control\\Energy Solidification|Detection\\Telescopic Vision|Mental Enhancement\\Clairvoyance",
-
-        category: "Illusionary", code: "I3", maxRoll: 85, name: "Illusory Invisibility", powerCount: 1,
-        optionalPowers: "Energy Control\\Light Control|Energy Emission\\Light Emission",
-    */
-
-    // This will work sort of like the bonus.  Except will will fill up any power slots using optional powers
+  generateOptionalPower(char, maxNumber, optionalPowersString) {
+    // This will work sort of like the bonus.  Except it will fill up any power slots using optional powers
     // This means we aren't rolling to determine which optional power, but we will roll for the rank.  
      
-    /*
-    const powers = bonusPowerString.split("|");
+    let indexAdjustment = 0;
+    let potentialPowers = [];
+    const powers = optionalPowersString.split("|");
     for (let index = 0; index < powers.length; index++) {
-      const parts = powers[index].split("\\");
-      const category = parts[0];
-      const otherParts = parts[1].split("(");
-      const name = otherParts[0];
-      const roll = +otherParts[1].replace(")", "");
+      let thisPowerString = powers[index];
 
-      powers[index] = {
+      if(thisPowerString === '') continue;
+
+      if(powers[index].indexOf('~') !== -1) {
+        const thisList = powers[index].split("~");
+        let randomRoll = Math.floor(Math.random() * thisList.length);
+        thisPowerString = thisList[randomRoll];
+      }
+
+      const parts = thisPowerString.split("\\");
+      const category = parts[0];
+      let name = parts[1];
+
+      if(name === "Any") {
+        while(true) {
+          let thisRoll = this.powerRolls[char.powers.length + indexAdjustment];
+          while (thisRoll > 100) {
+            thisRoll = this.powerRolls[char.powers.length + indexAdjustment];
+            indexAdjustment++;
+          }
+          const p = this.powerListTable.find(c => c.category === category && thisRoll <= c.maxRoll);
+          name = p.name;
+
+          if(this.isPowerAlreadyAssigned(char.powers, p) || this.isPowerAlreadyAssigned(potentialPowers, p)) {
+            indexAdjustment++;
+          }
+          else {
+            break;
+          }
+        }
+      }
+      
+      potentialPowers[index] = {
         category: category,
-        name: name,
-        maxRoll: roll
+        name: name
       };
     }
 
     const startIndex = char.powers.length;
     let roll = this.powerRolls[startIndex];
-    let indexAdjustment = 1;
     while (roll > 100) {
       roll = this.powerRolls[startIndex + indexAdjustment];
       indexAdjustment++;
     }
 
-    const power = powers.find(c => roll <= c.maxRoll);
+    maxNumber = Math.min(maxNumber, potentialPowers.length);
+    for(let index = 0; index < maxNumber; index++) {
+      const power = potentialPowers[index];
+      const p = this.powerListTable.find(c => c.category === power.category && c.name === power.name);
 
-    const p = this.powerListTable.find(c => c.category === power.category && c.name === power.name);
+      const rankRoll = this.powerRankRolls[startIndex];
+      const rankRow = Utility.findRow(this, rankRoll, 3);
 
-    const rankRoll = this.powerRankRolls[startIndex];
-    const rankRow = Utility.findRow(this, rankRoll, 3);
+      const rankNumber = rankRow.rankNumber;
 
-    const rankNumber = rankRow.rankNumber;
+      char.logRoll("Optional Power Gen", `Base Rules: ${roll}/${rankRow}`, `${power.category}: ${p.name} (${rankRow.rank})`);
 
-    char.logRoll("Bonus Power Gen", `Base Rules: ${roll}/${rankRow}`, `${power.category}: ${p.name} (${rankRow.rank})`);
-
-    if (char.powers.length < char.powersMax && !this.isPowerAlreadyAssigned(char.powers, p)) {
-      char.powers.push({
-        category: p.category,
-        name: p.name,
-        code: p.code,
-        description: p.description,
-        rank: rankRow.rank,
-        number: rankNumber,
-        powerSlots: p.powerCount,
-        bonusPower: true
-      });
+      if (char.powers.length < char.powersMax && !this.isPowerAlreadyAssigned(char.powers, p)) {
+        char.powers.push({
+          category: p.category,
+          name: p.name,
+          code: p.code,
+          description: p.description,
+          rank: rankRow.rank,
+          number: rankNumber,
+          powerSlots: p.powerCount,
+          optionalPower: true
+        });
+      }
     }
-    */
   }
 }
 

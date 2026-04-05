@@ -49,8 +49,8 @@ class Tester {
     const div = document.createElement('div');
 
     let found = false;
-    for(let index = 0; index < powersList.length; index ++) {
-      if(powersList[index].name === expectedValue) {
+    for (let index = 0; index < powersList.length; index++) {
+      if (powersList[index].name === expectedValue) {
         found = true;
         break;
       }
@@ -75,7 +75,8 @@ class Tester {
   }
 
   static getLineNumber() {
-    return (new Error).stack.split("\n")[3].split(":")[2];
+    const parts = (new Error).stack.split("\n")[3].split(":");
+    return parts[parts.length - 2];
   }
 
   static UtilityTests(gen) {
@@ -200,13 +201,25 @@ class Tester {
     gen.generatorMode = "ultimate";
     gen.setTables();
 
-    for(let index = 0; index < gen.physicalFormTable.length; index++) {
+    for (let index = 0; index < gen.physicalFormTable.length; index++) {
       gen.throwAllRolls();
       gen.physicalFormRoll = gen.physicalFormTable[index].maxRoll;
       const char = gen.generateWithoutThrows();
       this.assertEquals(gen.physicalFormTable[index].name, char.physicalForm, `Physical Form Roll (Generic): Generated '${char.physicalForm}', which is correct.`);
 
-      switch(char.physicalForm) {
+      switch (char.physicalForm) {
+        case "Normal Human":
+          {
+            const log = char.log.find(l => l.indexOf('Ability Rank: Resources. Adjustment: 2'));
+            this.assert(log !== null && log !== undefined, "For Normal Human, Resource was raised by 2.");
+          }
+          break;
+        case "Mutant - Random":
+          {
+            const log = char.log.find(l => l.indexOf('Ability Rank: Endurance. Adjustment: 1'));
+            this.assert(log !== null && log !== undefined, "For Mutant - Random, Endurance was raised by 1.");
+          }
+          break;
         case "Demihuman - Chiropteran":
           {
             this.assertHasPower('Sonar (Active)', char.powers, 'Demihuman - Chiropteran has bonus power of Sonar (Active).')
@@ -221,12 +234,12 @@ class Tester {
           break;
         case "Angel/Demon":
           {
-            if(char.subType === "Angel") {
+            if (char.subType === "Angel") {
               this.assertHasPower('Artifact Creation', char.powers, 'Angel has bonus power of Artifact Creation.')
               const power = char.powers.find(p => p.name === "Artifact Creation");
               this.assertEquals("Good", power.rank, "Angel Artifact Creation must be Good rank.")
             }
-            else if(char.subType === "Demon") {
+            else if (char.subType === "Demon") {
               this.assertHasPower('Fire Generation', char.powers, 'Demon has bonus power of Fire Generation.')
               const power = char.powers.find(p => p.name === "Fire Generation");
               this.assertEquals("Good", power.rank, "Demon Fire Generation must be Good rank.")
@@ -241,7 +254,7 @@ class Tester {
           break;
         case "Animal":
           {
-            const power = char.powers.filter(p => p.category === "Detection");
+            const power = char.powers.filter(p => p.bonusPower && p.category === "Detection");
             this.assertEquals(2, power.length, "Animal has 2 bonus powers of category Detection.");
             this.assertEquals("Good", power[0].rank, "Animal has bonus power(1) of category Detection at Good rank.");
             this.assertEquals("Good", power[1].rank, "Animal has bonus power(2) of category Detection at Good rank.");
@@ -249,9 +262,9 @@ class Tester {
           break;
         case "Vegetable":
           {
-              this.assertHasPower('Absorption Power', char.powers, 'Vegetable has bonus power of Absorption Power.')
-              const power = char.powers.find(p => p.name === "Absorption Power");
-              this.assertEquals("Good", power.rank, "Vegetable Absorption Power must be Good rank.")
+            this.assertHasPower('Absorption Power', char.powers, 'Vegetable has bonus power of Absorption Power.')
+            const power = char.powers.find(p => p.name === "Absorption Power");
+            this.assertEquals("Good", power.rank, "Vegetable Absorption Power must be Good rank.")
           }
           break;
         case "Energy":
@@ -1736,7 +1749,7 @@ class Tester {
       char.origin = "Normal Human";
       gen.randomRanksColumn = 2;
 
-      gen.powerNumberRoll = 19;  // 2 powers
+      gen.powerNumberRoll = 100;  // 12 powers
       gen.talentNumberRoll = 91;
       gen.contactNumberRoll = 74;
       gen.talentCategoryRolls = [2, 27, 67, 91];
@@ -1808,119 +1821,1697 @@ class Tester {
       this.assertEquals(targetPower.name, p.name, `Power Roll: Generated ${p.name} name.`);
       this.assertEquals("Excellent", p.rank, `Power Rank Roll: Generated ${p.rank} rank.`);
 
-      // Validate Bonus Powers
-      switch(targetPower.code) {
-        case "EC3":
-          this.assertGreaterOrEqual(2, char.powers.length, "If Coldshaping, there should be at least 2 powers due to Bonus Power.");
-          this.assertEquals("Cold Generation", char.powers[1].name, "If Coldshaping, also has Cold Generation.");
-          break;
-        case "EC13":
-          this.assertGreaterOrEqual(2, char.powers.length, "If Kinetic Control, there should be at least 2 powers due to Bonus Power.");
-          this.assert(char.powers[1].name === "Telekinesis" || char.powers[1].name === "Kinetic Bolt", "If Kinetic Control, also has Telekinesis or Kinetic Bolt.");
-          break;
-        case "EC17":
-          this.assertGreaterOrEqual(2, char.powers.length, "If Radiowave Control, there should be at least 2 powers due to Bonus Power.");
-          this.assertEquals("Radiowave Generation", char.powers[1].name, "If Radiowave Control, also has Radiowave Generation.");
-          break;
-        case "EC18":
-          this.assertGreaterOrEqual(2, char.powers.length, "If Shadowshaping, there should be at least 2 powers due to Bonus Power.");
-          this.assertEquals("Shadowcasting", char.powers[1].name, "If Shadowshaping, also has Shadowcasting.");
-          break;
-        case "EC19":
-          this.assertGreaterOrEqual(2, char.powers.length, "If Sound Manipulation, there should be at least 2 powers due to Bonus Power.");
-          this.assertEquals("Sonic Generation", char.powers[1].name, "If Sound Manipulation, also has Sonic Generation.");
-          break;
-        case "L2":
-          this.assertGreaterOrEqual(2, char.powers.length, "If Bio-Vampirism, there should be at least 2 powers due to Bonus Power.");
-          this.assertEquals("Mind Control", char.powers[1].name, "If Bio-Vampirism, also has Mind Control.");
-          break;
-        case "M29":
-          this.assertGreaterOrEqual(2, char.powers.length, "If Speechthrowing, there should be at least 2 powers due to Bonus Power.");
-          this.assertEquals("Clairaudience", char.powers[1].name, "If Speechthrowing, also has Clairaudience.");
-          break;
-        case "P17":
-          this.assertGreaterOrEqual(2, char.powers.length, "If Water Freedom, there should be at least 2 powers due to Bonus Power.");
-          this.assertEquals("Waterbreathing", char.powers[1].name, "If Water Freedom, also has Waterbreathing.");
-          break;
-        case "T8":
-          this.assertGreaterOrEqual(2, char.powers.length, "If Hyper-Digging, there should be at least 2 powers due to Bonus Power.");
-          this.assert(char.powers[1].name === "Natural Weaponry" || char.powers[1].name === "Body Resistance", "If Hyper-Digging, also has Natural Weaponry or Body Resistance.");
-          break;
-        case "T11":
-          this.assertGreaterOrEqual(2, char.powers.length, "If Hyper-Swimming, there should be at least 2 powers due to Bonus Power.");
-          this.assert(char.powers[1].name === "Waterbreathing" || char.powers[1].name === "Water Freedom", "If Hyper-Swimming, also has Waterbreathing or Water Freedom.");
-          break;      
+      try
+      {
+        // Validate Bonus Powers
+        switch (targetPower.code) {
+          case "EC3":
+            this.assertGreaterOrEqual(2, char.powers.length, "If Coldshaping, there should be at least 2 powers due to Bonus Power.");
+            this.assertEquals("Cold Generation", char.powers[1].name, "If Coldshaping, also has Cold Generation.");
+            break;
+          case "EC13":
+            this.assertGreaterOrEqual(2, char.powers.length, "If Kinetic Control, there should be at least 2 powers due to Bonus Power.");
+            this.assert(char.powers[1].name === "Telekinesis" || char.powers[1].name === "Kinetic Bolt", "If Kinetic Control, also has Telekinesis or Kinetic Bolt.");
+            break;
+          case "EC17":
+            this.assertGreaterOrEqual(2, char.powers.length, "If Radiowave Control, there should be at least 2 powers due to Bonus Power.");
+            this.assertEquals("Radiowave Generation", char.powers[1].name, "If Radiowave Control, also has Radiowave Generation.");
+            break;
+          case "EC18":
+            this.assertGreaterOrEqual(2, char.powers.length, "If Shadowshaping, there should be at least 2 powers due to Bonus Power.");
+            this.assertEquals("Shadowcasting", char.powers[1].name, "If Shadowshaping, also has Shadowcasting.");
+            break;
+          case "EC19":
+            this.assertGreaterOrEqual(2, char.powers.length, "If Sound Manipulation, there should be at least 2 powers due to Bonus Power.");
+            this.assertEquals("Sonic Generation", char.powers[1].name, "If Sound Manipulation, also has Sonic Generation.");
+            break;
+          case "L2":
+            this.assertGreaterOrEqual(2, char.powers.length, "If Bio-Vampirism, there should be at least 2 powers due to Bonus Power.");
+            this.assertEquals("Mind Control", char.powers[1].name, "If Bio-Vampirism, also has Mind Control.");
+            break;
+          case "M29":
+            this.assertGreaterOrEqual(2, char.powers.length, "If Speechthrowing, there should be at least 2 powers due to Bonus Power.");
+            this.assertEquals("Clairaudience", char.powers[1].name, "If Speechthrowing, also has Clairaudience.");
+            break;
+          case "P17":
+            this.assertGreaterOrEqual(2, char.powers.length, "If Water Freedom, there should be at least 2 powers due to Bonus Power.");
+            this.assertEquals("Waterbreathing", char.powers[1].name, "If Water Freedom, also has Waterbreathing.");
+            break;
+          case "T8":
+            this.assertGreaterOrEqual(2, char.powers.length, "If Hyper-Digging, there should be at least 2 powers due to Bonus Power.");
+            this.assert(char.powers[1].name === "Natural Weaponry" || char.powers[1].name === "Body Resistance", "If Hyper-Digging, also has Natural Weaponry or Body Resistance.");
+            break;
+          case "T11":
+            this.assertGreaterOrEqual(2, char.powers.length, "If Hyper-Swimming, there should be at least 2 powers due to Bonus Power.");
+            this.assert(char.powers[1].name === "Waterbreathing" || char.powers[1].name === "Water Freedom", "If Hyper-Swimming, also has Waterbreathing or Water Freedom.");
+            break;
+        }
+      }
+      catch(ex) {
+        this.assert(false, "Exception: " + ex.message);
       }
 
-    // Validate optionalPowers
-    /*
-        category: "Energy Control", code: "EC3", maxRoll: 15, name: "Coldshaping",
-        optionalPowers: "Energy Control\\Thermal Control|Matter Control\\Molding|Self-Alteration\\Body Coating",
-
-        category: "Energy Control", code: "EC7", maxRoll: 31, name: "Energy Solidification",
-        optionalPowers: "Energy Emission\\Any",
-        
-        category: "Energy Control", code: "EC10", maxRoll: 45, name: "Fire Control",
-        optionalPowers: "Energy Emission\\Fire Generation|Energy Control\\Thermal Control|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
-
-        category: "Energy Control", code: "EC12", maxRoll: 53, name: "Hard Radiation Control",
-        optionalPowers: "Energy Emission\\Hard Radiation|Energy Emission\\Energy Doppelganger|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
-
-        category: "Energy Control", code: "EC13", maxRoll: 59, name: "Kinetic Control",
-        optionalPowers: "Mental Enhancement\\Telekinesis|Energy Emission\\Kinetic Bolt",
-
-        category: "Energy Control", code: "EC14", maxRoll: 66, name: "Light Control",
-        optionalPowers: "Energy Emission\\Light Emission|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave|Illusionary\\Illusion Casting",
-
-        category: "Energy Control", code: "EC16", maxRoll: 77, name: "Plasma Control",
-        optionalPowers: "Energy Emission\\Plasma Generation|Energy Emission\\Energy Doppelganger|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
-
-        category: "Energy Control", code: "EC17", maxRoll: 80, name: "Radiowave Control",
-        optionalPowers: "Energy Emission\\Energy Doppelganger|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave",
-
-        category: "Energy Control", code: "EC18", maxRoll: 84, name: "Shadowshaping",
-        optionalPowers: "Energy Control\\Light Control|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
-
-        category: "Energy Control", code: "EC19", maxRoll: 90, name: "Sound Manipulation",
-        optionalPowers: "Energy Emission\\Vibration|Energy Control\\Vibration Control",
-
-        category: "Energy Control", code: "EC20", maxRoll: 97, name: "Thermal Control",
-        optionalPowers: "Energy Emission\\Heat|Energy Emission\\Fire Generation|Energy Emission\\Cold Generation|Energy Control\\Fire Control|Energy Control\\Coldshaping",
-
-        category: "Energy Control", code: "EC21", maxRoll: 100, name: "Vibration Control",
-        optionalPowers: "Energy Emission\\Vibration|Energy Emission\\Sonic Generation|Energy Control\\Sound Manipulation",
-
-        category: "Energy Emission", code: "EE1", maxRoll: 10, name: "Cold Generation", powerCount: 1,
-        optionalPowers: "Energy Control\\Coldshaping|Energy Control\\Energy Solidification|Matter Control\\Molding",
-
-        category: "Energy Emission", code: "EE7", maxRoll: 52, name: "Kinetic Bolt", powerCount: 1,
-        optionalPowers: "Energy Control\\Kinetic Control|Mental Enhancement\\Telekinesis",
-    
-        category: "Energy Emission", code: "EE11", maxRoll: 78, name: "Radiowave Generation", powerCount: 1,
-        optionalPowers: "Energy Emission\\Radiowave Generation|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave",
-
-        category: "Energy Emission", code: "EE12", maxRoll: 83, name: "Shadowcasting", powerCount: 1,
-        optionalPowers: "Energy Control\\Shadowshaping|Energy Control\\Darkforce Manipulation",
-
-        category: "Energy Emission", code: "EE13", maxRoll: 93, name: "Sonic Generation", powerCount: 1,
-        optionalPowers: "Energy Control\\Sound Manipulation|Energy Emission\\Vibration|Energy Control\\Vibration Control",
-        
-        category: "Energy Emission", code: "EE14", maxRoll: 100, name: "Vibration", powerCount: 1,
-        optionalPowers: "Energy Control\\Vibration Control|Energy Emission\\Sonic Generation",
-
-        category: "Fighting", code: "F2", maxRoll: 60, name: "Martial Supremacy", powerCount: 1,
-        optionalPowers: "Mental Enhancement\\Iron Will|Fighting\\Weapons Creation",
-
-        category: "Illusionary", code: "I1", maxRoll: 15, name: "Animate Image", powerCount: 1,
-        optionalPowers: "Detection\\Telescopic Vision~Mental Enhancement\\Clairvoyance|Energy Control\\Energy Solidification|Matter Creation\\Elemental Creation~Matter Creation\\Molecular Creation",
-
-        category: "Illusionary", code: "I2", maxRoll: 70, name: "Illusion Casting", powerCount: 1,
-        optionalPowers: "Energy Control\\Energy Solidification|Detection\\Telescopic Vision|Mental Enhancement\\Clairvoyance",
-
-        category: "Illusionary", code: "I3", maxRoll: 85, name: "Illusory Invisibility", powerCount: 1,
-        optionalPowers: "Energy Control\\Light Control|Energy Emission\\Light Emission",
-    */
-
+      try {
+        // Validate optionalPowers
+        switch (targetPower.code) {
+          case "EC3":
+            {
+              // There are potentially 5 powers or the max number
+              const maxPowers = Math.min(char.powersMax, 5);
+              this.assertGreaterOrEqual(maxPowers, char.powers.length, `If Coldshaping, there should be at least ${maxPowers} powers due to Bonus Power and Optional Powers.`);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Cold Generation");
+                this.assert(power !== null || power !== undefined, "If Coldshaping, also has Cold Generation");
+                this.assertEquals(true, power.bonusPower, "If Coldshaping, also has Cold Generation as a Bonus Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Thermal Control");
+                this.assert(power !== null || power !== undefined, "If Coldshaping, also has Thermal Control");
+                this.assertEquals(true, power.optionalPower, "If Coldshaping, also has Thermal Control as an Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Molding");
+                this.assert(power !== null || power !== undefined, "If Coldshaping, also has Molding");
+                this.assertEquals(true, power.optionalPower, "If Coldshaping, also has Molding as an Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Body Coating");
+                this.assert(power !== null || power !== undefined, "If Coldshaping, also has Body Coating");
+                this.assertEquals(true, power.optionalPower, "If Coldshaping, also has Body Coating as an Optional Power.");
+              }
+            }
+            break;
+          case "EC7":
+            {
+              const maxPowers = Math.min(char.powersMax, 2);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.category === "Energy Emission");
+                this.assert(power !== null || power !== undefined, "If Energy Solidification, also has an Energy Emission");
+                this.assertEquals(true, power.optionalPower, "If Energy Solidification, also has Energy Emission as a Optional Power.");
+              }
+            }
+            break;
+          case "EC10":
+            {
+              const maxPowers = Math.min(char.powersMax, 5);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Fire Generation");
+                this.assert(power !== null || power !== undefined, "If Fire Control, also has Fire Generation");
+                this.assertEquals(true, power.optionalPower, "If Fire Control, also has Fire Generation as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Thermal Control");
+                this.assert(power !== null || power !== undefined, "If Fire Control, also has Thermal Control");
+                this.assertEquals(true, power.optionalPower, "If Fire Control, also has Thermal Control as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Energy Sheath");
+                this.assert(power !== null || power !== undefined, "If Fire Control, also has Energy Sheath");
+                this.assertEquals(true, power.optionalPower, "If Fire Control, also has Energy Sheath as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Energy Body");
+                this.assert(power !== null || power !== undefined, "If Fire Control, also has Energy Body");
+                this.assertEquals(true, power.optionalPower, "If Fire Control, also has Energy Body as a Optional Power.");
+              }
+            }
+            break;
+          case "EC12":
+            {
+              const maxPowers = Math.min(char.powersMax, 5);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Hard Radiation");
+                this.assert(power !== null || power !== undefined, "If Hard Radiation Control, also has Hard Radiation");
+                this.assertEquals(true, power.optionalPower, "If Hard Radiation Control, also has Hard Radiation as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Energy Doppelganger");
+                this.assert(power !== null || power !== undefined, "If Hard Radiation Control, also has Energy Doppelganger");
+                this.assertEquals(true, power.optionalPower, "If Hard Radiation Control, also has Energy Doppelganger as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Energy Sheath");
+                this.assert(power !== null || power !== undefined, "If Hard Radiation Control, also has Energy Sheath");
+                this.assertEquals(true, power.optionalPower, "If Hard Radiation Control, also has Energy Sheath as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Energy Body");
+                this.assert(power !== null || power !== undefined, "If Hard Radiation Control, also has Energy Body");
+                this.assertEquals(true, power.optionalPower, "If Hard Radiation Control, also has Energy Body as a Optional Power.");
+              }
+            }
+            break;
+          case "EC13":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if(maxPowers > 1) {
+                const power = char.powers.find(p => p.bonusPower && (p.name === "Telekinesis" || p.name === "Kinetic Bolt"));
+                this.assert(power !== null || power !== undefined, "If Kinetic Control, also has Telekinesis or Kinetic Bolt");
+                this.assertEquals(true, power.bonusPower, "If Kinetic Control, also has Telekinesis or Kinetic Bolt as a Bonus Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.optionalPower && (p.name === "Telekinesis" || p.name === "Kinetic Bolt"));
+                this.assert(power !== null || power !== undefined, "If Kinetic Control, also has Telekinesis or Kinetic Bolt");
+                this.assertEquals(true, power.optionalPower, "If Kinetic Control, also has Telekinesis or Kinetic Bolt as a Optional Power.");
+              }
+            }
+            break;
+          case "EC14":
+            {
+              const maxPowers = Math.min(char.powersMax, 5);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Light Emission");
+                this.assert(power !== null || power !== undefined, "If Light Control, also has Light Emission");
+                this.assertEquals(true, power.optionalPower, "If Light Control, also has Light Emission as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Energy Sheath");
+                this.assert(power !== null || power !== undefined, "If Light Control, also has Energy Sheath");
+                this.assertEquals(true, power.optionalPower, "If Light Control, also has Energy Sheath as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Carrier Wave");
+                this.assert(power !== null || power !== undefined, "If Light Control, also has Carrier Wave");
+                this.assertEquals(true, power.optionalPower, "If Light Control, also has Carrier Wave as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Illusion Casting");
+                this.assert(power !== null || power !== undefined, "If Light Control, also has Illusion Casting");
+                this.assertEquals(true, power.optionalPower, "If Light Control, also has Illusion Casting as a Optional Power.");
+              }
+            }
+            break;
+          case "EC16":
+            {
+              const maxPowers = Math.min(char.powersMax, 5);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Plasma Generation");
+                this.assert(power !== null || power !== undefined, "If Plasma Control, also has Plasma Generation");
+                this.assertEquals(true, power.optionalPower, "If Plasma Control, also has Plasma Generation as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Energy Doppelganger");
+                this.assert(power !== null || power !== undefined, "If Plasma Control, also has Energy Doppelganger");
+                this.assertEquals(true, power.optionalPower, "If Plasma Control, also has Energy Doppelganger as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Energy Sheath");
+                this.assert(power !== null || power !== undefined, "If Plasma Control, also has Energy Sheath");
+                this.assertEquals(true, power.optionalPower, "If Plasma Control, also has Energy Sheath as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Energy Body");
+                this.assert(power !== null || power !== undefined, "If Plasma Control, also has Energy Body");
+                this.assertEquals(true, power.optionalPower, "If Plasma Control, also has Energy Body as a Optional Power.");
+              }
+            }
+            break;
+          case "EC17":
+            {
+              const maxPowers = Math.min(char.powersMax, 5);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Radiowave Generation");
+                this.assert(power !== null || power !== undefined, "If Radiowave Control, also has Radiowave Generation");
+                this.assertEquals(true, power.bonusPower, "If Radiowave Control, also has Radiowave Generation as a Bonus Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Energy Doppelganger");
+                this.assert(power !== null || power !== undefined, "If Radiowave Control, also has Energy Doppelganger");
+                this.assertEquals(true, power.optionalPower, "If Radiowave Control, also has Energy Doppelganger as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Energy Sheath");
+                this.assert(power !== null || power !== undefined, "If Radiowave Control, also has Energy Sheath");
+                this.assertEquals(true, power.optionalPower, "If Radiowave Control, also has Energy Sheath as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Carrier Wave");
+                this.assert(power !== null || power !== undefined, "If Radiowave Control, also has Carrier Wave");
+                this.assertEquals(true, power.optionalPower, "If Radiowave Control, also has Carrier Wave as a Optional Power.");
+              }
+            }
+            break;
+          case "EC18":
+            {
+              const maxPowers = Math.min(char.powersMax, 5);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Shadowcasting");
+                this.assert(power !== null || power !== undefined, "If Shadowshaping, also has Shadowcasting");
+                this.assertEquals(true, power.bonusPower, "If Shadowshaping, also has Shadowcasting as a Bonus Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Light Control");
+                this.assert(power !== null || power !== undefined, "If Shadowshaping, also has Light Control");
+                this.assertEquals(true, power.optionalPower, "If Shadowshaping, also has Light Control as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Energy Sheath");
+                this.assert(power !== null || power !== undefined, "If , also has Energy Sheath");
+                this.assertEquals(true, power.optionalPower, "If Shadowshaping, also has Energy Sheath as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Energy Body");
+                this.assert(power !== null || power !== undefined, "If Shadowshaping, also has Energy Body");
+                this.assertEquals(true, power.optionalPower, "If Shadowshaping, also has Energy Body as a Optional Power.");
+              }
+            }
+            break;
+          case "EC19":
+            {
+              const maxPowers = Math.min(char.powersMax, 4);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Sonic Generation");
+                this.assert(power !== null || power !== undefined, "If Sound Manipulation, also has Sonic Generation");
+                this.assertEquals(true, power.bonusPower, "If Sound Manipulation, also has Sonic Generation as a Bous Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Vibration");
+                this.assert(power !== null || power !== undefined, "If Sound Manipulation, also has Vibration");
+                this.assertEquals(true, power.optionalPower, "If Sound Manipulation, also has Vibration as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Vibration Control");
+                this.assert(power !== null || power !== undefined, "If Sound Manipulation, also has Vibration Control");
+                this.assertEquals(true, power.optionalPower, "If Sound Manipulation, also has Vibration Control as a Optional Power.");
+              }
+            }
+            break;
+          case "EC20":
+            {
+              const maxPowers = Math.min(char.powersMax, 6);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Heat");
+                this.assert(power !== null || power !== undefined, "If Thermal Control, also has Heat");
+                this.assertEquals(true, power.optionalPower, "If Thermal Control, also has Heat as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Fire Generation");
+                this.assert(power !== null || power !== undefined, "If Thermal Control, also has Fire Generation");
+                this.assertEquals(true, power.optionalPower, "If Thermal Control, also has Fire Generation as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Cold Generation");
+                this.assert(power !== null || power !== undefined, "If Thermal Control, also has Cold Generation");
+                this.assertEquals(true, power.optionalPower, "If Thermal Control, also has Cold Generation as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Fire Control");
+                this.assert(power !== null || power !== undefined, "If Thermal Control, also has Fire Control");
+                this.assertEquals(true, power.optionalPower, "If Thermal Control, also has Fire Control as a Optional Power.");
+              }
+              if (maxPowers > 5) {
+                const power = char.powers.find(p => p.name === "Coldshaping");
+                this.assert(power !== null || power !== undefined, "If Thermal Control, also has Coldshaping");
+                this.assertEquals(true, power.optionalPower, "If Thermal Control, also has Coldshaping as a Optional Power.");
+              }
+            }
+            break;
+          case "EC21":
+            {
+              const maxPowers = Math.min(char.powersMax, 4);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Vibration");
+                this.assert(power !== null || power !== undefined, "If Vibration Control, also has Vibration");
+                this.assertEquals(true, power.optionalPower, "If Vibration Control, also has Vibration as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Sonic Generation");
+                this.assert(power !== null || power !== undefined, "If Vibration Control, also has Sonic Generation");
+                this.assertEquals(true, power.optionalPower, "If Vibration Control, also has Sonic Generation as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Sound Manipulation");
+                this.assert(power !== null || power !== undefined, "If Vibration Control, also has Sound Manipulation");
+                this.assertEquals(true, power.optionalPower, "If Vibration Control, also has Sound Manipulation as a Optional Power.");
+              }
+            }
+            break;
+          case "EE1":
+            {
+              const maxPowers = Math.min(char.powersMax, 4);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Coldshaping");
+                this.assert(power !== null || power !== undefined, "If Cold Generation, also has Coldshaping");
+                this.assertEquals(true, power.optionalPower, "If Cold Generation, also has Coldshaping as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Energy Solidification");
+                this.assert(power !== null || power !== undefined, "If Cold Generation, also has Energy Solidification");
+                this.assertEquals(true, power.optionalPower, "If Cold Generation, also has Energy Solidification as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Molding");
+                this.assert(power !== null || power !== undefined, "If Cold Generation, also has Molding");
+                this.assertEquals(true, power.optionalPower, "If Cold Generation, also has Molding as a Optional Power.");
+              }
+            }
+            break;
+          case "EE7":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Kinetic Control");
+                this.assert(power !== null || power !== undefined, "If Kinetic Bolt, also has Kinetic Control");
+                this.assertEquals(true, power.optionalPower, "If Kinetic Bolt, also has  as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Telekinesis");
+                this.assert(power !== null || power !== undefined, "If Kinetic Bolt, also has Telekinesis");
+                this.assertEquals(true, power.optionalPower, "If Kinetic Bolt, also has Telekinesis as a Optional Power.");
+              }
+            }
+            break;
+          case "EE11":
+            {
+              const maxPowers = Math.min(char.powersMax, 4);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Radiowave Control");
+                this.assert(power !== null || power !== undefined, "If Radiowave Generation, also has Radiowave Control");
+                this.assertEquals(true, power.optionalPower, "If Radiowave Generation, also has Radiowave Control as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Energy Sheath");
+                this.assert(power !== null || power !== undefined, "If Radiowave Generation, also has Energy Sheath");
+                this.assertEquals(true, power.optionalPower, "If Radiowave Generation, also has Energy Sheath as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Carrier Wave");
+                this.assert(power !== null || power !== undefined, "If Radiowave Generation, also has Carrier Wave");
+                this.assertEquals(true, power.optionalPower, "If Radiowave Generation, also has Carrier Wave as a Optional Power.");
+              }
+            }
+            break;
+          case "EE12":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Shadowshaping");
+                this.assert(power !== null || power !== undefined, "If Shadowcasting, also has Shadowshaping");
+                this.assertEquals(true, power.optionalPower, "If Shadowcasting, also has Shadowshaping as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Darkforce Manipulation");
+                this.assert(power !== null || power !== undefined, "If Shadowcasting, also has Darkforce Manipulation");
+                this.assertEquals(true, power.optionalPower, "If Shadowcasting, also has Darkforce Manipulation as a Optional Power.");
+              }
+            }
+            break;
+          case "EE13":
+            {
+              const maxPowers = Math.min(char.powersMax, 4);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Sound Manipulation");
+                this.assert(power !== null || power !== undefined, "If Sonic Generation, also has Sound Manipulation");
+                this.assertEquals(true, power.optionalPower, "If Sonic Generation, also has Sound Manipulation as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Vibration");
+                this.assert(power !== null || power !== undefined, "If Sonic Generation, also has Vibration");
+                this.assertEquals(true, power.optionalPower, "If Sonic Generation, also has Vibration as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Vibration Control");
+                this.assert(power !== null || power !== undefined, "If Sonic Generation, also has Vibration Control");
+                this.assertEquals(true, power.optionalPower, "If Sonic Generation, also has Vibration Control as a Optional Power.");
+              }
+            }
+            break;
+          case "EE14":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Vibration Control");
+                this.assert(power !== null || power !== undefined, "If Vibration, also has Vibration Control");
+                this.assertEquals(true, power.optionalPower, "If Vibration, also has Vibration Control as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Sonic Generation");
+                this.assert(power !== null || power !== undefined, "If Vibration, also has Sonic Generation");
+                this.assertEquals(true, power.optionalPower, "If Vibration, also has Sonic Generation as a Optional Power.");
+              }
+            }
+            break;
+          case "F2":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Iron Will");
+                this.assert(power !== null || power !== undefined, "If Martial Supremacy, also has Iron Will");
+                this.assertEquals(true, power.optionalPower, "If Martial Supremacy, also has Iron Will as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Weapons Creation");
+                this.assert(power !== null || power !== undefined, "If Martial Supremacy, also has Weapons Creation");
+                this.assertEquals(true, power.optionalPower, "If Martial Supremacy, also has Weapons Creation as a Optional Power.");
+              }
+            }
+            break;
+          case "I1":
+            {
+              const maxPowers = Math.min(char.powersMax, 4);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Telescopic Vision" || p.name === "Clairvoyance");
+                this.assert(power !== null || power !== undefined, "If Animate Image, also has Telescopic Vision or Clairvoyance");
+                this.assertEquals(true, power.optionalPower, "If Animate Image, also has Telescopic Vision orClairvoyance as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Energy Solidification");
+                this.assert(power !== null || power !== undefined, "If Animate Image, also has ");
+                this.assertEquals(true, power.optionalPower, "If Animate Image, also has  as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Elemental Creation" || p.name === "Molecular Creation");
+                this.assert(power !== null || power !== undefined, "If Animate Image, also has Elemental Creation or Molecular Creation");
+                this.assertEquals(true, power.optionalPower, "If Animate Image, also has Elemental Creation or Molecular Creation as a Optional Power.");
+              }
+            }
+            break;
+          case "I2":
+            {
+              const maxPowers = Math.min(char.powersMax, 4);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Energy Solidification");
+                this.assert(power !== null || power !== undefined, "If Illusion Casting, also has Energy Solidification");
+                this.assertEquals(true, power.optionalPower, "If Illusion Casting, also has Energy Solidification as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Telescopic Vision");
+                this.assert(power !== null || power !== undefined, "If Illusion Casting, also has Telescopic Vision");
+                this.assertEquals(true, power.optionalPower, "If Illusion Casting, also has Telescopic Vision as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Clairvoyance");
+                this.assert(power !== null || power !== undefined, "If Illusion Casting, also has Clairvoyance");
+                this.assertEquals(true, power.optionalPower, "If Illusion Casting, also has Clairvoyance as a Optional Power.");
+              }
+            }
+            break;
+          case "I3":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Light Control");
+                this.assert(power !== null || power !== undefined, "If Illusory Invisibility, also has Light Control");
+                this.assertEquals(true, power.optionalPower, "If Illusory Invisibility, also has Light Control as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Light Emission");
+                this.assert(power !== null || power !== undefined, "If Illusory Invisibility, also has Light Emission");
+                this.assertEquals(true, power.optionalPower, "If Illusory Invisibility, also has Light Emission as a Optional Power.");
+              }
+            }
+            break;
+          case "MG1":
+            {
+              const maxPowers = Math.min(char.powersMax, 4);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Elemental Conversion");
+                this.assert(power !== null || power !== undefined, "If Enchantment, also has Elemental Conversion");
+                this.assertEquals(true, power.optionalPower, "If Enchantment, also has Elemental Conversion as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Molecular Conversion");
+                this.assert(power !== null || power !== undefined, "If Enchantment, also has Molecular Conversion");
+                this.assertEquals(true, power.optionalPower, "If Enchantment, also has Molecular Conversion as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Molding");
+                this.assert(power !== null || power !== undefined, "If Enchantment, also has Molding");
+                this.assertEquals(true, power.optionalPower, "If Enchantment, also has Molding as a Optional Power.");
+              }
+            }
+            break;
+          case "MG3":
+            {
+              const maxPowers = Math.min(char.powersMax, 2);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Energy Doppelganger" || p.name === "Illusory Duplication" || 
+                      p.name === "Lifeform Creation" || p.name === "Free Spirit" || p.name === "Anatomical Separation" || 
+                      p.name === "Self-Duplication" || p.name === "Astral Body"
+                );
+                this.assert(power !== null || power !== undefined, "If Internal Limbo, also has Energy Doppelganger, Illusory Duplication, Lifeform Creation, Free Spirit, Anatomical Separation, Self-Duplication or Astral Body");
+                this.assertEquals(true, power.optionalPower, "If Internal Limbo, also has Energy Doppelganger, Illusory Duplication, Lifeform Creation, Free Spirit, Anatomical Separation, Self-Duplication or Astral Body as a Optional Power.");
+              }
+            }
+            break;
+          case "MG5":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Hyper-Intelligence");
+                this.assert(power !== null || power !== undefined, "If Magic Creation, also has Hyper-Intelligence");
+                this.assertEquals(true, power.optionalPower, "If Magic Creation, also has Hyper-Intelligence as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Total Memory");
+                this.assert(power !== null || power !== undefined, "If Magic Creation, also has Total Memory");
+                this.assertEquals(true, power.optionalPower, "If Magic Creation, also has Total Memory as a Optional Power.");
+              }
+            }
+            break;
+          case "MG6":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Mind Control");
+                this.assert(power !== null || power !== undefined, "If Magic Domination, also has Mind Control");
+                this.assertEquals(true, power.optionalPower, "If Magic Domination, also has Mind Control as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Domination");
+                this.assert(power !== null || power !== undefined, "If Magic Domination, also has Domination");
+                this.assertEquals(true, power.optionalPower, "If Magic Domination, also has Domination as a Optional Power.");
+              }
+            }
+            break;
+          case "MG7":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Mind Transferral");
+                this.assert(power !== null || power !== undefined, "If Magic Transferral, also has Mind Transferral");
+                this.assertEquals(true, power.optionalPower, "If Magic Transferral, also has Mind Transferral as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Power Transferral");
+                this.assert(power !== null || power !== undefined, "If Magic Transferral, also has Power Transferral");
+                this.assertEquals(true, power.optionalPower, "If Magic Transferral, also has Power Transferral as a Optional Power.");
+              }
+            }
+            break;
+          case "MG10":
+            {
+              const maxPowers = Math.min(char.powersMax, 4);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Precognition");
+                this.assert(power !== null || power !== undefined, "If Reality Alteration, also has Precognition");
+                this.assertEquals(true, power.optionalPower, "If Reality Alteration, also has Precognition as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Clairvoyance");
+                this.assert(power !== null || power !== undefined, "If , also has Clairvoyance");
+                this.assertEquals(true, power.optionalPower, "If Reality Alteration, also has Clairvoyance as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Postcognition");
+                this.assert(power !== null || power !== undefined, "If Reality Alteration, also has Postcognition");
+                this.assertEquals(true, power.optionalPower, "If Reality Alteration, also has Postcognition as a Optional Power.");
+              }
+            }
+            break;
+          case "MG11":
+            {
+              const maxPowers = Math.min(char.powersMax, 2);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Bio-Vampirism");
+                this.assert(power !== null || power !== undefined, "If Spirit Vampirism, also has Bio-Vampirism");
+                this.assertEquals(true, power.optionalPower, "If Spirit Vampirism, also has Bio-Vampirism as a Optional Power.");
+              }
+            }
+            break;
+          case "MC1":
+            {
+              const maxPowers = Math.min(char.powersMax, 5);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Missile Creation");
+                this.assert(power !== null || power !== undefined, "If Bonding, also has Missile Creation");
+                this.assertEquals(true, power.optionalPower, "If Bonding, also has Missile Creation as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Spray");
+                this.assert(power !== null || power !== undefined, "If Bonding, also has Spray");
+                this.assertEquals(true, power.optionalPower, "If Bonding, also has Spray as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Webcasting");
+                this.assert(power !== null || power !== undefined, "If Bonding, also has Webcasting");
+                this.assertEquals(true, power.optionalPower, "If Bonding, also has Webcasting as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Weapons Tinkering");
+                this.assert(power !== null || power !== undefined, "If Bonding, also has Weapons Tinkering");
+                this.assertEquals(true, power.optionalPower, "If Bonding, also has Weapons Tinkering as a Optional Power.");
+              }
+            }
+            break;
+          case "MC2":
+            {
+              const maxPowers = Math.min(char.powersMax, 8);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Crystallization");
+                this.assert(power !== null || power !== undefined, "If Collection, also has Crystallization");
+                this.assertEquals(true, power.optionalPower, "If Collection, also has Crystallization as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Matter Animation");
+                this.assert(power !== null || power !== undefined, "If Collection, also has Matter Animation");
+                this.assertEquals(true, power.optionalPower, "If Collection, also has Matter Animation as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Micro-Environment");
+                this.assert(power !== null || power !== undefined, "If Collection, also has Micro-Environment");
+                this.assertEquals(true, power.optionalPower, "If Collection, also has Micro-Environment as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Molding");
+                this.assert(power !== null || power !== undefined, "If Collection, also has Molding");
+                this.assertEquals(true, power.optionalPower, "If Collection, also has Molding as a Optional Power.");
+              }
+              if (maxPowers > 5) {
+                const power = char.powers.find(p => p.name === "Weather");
+                this.assert(power !== null || power !== undefined, "If Collection, also has Weather");
+                this.assertEquals(true, power.optionalPower, "If Collection, also has Weather as a Optional Power.");
+              }
+              if (maxPowers > 6) {
+                const power = char.powers.find(p => p.name === "Elemental Conversion");
+                this.assert(power !== null || power !== undefined, "If Collection, also has Elemental Conversion");
+                this.assertEquals(true, power.optionalPower, "If Collection, also has Elemental Conversion as a Optional Power.");
+              }
+              if (maxPowers > 7) {
+                const power = char.powers.find(p => p.name === "Molecular Conversion");
+                this.assert(power !== null || power !== undefined, "If Collection, also has Molecular Conversion");
+                this.assertEquals(true, power.optionalPower, "If Collection, also has Molecular Conversion as a Optional Power.");
+              }
+            }
+            break;
+          case "MC3":
+            {
+              const maxPowers = Math.min(char.powersMax, 6);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Weapons Creation");
+                this.assert(power !== null || power !== undefined, "If Crystallization, also has Weapons Creation");
+                this.assertEquals(true, power.optionalPower, "If Crystallization, also has Weapons Creation as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Collection");
+                this.assert(power !== null || power !== undefined, "If Crystallization, also has Collection");
+                this.assertEquals(true, power.optionalPower, "If Crystallization, also has Collection as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Matter Animation");
+                this.assert(power !== null || power !== undefined, "If Crystallization, also has Matter Animation");
+                this.assertEquals(true, power.optionalPower, "If Crystallization, also has Matter Animation as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Missile Creation");
+                this.assert(power !== null || power !== undefined, "If Crystallization, also has Missile Creation");
+                this.assertEquals(true, power.optionalPower, "If Crystallization, also has Missile Creation as a Optional Power.");
+              }
+              if (maxPowers > 5) {
+                const power = char.powers.find(p => p.name === "Spray");
+                this.assert(power !== null || power !== undefined, "If Crystallization, also has Spray");
+                this.assertEquals(true, power.optionalPower, "If Crystallization, also has Spray as a Optional Power.");
+              }
+            }
+            break;
+          case "MC9":
+            {
+              const maxPowers = Math.min(char.powersMax, 4);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Communicate with Cybernetics");
+                this.assert(power !== null || power !== undefined, "If Machine Animation, also has Communicate with Cybernetics");
+                this.assertEquals(true, power.optionalPower, "If , also has Communicate with Cybernetics as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Communicate with Non-Living");
+                this.assert(power !== null || power !== undefined, "If Machine Animation, also has Communicate with Non-Living");
+                this.assertEquals(true, power.optionalPower, "If , also has Communicate with Non-Living as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Matter Animation");
+                this.assert(power !== null || power !== undefined, "If Machine Animation, also has Matter Animation");
+                this.assertEquals(true, power.optionalPower, "If , also has Matter Animation as a Optional Power.");
+              }
+            }
+            break;
+          case "MC11":
+            {
+              const maxPowers = Math.min(char.powersMax, 5);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Elemental Conversion");
+                this.assert(power !== null || power !== undefined, "If Molding, also has Elemental Conversion");
+                this.assertEquals(true, power.optionalPower, "If Molding, also has Elemental Conversion as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Molecular Conversion");
+                this.assert(power !== null || power !== undefined, "If Molding, also has Molecular Conversion");
+                this.assertEquals(true, power.optionalPower, "If Molding, also has Molecular Conversion as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Collection");
+                this.assert(power !== null || power !== undefined, "If Molding, also has Collection");
+                this.assertEquals(true, power.optionalPower, "If Molding, also has Collection as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Crystallization");
+                this.assert(power !== null || power !== undefined, "If Molding, also has Crystallization");
+                this.assertEquals(true, power.optionalPower, "If Molding, also has Crystallization as a Optional Power.");
+              }
+            }
+            break;
+          case "MC12":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Environmental Awareness");
+                this.assert(power !== null || power !== undefined, "If Weather, also has Environmental Awareness");
+                this.assertEquals(true, power.optionalPower, "If Weather, also has Environmental Awareness as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "True Flight" || p.name === "Whirlwind" || p.name === "Gliding");
+                this.assert(power !== null || power !== undefined, "If Weather, also has True Flight, Whirlwind or Gliding");
+                this.assertEquals(true, power.optionalPower, "If Weather, also has True Flight, Whirlwind or Gliding as a Optional Power.");
+              }
+            }
+            break;
+          case "MC13":
+            {
+              const maxPowers = Math.min(char.powersMax, 6);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Extradimensional");
+                this.assert(power !== null || power !== undefined, "If Zombie Animation, also has Extradimensional");
+                this.assertEquals(true, power.optionalPower, "If Zombie Animation, also has Extradimensional as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Forced Reincarnation");
+                this.assert(power !== null || power !== undefined, "If Zombie Animation, also has Forced Reincarnation");
+                this.assertEquals(true, power.optionalPower, "If Zombie Animation, also has Forced Reincarnation as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Summoning");
+                this.assert(power !== null || power !== undefined, "If Zombie Animation, also has Summoning");
+                this.assertEquals(true, power.optionalPower, "If Zombie Animation, also has Summoning as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Undead Control");
+                this.assert(power !== null || power !== undefined, "If Zombie Animation, also has Undead Control");
+                this.assertEquals(true, power.optionalPower, "If Zombie Animation, also has Undead Control as a Optional Power.");
+              }
+              if (maxPowers > 5) {
+                const power = char.powers.find(p => p.name === "Communicate with Non-Living");
+                this.assert(power !== null || power !== undefined, "If Zombie Animation, also has Communicate with Non-Living");
+                this.assertEquals(true, power.optionalPower, "If Zombie Animation, also has Communicate with Non-Living as a Optional Power.");
+              }
+            }
+            break;
+          case "MCo1":
+            {
+              const maxPowers = Math.min(char.powersMax, 2);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Light Control");
+                this.assert(power !== null || power !== undefined, "If Coloration, also has Light Control");
+                this.assertEquals(true, power.optionalPower, "If Coloration, also has Light Control as a Optional Power.");
+              }
+            }
+            break;
+          case "MCo2":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Fire Generation");
+                this.assert(power !== null || power !== undefined, "If Combustion, also has Fire Generation");
+                this.assertEquals(true, power.optionalPower, "If Combustion, also has Fire Generation as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Fire Control");
+                this.assert(power !== null || power !== undefined, "If Combustion, also has Fire Control");
+                this.assertEquals(true, power.optionalPower, "If Combustion, also has Fire Control as a Optional Power.");
+              }
+            }
+            break;
+          case "MCo4":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Matter Animation");
+                this.assert(power !== null || power !== undefined, "If Elemental Conversion, also has Matter Animation");
+                this.assertEquals(true, power.optionalPower, "If Elemental Conversion, also has Matter Animation as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Molding");
+                this.assert(power !== null || power !== undefined, "If Elemental Conversion, also has Molding");
+                this.assertEquals(true, power.optionalPower, "If Elemental Conversion, also has Molding as a Optional Power.");
+              }
+            }
+            break;
+          case "MCo6":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Matter Animation");
+                this.assert(power !== null || power !== undefined, "If Molecular Conversion, also has Matter Animation");
+                this.assertEquals(true, power.optionalPower, "If Molecular Conversion, also has Matter Animation as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Molding");
+                this.assert(power !== null || power !== undefined, "If Molecular Conversion, also has Molding");
+                this.assertEquals(true, power.optionalPower, "If Molecular Conversion, also has Molding as a Optional Power.");
+              }
+            }
+            break;
+          case "MCr1":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Matter Animation");
+                this.assert(power !== null || power !== undefined, "If Artifact Creation, also has Matter Animation");
+                this.assertEquals(true, power.optionalPower, "If Artifact Creation, also has Matter Animation as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Hyper-Intelligence");
+                this.assert(power !== null || power !== undefined, "If Artifact Creation, also has Hyper-Intelligence");
+                this.assertEquals(true, power.optionalPower, "If Artifact Creation, also has Hyper-Intelligence as a Optional Power.");
+              }
+            }
+            break;
+          case "MCr2":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Matter Animation");
+                this.assert(power !== null || power !== undefined, "If Elemental Creation, also has Matter Animation");
+                this.assertEquals(true, power.optionalPower, "If Elemental Creation, also has Matter Animation as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Machine Animation");
+                this.assert(power !== null || power !== undefined, "If Elemental Creation, also has Machine Animation");
+                this.assertEquals(true, power.optionalPower, "If Elemental Creation, also has Machine Animation as a Optional Power.");
+              }
+            }
+            break;
+          case "MCr3":
+            {
+              const maxPowers = Math.min(char.powersMax, 4);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Telepathy");
+                this.assert(power !== null || power !== undefined, "If Lifeform Creation, also has Telepathy");
+                this.assertEquals(true, power.optionalPower, "If Lifeform Creation, also has Telepathy as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Mind Control");
+                this.assert(power !== null || power !== undefined, "If Lifeform Creation, also has Mind Control");
+                this.assertEquals(true, power.optionalPower, "If Lifeform Creation, also has Mind Control as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Plant Control");
+                this.assert(power !== null || power !== undefined, "If Lifeform Creation, also has Plant Control");
+                this.assertEquals(true, power.optionalPower, "If Lifeform Creation, also has Plant Control as a Optional Power.");
+              }
+            }
+            break;
+          case "MCr4":
+            {
+              const maxPowers = Math.min(char.powersMax, 4);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Machine Animation");
+                this.assert(power !== null || power !== undefined, "If Mechanical Creation, also has Machine Animation");
+                this.assertEquals(true, power.optionalPower, "If Mechanical Creation, also has Machine Animation as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Hyper-Intelligence");
+                this.assert(power !== null || power !== undefined, "If Mechanical Creation, also has Hyper-Intelligence");
+                this.assertEquals(true, power.optionalPower, "If Mechanical Creation, also has Hyper-Intelligence as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Hyper-Invention");
+                this.assert(power !== null || power !== undefined, "If Mechanical Creation, also has Hyper-Invention");
+                this.assertEquals(true, power.optionalPower, "If Mechanical Creation, also has Hyper-Invention as a Optional Power.");
+              }
+            }
+            break;
+          case "MCr6":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Matter Animation");
+                this.assert(power !== null || power !== undefined, "If Molecular Creation, also has Matter Animation");
+                this.assertEquals(true, power.optionalPower, "If Molecular Creation, also has Matter Animation as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Machine Animation");
+                this.assert(power !== null || power !== undefined, "If Molecular Creation, also has Machine Animation");
+                this.assertEquals(true, power.optionalPower, "If Molecular Creation, also has Machine Animation as a Optional Power.");
+              }
+            }
+            break;
+          case "M1":
+            {
+              const maxPowers = Math.min(char.powersMax, 4);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Hyper-Hearing");
+                this.assert(power !== null || power !== undefined, "If Clairaudience, also has Hyper-Hearing");
+                this.assertEquals(true, power.optionalPower, "If Clairaudience, also has Hyper-Hearing as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Clairvoyance");
+                this.assert(power !== null || power !== undefined, "If Clairaudience, also has Clairvoyance");
+                this.assertEquals(true, power.optionalPower, "If Clairaudience, also has Clairvoyance as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Remote Sensing");
+                this.assert(power !== null || power !== undefined, "If Clairaudience, also has Remote Sensing");
+                this.assertEquals(true, power.optionalPower, "If Clairaudience, also has Remote Sensing as a Optional Power.");
+              }
+            }
+            break;
+          case "M2":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Clairaudience");
+                this.assert(power !== null || power !== undefined, "If Clairvoyance, also has Clairaudience");
+                this.assertEquals(true, power.optionalPower, "If Clairvoyance, also has Clairaudience as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Remote Sensing");
+                this.assert(power !== null || power !== undefined, "If Clairvoyance, also has Remote Sensing");
+                this.assertEquals(true, power.optionalPower, "If Clairvoyance, also has Remote Sensing as a Optional Power.");
+              }
+            }
+            break;
+          case "M3":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Linguistics");
+                this.assert(power !== null || power !== undefined, "If Communicate with Animals, also has Linguistics");
+                this.assertEquals(true, power.optionalPower, "If Communicate with Animals, also has Linguistics as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Communicate with Cybernetics" || p.name === "Communicate with Non-Living" || p.name === "Communicate with Plants");
+                this.assert(power !== null || power !== undefined, "If Communicate with Animals, also has Communicate with Cybernetics, Communicate with Non-Living or Communicate with Plants");
+                this.assertEquals(true, power.optionalPower, "If Communicate with Animals, also has Communicate with Cybernetics, Communicate with Non-Living or Communicate with Plants as a Optional Power.");
+              }
+            }
+            break;
+          case "M4":
+            {
+              const maxPowers = Math.min(char.powersMax, 2);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Linguistics");
+                this.assert(power !== null || power !== undefined, "If Communicate with Cybernetics, also has Linguistics");
+                this.assertEquals(true, power.optionalPower, "If Communicate with Cybernetics, also has Linguistics as a Optional Power.");
+              }
+            }
+            break;
+          case "M5":
+            {
+              const maxPowers = Math.min(char.powersMax, 2);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Communicate with Cybernetics");
+                this.assert(power !== null || power !== undefined, "If Communicate with Non-Living, also has Communicate with Cybernetics");
+                this.assertEquals(true, power.optionalPower, "If Communicate with Non-Living, also has Communicate with Cybernetics as a Optional Power.");
+              }
+            }
+            break;
+          case "M6":
+            {
+              const maxPowers = Math.min(char.powersMax, 5);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Communicate with Animals");
+                this.assert(power !== null || power !== undefined, "If Communicate with Plants, also has Communicate with Animals");
+                this.assertEquals(true, power.optionalPower, "If Communicate with Plants, also has Communicate with Animals as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Communicate with Non-Living");
+                this.assert(power !== null || power !== undefined, "If Communicate with Plants, also has Communicate with Non-Living");
+                this.assertEquals(true, power.optionalPower, "If Communicate with Plants, also has Communicate with Non-Living as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Plant Control");
+                this.assert(power !== null || power !== undefined, "If Communicate with Plants, also has Plant Control");
+                this.assertEquals(true, power.optionalPower, "If Communicate with Plants, also has Plant Control as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Plant Growth");
+                this.assert(power !== null || power !== undefined, "If Communicate with Plants, also has Plant Growth");
+                this.assertEquals(true, power.optionalPower, "If Communicate with Plants, also has Plant Growth as a Optional Power.");
+              }
+            }
+            break;
+          case "M7":
+            {
+              const maxPowers = Math.min(char.powersMax, 2);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Hyper-Intelligence");
+                this.assert(power !== null || power !== undefined, "If Cosmic Awareness, also has Hyper-Intelligence");
+                this.assertEquals(true, power.optionalPower, "If Cosmic Awareness, also has Hyper-Intelligence as a Optional Power.");
+              }
+            }
+            break;
+          case "M9":
+            {
+              const maxPowers = Math.min(char.powersMax, 2);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Telepathy");
+                this.assert(power !== null || power !== undefined, "If Dreamtravel, also has Telepathy");
+                this.assertEquals(true, power.optionalPower, "If Dreamtravel, also has Telepathy as a Optional Power.");
+              }
+            }
+            break;
+          case "M10":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Clairvoyance");
+                this.assert(power !== null || power !== undefined, "If Empathy, also has Clairvoyance");
+                this.assertEquals(true, power.optionalPower, "If Empathy, also has Clairvoyance as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Emotion Control");
+                this.assert(power !== null || power !== undefined, "If Empathy, also has Emotion Control");
+                this.assertEquals(true, power.optionalPower, "If Empathy, also has Emotion Control as a Optional Power.");
+              }
+            }
+            break;
+          case "M13":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Hyper-Invention");
+                this.assert(power !== null || power !== undefined, "If Hyper-Intelligence, also has Hyper-Invention");
+                this.assertEquals(true, power.optionalPower, "If Hyper-Intelligence, also has Hyper-Invention as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Total Memory");
+                this.assert(power !== null || power !== undefined, "If Hyper-Intelligence, also has Total Memory");
+                this.assertEquals(true, power.optionalPower, "If Hyper-Intelligence, also has Total Memory as a Optional Power.");
+              }
+            }
+            break;
+          case "M14":
+            {
+              const maxPowers = Math.min(char.powersMax, 6);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Weapons Tinkering");
+                this.assert(power !== null || power !== undefined, "If Hyper-Invention, also has Weapons Tinkering");
+                this.assertEquals(true, power.optionalPower, "If Hyper-Invention, also has Weapons Tinkering as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Machine Animation");
+                this.assert(power !== null || power !== undefined, "If Hyper-Invention, also has Machine Animation");
+                this.assertEquals(true, power.optionalPower, "If Hyper-Invention, also has Machine Animation as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Molding");
+                this.assert(power !== null || power !== undefined, "If Hyper-Invention, also has Molding");
+                this.assertEquals(true, power.optionalPower, "If Hyper-Invention, also has Molding as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Artifact Creation");
+                this.assert(power !== null || power !== undefined, "If Hyper-Invention, also has Artifact Creation");
+                this.assertEquals(true, power.optionalPower, "If Hyper-Invention, also has Artifact Creation as a Optional Power.");
+              }
+              if (maxPowers > 5) {
+                const power = char.powers.find(p => p.name === "Mechanical Creation");
+                this.assert(power !== null || power !== undefined, "If Hyper-Invention, also has Mechanical Creation");
+                this.assertEquals(true, power.optionalPower, "If Hyper-Invention, also has Mechanical Creation as a Optional Power.");
+              }
+            }
+            break;
+          case "M15":
+            {
+              const maxPowers = Math.min(char.powersMax, 2);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Time Travel");
+                this.assert(power !== null || power !== undefined, "If Incarnation Awareness, also has Time Travel");
+                this.assertEquals(true, power.optionalPower, "If Incarnation Awareness, also has Time Travel as a Optional Power.");
+              }
+            }
+            break;
+          case "M17":
+            {
+              const maxPowers = Math.min(char.powersMax, 2);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Hyper-Intelligence");
+                this.assert(power !== null || power !== undefined, "If Linguistics, also has Hyper-Intelligence");
+                this.assertEquals(true, power.optionalPower, "If Linguistics, also has Hyper-Intelligence as a Optional Power.");
+              }
+            }
+            break;
+          case "M18":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Mind Drain");
+                this.assert(power !== null || power !== undefined, "If Mental Duplication, also has Mind Drain");
+                this.assertEquals(true, power.optionalPower, "If Mental Duplication, also has Mind Drain as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Duplication");
+                this.assert(power !== null || power !== undefined, "If Mental Duplication, also has Duplication");
+                this.assertEquals(true, power.optionalPower, "If Mental Duplication, also has Duplication as a Optional Power.");
+              }
+            }
+            break;
+          case "M20":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Telepathy");
+                this.assert(power !== null || power !== undefined, "If Mental Probe, also has Telepathy");
+                this.assertEquals(true, power.optionalPower, "If Mental Probe, also has Telepathy as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Sensory Link");
+                this.assert(power !== null || power !== undefined, "If Mental Probe, also has Sensory Link");
+                this.assertEquals(true, power.optionalPower, "If Mental Probe, also has Sensory Link as a Optional Power.");
+              }
+            }
+            break;
+          case "M21":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Telepathy");
+                this.assert(power !== null || power !== undefined, "If Mind Blast, also has Telepathy");
+                this.assertEquals(true, power.optionalPower, "If Mind Blast, also has Telepathy as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Mental Probe");
+                this.assert(power !== null || power !== undefined, "If Mind Blast, also has Mental Probe");
+                this.assertEquals(true, power.optionalPower, "If Mind Blast, also has Mental Probe as a Optional Power.");
+              }
+            }
+            break;
+          case "M22":
+            {
+              const maxPowers = Math.min(char.powersMax, 5);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Telepathy");
+                this.assert(power !== null || power !== undefined, "If Mind Drain, also has Telepathy");
+                this.assertEquals(true, power.optionalPower, "If Mind Drain, also has Telepathy as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Mental Probe");
+                this.assert(power !== null || power !== undefined, "If Mind Drain, also has Mental Probe");
+                this.assertEquals(true, power.optionalPower, "If Mind Drain, also has Mental Probe as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Mental Duplication");
+                this.assert(power !== null || power !== undefined, "If Mind Drain, also has Mental Duplication");
+                this.assertEquals(true, power.optionalPower, "If Mind Drain, also has Mental Duplication as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Mind Blast");
+                this.assert(power !== null || power !== undefined, "If Mind Drain, also has Mind Blast");
+                this.assertEquals(true, power.optionalPower, "If Mind Drain, also has Mind Blast as a Optional Power.");
+              }
+            }
+            break;
+          case "M23":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Telepathy");
+                this.assert(power !== null || power !== undefined, "If Postcognition, also has Telepathy");
+                this.assertEquals(true, power.optionalPower, "If Postcognition, also has Telepathy as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Time Travel");
+                this.assert(power !== null || power !== undefined, "If Postcognition, also has Time Travel");
+                this.assertEquals(true, power.optionalPower, "If Postcognition, also has Time Travel as a Optional Power.");
+              }
+            }
+            break;
+          case "M24":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Telepathy");
+                this.assert(power !== null || power !== undefined, "If Precognition, also has Telepathy");
+                this.assertEquals(true, power.optionalPower, "If Precognition, also has Telepathy as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Time Travel");
+                this.assert(power !== null || power !== undefined, "If Precognition, also has Time Travel");
+                this.assertEquals(true, power.optionalPower, "If Precognition, also has Time Travel as a Optional Power.");
+              }
+            }
+            break;
+          case "M26":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Clairaudience");
+                this.assert(power !== null || power !== undefined, "If Remote Sensing, also has Clairaudience");
+                this.assertEquals(true, power.optionalPower, "If Remote Sensing, also has Clairaudience as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Clairvoyance");
+                this.assert(power !== null || power !== undefined, "If Remote Sensing, also has Clairvoyance");
+                this.assertEquals(true, power.optionalPower, "If Remote Sensing, also has Clairvoyance as a Optional Power.");
+              }
+            }
+            break;
+          case "M27":
+            {
+              const maxPowers = Math.min(char.powersMax, 2);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Telepathy");
+                this.assert(power !== null || power !== undefined, "If Sensory Link, also has Telepathy");
+                this.assertEquals(true, power.optionalPower, "If Sensory Link, also has Telepathy as a Optional Power.");
+              }
+            }
+            break;
+          case "M29":
+            {
+              const maxPowers = Math.min(char.powersMax, 6);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Clairaudience");
+                this.assert(power !== null || power !== undefined, "If Speechthrowing, also has Clairaudience");
+                this.assertEquals(true, power.bonusPower, "If Speechthrowing, also has Clairaudience as a Bonus Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Clairvoyance");
+                this.assert(power !== null || power !== undefined, "If Speechthrowing, also has Clairvoyance");
+                this.assertEquals(true, power.optionalPower, "If Speechthrowing, also has Clairvoyance as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Vocal Control");
+                this.assert(power !== null || power !== undefined, "If Speechthrowing, also has Vocal Control");
+                this.assertEquals(true, power.optionalPower, "If Speechthrowing, also has Vocal Control as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Hyper-Hearing");
+                this.assert(power !== null || power !== undefined, "If Speechthrowing, also has Hyper-Hearing");
+                this.assertEquals(true, power.optionalPower, "If Speechthrowing, also has Hyper-Hearing as a Optional Power.");
+              }
+              if (maxPowers > 5) {
+                const power = char.powers.find(p => p.name === "Sensory Link");
+                this.assert(power !== null || power !== undefined, "If Speechthrowing, also has Sensory Link");
+                this.assertEquals(true, power.optionalPower, "If Speechthrowing, also has Sensory Link as a Optional Power.");
+              }
+            }
+            break;
+          case "M30":
+            {
+              const maxPowers = Math.min(char.powersMax, 7);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Matter Animation");
+                this.assert(power !== null || power !== undefined, "If Telekinesis, also has Matter Animation");
+                this.assertEquals(true, power.optionalPower, "If Telekinesis, also has Matter Animation as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Molding");
+                this.assert(power !== null || power !== undefined, "If Telekinesis, also has Molding");
+                this.assertEquals(true, power.optionalPower, "If Telekinesis, also has Molding as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Clairvoyance");
+                this.assert(power !== null || power !== undefined, "If Telekinesis, also has Clairvoyance");
+                this.assertEquals(true, power.optionalPower, "If Telekinesis, also has Clairvoyance as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Remote Sensing");
+                this.assert(power !== null || power !== undefined, "If Telekinesis, also has Remote Sensing");
+                this.assertEquals(true, power.optionalPower, "If Telekinesis, also has Remote Sensing as a Optional Power.");
+              }
+              if (maxPowers > 5) {
+                const power = char.powers.find(p => p.name === "Levitation");
+                this.assert(power !== null || power !== undefined, "If Telekinesis, also has Levitation");
+                this.assertEquals(true, power.optionalPower, "If Telekinesis, also has Levitation as a Optional Power.");
+              }
+              if (maxPowers > 6) {
+                const power = char.powers.find(p => p.name === "True Flight");
+                this.assert(power !== null || power !== undefined, "If Telekinesis, also has True Flight");
+                this.assertEquals(true, power.optionalPower, "If Telekinesis, also has True Flight as a Optional Power.");
+              }
+            }
+            break;
+          case "M31":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Clairvoyance");
+                this.assert(power !== null || power !== undefined, "If Telelocation, also has Clairvoyance");
+                this.assertEquals(true, power.optionalPower, "If Telelocation, also has Clairvoyance as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Extradimensional");
+                this.assert(power !== null || power !== undefined, "If Telelocation, also has Extradimensional");
+                this.assertEquals(true, power.optionalPower, "If Telelocation, also has Extradimensional as a Optional Power.");
+              }
+            }
+            break;
+          case "M32":
+            {
+              const maxPowers = Math.min(char.powersMax, 9);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Empathy");
+                this.assert(power !== null || power !== undefined, "If Telepathy, also has Empathy");
+                this.assertEquals(true, power.optionalPower, "If Telepathy, also has Empathy as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Hallucinations");
+                this.assert(power !== null || power !== undefined, "If Telepathy, also has Hallucinations");
+                this.assertEquals(true, power.optionalPower, "If Telepathy, also has Hallucinations as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Mental Invisibility");
+                this.assert(power !== null || power !== undefined, "If Telepathy, also has Mental Invisibility");
+                this.assertEquals(true, power.optionalPower, "If Telepathy, also has Mental Invisibility as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Mental Probe");
+                this.assert(power !== null || power !== undefined, "If Telepathy, also has Mental Probe");
+                this.assertEquals(true, power.optionalPower, "If Telepathy, also has Mental Probe as a Optional Power.");
+              }
+              if (maxPowers > 5) {
+                const power = char.powers.find(p => p.name === "Mind Blast");
+                this.assert(power !== null || power !== undefined, "If Telepathy, also has Mind Blast");
+                this.assertEquals(true, power.optionalPower, "If Telepathy, also has Mind Blast as a Optional Power.");
+              }
+              if (maxPowers > 6) {
+                const power = char.powers.find(p => p.name === "Mind Drain");
+                this.assert(power !== null || power !== undefined, "If Telepathy, also has Mind Drain");
+                this.assertEquals(true, power.optionalPower, "If Telepathy, also has Mind Drain as a Optional Power.");
+              }
+              if (maxPowers > 7) {
+                const power = char.powers.find(p => p.name === "Sensory Link");
+                this.assert(power !== null || power !== undefined, "If Telepathy, also has Sensory Link");
+                this.assertEquals(true, power.optionalPower, "If Telepathy, also has Sensory Link as a Optional Power.");
+              }
+              if (maxPowers > 8) {
+                const power = char.powers.find(p => p.name === "Psionic Detection");
+                this.assert(power !== null || power !== undefined, "If Telepathy, also has Psionic Detection");
+                this.assertEquals(true, power.optionalPower, "If Telepathy, also has Psionic Detection as a Optional Power.");
+              }
+            }
+            break;
+          case "M33":
+            {
+              const maxPowers = Math.min(char.powersMax, 4);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Hyper-Invention");
+                this.assert(power !== null || power !== undefined, "If Total Memory, also has Hyper-Invention");
+                this.assertEquals(true, power.optionalPower, "If Total Memory, also has Hyper-Invention as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Hyper-Intelligence");
+                this.assert(power !== null || power !== undefined, "If Total Memory, also has Hyper-Intelligence");
+                this.assertEquals(true, power.optionalPower, "If Total Memory, also has Hyper-Intelligence as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Weapons Tinkering");
+                this.assert(power !== null || power !== undefined, "If Total Memory, also has Weapons Tinkering");
+                this.assertEquals(true, power.optionalPower, "If Total Memory, also has Weapons Tinkering as a Optional Power.");
+              }
+            }
+            break;
+          case "P2":
+            {
+              const maxPowers = Math.min(char.powersMax, 2);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Regeneration");
+                this.assert(power !== null || power !== undefined, "If Body Resistance, also has Regeneration");
+                this.assertEquals(true, power.optionalPower, "If Body Resistance, also has Regeneration as a Optional Power.");
+              }
+            }
+            break;
+          case "P4":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Lung Adaptability");
+                this.assert(power !== null || power !== undefined, "If Digestive Adaptation, also has Lung Adaptability");
+                this.assertEquals(true, power.optionalPower, "If Digestive Adaptation, also has Lung Adaptability as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Body Adaptation");
+                this.assert(power !== null || power !== undefined, "If Digestive Adaptation, also has Body Adaptation");
+                this.assertEquals(true, power.optionalPower, "If Digestive Adaptation, also has Body Adaptation as a Optional Power.");
+              }
+            }
+            break;
+          case "PC3":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Mind Control");
+                this.assert(power !== null || power !== undefined, "If Domination, also has Mind Control");
+                this.assertEquals(true, power.optionalPower, "If Domination, also has Mind Control as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Magic Domination");
+                this.assert(power !== null || power !== undefined, "If Domination, also has Magic Domination");
+                this.assertEquals(true, power.optionalPower, "If Domination, also has Magic Domination as a Optional Power.");
+              }
+            }
+            break;
+          case "PC10":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Mind Transferral");
+                this.assert(power !== null || power !== undefined, "If Power Transferral, also has Mind Transferral");
+                this.assertEquals(true, power.optionalPower, "If Power Transferral, also has Mind Transferral as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Magic Transferral");
+                this.assert(power !== null || power !== undefined, "If Power Transferral, also has Magic Transferral");
+                this.assertEquals(true, power.optionalPower, "If Power Transferral, also has Magic Transferral as a Optional Power.");
+              }
+            }
+            break;
+          case "T1":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.category === "Magic");
+                this.assert(power !== null || power !== undefined, "If Astral Body, also has a category of Magic");
+                this.assertEquals(true, power.optionalPower, "If Astral Body, also has a category of Magic as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Extradimensional");
+                this.assert(power !== null || power !== undefined, "If Astral Body, also has Extradimensional");
+                this.assertEquals(true, power.optionalPower, "If Astral Body, also has Extradimensional as a Optional Power.");
+              }
+            }
+            break;
+          case "T2":
+            {
+              const maxPowers = Math.min(char.powersMax, 2);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Energy Detection");
+                this.assert(power !== null || power !== undefined, "If Carrier Wave, also has Energy Detection");
+                this.assertEquals(true, power.optionalPower, "If Carrier Wave, also has Energy Detection as a Optional Power.");
+              }
+            }
+            break;
+          case "T4":
+            {
+              const maxPowers = Math.min(char.powersMax, 2);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Energy Detection");
+                this.assert(power !== null || power !== undefined, "If Energy Path, also has Energy Detection");
+                this.assertEquals(true, power.optionalPower, "If Energy Path, also has Energy Detection as a Optional Power.");
+              }
+            }
+            break;
+          case "T5":
+            {
+              const maxPowers = Math.min(char.powersMax, 2);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Kinetic Bolt");
+                this.assert(power !== null || power !== undefined, "If Floating Disc, also has Kinetic Bolt");
+                this.assertEquals(true, power.optionalPower, "If Floating Disc, also has Kinetic Bolt as a Optional Power.");
+              }
+            }
+            break;
+          case "T7":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Weather");
+                this.assert(power !== null || power !== undefined, "If Gliding, also has Weather");
+                this.assertEquals(true, power.optionalPower, "If Gliding, also has Weather as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Matter Animation");
+                this.assert(power !== null || power !== undefined, "If Gliding, also has Matter Animation");
+                this.assertEquals(true, power.optionalPower, "If Gliding, also has Matter Animation as a Optional Power.");
+              }
+            }
+            break;
+          case "T8":
+            {
+              const maxPowers = Math.min(char.powersMax, 4);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.bonusPower && (p.name === "Natural Weaponry" || p.name === "Body Resistance"));
+                this.assert(power !== null || power !== undefined, "If Hyper-Digging, also has Natural Weaponry or Body Resistance");
+                this.assertEquals(true, power.bonusPower, "If Hyper-Digging, also has Natural Weaponry or Body Resistance as a Bonus Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Armor Skin");
+                this.assert(power !== null || power !== undefined, "If Hyper-Digging, also has Armor Skin");
+                this.assertEquals(true, power.optionalPower, "If Hyper-Digging, also has Armor Skin as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                let power = char.powers.find(p => p.bonusPower && p.name === "Body Resistance");
+                if(power === null || power === undefined) {
+                  power = char.powers.find(p => p.name === "Body Resistance");
+                  this.assert(power !== null || power !== undefined, "If Hyper-Digging, also has Body Resistance");
+                  this.assertEquals(true, power.optionalPower, "If Hyper-Digging, also has Body Resistance as a Optional Power.");
+                }
+              }
+            }
+            break;
+          case "T11":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.bonusPower && (p.name === "Waterbreathing" || p.name === "Water Freedom"));
+                this.assert(power !== null || power !== undefined, "If Hyper-Digging, also has Waterbreathing or Body Resistance");
+                this.assertEquals(true, power.bonusPower, "If Hyper-Digging, also has Waterbreathing or Body Resistance as a Bonus Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.optionalPower && (p.name === "Waterbreathing" || p.name === "Water Freedom"));
+                this.assert(power !== null || power !== undefined, "If Hyper-Swimming, also has Waterbreathing or Water Freedom");
+                this.assertEquals(true, power.optionalPower, "If Hyper-Swimming, also has Waterbreathing or Water Freedom as a Optional Power.");
+              }
+            }
+            break;
+          case "T12":
+            {
+              const maxPowers = Math.min(char.powersMax, 2);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Telekinesis");
+                this.assert(power !== null || power !== undefined, "If Levitation, also has Telekinesis");
+                this.assertEquals(true, power.optionalPower, "If Levitation, also has Telekinesis as a Optional Power.");
+              }
+            }
+            break;
+          case "T14":
+            {
+              const maxPowers = Math.min(char.powersMax, 2);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Telekinesis");
+                this.assert(power !== null || power !== undefined, "If Skywalk, also has Telekinesis");
+                this.assertEquals(true, power.optionalPower, "If Skywalk, also has Telekinesis as a Optional Power.");
+              }
+            }
+            break;
+          case "T16":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Teleport Others");
+                this.assert(power !== null || power !== undefined, "If Teleport Self, also has Teleport Others");
+                this.assertEquals(true, power.optionalPower, "If Teleport Self, also has Teleport Others as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Clairvoyance");
+                this.assert(power !== null || power !== undefined, "If Teleport Self, also has Clairvoyance");
+                this.assertEquals(true, power.optionalPower, "If Teleport Self, also has Clairvoyance as a Optional Power.");
+              }
+            }
+            break;
+          case "T17":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Teleport Self");
+                this.assert(power !== null || power !== undefined, "If Teleport Others, also has Teleport Self");
+                this.assertEquals(true, power.optionalPower, "If Teleport Others, also has Teleport Self as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Clairvoyance");
+                this.assert(power !== null || power !== undefined, "If Teleport Others, also has Clairvoyance");
+                this.assertEquals(true, power.optionalPower, "If Teleport Others, also has Clairvoyance as a Optional Power.");
+              }
+            }
+            break;
+          case "T18":
+            {
+              const maxPowers = Math.min(char.powersMax, 4);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Clairvoyance");
+                this.assert(power !== null || power !== undefined, "If Telereformation, also has Clairvoyance");
+                this.assertEquals(true, power.optionalPower, "If Telereformation, also has Clairvoyance as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Free Spirit");
+                this.assert(power !== null || power !== undefined, "If Telereformation, also has Free Spirit");
+                this.assertEquals(true, power.optionalPower, "If Telereformation, also has Free Spirit as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Serial Immortality");
+                this.assert(power !== null || power !== undefined, "If Telereformation, also has Serial Immortality");
+                this.assertEquals(true, power.optionalPower, "If Telereformation, also has Serial Immortality as a Optional Power.");
+              }
+            }
+            break;
+          case "T19":
+            {
+              const maxPowers = Math.min(char.powersMax, 5);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Dimension Travel");
+                this.assert(power !== null || power !== undefined, "If Time Travel, also has Dimension Travel");
+                this.assertEquals(true, power.optionalPower, "If Time Travel, also has Dimension Travel as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Precognition");
+                this.assert(power !== null || power !== undefined, "If Time Travel, also has Precognition");
+                this.assertEquals(true, power.optionalPower, "If Time Travel, also has Precognition as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Postcognition");
+                this.assert(power !== null || power !== undefined, "If Time Travel, also has Postcognition");
+                this.assertEquals(true, power.optionalPower, "If Time Travel, also has Postcognition as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Reality Alteration");
+                this.assert(power !== null || power !== undefined, "If Time Travel, also has Reality Alteration");
+                this.assertEquals(true, power.optionalPower, "If Time Travel, also has Reality Alteration as a Optional Power.");
+              }
+            }
+            break;
+          case "T21":
+            {
+              const maxPowers = Math.min(char.powersMax, 5);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Body Resistance");
+                this.assert(power !== null || power !== undefined, "If True Flight, also has Body Resistance");
+                this.assertEquals(true, power.optionalPower, "If True Flight, also has Body Resistance as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Armor Skin");
+                this.assert(power !== null || power !== undefined, "If True Flight, also has Armor Skin");
+                this.assertEquals(true, power.optionalPower, "If True Flight, also has Armor Skin as a Optional Power.");
+              }
+              if (maxPowers > 3) {
+                const power = char.powers.find(p => p.name === "Self-Sustenance");
+                this.assert(power !== null || power !== undefined, "If True Flight, also has Self-Sustenance");
+                this.assertEquals(true, power.optionalPower, "If True Flight, also has Self-Sustenance as a Optional Power.");
+              }
+              if (maxPowers > 4) {
+                const power = char.powers.find(p => p.name === "Telekinesis");
+                this.assert(power !== null || power !== undefined, "If True Flight, also has Telekinesis");
+                this.assertEquals(true, power.optionalPower, "If True Flight, also has Telekinesis as a Optional Power.");
+              }
+            }
+            break;
+          case "T23":
+            {
+              const maxPowers = Math.min(char.powersMax, 3);
+              if (maxPowers > 1) {
+                const power = char.powers.find(p => p.name === "Weather");
+                this.assert(power !== null || power !== undefined, "If Whirlwind, also has Weather");
+                this.assertEquals(true, power.optionalPower, "If Whirlwind, also has Weather as a Optional Power.");
+              }
+              if (maxPowers > 2) {
+                const power = char.powers.find(p => p.name === "Matter Animation");
+                this.assert(power !== null || power !== undefined, "If Whirlwind, also has Matter Animation");
+                this.assertEquals(true, power.optionalPower, "If Whirlwind, also has Matter Animation as a Optional Power.");
+              }
+            }
+            break;
+        }
+      }
+      catch(ex) {
+        this.assert(false, "Exception: " + ex.message + ex.stack);
+      }
     }
   }
 
