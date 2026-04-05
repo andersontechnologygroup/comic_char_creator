@@ -44,6 +44,7 @@ class CharacterGenerator {
 
   identitySecret = true;
   hiTechToGood = true;
+  applyOptionalPowers = true;
 
   generatorMode = 'generic';
 
@@ -1091,10 +1092,12 @@ class CharacterGenerator {
       this.generateBonusPower(char, powerRow.bonusPower);
     }
 
-    value = Utility.getValue(powerRow, 'optionalPowers', '');
-    if(value !== '') {
-      value = Utility.getValue(powerRow, 'optionalPowersMax', 100)
-      this.generateOptionalPower(char, value, powerRow.optionalPowers);
+    if (this.applyOptionalPowers) {
+      value = Utility.getValue(powerRow, 'optionalPowers', '');
+      if(value !== '') {
+        value = Utility.getValue(powerRow, 'optionalPowersMax', 100)
+        this.generateOptionalPower(char, value, powerRow.optionalPowers);
+      }
     }
   }
 

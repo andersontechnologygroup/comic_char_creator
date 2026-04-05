@@ -1,0 +1,420 @@
+    :root {
+      --primary-color: #e23636;
+      --secondary-color: #fca311;
+      --dark-bg: #14213d;
+      --light-text: #ffffff;
+      --panel-bg: #e5e5e5;
+      --tab-inactive: #ccc;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    /* --- NEW TAB STYLES --- */
+    .tabs-container {
+      max-width: 900px;
+      margin: 0 auto 20px auto;
+      background: white;
+      border-radius: 8px 8px 0 0;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .tab-buttons {
+      display: flex;
+      background: var(--dark-bg);
+      border-bottom: 3px solid var(--secondary-color);
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 15px;
+      border: none;
+      background: none;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+      transition: background 0.3s;
+    }
+
+    .tab-btn:hover {
+      background: rgba(252, 163, 17, 0.2);
+    }
+
+    .tab-btn.active {
+      background: var(--secondary-color);
+      color: var(--dark-bg);
+    }
+
+    .tab-content {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-top: none;
+      background: white;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .control-group {
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px lazy #eee;
+    }
+
+    .control-group label {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    /* --- EXISTING STYLES --- */
+    button.action-btn {
+      background-color: var(--dark-bg);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: transform 0.1s;
+    }
+
+    button.action-btn:active {
+        transform: scale(0.98);
+    }
+
+    .character-sheet {
+      background-color: white;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      border-top: 10px solid var(--primary-color);
+    }
+
+    .section-title {
+      grid-column: 1 / -1;
+      background-color: var(--dark-bg);
+      color: white;
+      padding: 5px 10px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .list-section {
+      grid-column: 1 / -1;
+    }
+
+    .stat-block {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px;
+      padding: 5px 0;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .stat-label {
+      font-weight: bold;
+    }
+
+    .stat-rank {
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    .stat-rank-multiple {
+      font-size: 10pt;
+    }
+
+    .stat-number {
+      color: #666;
+      font-family: monospace;
+    }
+
+    .secondary-block {
+      background-color: var(--panel-bg);
+      padding: 15px;
+      text-align: center;
+      border-radius: 5px;
+    }
+
+    .secondary-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--dark-bg);
+    }
+
+    .info-header {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .info-header-ultimate {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .info-header-ultimate-no-bottom {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    .info-header-single {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .info-item span {
+      font-weight: bold;
+      display: block;
+      color: #666;
+      font-size: 0.8em;
+    }
+
+    .list-section ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .roll-log {
+      grid-column: 1 / -1;
+      background: #333;
+      color: #0f0;
+      font-family: monospace;
+      padding: 15px;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-top: 20px;
+      font-size: 0.9em;
+    }
+
+    .test-output {
+      background: #eee;
+      border: 1px solid #ccc;
+      padding: 5px;
+      margin-top: 5px;
+      font-family: monospace;
+    }
+
+    .pass {
+      color: green;
+    }
+
+    .fail {
+      color: red;
+    }
+
+    .weakness {
+      font-size: 12pt;
+    }
+
+    .power {
+      font-size: 12pt;
+    }
+
+    .talent {
+      font-size: 12pt;
+    }
+
+    .contact {
+      font-size: 12pt;
+    }
+
+    .weakness-description {
+      font-size: 8pt;
+    }
+
+    .multiple-slots {
+      font-size: smaller;
+      vertical-align: super;
+    }
+
+    .bonus-power {
+      font-size: smaller;
+      vertical-align: super;
+    }
+
+    .power-description {
+      font-size: 8pt;
+    }
+
+    .talent-description {
+      font-size: 8pt;
+    }
+
+    .contact-description {
+      font-size: 8pt;
+    }
+
+    .side-by-side {
+      display: grid;
+      gap: 20px 20px;
+      width: 100%;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 10px;
+      box-sizing: border-box;
+      grid-column: 1 / -1;
+    }
+
+    details.about {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    details.about summary {
+      font-size: 8pt;
+    }
+
+    details.about>div {
+      border: 1px solid black;
+      padding: 3px;
+      margin-bottom: 4px;
+      font-size: 8pt;
+    }
+
+    details.options {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    details.options summary {
+      font-size: 8pt;
+    }
+
+    details.options>div {
+      border: 1px solid black;
+      padding: 3px;
+      margin-bottom: 4px;
+      display: grid;
+      grid-column: 1 / -1;
+      grid-template-columns: 1fr;
+    }
+
+    p.center {
+      text-align: center;
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background-color: transparent;
+      }
+
+      header {
+        padding: 5px 5px 5px 5px;
+        margin-bottom: 0;
+      }
+
+      header h1 {
+        font-size: 12pt;
+      }
+
+      .controls {
+        margin-bottom: 0;
+      }
+
+      .character-sheet {
+        gap: 5px 10px;
+        border-top: none;
+        padding: 0;
+        background-color: transparent;
+        box-shadow: none;
+      }
+
+      .section-title {
+        margin-top: 0;
+      }
+
+      .info-header {
+        margin-bottom: 0;
+      }
+
+      .list-section {
+        margin-bottom: 0;
+      }
+
+      .stat-block {
+        margin-bottom: 0;
+      }
+
+      .stat-label {
+        font-size: 8pt;
+      }
+
+      .stat-rank {
+        font-size: 8pt;
+      }
+
+      .stat-number {
+        font-size: 8pt;
+      }
+
+      .secondary-block {
+        padding: 4px;
+        font-size: 8pt;
+      }
+
+      .secondary-value {
+        font-size: 10pt;
+      }
+
+      .side-by-side {
+        padding: 2px;
+      }
+
+      .weakness {
+        font-size: 10pt;
+      }
+
+      .power {
+        font-size: 10pt;
+      }
+
+      .talent {
+        font-size: 10pt;
+      }
+
+      .contact {
+        font-size: 10pt;
+      }
+
+      .no-print {
+        display: none;
+      }
+    }
