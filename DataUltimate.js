@@ -558,18 +558,16 @@ const POWER_LIST_ULTIMATE_TABLE = [
 
     // Energy Control (EC)
     {
-        category: "Energy Control", code: "EC1", maxRoll: 7, name: "Absorption Power",
-        powerCount: 1,
+        category: "Energy Control", code: "EC1", maxRoll: 7, name: "Absorption Power", powerCount: 1,
         description: "The hero can absorb a specific type of energy and actually gain Health points by converting the energy into Self-Healing. The hero gains a number of Health points equal to his Power rank number each time he is hit by his specific form of absorbable energy. This addition to Health quickly heals any damage the hero had suffered and acts as a buffer to absorb consequent damage. If the hero possesses an Energy Emission Power, he cannot use it directly to affect himself."
     },
     {
-        category: "Energy Control", code: "EC2", maxRoll: 10, name: "Catalytic Control",
-        powerCount: 1,
+        category: "Energy Control", code: "EC2", maxRoll: 10, name: "Catalytic Control", powerCount: 1,
         description: "The hero can control the speed at which chemical reactions occur. He can increase or decrease the energies emitted or drained in such reactions by his Power rank number."
     },
     {
-        category: "Energy Control", code: "EC3", maxRoll: 15, name: "Coldshaping",
-        powerCount: 1, bonusPowerCount: 1,
+        category: "Energy Control", code: "EC3", maxRoll: 15, name: "Coldshaping", powerCount: 1, 
+        bonusPowerCount: 1,
         bonusPower: "Energy Emission\\Cold Generation(100)",
         optionalPowers: "Energy Control\\Thermal Control|Matter Control\\Molding|Self-Alteration\\Body Coating",
         description: "The hero can control any force that actively decreases the temperature of something else. This can be used to increase or decrease the cold's Intensity by this Power's rank number. There are two primary functions to this Power. The first is to counteract or supplement cold-based Powers.  The hero can also redirect such Powers. The hero can shape fields of intense cold and produce useful results."
