@@ -291,7 +291,7 @@ class CharacterGenerator {
 
         // We got a body type that isn't combination
         char.bodyTypes.push(thisBodyType.name);
-        char.logRoll("Physical Form Body Type", this.thisRoll, thisBodyType.name);
+        char.logRoll("Physical Form Body Type", thisRoll, thisBodyType.name);
       }
 
       const tempRandomRanksColumnIndex = tempRandomRanksColumnTable.findIndex(o => this.compoundRandomRanksColumnRoll <= o);
@@ -368,7 +368,7 @@ class CharacterGenerator {
     const adjustment = Utility.getValue(physicalFormRow, abilityLower + 'Adjustment', 0);
     const minimum = Utility.getValue(physicalFormRow, abilityLower + 'Minimum', -1);
     const maximum = Utility.getValue(physicalFormRow, abilityLower + 'Maximum', -1);
-    const finalRank = this.getAbilityAfterModifier(char, rankRow.rank, adjustment, minimum, maximum);
+    const finalRank = this.getAbilityAfterModifier(char, ability, rankRow.rank, adjustment, minimum, maximum);
     const finalRankRow = this.randomRanksTable.find(r => r.rank === finalRank);
 
     return finalRankRow;
@@ -382,6 +382,7 @@ class CharacterGenerator {
     let value = Utility.getValue(physicalFormRow, 'abilitiesToGenerate', -1);
     if (value !== -1) {
       this.physicalAbilitiesCount = value;
+      char.logRoll("Abilities to Generate", "Base Rules", `Abilities to Generate set to ${value}`)
     }
 
     for (let index = 0; index < this.physicalAbilitiesCount; index++) {
@@ -401,7 +402,7 @@ class CharacterGenerator {
       const roll = this.anyAbilityAdjustmentRoll;
       const ability = ALL_ABILITIES.find(o => roll <= o.maxRoll).name;
       const oldRank = char.getAbility(ability).rank;
-      const rank = this.getAbilityAfterModifier(char, oldRank, value, -1, -1);
+      const rank = this.getAbilityAfterModifier(char, ability, oldRank, value, -1, -1);
       const rankRow = this.randomRanksTable.find(r => r.rank === rank);
       char.setAbility(ability, rankRow.rank, rankRow.rankNumber);
 
@@ -414,11 +415,11 @@ class CharacterGenerator {
         for (let index = 0; index < ALL_ABILITIES.length; index++) {
           const ability = ALL_ABILITIES[index].name;
           const oldRank = char.getAbility(ability, abilityIndex).rank;
-          const rank = this.getAbilityAfterModifier(char, oldRank, value, -1, -1);
+          const rank = this.getAbilityAfterModifier(char, ability, oldRank, value, -1, -1);
           const rankRow = this.randomRanksTable.find(r => r.rank === rank);
           char.setAbility(ability, rankRow.rank, rankRow.rankNumber);
 
-          char.logRoll("All Ability Adjustment", value, ability + ": " + oldRank + " -> " + rankRow.rank);
+          char.logRoll("All Primary Ability Adjustment", value, ability + ": " + oldRank + " -> " + rankRow.rank);
         }
       }
     }
@@ -429,7 +430,7 @@ class CharacterGenerator {
         for (let index = 0; index < PHYSICAL_ABILITIES.length; index++) {
           const ability = PHYSICAL_ABILITIES[index];
           const oldRank = char.getAbility(ability, abilityIndex).rank;
-          const rank = this.getAbilityAfterModifier(char, oldRank, value, -1, -1);
+          const rank = this.getAbilityAfterModifier(char, ability, oldRank, value, -1, -1);
           const rankRow = this.randomRanksTable.find(r => r.rank === rank);
           char.setAbility(ability, rankRow.rank, rankRow.rankNumber);
 
@@ -439,42 +440,42 @@ class CharacterGenerator {
     }
   }
 
-  getAbilityAfterModifier(char, abilityRank, adjustment, minimum, maximum) {
+  getAbilityAfterModifier(char, ability, abilityRank, adjustment, minimum, maximum) {
     let rankIndex = this.randomRanksTable.findIndex(r => r.rank === abilityRank);
     if (rankIndex === null) {
-      char.logRoll("Ability", "Ability Modifier", "Invalid Rank. Setting to Feeble");
+      char.logRoll("Ability", "Ability Modifier", `${ability} has invalid rank. Setting to Feeble`);
       rankIndex = 0;
     }
 
     rankIndex += adjustment;
 
-    char.logRoll("Ability", "Ability Modifier", `Ability Rank: ${abilityRank}. Adjustment: ${adjustment}.  Min: ${minimum}.  Max: ${maximum}`);
+    char.logRoll("Ability", "Ability Modifier", `Ability: ${ability}. Ability Rank: ${abilityRank}. Adjustment: ${adjustment}.  Min: ${minimum}.  Max: ${maximum}`);
 
     if (rankIndex < 0) {
       rankIndex = 0;
-      char.logRoll("Ability", "Ability Modifier", "Rank is less than 0. Setting to Feeble");
+      char.logRoll("Ability", "Ability Modifier", `${ability} Rank is less than 0. Setting to Feeble`);
     }
 
     if (rankIndex >= this.randomRanksTable.length) {
       rankIndex = this.randomRanksTable.length - 1;
-      char.logRoll("Ability", "Ability Modifier", `Rank is greater than max. Setting to ${rankIndex}.`);
+      char.logRoll("Ability", "Ability Modifier", `${ability} Rank is greater than max. Setting to ${rankIndex}.`);
     }
 
     let returnRank = this.randomRanksTable[rankIndex].rank;
     if (minimum !== -1 && returnRank < minimum) {
       returnRank = minimum;
-      char.logRoll("Ability", "Ability Modifier", `Rank is less than Min. Setting to ${returnRank}.`);
+      char.logRoll("Ability", "Ability Modifier", `${ability} Rank is less than Min. Setting to ${returnRank}.`);
     }
 
     if (maximum !== -1 && returnRank > maximum) {
       returnRank = maximum;
-      char.logRoll("Ability", "Ability Modifier", `Rank is greater than Max. Setting to ${returnRank}.`);
+      char.logRoll("Ability", "Ability Modifier", `${ability} Rank is greater than Max. Setting to ${returnRank}.`);
     }
 
     // Don't allow it to drop below Feeble
     if (returnRank === "Shift 0") {
       returnRank = "Feeble";
-      char.logRoll("Ability", "Ability Modifier", `Rank is less than Feeble. Setting to Feeble.`);
+      char.logRoll("Ability", "Ability Modifier", `${ability} Rank is less than Feeble. Setting to Feeble.`);
     }
 
     return returnRank;
@@ -485,20 +486,26 @@ class CharacterGenerator {
     let startRank = "Typical";
 
     const physicalFormRow = this.physicalFormTable.find(o => o.name === char.physicalForm);
-    let value = Utility.getValue(physicalFormRow, "resourcesSet", -1);
+
+    let value = Utility.getValue(physicalFormRow, "isHiTech", false);
+    if (value) {
+      char.isHiTech = true;
+    }
+
+    value = Utility.getValue(physicalFormRow, "resourcesSet", -1);
     if (value !== -1) {
       const rankData = this.randomRanksTable.find(r => r.rankNumber === value);
       char.resources.rank = rankData.rank;
       char.resources.number = rankData.rankNumber;
 
-      char.logRoll("Resources", "Base Rules", "Resources set to " + rankData.rank);
+      char.logRoll("Resources", "Base Rules", `Resources set to ${value}/${rankData.rank}`);
       return;
     }
 
     value = Utility.getValue(physicalFormRow, "resourcesStart", -1);
     if (value !== -1) {
       startRank = this.randomRanksTable.find(r => r.rankNumber === value).rank;
-      char.logRoll("Resources", "Base Rules", "Resources set to " + startRank + " as Start");
+      char.logRoll("Resources", "Base Rules", `Resources set to ${value}/${startRank} as Start`);
     }
 
     value = Utility.getValue(physicalFormRow, "isHiTech", false);
@@ -516,12 +523,15 @@ class CharacterGenerator {
     const roll = this.resourceModifierRoll;
     const modifier = this.abilityModifierTable.find(r => r.maxRoll >= roll).modifier;
     value = Utility.getValue(physicalFormRow, "resourcesAdjustment", 0);
+    if(value !== 0) {
+      char.logRoll("Resources", "Base Rules", `Resources adjusted by ${value}`);
+    }
     const finalAdjustment = value + modifier;
 
     const minimum = Utility.getValue(physicalFormRow, "resourcesMinimum", -1);
     const maximum = Utility.getValue(physicalFormRow, "resourcesMaximum", -1);
 
-    let resourceRank = this.getAbilityAfterModifier(char, startRank, finalAdjustment, minimum, maximum);
+    let resourceRank = this.getAbilityAfterModifier(char, "Resources", startRank, finalAdjustment, minimum, maximum);
 
     char.resources.rank = resourceRank;
     const rankData = this.randomRanksTable.find(r => r.rank === resourceRank);
@@ -562,9 +572,10 @@ class CharacterGenerator {
       // So for a set, we just assign whatever is set.
       char.popularity = value;
       char.logRoll("Popularity", "Base Rules", "Popularity set to " + value);
+      return;
     }
 
-    const thisRow = Utility.findRow(this, this.popularityRoll, this.randomRanksColumn);
+    let thisRow = Utility.findRow(this, this.popularityRoll, this.randomRanksColumn);
     let popularity = thisRow.rankNumber;
 
     value = Utility.getValue(physicalFormRow, "popularityStart", -1);
@@ -573,7 +584,8 @@ class CharacterGenerator {
       // Ultimate has a Shift 0 that is unrollable.  That will be used for our starts that are 0, this allowing
       // normal  modifier adjustment to work correctly.
       popularity = value;
-      char.logRoll("Popularity", "Base Rules", "Popularity set to " + value);
+      thisRow = this.randomRanksTable.find(r => r.rankNumber === value);
+      char.logRoll("Popularity", "Base Rules", "Popularity starting at " + value);
     }
 
     if (popularity === null) {
@@ -593,7 +605,7 @@ class CharacterGenerator {
         }
       }
 
-      char.logRoll("Popularity", "SubType Rules", "Popularity set to " + adjustment);
+      char.logRoll("Popularity", "SubType Rules", "Popularity adjustment set to " + adjustment);
     }
 
     let minimum = Utility.getValue(physicalFormRow, 'popularityMinimum', -1);
@@ -607,7 +619,7 @@ class CharacterGenerator {
         }
       }
 
-      char.logRoll("Popularity", "SubType Rules", "Popularity set to " + adjustment);
+      char.logRoll("Popularity", "SubType Rules", "Popularity minimum set to " + minimum);
     }
 
     let maximum = Utility.getValue(physicalFormRow, 'popularityMaximum', -1);
@@ -621,10 +633,11 @@ class CharacterGenerator {
         }
       }
 
-      char.logRoll("Popularity", "SubType Rules", "Popularity set to " + adjustment);
+      char.logRoll("Popularity", "SubType Rules", "Popularity maximum set to " + maximum);
     }
 
-    const finalPopularity = this.getAbilityAfterModifier(char, thisRow.rank, adjustment, minimum, maximum);
+    // If popularity is specifically set, then it will already be in char.popularity
+    const finalPopularity = this.getAbilityAfterModifier(char, "Popularity", thisRow.rank, adjustment, minimum, maximum);
     const popularityRow = this.randomRanksTable.find(r => r.rank === finalPopularity);
     popularity = popularityRow.rankNumber;
 
@@ -879,7 +892,7 @@ class CharacterGenerator {
       if (value !== 0) {
         char.powersCount += value;
         char.powersMax += value;
-        char.logRoll("Power Slots", "Base Rules", `Powers Count Adjusted: ${char.powersCount}`);
+        char.logRoll("Power Slots", "Base Rules", `Powers Count Adjusted by ${value} to ${char.powersCount}`);
       }
       if (char.powersCount > pQtyRow.powers.max) {
         char.powersCount = pQtyRow.powers.max;
@@ -892,14 +905,14 @@ class CharacterGenerator {
       if (value !== -1 && value > char.powersCount) {
         char.powersCount = value;
         char.powersMax = value;
-        char.logRoll("Power Slots", "Base Rules", `Powers Count Minimum: ${char.contactsCount}`);
+        char.logRoll("Power Slots", "Base Rules", `Powers Count Minimum set to ${char.powersCount}`);
       }
 
       value = Utility.getValue(physicalFormRow, "powersCountMaximum", -1);
       if (value !== -1 && value < char.powersCount) {
         char.powersCount = value;
         char.powersMax = value;
-        char.logRoll("Power Slots", "Base Rules", `Powers Count Maximum: ${char.powersCount}`);
+        char.logRoll("Power Slots", "Base Rules", `Powers Count Maximum set to ${char.powersCount}`);
       }
     }
 
@@ -932,7 +945,7 @@ class CharacterGenerator {
     char.logRoll("Weakness Stimulus", sRoll, stimulusRow.name);
     char.logRoll("Weakness Effect", eRoll, effectRow.name);
     char.logRoll("Weakness Duration", dRoll, durationRow.name);
-    char.logRoll("Weakness Rank", rRoll, rankRow.name);
+    char.logRoll("Weakness Rank", rRoll, rankRow.rank);
   }
 
   generateTalents(char, talentIndex) {
@@ -1071,7 +1084,7 @@ class CharacterGenerator {
 
     let value = Utility.getValue(physicalFormRow, "allPowersRankAdjustment", 0);
     if (value !== 0) {
-      const rank = this.getAbilityAfterModifier(char, rankRow.rank, value, -1, -1);
+      const rank = this.getAbilityAfterModifier(char, "Power Rank", rankRow.rank, value, -1, -1);
       rankRow = this.randomRanksTable.find(r => r.rank === rank);
     }
 
@@ -1172,7 +1185,7 @@ class CharacterGenerator {
 
     const rankNumber = rankRow.rankNumber;
 
-    char.logRoll("Bonus Power Gen", `Base Rules: ${roll}/${rankRow}`, `${power.category}: ${p.name} (${rankRow.rank})`);
+    char.logRoll("Bonus Power Gen", `Base Rules: ${roll}/${rankRow.rankNumber}`, `${power.category}: ${p.name} (${rankRow.rank})`);
 
     if (char.powers.length < char.powersMax) {
       char.powers.push({
@@ -1221,7 +1234,7 @@ class CharacterGenerator {
 
     const rankNumber = rankRow.rankNumber;
 
-    char.logRoll("Bonus Power Gen", `Base Rules: ${roll}/${rankRow}`, `${power.category}: ${p.name} (${rankRow.rank})`);
+    char.logRoll("Bonus Power Gen", `Base Rules: ${roll}/${rankRow.rankNumber}`, `${power.category}: ${p.name} (${rankRow.rank})`);
 
     if (char.powers.length < char.powersMax && !this.isPowerAlreadyAssigned(char.powers, p)) {
       char.powers.push({
@@ -1301,7 +1314,7 @@ class CharacterGenerator {
 
       const rankNumber = rankRow.rankNumber;
 
-      char.logRoll("Optional Power Gen", `Base Rules: ${roll}/${rankRow}`, `${power.category}: ${p.name} (${rankRow.rank})`);
+      char.logRoll("Optional Power Gen", `Base Rules: ${roll}/${rankRow.rankNumber}`, `${power.category}: ${p.name} (${rankRow.rank})`);
 
       if (char.powers.length < char.powersMax && !this.isPowerAlreadyAssigned(char.powers, p)) {
         char.powers.push({

@@ -33,21 +33,27 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
         description: "The hero's parents were Mutants, as were any number of preceding generations. Breed Mutants form tribes and have close-knit families; this is a defense mechanism born from generations spent hiding their true selves from normal society."
     },
     {
-        maxRoll: 38, name: "Android", column: 4, popularityAdjustment: -1, anyPrimaryAbilityAdjustment: 1, powersCountAdjustment: 1,
+        maxRoll: 38, name: "Android", column: 4, 
+        powersCountAdjustment: 1, anyPrimaryAbilityAdjustment: 1, 
+        popularityAdjustment: -1, 
         bonusContactsCount: 1,
         bonusContact: "Scientific/Laboratory(100)",
         description: "These are artificially created organic beings. An android is made of laboratory-created protoplasm and grows to maturity in an artificial womb. More intricately made Androids can actually interbreed with Normal Humans."
     },
     {
-        maxRoll: 46, name: "Humanoid Race", column: 5, anyPrimaryAbilityAdjustment: 1,
-        resourcesStart: 3 /* Poor */,
+        maxRoll: 46, name: "Humanoid Race", column: 5, 
+        anyPrimaryAbilityAdjustment: 1, resourcesStart: 3 /* Poor */,
         bonusContactsCount: 1,
         bonusContact: "Political/Race(100)",
         description: "The hero is a normal member of a human-like race from \"somewhere else.\" This may be another world, era, dimension, or lost land hidden somewhere on the Earth. Most can pass as Normal Humans with a little disguise or explanation. "
     },
     {
-        maxRoll: 47, name: "Surgical Composite", column: 2, strengthAdjustment: 1, fightingAdjustment: 1, enduranceAdjustment: 1,
-        popularityStart: 0, resourcesStart: 3 /*Poor*/,
+        maxRoll: 47, name: "Surgical Composite", column: 2, 
+        enduranceAdjustment: 1,
+        resourcesStart: 3 /*Poor*/,
+        strengthAdjustment: 1, 
+        fightingAdjustment: 1, 
+        popularityStart: 0, 
         bonusContactsCount: 1,
         bonusContact: "Professional/Medicine(100)",
         description: "The hero was created in an operating room. His body contains parts taken from several bodies. Close examination reveals the scars from his creation.  Resistance to Mental Domination is reduced -1CS.  Composites heal twice as quickly as Normal Humans."
@@ -60,9 +66,10 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
     },
     {
         maxRoll: 51, name: "Modified Human - Muscular", column: 1,
+        enduranceAdjustment: 1, 
+        strengthAdjustment: 1,
         bonusContactsCount: 1,
         bonusContact: "Scientific/Laboratory(100)",
-        enduranceAdjustment: 1, strengthAdjustment: 1,
         description: "This is someone who started life as a Normal Human and was later altered by some means. The change affected his body on a physical level but did not alter his DNA. Genetically, the hero is still very much human and cannot pass on his Powers to his descendants. Muscular Modification is easy to detect; just look for a person with outrageous muscular development."
     },
     {
@@ -101,27 +108,32 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
         description: "Demihumans can be unique individuals or members of a race that inhabits a different place or time.  Lupinoids are human-shaped, canine-like beings. They are often mistaken for the cinematic conception of a werewolf. The body is covered in hair and the face is definitely canine. The body has a tail, harmless claws, big teeth, and long pointed ears atop the head. A lupinoid possesses an Excellent sense of smell."
     },
     {
-        maxRoll: 65, name: "Demihuman - Avian (Angelic)", column: 3, popularityAdjustment: 1,
+        maxRoll: 65, name: "Demihuman - Avian (Angelic)", column: 3, 
+        popularityAdjustment: 1,
         description: "Demihumans can be unique individuals or members of a race that inhabits a different place or time.  Angelic avians resemble humans with wings sprouting from the shoulder blades. Angelic avians reproduce by normal human means."
     },
     {
-        maxRoll: 66, name: "Demihuman - Avian (Harpie)", column: 2, fightingAdjustment: 1,
+        maxRoll: 66, name: "Demihuman - Avian (Harpie)", column: 2, 
+        fightingAdjustment: 1,
         description: "Demihumans can be unique individuals or members of a race that inhabits a different place or time.  Harpies possess arms that are modified to also serve as wings and feather-covered legs that end in bird claws. Harpies reproduce by laying eggs."
     },
     {
         maxRoll: 67, name: "Demihuman - Chiropteran", column: 2,
+        popularityStart: 1 /* Feeble */,
         bonusPowerCount: 1,
-        bonusPower: "Detection\\Sonar (Active)\\Good(100)", popularityStart: 1 /* Feeble */,
+        bonusPower: "Detection\\Sonar (Active)\\Good(100)", 
         description: "Demihumans can be unique individuals or members of a race that inhabits a different place or time.  Chiropterans are similar to angelic humans except that they combine the human parts with those of a bat. Their arms also serve as leathery wings, their feet have elongated toes that can serve as hands, and in addition they possess large ears."
     },
     {
-        maxRoll: 68, name: "Demihuman - Lamian", column: 3, popularityStart: 0,
+        maxRoll: 68, name: "Demihuman - Lamian", column: 3, 
+        popularityStart: 0,
         description: "Demihumans can be unique individuals or members of a race that inhabits a different place or time.  Lamians are snake people. The legs have been replaced by a serpentine body, although the arms are normal. The skin is covered in fine scales. Lamians have lidless eyes and retractable fangs.  Lamians are difficult to bind (+ 1CS toescape)."
     },
     {
         maxRoll: 69, name: "Demihuman - Merhuman", column: 2,
+        popularityAdjustment: 1,
         bonusPowerCount: 1,
-        bonusPower: "Physical Enhancement\\Water Freedom(100)", popularityAdjustment: 1,
+        bonusPower: "Physical Enhancement\\Water Freedom(100)", 
         description: "Demihumans can be unique individuals or members of a race that inhabits a different place or time.  Merhumans are amphibious relatives of lamians. The body is human from the waist up; the rest is a flexible fish-tail. Merhumans possess both lungs and gills, but can only stay away from water a limited time because their bodies quickly dry out. Movement on dry land is limited to crawling or dependence on vehicles."
     },
     {
@@ -129,77 +141,106 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
         description: "Demihumans can be unique individuals or members of a race that inhabits a different place or time."
     },
     {
-        maxRoll: 72, name: "Cyborg - Artificial limbs/organs", column: 2, intuitionAdjustment: -1,
+        maxRoll: 72, name: "Cyborg - Artificial limbs/organs", column: 2, 
+        intuitionAdjustment: -1,
+        isHiTech: true,
         description: "The hero began as a Normal Human but has had parts of his body replaced by artificial devices.  "
     },
     {
         maxRoll: 74, name: "Cyborg - Exoskeleton", column: 2,
+        isHiTech: true,
         description: "The hero's body is intact but is encased in a mechanical suit that provides him with life-support and Powers. The natural and artificial bodies exist in symbiosis. "
     },
     {
-        maxRoll: 76, name: "Cyborg - Mechanical Body", column: 4, intuitionAdjustment: -1, psycheAdjustment: -1,
+        maxRoll: 76, name: "Cyborg - Mechanical Body", column: 4, 
+        intuitionAdjustment: -1, 
+        psycheAdjustment: -1,
+        isHiTech: true,
         bonusContactsCount: 1,
         bonusContact: "Scientific/Laboratory(100)",
         description: "The only part of the hero's original body that remains is his brain and the nervous system. This is housed in a special life-support module that fills most of the brain's needs (oxygen, blood, nutrients). The life-support module is mated with a mechanical form that serves the brain as its new body. The nervous system is directly linked with the machine's control circuits, allowing both control and sensory feedback.  Mech Bodies have Monstrous Resistance to Disease and Poisons of all sorts."
     },
     {
-        maxRoll: 79, name: "Cyborg - Mechanically Augmented", column: 3, powersCountAdjustment: -1, resourcesSet: 16 /* Good */,
+        maxRoll: 79, name: "Cyborg - Mechanically Augmented", column: 3, 
+        powersCountAdjustment: -1, 
+        resourcesSet: 16,
         isHiTech: true,
         description: "This is a Cyborg who still has all his original (human) equipment but carries some options inside. Unused spaces in his body are now filled with various useful devices. These can be directly controlled through the nervous system. It is these devices that give the hero his Powers."
     },
     {
-        maxRoll: 82, name: "Robot - human shape", column: 4, popularityStart: 0,
+        maxRoll: 82, name: "Robot - human shape", column: 4, 
+        popularityStart: 0,
+        isHiTech: true,
         description: "This is a completely mechanical being that is patterned after the human body. "
     },
     {
         maxRoll: 84, name: "Robot - Usuform", column: 4,
+        isHiTech: true,
         description: "This is a robot that believes in the age of \"Form follows function.\" This robot's body is anything but humanshaped and is designed to best serve specific needs. "
     },
     {
-        maxRoll: 86, name: "Robot - Metamorphic", column: 4, abilitiesToGenerate: 2,
+        maxRoll: 86, name: "Robot - Metamorphic", column: 4, 
+        abilitiesToGenerate: 2,
+        isHiTech: true,
         description: "This is a robot whose design is so flexible it can change into two or more forms, each possessing different Physical Abilities and Physical Powers. "
     },
     {
-        maxRoll: 87, name: "Robot - Computer", column: 4, reasonAdjustment: 2, fightingAdjustment: -1, resourcesAdjustment: 1,
-        allPrimaryAbilitiesAdjustment: -1, allPowersRankAdjustment: -1,
+        maxRoll: 87, name: "Robot - Computer", column: 4,
+        resourcesAdjustment: 1,  
+        fightingAdjustment: -1, 
+        reasonAdjustment: 2, 
+        allPrimaryAbilitiesAdjustment: -1, 
+        allPowersRankAdjustment: -1,
+        isHiTech: true,
         description: "The hero is a computer, period. At first glance this seems unplayable, but bear me out. This is a rare computer, one that is self-aware and possesses true intelligence. While the mainframe itself is immobile and unable to physically act, peripherals give the sentient computer a wide range of means to deal with the physical world. Slave robots act as proxies for the computer. Physical additions provide the mainframe with add-on functions. The Computer can directly interact with other computers, robots, and some cyborgs on a programming level.  Computers have a decreased Resistance to Electrical and Magnetic Attacks and also to Phasing."
     },
     {
-        maxRoll: 88, name: "Angel/Demon", column: 5, subType: "Angel(50)|Demon(100)", popularityAdjustment: "Angel(+2)|Demon(-2)",
+        maxRoll: 88, name: "Angel/Demon", column: 5, subType: "Angel(50)|Demon(100)", 
+        popularityAdjustment: "Angel(+2)|Demon(-2)",
         allPhysicalAbilitiesAdjustment: 1,
         bonusPowerCount: 1,
         bonusPower: "Demon(Energy Emission\\Fire Generation\\Good(100))|Angel(Matter Creation\\Artifact Creation\\Good(100))",
         description: "These are magical beings from other planes of existence. They are both supernatural and corporeal in nature. The main difference between these types is their inherent personality. \"Angels\" are benevolent; \"demons\" are malevolent. Other than that, there isn't much differnce.  Such beings p o s s e s s a Psychological Weakness that Negates their Power."
     },
     {
-        maxRoll: 89, name: "Deity", column: 5, allPrimaryAbilitiesAdjustment: 2, powersCountAdjustment: 2, popularityAdjustment: 2,
+        maxRoll: 89, name: "Deity", column: 5, 
+        powersCountAdjustment: 2, popularityAdjustment: 2,
+        allPrimaryAbilitiesAdjustment: 2, 
         bonusPowerCount: 1,
         bonusPower: "Travel\\Any(100)",
         description: "This is an \"Entity of Great Power\" —or rather, was such a being. The deity was an actual god, demigod, or close relative who was actually worshipped at some point in the past. Now his powers have waned because the religion which was devoted to him is no longer practiced. His followers have disappeared into the annals of history."
     },
     {
-        maxRoll: 90, name: "Animal", column: 1, powersCountAdjustment: -1,
+        maxRoll: 90, name: "Animal", column: 1, 
+        powersCountAdjustment: -1, 
+        resourcesSet: 1 /* Feeble */,
         bonusPowerCount: 2,
-        bonusPower: "Detection\\Any\\Good(50)|Detection\\Any\\Good(100)", resourcesSet: 1 /* Feeble */,
+        bonusPower: "Detection\\Any\\Good(50)|Detection\\Any\\Good(100)", 
         description: "This is a catch-all category that includes fish, mammals, birds, reptiles, and the rest of Earth's fauna, in addition to aliens that do not fit into any other category."
     },
     {
-        maxRoll: 91, name: "Vegetable", column: 1, resourcesSet: 1 /* Feeble */,
+        maxRoll: 91, name: "Vegetable", column: 1, 
+        enduranceAdjustment: 2,
+        fightingAdjustment: -2, 
+        
+        resourcesSet: 1 /* Feeble */,
         bonusPowerCount: 1,
         bonusPower: "Energy Control\\Absorption Power\\Good(100)",
-        fightingAdjustment: -2, enduranceAdjustment: 2,
         description: "The hero is an intelligent, mobile plant. He can be of any nature but for game purposes the hero is assumed to be a man-shaped plant. His physiology is based on photosynthesis. The plant-man doesn't need to eat anything except a bit of fertilizer occasion- ally. Prolonged deprivation of light and water reduces the hero's Strength and Endurance - 1CS per day after an initial three days."
     },
     {
-        maxRoll: 92, name: "Abnormal Chemistry", column: 2, enduranceAdjustment: 1,
+        maxRoll: 92, name: "Abnormal Chemistry", column: 2, 
+        enduranceAdjustment: 1,
         description: "The body is apparently normal but possesses a different chemical base than that of Normal Humans. A key element in the body's chemical makeup is replaced by another element. The most common abnormali- ties are silicon replacing carbon, copper replacing iron, and cobalt replacing iron."
     },
     {
-        maxRoll: 93, name: "Mineral", column: 2, healthAdjustment: "*2",
+        maxRoll: 93, name: "Mineral", column: 2, 
+        healthAdjustment: "*2",
         description: "The body is composed of solid materials that normally do not sustain life. In fact, the body might not even have anything remotely resembling internal organs. In such cases , an internal examination would only reveal homogenous matter.  Mineral Life is immune to all Poisons and Diseases that harm Normal Humans.  Movement rate is decreased - 1CS."
     },
     {
-        maxRoll: 94, name: "Gaseous", column: 5, resourcesSet: 1 /* Feeble */,
+        maxRoll: 94, name: "Gaseous", column: 5, 
+        resourcesSet: 1 /* Feeble */,
         description: "The body is completely composed of gases, vapors, smoke, and mist without any solid (or even liquid) components above the microscopic level. The Gas Body is a coherent cloud that retains its integrity even in the face of Amazing Intensity winds. Unlike normal clouds, the Gas Body can more at will in any direction and even penetrate liquids and permeable solids."
     },
     {
@@ -217,11 +258,16 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
         description: "The hero is an intangible, disembodied spirit. He can be a ghost who once possessed a mortal shell, or belong to a race that always exists in this form. "
     },
     {
-        maxRoll: 98, name: "Undead", column: 1, strengthAdjustment: 1, enduranceAdjustment: 1,
+        maxRoll: 98, name: "Undead", column: 1, 
+        enduranceAdjustment: 1,        
+        strengthAdjustment: 1, 
         description: "The being in question had once been a Normal Human (or any other species) but has since died. Through some arcane and possibly disgusting means, the body has regained animation and ceased to decay. The being's life force is once again in residence (although the old house just isn't the same). Special means are required to maintain the reunion of mind and body."
     },
     {
-        maxRoll: 99, name: "Compound", column: -1, combinations: "2\\50(50)|3\\33(75)|4\\25(95)|5\\20(100)", popularityAdjustment: -1,
+        maxRoll: 99, name: "Compound", column: -1, 
+        popularityAdjustment: -1,
+
+        combinations: "2\\50(50)|3\\33(75)|4\\25(95)|5\\20(100)", 
         description: "The hero's body contains aspects of two or more of the preceding Body Types. As such, it possesses a mixture of the advantages and disadvantages of each type."
     },
     {

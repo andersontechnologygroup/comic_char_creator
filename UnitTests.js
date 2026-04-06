@@ -214,10 +214,80 @@ class Tester {
             this.assert(log !== null && log !== undefined, "For Normal Human, Resource was raised by 2.");
           }
           break;
+        case "Mutant - Induced":
+          {
+            const log = char.log.find(l => l.indexOf('[Any Ability Adjustment]') !== -1);
+            this.assert(log !== null && log !== undefined, "For Mutant - Induced, ability raised by 1.");
+          }
+          break;
         case "Mutant - Random":
           {
-            const log = char.log.find(l => l.indexOf('Ability Rank: Endurance. Adjustment: 1'));
+            let log = char.log.find(l => l.indexOf('Powers Count Adjusted by 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Mutant - Random, Power Count was raised.");
+            log = char.log.find(l => l.indexOf('Resources adjusted by -1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Mutant - Random, Resources were lowered by 1.");
+            log = char.log.find(l => l.indexOf('Ability: Endurance. Ability Rank') !== -1 && l.indexOf('Adjustment: 1') !== -1);
             this.assert(log !== null && log !== undefined, "For Mutant - Random, Endurance was raised by 1.");
+          }
+          break;
+        case "Mutant - Breed":
+          {
+            let log = char.log.find(l => l.indexOf('Ability: Endurance. Ability Rank') !== -1 && l.indexOf('Adjustment: 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Mutant - Breed, Endurance was raised by 1.");
+            log = char.log.find(l => l.indexOf('Ability: Intuition. Ability Rank') !== -1 && l.indexOf('Adjustment: 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Mutant - Breed, Intuition was raised by 1.");
+          }
+          break;
+        case "Android":
+          {
+            let log = char.log.find(l => l.indexOf('Powers Count Adjusted by 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Android, Power Count was raised.");
+            log = char.log.find(l => l.indexOf('[Any Ability Adjustment]') !== -1);
+            this.assert(log !== null && log !== undefined, "For Android, ability raised by 1.");
+            log = char.log.find(l => l.indexOf('Ability: Popularity. Ability Rank') !== -1 && l.indexOf('Adjustment: -1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Surgical Composite, Popularity was lowered by 1.");
+          }
+          break;
+        case "Humanoid Race":
+          {
+            let log = char.log.find(l => l.indexOf('[Any Ability Adjustment]') !== -1);
+            this.assert(log !== null && log !== undefined, "For Humanoid Race, ability raised by 1.");
+            log = char.log.find(l => l.indexOf('Resources set to 3') !== -1);
+            this.assert(log !== null && log !== undefined, "For Humanoid Race, Resources set to 3.");
+          }
+          break;
+        case "Surgical Composite":
+          {
+            let log = char.log.find(l => l.indexOf('Ability: Endurance. Ability Rank') !== -1 && l.indexOf('Adjustment: 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Surgical Composite, Endurance was raised by 1.");
+            log = char.log.find(l => l.indexOf('Resources set to 3') !== -1);
+            this.assert(log !== null && log !== undefined, "For Surgical Composite, Resources set to 3.");
+            log = char.log.find(l => l.indexOf('Ability: Strength. Ability Rank') !== -1 && l.indexOf('Adjustment: 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Surgical Composite, Strength was raised by 1.");
+            log = char.log.find(l => l.indexOf('Ability: Fighting. Ability Rank') !== -1 && l.indexOf('Adjustment: 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Surgical Composite, Fighting was raised by 1.");
+            log = char.log.find(l => l.indexOf('Popularity starting at 0') !== -1);
+            this.assert(log !== null && log !== undefined, "For Surgical Composite, Popularity starting at 0.");
+          }
+          break;
+        case "Modified Human - Muscular":
+          {
+            let log = char.log.find(l => l.indexOf('Ability: Endurance. Ability Rank') !== -1 && l.indexOf('Adjustment: 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Modified Human - Muscular, Endurance was raised by 1.");
+            log = char.log.find(l => l.indexOf('Ability: Strength. Ability Rank') !== -1 && l.indexOf('Adjustment: 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Modified Human - Miscular, Strength was raised by 1.");
+          }
+          break;
+        case "Demihuman - Avian (Angelic)":
+          {
+            const log = char.log.find(l => l.indexOf('Ability: Popularity. Ability Rank') !== -1 && l.indexOf('Adjustment: 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Demihuman - Avian (Angelic), Popularity was raised by 1.");
+          }
+          break;
+        case "Demihuman - Avian (Harpie)":
+          {
+            const log = char.log.find(l => l.indexOf('Ability: Fighting. Ability Rank') !== -1 && l.indexOf('Adjustment: 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Demihuman - Avian (Harpie), Fighting was raised by 1.");
           }
           break;
         case "Demihuman - Chiropteran":
@@ -225,31 +295,109 @@ class Tester {
             this.assertHasPower('Sonar (Active)', char.powers, 'Demihuman - Chiropteran has bonus power of Sonar (Active).')
             const power = char.powers.find(p => p.name === "Sonar (Active)");
             this.assertEquals("Good", power.rank, "Demihuman - Chiropteran Sonar (Active) must be Good rank.")
+            const log = char.log.find(l => l.indexOf('Popularity starting at 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Demihuman - Chiropteran, Popularity starting at 1.");
+          }
+          break;
+        case "Demihuman - Lamian":
+          {
+            const log = char.log.find(l => l.indexOf('Popularity starting at 0') !== -1);
+            this.assert(log !== null && log !== undefined, "For Demihuman - Lamian, Popularity starting at 0.");
+          }
+          break;
+        case "Demihuman - Lupinoid (Werewolf)":
+          {
+            const log = char.log.find(l => l.indexOf('Ability: Popularity. Ability Rank') !== -1 && l.indexOf('Adjustment: -1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Demihuman - Lupinoid, Popularity was lowered by 1.");
           }
           break;
         case "Demihuman - Merhuman":
           {
             this.assertHasPower('Water Freedom', char.powers, 'Demihuman - Merhuman has bonus power of Water Freedom.')
+            const log = char.log.find(l => l.indexOf('Ability: Popularity. Ability Rank') !== -1 && l.indexOf('Adjustment: 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Demihuman - Merhuman, Popularity was raised by 1.");
+          }
+          break;
+        case "Cyborg - Artificial limbs/organs":
+          {
+            const log = char.log.find(l => l.indexOf('Ability: Intuition. Ability Rank') !== -1 && l.indexOf('Adjustment: -1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Cyborg 0 Artificial limbs/organs, Intuition was lowered by 1.");
+          }
+          break;
+        case "Cyborg - Mechanical Body":
+          {
+            let log = char.log.find(l => l.indexOf('Ability: Intuition. Ability Rank') !== -1 && l.indexOf('Adjustment: -1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Cyborg - Mechanical Body, Intuition was lowered by 1.");
+            log = char.log.find(l => l.indexOf('Ability: Psyche. Ability Rank') !== -1 && l.indexOf('Adjustment: -1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Cyborg - Mechanical Body, Psyche was lowered by 1.");
+          }
+          break;
+        case "Cyborg - Mechanically Augmented":
+          {
+            let log = char.log.find(l => l.indexOf('Powers Count Adjusted by -1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Cyborg - Mechanical Augmented, Power Count was lowered.");
+            log = char.log.find(l => l.indexOf('Resources set to 16') !== -1);
+            this.assert(log !== null && log !== undefined, "For Cyborg - Mechanical Augmented, Resources set to 16.");
+            this.assert(char.isHiTech, "For Cyborg - Mechanical Augmented, isHiTech is set");
+          }
+          break;
+        case "Robot - human shape":
+          {
+            const log = char.log.find(l => l.indexOf('Popularity starting at 0') !== -1);
+            this.assert(log !== null && log !== undefined, "For Robot - human shape, Popularity starting at 0.");
+          }
+          break;
+        case "Robot - Metamorphic":
+          {
+            let log = char.log.find(l => l.indexOf('Abilities to Generate set to 2'));
+            this.assert(log !== null && log !== undefined, "For Robot - Metamorphic, Abilities to Generate set to 2.");
+          }
+          break;
+        case "Robot - Computer":
+          {
+            let log = char.log.find(l => l.indexOf('Ability Rank: Resources. Adjustment: 1'));
+            this.assert(log !== null && log !== undefined, "For Robot - Computer, Resource was raised by 2.");
+            log = char.log.find(l => l.indexOf('Ability: Fighting. Ability Rank') !== -1 && l.indexOf('Adjustment: -1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Robot - Computer, Fighting was lowered by   1.");
+            log = char.log.find(l => l.indexOf('Ability: Reason. Ability Rank') !== -1 && l.indexOf('Adjustment: 2') !== -1);
+            this.assert(log !== null && log !== undefined, "For Robot - Computer, Reason was raised by 2.");
+            log = char.log.find(l => l.indexOf('All Primary Ability Adjustment') !== -1 && l.indexOf('Rolled: -1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Robot - Computer, All Primary Abilities adjusted by -1.");
+            log = char.log.find(l => l.indexOf('Power Rank') !== -1 && l.indexOf('Adjustment: -1.') !== -1);
+            this.assert(log !== null && log !== undefined, "For Robot - Computer, All Power Rank adjusted by -1.");
           }
           break;
         case "Angel/Demon":
           {
+            let log = '';
             if (char.subType === "Angel") {
               this.assertHasPower('Artifact Creation', char.powers, 'Angel has bonus power of Artifact Creation.')
               const power = char.powers.find(p => p.name === "Artifact Creation");
               this.assertEquals("Good", power.rank, "Angel Artifact Creation must be Good rank.")
+              log = char.log.find(l => l.indexOf('Ability: Popularity. Ability Rank') !== -1 && l.indexOf('Adjustment: 2') !== -1);
+              this.assert(log !== null && log !== undefined, "For Angel, Popularity was raised by 2.");
             }
             else if (char.subType === "Demon") {
               this.assertHasPower('Fire Generation', char.powers, 'Demon has bonus power of Fire Generation.')
               const power = char.powers.find(p => p.name === "Fire Generation");
               this.assertEquals("Good", power.rank, "Demon Fire Generation must be Good rank.")
+              log = char.log.find(l => l.indexOf('Ability: Popularity. Ability Rank') !== -1 && l.indexOf('Adjustment: -2') !== -1);
+              this.assert(log !== null && log !== undefined, "For Demon, Popularity was lowered by 2.");
             }
+            log = char.log.find(l => l.indexOf('All Physical Ability Adjustment') !== -1 && l.indexOf('Rolled: 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Angel/Demon, All Physical Abilities adjusted by 1.");
           }
           break;
         case "Deity":
           {
             const power = char.powers.find(p => p.category === "Travel");
             this.assertEquals('Travel', power.category, 'Deity has bonus power of category Travel.')
+            let log = char.log.find(l => l.indexOf('Powers Count Adjusted by 2') !== -1);
+            this.assert(log !== null && log !== undefined, "For Diety, Power Count was raised.");
+            log = char.log.find(l => l.indexOf('Ability: Popularity. Ability Rank') !== -1 && l.indexOf('Adjustment: 2') !== -1);
+            this.assert(log !== null && log !== undefined, "For Deity, Popularity was raised by 2.");
+            log = char.log.find(l => l.indexOf('All Primary Ability Adjustment') !== -1 && l.indexOf('Rolled: 2') !== -1);
+            this.assert(log !== null && log !== undefined, "For Deity, All Primary Abilities adjusted by 2.");
           }
           break;
         case "Animal":
@@ -258,6 +406,10 @@ class Tester {
             this.assertEquals(2, power.length, "Animal has 2 bonus powers of category Detection.");
             this.assertEquals("Good", power[0].rank, "Animal has bonus power(1) of category Detection at Good rank.");
             this.assertEquals("Good", power[1].rank, "Animal has bonus power(2) of category Detection at Good rank.");
+            let log = char.log.find(l => l.indexOf('Powers Count Adjusted by -1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Android, Power Count was lowered.");
+            log = char.log.find(l => l.indexOf('Resources set to 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Animal, Resources set to 1.");
           }
           break;
         case "Vegetable":
@@ -265,6 +417,43 @@ class Tester {
             this.assertHasPower('Absorption Power', char.powers, 'Vegetable has bonus power of Absorption Power.')
             const power = char.powers.find(p => p.name === "Absorption Power");
             this.assertEquals("Good", power.rank, "Vegetable Absorption Power must be Good rank.")
+            let log = char.log.find(l => l.indexOf('Ability: Endurance. Ability Rank') !== -1 && l.indexOf('Adjustment: 2') !== -1);
+            this.assert(log !== null && log !== undefined, "For Vegetable, Endurance was raised by 2.");
+            log = char.log.find(l => l.indexOf('Ability: Fighting. Ability Rank') !== -1 && l.indexOf('Adjustment: -2') !== -1);
+            this.assert(log !== null && log !== undefined, "For Vegetable, Fighting was lowered by 2.");
+            log = char.log.find(l => l.indexOf('Resources set to 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Vegetable, Resources set to 1.");
+          }
+          break;
+        case "Abnormal Chemistry":
+          {
+            let log = char.log.find(l => l.indexOf('Ability: Endurance. Ability Rank') !== -1 && l.indexOf('Adjustment: 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Abnormal Chemistry, Endurance was raised by 1.");
+          }
+          break;
+        case "Mineral":
+          {
+            let log = char.log.find(l => l.indexOf('[Health Adjustment]') !== -1 && l.indexOf('Rolled: *2') !== -1);
+            this.assert(log !== null && log !== undefined, "For Mineral, Health was raised by *2.");
+          }
+          break;
+        case "Gaseous":
+          {
+            let log = char.log.find(l => l.indexOf('Resources set to 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Gaseous, Resources set to 1.");
+          }
+          break;
+        case "Undead":
+          {
+            let log = char.log.find(l => l.indexOf('Ability: Endurance. Ability Rank') !== -1 && l.indexOf('Adjustment: 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Undead, Endurance was raised by 1.");
+            log = char.log.find(l => l.indexOf('Ability: Strength. Ability Rank') !== -1 && l.indexOf('Adjustment: 1') !== -1);
+            this.assert(log !== null && log !== undefined, "For Undead, Strength was raised by 1.");
+          }
+          break;
+        case "Compound":
+          {
+
           }
           break;
         case "Energy":
@@ -277,6 +466,17 @@ class Tester {
           }
           break;
       }
+
+      // Check if logs have odd data
+      let odLog = char.log.find(l => l.indexOf("undefined") !== -1);
+      if(odLog !== undefined) debugger;
+      this.assert(odLog === null || odLog === undefined, "The logs don't have any undefined values");
+      odLog = char.log.find(l => l.indexOf("null") !== -1);
+      if(odLog !== undefined) debugger;
+      this.assert(odLog === null || odLog === undefined, "The logs don't have any null values");
+      odLog = char.log.find(l => l.indexOf("Object") !== -1);
+      if(odLog !== undefined) debugger;
+      this.assert(odLog === null || odLog === undefined, "The logs don't have any Object values");
     }
   }
 
@@ -1307,7 +1507,7 @@ class Tester {
     gen.identitySecret = false;
     gen.randomRanksColumn = 2;
     gen.determinePopularity(charPop5);
-    this.assertEquals(13, charPop5.popularity,
+    this.assertEquals(11, charPop5.popularity,
       `Popularity Roll: Surgical Composite (Public) correctly calculated.`);
 
     const charPop6 = new Character();
@@ -1328,7 +1528,7 @@ class Tester {
     gen.identitySecret = false;
     gen.randomRanksColumn = 2;
     gen.determinePopularity(charPop7);
-    this.assertEquals(13, charPop7.popularity,
+    this.assertEquals(11, charPop7.popularity,
       `Popularity Roll: Demihuman - Chiropteran (Public) correctly calculated.`);
 
     const charPop8 = new Character();

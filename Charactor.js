@@ -47,6 +47,8 @@ class Character {
             rankNumber: 0
         };
 
+        this.isHiTech = false;
+
         // Meta
         this.log = []; // Stores roll history
     }

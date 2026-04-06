@@ -47,7 +47,7 @@
   </details>
 
   <header>
-    <h1>Super Hero Character Generator v3.1.9</h1>
+    <h1>Super Hero Character Generator v3.1.10</h1>
   </header>
 
   <div class="tabs-container no-print">
@@ -103,9 +103,9 @@
     <div id="tab-tests" class="tab-content">
       <div class="control-group">
         <label>Test Type:</label>
-        <input type="radio" name="unit-tests-to-run" id="run-unit-tests" /> <label for="run-unit-tests">Unit</label>
+        <input type="radio" name="unit-tests-to-run" id="run-unit-tests" checked /> <label for="run-unit-tests">Unit</label>
         <input type="radio" name="unit-tests-to-run" id="run-render-tests" /> <label for="run-render-tests">Render</label>
-        <input type="radio" name="unit-tests-to-run" id="run-both-tests" checked /> <label for="run-both-tests">Both</label>
+        <input type="radio" name="unit-tests-to-run" id="run-both-tests" /> <label for="run-both-tests">Both</label>
       </div>
       <div class="control-group">
         <label>Select Render Test:</label>
@@ -400,13 +400,11 @@
     app.populateRenderTests();
 
     // Initial Generation
-    app.generate();
-    //app.runTests();
+    //app.generate();
+    app.runTests();
 
-    // TODO #22 Verify all attributes for Physical Form
-    // TODO #21 Add Unit Tests for each Physical Form attribute
-    // TODO #20 Verify all attributes for Wekaness Stimulus
-    // TODO #19 Add Unit Tests for each Wekaness Stimulus attribute
+    // TODO #20 Verify all attributes for Weakness Stimulus
+    // TODO #19 Add Unit Tests for each Weakness Stimulus attribute
     // TODO #18 Verify all attributes for Powers
     // TODO #17 Add Unit Tests for each Powers attribute
     // TODO #16 Add Powers Special Rolls for Invisibility Form
