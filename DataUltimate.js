@@ -682,64 +682,78 @@ const POWER_LIST_ULTIMATE_TABLE = [
     // Energy Emission (EE)
     {
         category: "Energy Emission", code: "EE1", maxRoll: 10, name: "Cold Generation", powerCount: 1,
+        rollExtraInformation: "EMMISSION_POINT_TABLE",
         optionalPowers: "Energy Control\\Coldshaping|Energy Control\\Energy Solidification|Matter Control\\Molding",
         description: "This Power is the pure form of Ice Generation and one it is often confused with. The hero can emit a field that decreases thermal energy and infra-red radiation. The Power decreases the temperature of the target. The only limitation is that the temperature cannot drop lower than absolute zero ( - 273 degrees Celsius or - 459.4 degrees Fahrenheit). The power has the side-effect of cooling the air between the hero and the target."
     },
     {
         category: "Energy Emission", code: "EE2", maxRoll: 20, name: "Electrical Generation", powerCount: 1,
+        rollExtraInformation: "EMMISSION_POINT_TABLE",
         description: "The hero can create electrical streams that can do Power rank damage. The hero can project the electricity through any conductive medium, such as air, water, or metal, at Power rank range. "
     },
     {
         category: "Energy Emission", code: "EE3", maxRoll: 22, name: "Energy Doppelganger", powerCount: 1,
+        rollExtraInformation: "EMMISSION_POINT_TABLE",
         description: "The hero can generate an Energy Body from his own body. This Doppelganger can have Powers of its own, including those characteristic to the type of energy of which the Doppelganger is composed. The Doppelganger automatically has the Power of True Flight. While the player can decide which Powers are possessed by whom, a rule of thumb is that the majority of physical Powers are assigned to the Doppelganger. The player must also decide whether the Doppelganger is simply an extension of the hero's will or if it has an independent, but obedient, mind. Normally the hero can generate only one Doppelganger at a time."
     },
     {
         category: "Energy Emission", code: "EE4", maxRoll: 34, name: "Fire Generation", powerCount: 1,
+        rollExtraInformation: "EMMISSION_POINT_TABLE",
         description: "The hero can project fire with Power rank damage and range. These flames have no apparent fuel source and spring from the hero as if he were a living fuel tank. Although the flames' fuel comes out of the proverbial nowhere, free oxygen must be present for the Power to function. This has to be the most dangerous Power around. "
     },
     {
         category: "Energy Emission", code: "EE5", maxRoll: 37, name: "Hard Radiation", powerCount: 1,
+        rollExtraInformation: "EMMISSION_POINT_TABLE",
         description: "This covers the dangerous section of the energy spectrum: ultraviolet light, x-rays, and alpha and beta particles, gamma rays, and the ever-popular \"cosmic rays\". The hero can project any of these types at Power rank range and damage. "
     },
 
     {
         category: "Energy Emission", code: "EE6", maxRoll: 42, name: "Heat", powerCount: 1,
+        rollExtraInformation: "EMMISSION_POINT_TABLE",
         description: "The hero can generate pure heat that is not necessarily accompanied by light or flame by accelerating molecular motion. This permits the hero to do rank level effects over target materials. Because this Power uses pure heat, it can function in conditions that negate Flame Emission, like the absence of free oxygen or the hero's being underwater."
     },
     {
         category: "Energy Emission", code: "EE7", maxRoll: 52, name: "Kinetic Bolt", powerCount: 1,
+        rollExtraInformation: "EMMISSION_POINT_TABLE",
         optionalPowers: "Energy Control\\Kinetic Control|Mental Enhancement\\Telekinesis",
         description: "This is a crude form of M30/Telekinesis. The hero can strike a target with a surge of force at Power rank range and damage. The Kinetic Bolt can be shaped as desired by the hero. It can be a wide cylinder, or an incredibly fine needle. Its effect is the same as if the target had been struck by a solid object of equal material strength."
     },
     {
         category: "Energy Emission", code: "EE8", maxRoll: 62, name: "Light Emission", powerCount: 1,
+        rollExtraInformation: "EMMISSION_POINT_TABLE",
         description: "The hero can emit powerful bursts of light do Power rank damage at rank range. The light may be of any nature."
     },
     {
         category: "Energy Emission", code: "EE9", maxRoll: 72, name: "Magnetism", powerCount: 1,
+        rollExtraInformation: "EMMISSION_POINT_TABLE",
         description: "The hero can generate intense magnetic force. The magnetic field may be centered on the hero's body or be projected at rank range. The field can affect anything susceptible to magnetism, attracting it with Power rank Strength. The hero can induce magnetism into any materials that can sustain a magnetic field."
     },
     {
         category: "Energy Emission", code: "EE10", maxRoll: 75, name: "Plasma Generation", powerCount: 1,
+        rollExtraInformation: "EMMISSION_POINT_TABLE",
         description: "The hero can generate plasma.  Plasma refers here to a field of highly-charged particles. Common examples include the aurora borealis, the glow in a fluorescent tube, the Van Allen Belt, and the heart of a nuclear blast. Plasmas may be of any nature: fiery, magnetic, electrical, radioactive, or be of a previously unknown form of energy. This last group includes many super-powers, living energy fields, and beings who can transform themselves into pure energy. "
     },
     {
         category: "Energy Emission", code: "EE11", maxRoll: 78, name: "Radiowave Generation", powerCount: 1,
+        rollExtraInformation: "EMMISSION_POINT_TABLE",
         optionalPowers: "Energy Control\\Radiowave Control|Self-Alteration\\Energy Sheath|Travel\\Carrier Wave",
         description: "The hero can generate radiowaves, including AM and FM signals and microwaves. This Power primarily affects broadcasting and electronics; the Power can do rank damage over rank range to these. The Power can also be used to directly affect any target by internally heating it through microwave bombardment."
     },
     {
         category: "Energy Emission", code: "EE12", maxRoll: 83, name: "Shadowcasting", powerCount: 1,
+        rollExtraInformation: "EMMISSION_POINT_TABLE",
         optionalPowers: "Energy Control\\Shadowshaping|Energy Control\\Darkforce Manipulation",
         description: "The hero can emit a field that decreases light and radiation. The obscured energy's Intensity is lowered by the Power's rank taken as Intensity. The energy forms that can be affected by this Power are Light, Heat, Hard Radiation, Radiowaves, Energy Doppelgangers, and Energy Bodies. "
     },
     {
         category: "Energy Emission", code: "EE13", maxRoll: 93, name: "Sonic Generation", powerCount: 1,
+        rollExtraInformation: "EMMISSION_POINT_TABLE",
         optionalPowers: "Energy Control\\Sound Manipulation|Energy Emission\\Vibration|Energy Control\\Vibration Control",
         description: "The hero can generate intense sound and make attacks of Power rank range and damage. This Power can generate frequencies normally inaudible. The hero can disrupt other sound-based Powers by creating dissonance as his harmonics clash with the second Power's harmonics."
     },
     {
         category: "Energy Emission", code: "EE14", maxRoll: 100, name: "Vibration", powerCount: 1,
+        rollExtraInformation: "EMMISSION_POINT_TABLE",
         optionalPowers: "Energy Control\\Vibration Control|Energy Emission\\Sonic Generation",
         description: "The hero can generate non-audible vibrations. These can alter existing harmonics, effectively negating any sonic- or vocal-based Power. The hero can cause tremors at Power rank range and damage. The Power can even be used to incapacitate living targets; effects can vary from motion sickness (nausea and vomiting) to death by internal hemmorhaging. "
     },
@@ -791,6 +805,7 @@ const POWER_LIST_ULTIMATE_TABLE = [
     // Lifeform Control (L)
     {
         category: "Lifeform Control", code: "L1", maxRoll: 14, name: "Biophysical Control", powerCount: 1,
+        rollExtraInformation: "BIOPHYSICAL_CONTROL_FORM_TABLE",
         description: "The hero has the ability to consciously alter the physiology of a target. This is accomplished by sheer force of will and does not require any physical action on the hero's part, aside from touching the target. The Power can be used at a distance but each 10 feet separating the hero from the target reduces his effective Power by -1CS. The Power is normally concentrated on a single target, but the hero can affect as many targets as he desires. The result of any form of this Power is permanent. "
     },
     {
@@ -879,62 +894,75 @@ const POWER_LIST_ULTIMATE_TABLE = [
     // Magic (MG)
     {
         category: "Magic", code: "MG1", maxRoll: 8, name: "Enchantment", powerCount: 1,
+        rollExtraInformation: "MAGIC_MECHANISM_TABLE",
         optionalPowers: "Matter Conversion\\Elemental Conversion|Matter Conversion\\Molecular Conversion|Matter Control\\Molding",
         description: "The Mage is able to invest a target with Magical Power. The target must be a non-sentient being or even non-living matter. The Mage is able to turn the Enchanted item into a battery that can harmlessly store Magic. Any spell stored within the item can be retained indefinitely in a state of readiness until the spell is somehow released. The Mage can store any spell he already possesses with the sole exception of this Power; a Mage cannot Enchant something that will then Enchant something else later on. Enchantment can store any number of spells, within the limit imposed by Enchantment's rank number. Nemeses include Force Field vs. Magic, Resistance to Magic, Magic Control, or Magic Domination."
     },
     {
         category: "Magic", code: "MG2", maxRoll: 15, name: "Energy Source", powerCount: 0,
+        rollExtraInformation: "MAGIC_MECHANISM_TABLE",
         description: "The Mage draws his Magic from a special source that provides him with all the raw Power he needs. As long as the Mage can maintain his link with his Source, he can continue to use the Magic it provides. The nature of the Source and the link vary by individual case. If the source is small enough, the Mage might be required to carry it with him. If not, perhaps the Mage has to simply return to the Source at regular intervals or forge a mystical \"silver cord\" that ties him to the Source, regardless of the intervening distance. If the link is severed or the Source destroyed, the Mage is left with a finite supply of Magic."
     },
     {
         category: "Magic", code: "MG3", maxRoll: 17, name: "Internal Limbo", powerCount: 1,
+        rollExtraInformation: "MAGIC_MECHANISM_TABLE",
         optionalPowersMax: 1,
         optionalPowers: "Energy Emission\\Energy Doppelganger|Illusionary\\Illusory Duplication|Matter Creation\\Lifeform Creation|Mental Enhancement\\Free Spirit|Self-Alteration\\Anatomical Separation|Self-Alteration\\Self-Duplication|Travel\\Astral Body",
         description: "The Mage can create a pocket dimension whose gateway is his own body. This is a timeless space of near-infinite volume. The Mage can shape conditions within the Internal Limbo and create any environment he desires. The Mage can also control the basic attitudes and emotions of any being within this Limbo. The Emotion-altering aspect of Internal Limbo functions as +6CS Emotion Control. If the Mage possesses such Powers as Energy Doppelganger, Illusory Duplication, Lifeform Creation, Free Spirit, Anatomical Separation, Self-Duplication, or Astral Body, then he can send a part or a representation of himself into his little world while the rest of himself stays in the outer world. Without such an ability, the Mage is limited to only basic awareness of conditions within the Internal Limbo."
     },
     {
         category: "Magic", code: "MG4", maxRoll: 25, name: "Magic Control", powerCount: 1,
+        rollExtraInformation: ["MAGIC_MECHANISM_TABLE", "MAGIC_CONTROL_TABLE"],
         description: "The Mage can alter the behavior of pure Magic itself, whether it is in a raw or applied state. The Mage can control the actions of any Magic within his range and capabilities.  The Power can be made to affect either a specific type of spell or all the spells of specific Mage. In the first case, Control is exerted over all spells of the chosen type within the Mage's range, regardless of how many other Mages are affected. In the second case, Control is exerted over a particular Magical adversary and affects all the spells that Mage possesses."
     },
     {
         category: "Magic", code: "MG5", maxRoll: 28, name: "Magic Creation", powerCount: 1,
+        rollExtraInformation: "MAGIC_MECHANISM_TABLE",
         optionalPowers: "Mental Enhancement\\Hyper-Intelligence|Mental Enhancement\\Total Memory", 
         description: "The Mage has the ability to create new Magical Powers and invest them into sentient beings for their own use. The new Magic can be of any nature, including any of the listings in this book, so long as they are treated as Magical rather than normal Powers. The Magical Powers she confers are nowhere near as high ranked as those the Mage possesses."
     },
     {
         category: "Magic", code: "MG6", maxRoll: 33, name: "Magic Domination", powerCount: 1,
+        rollExtraInformation: "MAGIC_MECHANISM_TABLE",
         optionalPowers: "Lifeform Control\\Mind Control|Power Control\\Domination", 
         description: "This is a form of Mind Control. The Mage can control the actions of other Mages in regards to the casting and use of Magic spells. The Mage acts as a Puppetmaster who can control the physical actions but not the conscious mind of his victim. The Mage can force his puppet to cast any Magic he possesses in any way the controlling Mage desires. The Mage cannot control the actual characteristics of the puppet Mage's Magic."
     },
     {
         category: "Magic", code: "MG7", maxRoll: 39, name: "Magic Transferral", powerCount: 1,
+        rollExtraInformation: "MAGIC_MECHANISM_TABLE",
         optionalPowers: "Lifeform Control\\Mind Transferral|Power Control\\Power Transferral", 
         description: "The Mage can transfer some or all of her Magic to another sentient being. Only this Power cannot be transferred. Any combination of Powers and ranks can be transferred. The rank of each spell decreases the rank for that spell still held by the Mage."
     },
     {
         category: "Magic", code: "MG8", maxRoll: 41, name: "Magic Vampirism", powerCount: 1,
+        rollExtraInformation: "MAGIC_MECHANISM_TABLE",
         description: "The Mage-Vampire can drain the Magical energy from a target and convert that Magic into extra Strength, Endurance, Psyche, and any other Magic or Powers he possosses.  The Mage-Vampire can force a nonliving, non-sentient Magical item or being to release all its raw Magic. A drained item is now nothing but a collection of normal materials. Magical beings may be hurt or destroyed if the Magic was an intrinsic part of their physiology. If not, they are now normal, powerless creatures. Living or sentient beings are harder to drain because they possess a Psyche."
     },
     {
         category: "Magic", code: "MG9", maxRoll: 71, name: "Power Simulation", powerCount: 0,
+        rollExtraInformation: "MAGIC_MECHANISM_TABLE",
         description: "This is not an actual Magical Power. What it is is a Magical version of any Power in the Ultimate Powers Book. Once this Magical Power appears and the player rolls again to gain an actual Power, any other Powers the player gains should also be considered to be Magical in nature."
     },
     {
         category: "Magic", code: "MG10", maxRoll: 77, name: "Reality Alteration", powerCount: 1,
+        rollExtraInformation: ["MAGIC_MECHANISM_TABLE", "MAGIC_REALITY_ALTERATION_TABLE"],
         optionalPowers: "Mental Enhancement\\Precognition|Mental Enhancement\\Clairvoyance|Mental Enhancement\\Postcognition",
         description: "The Mage can reshape time itself in order to achieve a desired situation."
     },
     {
         category: "Magic", code: "MG11", maxRoll: 79, name: "Spirit Vampirism", powerCount: 1,
+        rollExtraInformation: "MAGIC_MECHANISM_TABLE",
         optionalPowers: "Lifeform Control\\Bio-Vampirism",
         description: "The Mage can drain the Intuition and Psyche from a target and use the absorbed energy to increase his own Strength, Endurance, Psyche, and other Powers he possesses. Spirit Vampires lose energy at a dreadful rate. Their rank numbers for Strength, Endurance, Psyche, and all their Powers except this one drop one point per hour. The Spirit Vampire must feed in order to bring these back to at least their original levels. Even if deprived of victims, a Spirit Vampire will not starve to death. Spirit Vampirism is communicable."
     },
     {
         category: "Magic", code: "MG12", maxRoll: 95, name: "Sympathetic Magic", powerCount: 1,
+        rollExtraInformation: "MAGIC_MECHANISM_TABLE",
         description: "This is a combination of certain Mental and Life Control Powers. Sympathetic Magic requires the Mage make an Effigy of his target as a way of directing the Power to that target. The Effigy can be of any quality of workmanship, from a crude wax doll to an exquisitely detailed full portrait in oil paints; however, the Effigy must incorporate a cast-off body part, excretion, or possession of the target. Once the Effigy is created, any action that affects that Effigy will also affect the target. Once the Effigy is made, it can be used over and over again to effect the target. Effigies can affect any living or sentient being. Sympathetic Magic can be used against Robots, Computers, Cyborgs, rock-men, gas-women, and so on, provided the rules are followed."
     },
     {
         category: "Magic", code: "MG13", maxRoll: 100, name: "Warding", powerCount: 1,
+        rollExtraInformation: "MAGIC_MECHANISM_TABLE",
         description: "The Mage can create areas of latent Power in any desired location. The Ward is designated by a special substance or mark. The mage decides what specific Powers the Ward possesses and what the triggering stimulus will be. When that stimulus occurs, the Ward releases all its power is a single turn, generally in the direction of whatever created the stimulus. The triggering mechanism can be any condition stated by the Mage at the time of creation. Once created, Wards last until they are depleted or destroyed. The presence of a Ward can be revealed by either Energy, Magic, Power, or Psionic Detection."
     },
 
@@ -956,6 +984,7 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Matter Control", code: "MC4", maxRoll: 29, name: "Diminution", powerCount: 1,
+        rollExtraInformation: "DIMINUTION_MECHANISM_TABLE",
         description: "The hero can reduce the size of a target. The target must be in line of sight and within one area of the hero. Any material can be Diminished by this Power with the sole exception of material that has already been Diminished by an equal or higher rank of this Power. "
     },
     {
@@ -964,6 +993,7 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Matter Control", code: "MC6", maxRoll: 46, name: "Enlargement", powerCount: 1,
+        rollExtraInformation: "ENLARGEMENT_MECHANISM_TABLE",
         description: "The hero can increase the size of any target. The target can be of any nature and must be within both line-of-sight and one area of the hero's location. Any material can be enlarged with one exception; the Power cannot affect any target that has already been Enlarged by another Power of equal or greater rank. "
     },
     {
@@ -972,6 +1002,7 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Matter Control", code: "MC8", maxRoll: 61, name: "Matter Animation", powerCount: 1,
+        rollExtraInformation: "MATTER_ANIMATION_FORM_TABLE",
         description: "The hero can alter the flow of any raw matter, impart movement to stationary matter, and shape such matter into any desired form. The Power can only affect matter that is in a relatively natural state. "
     },
     {
@@ -1152,6 +1183,7 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Mental Enhancement", code: "M18", maxRoll: 66, name: "Mental Duplication", powerCount: 1,
+        rollExtraInformation: "MENTAL_DUPLICATION_FORM_TABLE",
         optionalPowers: "Mental Enhancement\\Mind Drain|Power Control\\Duplication",
         description: "This is a combination of Powers that enables the hero to psionically study a subject's mind and then create a simulation of that mind within the hero's own brain. This is a great way to learn secrets and interrogate subjects who would otherwise be rather uncooperative. The duplicated mind contains the personality of the original, most memories, and possibly the mental or psionic Powers of the original. The subject is unaffected by the Power and loses none of his own mental abilities."
     },
@@ -1200,6 +1232,7 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Mental Enhancement", code: "M28", maxRoll: 80, name: "Serial Immortality", powerCount: 1,
+        rollExtraInformation: "SERIAL_IMMORTALITY_FORM_TABLE",
         description: "A character with this Power can suffer damage, get sick, age, and even die. None of it is permanent to the character, though. When the hero's body dies from any cause, the unique nature of his lifeforce enables it to transfer to a new body. He can also transfer some but not all of his Powers to the new body."
     },
     {
@@ -1233,6 +1266,7 @@ const POWER_LIST_ULTIMATE_TABLE = [
     // Physical Enhancement (P)
     {
         category: "Physical Enhancement", code: "P1", maxRoll: 14, name: "Armor Skin", powerCount: 1,
+        rollExtraInformation: "ARMOR_SKIN_FORM_TABLE",
         description: "This is a form of Body Armor. The hero's skin is transformed into a damage-resistant form.  The Armor Skin may be permanent or temporary. The permanent form is a lasting modification to the hero's appearance and physiology. The temporary form allows the hero to retain his normal human appearance and identity. "
     },
     {
@@ -1307,6 +1341,7 @@ const POWER_LIST_ULTIMATE_TABLE = [
     // Power Control (PC)
     {
         category: "Power Control", code: "PC1", maxRoll: 8, name: "Control", powerCount: 1,
+        rollExtraInformation: "CONTROL_FORM_TABLE",
         description: "The hero can alter the behavior of pure Power, whether it is in a raw or applied state. The hero can control the actions of any Powers within his range and capability. "
     },
     {
@@ -1427,7 +1462,8 @@ const POWER_LIST_ULTIMATE_TABLE = [
     },
     {
         category: "Self-Alteration", code: "S16", maxRoll: 83, name: "Invisibility", powerCount: 1,
-        description: "With this Power a hero can render himself undetectable by normal, consciously willed sight. There are four very different means of accomplishing thiseffect. Each form has unique characteristics regarding such factors as the area made invisible, protection against light-based attacks, mechanical detection, and detection by other means."
+        rollExtraInformation: "INVISIBILITY_FORM_TABLE",
+        description: "With this Power a hero can render himself undetectable by normal, consciously willed sight. There are four very different means of accomplishing this effect. Each form has unique characteristics regarding such factors as the area made invisible, protection against light-based attacks, mechanical detection, and detection by other means."
     },
     {
         category: "Self-Alteration", code: "S17", maxRoll: 85, name: "Physical Gestalt", powerCount: 1,
@@ -1690,11 +1726,11 @@ const MAGIC_MECHANISM_TABLE = [
     },
     {
         maxRoll: 20, name: "Chant",
-        description: "he hero needs to recite a series of words to manifest his Power. The Chant can be any length and form."
+        description: "The hero needs to recite a series of words to manifest his Power. The Chant can be any length and form."
     },
     {
         maxRoll: 28, name: "Song",
-        description: "he hero need to sing or play a specific song, tune, or rhythm to bring about the desired Effect."
+        description: "The hero needs to sing or play a specific song, tune, or rhythm to bring about the desired Effect."
     },
     {
         maxRoll: 40, name: "Gesture",
@@ -1722,7 +1758,7 @@ const MAGIC_MECHANISM_TABLE = [
     },
     {
         maxRoll: 100, name: "Ritual",
-        description: "This is a combination of any of the preceding nine Mechanisms into a compound Mechanism.",
+        description: "This is a combination of the following Mechanisms into a compound Mechanism.",
         needsRitualRoll: true
     },
 ];
@@ -2596,7 +2632,7 @@ const TALENT_LIST_ULTIMATE_TABLE = [
         description: "Pick a subject to be a know-it-all about."
     },
     {
-        category: "Other", maxRoll: 1, name: "",
+        category: "Other", maxRoll: 100, name: "",
         description: "Enables a character to produce novel, screenplays, comic books, poetry, coloring books. Takes at least a week to complete."
     },
 
@@ -2852,3 +2888,20 @@ const CONTACT_TYPE_LIST_ULTIMATE_TABLE = [
         description: "The hero knows someone who studies recognized mythology and actions of the extra-dimensional beings known as gods (Olympians, Asgardians, etc.). The Contact will specialize in one pantheon of deities."
     },
 ];
+
+const EXTRA_TABLES = {
+    INVISIBILITY_FORM_TABLE: INVISIBILITY_FORM_TABLE,
+    BIOPHYSICAL_CONTROL_FORM_TABLE: BIOPHYSICAL_CONTROL_FORM_TABLE,
+    EMMISSION_POINT_TABLE: EMMISSION_POINT_TABLE,
+    MAGIC_MECHANISM_TABLE: MAGIC_MECHANISM_TABLE,
+    RITUAL_ROLLS_TABLE: RITUAL_ROLLS_TABLE,
+    MAGIC_CONTROL_TABLE: MAGIC_CONTROL_TABLE,
+    MAGIC_REALITY_ALTERATION_TABLE: MAGIC_REALITY_ALTERATION_TABLE,
+    DIMINUTION_MECHANISM_TABLE: DIMINUTION_MECHANISM_TABLE,
+    ENLARGEMENT_MECHANISM_TABLE: ENLARGEMENT_MECHANISM_TABLE,
+    MATTER_ANIMATION_FORM_TABLE: MATTER_ANIMATION_FORM_TABLE,
+    MENTAL_DUPLICATION_FORM_TABLE: MENTAL_DUPLICATION_FORM_TABLE,
+    SERIAL_IMMORTALITY_FORM_TABLE: SERIAL_IMMORTALITY_FORM_TABLE,
+    ARMOR_SKIN_FORM_TABLE: ARMOR_SKIN_FORM_TABLE,
+    CONTROL_FORM_TABLE: CONTROL_FORM_TABLE
+};

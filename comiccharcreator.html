@@ -47,7 +47,7 @@
   </details>
 
   <header>
-    <h1>Super Hero Character Generator v3.1.11</h1>
+    <h1>Super Hero Character Generator v3.1.12</h1>
   </header>
 
   <div class="tabs-container no-print">
@@ -167,7 +167,7 @@
       static render(char, mode) {
         const display = document.getElementById('display-area');
 
-        let powersHtml = char.powers.map(p => `<li class="power"><strong>${mode === 'ultimate' ? `${p.code}/` : ''}${p.name}${p.powerSlots > 1 ? `<span class="multiple-slots">*</span>` : ``}${p.bonusPower ? ` <span class="bonus-power" title="This is a Bonus Power">B</span>` : ``}${p.optionalPower ? ` <span class="bonus-power" title="This is an Optional Power">O</span>` : ``}</strong>: ${mode !== 'generic' ? ` ${p.rank} (${p.number})` : ``} &nbsp; <span class="power-description">${p.description}</span></li>`).join('');
+        let powersHtml = char.powers.map(p => `<li class="power"><strong>${mode === 'ultimate' ? `${p.code}/` : ''}${p.name}${p.powerSlots > 1 ? `<span class="multiple-slots">*</span>` : ``}${p.bonusPower ? ` <span class="bonus-power" title="This is a Bonus Power">B</span>` : ``}${p.optionalPower ? ` <span class="bonus-power" title="This is an Optional Power">O</span>` : ``}</strong>: ${mode !== 'generic' ? ` ${p.rank} (${p.number})` : ``} &nbsp; <span class="power-description">${p.description}  ${p.extraInformation !== undefined && p.extraInformation !== "" ? "EXTRA: " + p.extraInformation : ""}</span></li>`).join('');
         let talentsHtml = char.talents.map(t => `<li class="talent"><strong>${t.category}: ${t.name}${t.talentSlots > 1 ? `<span class="multiple-slots">*</span>` : ``}</strong> &nbsp; <span class="talent-description">${t.description}</span></li>`).join('');
         let contactsHtml = char.contacts.map(c => `<li class="contact"><strong>${c.category}/${c.name}</strong> &nbsp; <span class="contact-description">${c.description}</span></li>`).join('');
         let logHtml = char.log.map(l => `<div>${l}</div>`).join('');
@@ -403,24 +403,8 @@
     app.generate();
     //app.runTests();
 
-    // TODO #16 Add Powers Special Rolls for Invisibility Form
-    // TODO #15 Add Powers Special Rolls for BioPhyiscal Control
-    // TODO #14 Add Powers Special Rolls for Emission Point
-    // TODO #13 Add Powers Special Rolls for Magic Mechanism
-    // TODO #12 Add Powers Special Rolls for Ritual Control
-    // TODO #11 Add Powers Special Rolls for Magic Control
-    // TODO #10 Add Powers Special Rolls for Magic Reality Alteration
-    // TODO #9 Add Powers Special Rolls for Diminution Mechanism
-    // TODO #8 Add Powers Special Rolls for Enlargement Mechanism
-    // TODO #7 Add Powers Special Rolls for Matter Animation Form
-    // TODO #6 Add Powers Special Rolls for Mental Duplication Form
-    // TODO #5 Add Powers Special Rolls for Serial Immortality Form
-    // TODO #4 Add Powers Special Rolls for Armor SKin Form
-    // TODO #3 Add Powers Special Rolls for Control Form
     // TODO #2 Finish PowersTooMany test for Ultimate
     // TODO #1 Finish ContactsTooMany test for Ultimate
-
-    // TODO Revisit Ability Adjustments based on Powers
 
   </script>
 </body>

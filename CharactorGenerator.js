@@ -1,5 +1,7 @@
 // K2 to collapse
 class CharacterGenerator {
+  rollArraySize = 100;
+
   physicalFormRoll = 0;
   subTypeRoll = 0;
   compoundRandomRanksColumnRoll = 0;
@@ -21,17 +23,17 @@ class CharacterGenerator {
   resourceModifierRoll = 0;
 
   powerNumberRoll = 0;
-  powerCategoryRolls = Array(30).fill(0);
-  powerRolls = Array(30).fill(0);
-  powerRankRolls = Array(30).fill(0);
+  powerCategoryRolls = Array(this.rollArraySize).fill(0);
+  powerRolls = Array(this.rollArraySize).fill(0);
+  powerRankRolls = Array(this.rollArraySize).fill(0);
 
   talentNumberRoll = 0;
-  talentCategoryRolls = Array(30).fill(0);
-  talentRolls = Array(30).fill(0);
+  talentCategoryRolls = Array(this.rollArraySize).fill(0);
+  talentRolls = Array(this.rollArraySize).fill(0);
 
   contactNumberRoll = 0;
-  contactCategoryRolls = Array(30).fill(0);
-  contactRolls = Array(30).fill(0);
+  contactCategoryRolls = Array(this.rollArraySize).fill(0);
+  contactRolls = Array(this.rollArraySize).fill(0);
 
   popularityRoll = 0;
 
@@ -39,6 +41,9 @@ class CharacterGenerator {
   weaknessEffectRoll = 0;
   weaknessDurationRoll = 0;
   weaknessRankRoll = 0;
+
+  powersExtraInfoRolls = Array(this.rollArraySize).fill(0);
+  peiIndex = 0;
 
   randomRanksColumn = -1;
 
@@ -127,7 +132,7 @@ class CharacterGenerator {
     this.talentNumberRoll = Dice.roll100();
     this.contactNumberRoll = Dice.roll100();
 
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < this.rollArraySize; i++) {
       this.powerCategoryRolls[i] = Dice.roll100();
       this.powerRankRolls[i] = Dice.roll100();
       this.talentCategoryRolls[i] = Dice.roll100();
@@ -143,7 +148,10 @@ class CharacterGenerator {
         this.contactRolls[i] = Dice.roll100();
       }
 
+      this.powersExtraInfoRolls[i] = Dice.roll100();
     }
+
+    this.peiIndex = 0;
 
     this.popularityRoll = Dice.roll100();
 
@@ -296,6 +304,7 @@ class CharacterGenerator {
 
       const tempRandomRanksColumnIndex = tempRandomRanksColumnTable.findIndex(o => this.compoundRandomRanksColumnRoll <= o);
       const tempRRCRow = this.physicalFormTable.find(o => o.name === char.bodyTypes[tempRandomRanksColumnIndex]);
+      if(tempRRCRow === undefined) debugger;
       randomRanksColumn = tempRRCRow.column;
     }
 
@@ -1026,6 +1035,7 @@ class CharacterGenerator {
   }
 
   isPowerAlreadyAssigned(powers, powerRow) {
+    if(powerRow === undefined) debugger;
     for (let index = 0; index < powers.length; index++) {
       if (powers[index].name === powerRow.name) {
         return true;
@@ -1088,6 +1098,22 @@ class CharacterGenerator {
       rankRow = this.randomRanksTable.find(r => r.rank === rank);
     }
 
+    let extraInformation = "";
+    value = Utility.getValue(powerRow, "rollExtraInformation", '');
+    if (value !== '') {
+      if(Array.isArray(value)) {
+        for(let reiIndex = 0; reiIndex < value.length; reiIndex++) {
+          extraInformation += this.getExtraInformation(value[reiIndex]);
+        }
+      } else {
+        extraInformation += this.getExtraInformation(value);
+      }
+
+      if(extraInformation.indexOf("Ritual/This is a combination of the following Mechanisms into a compound Mechanism.") !== -1) {
+        extraInformation = extraInformation.trim() + " " + this.getRitualRollsExtraInformation();
+      }
+    }
+
     char.powers.push({
       name: powerRow.name,
       code: powerRow.code,
@@ -1096,6 +1122,7 @@ class CharacterGenerator {
       rank: rankRow.rank,
       number: rankRow.rankNumber,
       powerSlots: powerRow.powerCount,
+      extraInformation: extraInformation
     });
 
     char.logRoll("Power Gen", `${catRoll}/${powerRoll}/${rankRoll}`, `${category}: ${powerRow.name} (${rankRow.rank})`);
@@ -1112,6 +1139,45 @@ class CharacterGenerator {
         this.generateOptionalPower(char, value, powerRow.optionalPowers);
       }
     }
+  }
+
+  getRitualRollsExtraInformation() {
+    let returnValue = "";
+
+    const table = RITUAL_ROLLS_TABLE;
+    const thisRoll = this.powersExtraInfoRolls[this.peiIndex];
+    const ritualRolls = table.find(f => thisRoll <= f.maxRoll);
+    this.peiIndex++;
+
+    returnValue += ` RITUALS (${ritualRolls.mechanismCount}): `;
+
+    for(let index = 0; index < ritualRolls.mechanismCount; index++) {
+      const mechTable = MAGIC_MECHANISM_TABLE;
+      let mechRoll = this.powersExtraInfoRolls[this.peiIndex];
+      while(mechRoll > 84) {
+        mechRoll = this.powersExtraInfoRolls[this.peiIndex];
+        this.peiIndex++;
+      }
+      const mechForm = mechTable.find(f => mechRoll <= f.maxRoll);
+      returnValue += mechForm.name + "/" + mechForm.description + " ";
+      this.peiIndex++;
+    }
+
+    return returnValue.trim();
+  }
+
+  getExtraInformation(value) {
+    let returnValue = "";
+
+    const table = EXTRA_TABLES[value];
+    const thisRoll = this.powersExtraInfoRolls[this.peiIndex];
+    const form = table.find(f => thisRoll <= f.maxRoll);
+
+    if(form === undefined) debugger;
+    returnValue = form.name + "/" + form.description;
+    this.peiIndex++;
+
+    return returnValue;
   }
 
   generatorBonusPowerOfPhysicalForm(char, bonusPowerString) {

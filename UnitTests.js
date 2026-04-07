@@ -469,13 +469,10 @@ class Tester {
 
       // Check if logs have odd data
       let odLog = char.log.find(l => l.indexOf("undefined") !== -1);
-      if(odLog !== undefined) debugger;
       this.assert(odLog === null || odLog === undefined, "The logs don't have any undefined values");
       odLog = char.log.find(l => l.indexOf("null") !== -1);
-      if(odLog !== undefined) debugger;
       this.assert(odLog === null || odLog === undefined, "The logs don't have any null values");
-      odLog = char.log.find(l => l.indexOf("Object") !== -1);
-      if(odLog !== undefined) debugger;
+      odLog = char.log.find(l => l.indexOf("[object Object]") !== -1);
       this.assert(odLog === null || odLog === undefined, "The logs don't have any Object values");
     }
   }
@@ -1758,6 +1755,43 @@ class Tester {
     this.assertEquals("Heat", char2.powers[2].name, `Power Roll: Generated ${char2.powers[2].name} name.`);
     this.assertEquals("Typical", char2.powers[2].rank, `Power Rank Roll: Generated ${char2.powers[2].rank} rank.`);
 
+    const char3 = new Character();
+    char3.physicalForm = "Normal Human";
+    char3.origin = "Normal Human";
+    gen.randomRanksColumn = 2;
+    char3.powersCount = 3;
+    char3.powersSlots = 3;
+
+    gen.powerCategoryRolls = [92, 27, 19, 74];
+    gen.powerRolls = [83, 30, 40, 50];
+    gen.powerRankRolls = [74, 19, 27, 2];
+    gen.powersExtraInfoRolls = [1, 26, 76, 100];
+
+    gen.generateSinglePower(char3, 0);
+    this.assertEquals(1, char3.powers.length, `Power Quantity Roll: Generated ${char3.powers.length} powers.`);
+    this.assertEquals("Self-Alteration", char3.powers[0].category, `Power Category Roll: Generated ${char3.powers[0].category} category.`);
+    this.assertEquals("Invisibility", char3.powers[0].name, `Power Roll: Generated ${char3.powers[0].name} name.`);
+    this.assertEquals("Incredible", char3.powers[0].rank, `Power Rank Roll: Generated ${char3.powers[0].rank} rank.`);
+    this.assert(char3.powers[0].extraInformation !== "", `Power Extra Information Exists: ${char3.powers[0].extraInformation}.`);
+
+    const char4 = new Character();
+    char4.physicalForm = "Normal Human";
+    char4.origin = "Normal Human";
+    gen.randomRanksColumn = 2;
+    char4.powersCount = 3;
+    char4.powersSlots = 3;
+
+    gen.powerCategoryRolls = [40, 27, 19, 74];
+    gen.powerRolls = [8, 30, 40, 50];
+    gen.powerRankRolls = [74, 19, 27, 2];
+    gen.powersExtraInfoRolls = [100, 8, 20, 40, 52, 60, 68, 76, 84, 8, 20, 40, 52, 60, 68, 76, 84];
+    gen.peiIndex = 0;
+
+    gen.generateSinglePower(char4, 0);
+    this.assertEquals(1, char4.powers.length, `Power Quantity Roll: Generated ${char4.powers.length} powers.`);
+    this.assertEquals("Magic", char4.powers[0].category, `Power Category Roll: Generated ${char4.powers[0].category} category.`);
+    this.assertEquals("Enchantment", char4.powers[0].name, `Power Roll: Generated ${char4.powers[0].name} name.`);
+    this.assertEquals("Ritual/This is a combination of the following Mechanisms into a compound Mechanism. RITUALS (2): Chant/The hero needs to recite a series of words to manifest his Power. The Chant can be any length and form. Gesture/The hero must perform a specific physical action to bring about the desired Effect.", char4.powers[0].extraInformation, `Power Extra Information is a Ritual with Word/Chant: ${char4.powers[0].extraInformation}.`);
   }
 
   static SinglePowerTests(gen) {
@@ -1940,10 +1974,10 @@ class Tester {
     gen.generatorMode = 'ultimate';
     gen.setTables();
 
-    gen.throwAllRolls();
-
     // Test every power in POWER_LIST
     for (const targetPower of gen.powerListTable) {
+      gen.throwAllRolls();
+
       const char = new Character();
       char.physicalForm = "Normal Human";
       char.origin = "Normal Human";
@@ -2020,6 +2054,54 @@ class Tester {
       this.assertEquals(targetPower.category, p.category, `Power Category Roll: Generated ${p.category} category.`);
       this.assertEquals(targetPower.name, p.name, `Power Roll: Generated ${p.name} name.`);
       this.assertEquals("Excellent", p.rank, `Power Rank Roll: Generated ${p.rank} rank.`);
+
+      switch(targetPower.code) {
+        case "EE1":
+        case "EE2":
+        case "EE3":
+        case "EE4":
+        case "EE5":
+        case "EE6":
+        case "EE7":
+        case "EE8":
+        case "EE9":
+        case "EE10":
+        case "EE11":
+        case "EE12":
+        case "EE13":
+        case "EE14":
+        case "L1":
+        case "MG1": // Test for Ritual #. 
+        case "MG2": // Test for Ritual #. 
+        case "MG3": // Test for Ritual #. 
+        case "MG4": // Test for Ritual #. Test to verify both mechanism and control
+        case "MG5": // Test for Ritual #. 
+        case "MG6": // Test for Ritual #. 
+        case "MG7": // Test for Ritual #. 
+        case "MG8": // Test for Ritual #. 
+        case "MG9": // Test for Ritual #. 
+        case "MG10": // Test for Ritual #. Test for both mechanism and reality alter
+        case "MG11": // Test for Ritual #. 
+        case "MG12": // Test for Ritual #. 
+        case "MG13": // Test for Ritual #. 
+        case "MC4":
+        case "MC6":
+        case "MC8":
+        case "M18":
+        case "M28":
+        case "P1":
+        case "PC1":
+        case "S16":
+          {
+            this.assert(p.extraInformation !== "", `Power Extra Information Exists: ${p.extraInformation}.`);
+          }
+          break;
+        default:
+          {
+            this.assert(p.extraInformation === "", `Power Extra Information is blank.`);
+          }
+          break;
+      }
 
       try
       {
@@ -4803,6 +4885,7 @@ class Tester {
   static run() {
     document.getElementById('test-area').innerHTML = "<h3>Running Tests...</h3>";
 
+    for(let tindex = 0; tindex < 30; tindex++) {
     this.failureCount = 0;
     this.assertCount = 0;
 
@@ -4838,6 +4921,7 @@ class Tester {
     // this.RenderSubTypeTest();
     // this.RenderCombinationsTest();
     // this.RenderBonusContactTest();
+    }
 
     let alertMessage = `All Tests Passed!!!\r\n${this.assertCount} assertions.`;
     if (this.failureCount !== 0) {
