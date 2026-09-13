@@ -49,6 +49,30 @@ class Character {
 
         this.isHiTech = false;
 
+        // Boost
+        this.boostApplied = false;
+
+        // Structured intermediate state (less brittle than log matching)
+        this.state = {
+            physicalForm: "",
+            subType: "",
+            bodyTypes: [],
+            origin: "",
+            randomRanksColumn: -1,
+            abilitiesToGenerate: 1,
+            abilityAdjustments: {},   // { Fighting: 1, Endurance: -1, ... }
+            anyAbilityAdjustment: null, // { ability, oldRank, newRank, roll }
+            allPrimaryAbilityAdjustment: null, // { adjustment, abilities: {Fighting: {old, new}, ...} }
+            allPhysicalAbilityAdjustment: null, // { adjustment, abilities: {Fighting: {old, new}, ...} }
+            resources: { startRank: null, set: null, adjustment: 0, hiTech: false, final: null },
+            popularity: { start: null, set: null, adjustment: 0, final: null },
+            powersCount: { initial: 0, adjustment: 0, set: null, min: null, max: null },
+            talentsCount: { initial: 0, adjustment: 0, set: null, min: null, max: null },
+            contactsCount: { initial: 0, adjustment: 0, set: null, min: null, max: null },
+            healthAdjustment: null, // { type: 'add'|'multiply'|'divide', value }
+            weakness: { stimulus: null, effect: null, duration: null, rank: null },
+        };
+
         // Meta
         this.log = []; // Stores roll history
     }
@@ -88,23 +112,6 @@ class Character {
     getAbilityNumber(abilityName, abilityIndex) {
         if (abilityIndex === undefined || abilityIndex === null) abilityIndex = 0;
         return this.primaryAbilities[abilityIndex][abilityName].number;
-    }
-
-    getRankByShift11(currentRankName, shift) {
-        let index = RANKS.findIndex(r => r.name === currentRankName);
-        if (index === -1) return currentRankName;
-        let newIndex = index + shift;
-        if (newIndex < 0) newIndex = 0;
-        if (newIndex >= RANKS.length) newIndex = RANKS.length - 1;
-        return RANKS[newIndex];
-    }
-
-    modifyAbilityRank11(abilityName, shift) {
-        const currentRank = this.primaryAbilities[abilityName].rank;
-        const newRankData = this.getRankByShift(currentRank, shift);
-        this.primaryAbilities[abilityName].rank = newRankData.name;
-        this.primaryAbilities[abilityName].number = newRankData.standard;
-        this.logRoll(`Modifier: ${abilityName}`, `${shift} CS`, newRankData.name);
     }
 
     calculateSecondary() {

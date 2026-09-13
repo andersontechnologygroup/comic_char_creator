@@ -10,44 +10,8 @@
 
 <body>
 
-  <details class="about no-print">
-    <summary>About</summary>
-    <div>
-      <p>I have been a collector of comic books for over 40 years. One of my favorite books was the Official Handbook to
-        the Marvel Universe. This provided simple descriptions of the characters, including powers, talents, group
-        affiliations, contacts, etc. This format inspired me to create new characters using a very simple random number
-        generator and a set of rules that I created. The details of those rules are now lost to my childhood. Many years
-        ago I came across the Marvel Super Heroes RPG by TSR and was immediately drawn to the system. I have never been
-        an RPG player, but the system provided a simple character generation system.</p>
-      <p>This character generator is based (heavily) on the Marvel Super Heroes Advanced Rulebook. With v3.0, the
-        generator
-        mode can be switch between Generic, Advanced, and Ultimate mode, allowing you to generate characters for fun or
-        for
-        RPG purposes.</p>
-      <p>
-        I am still in th process of finishing up v3.0. You can take a look at the TODO list to see what is left. There
-        are a small
-        handful of Physical Form attributes that are currently not working. I also haven't put more than very generic
-        descriptions for the Powers.
-        Currently, Ultimate mode is using the samee Talents as the Advanced mode. I plan to add the unofficial Ultimate
-        Talents
-        to the Ultimate mode. I will also be eenhancing the Contacts types for the Ultimate mode.
-      </p>
-      <br>
-      <p class="center">
-        TSR is a registered trademark owned by TSR Inc. TSR inc. is a subsidiary of Wizards of the Coast, Inc., a
-        division of Hasbro, Inc.<br>
-        Names(s) of character(s) and the distinctive likeness(es) thereof are Trademarks and © of Marvel Characters,
-        Inc. and are used without permission.<br>
-        Names(s) of character(s) and the distinctive likeness(es) thereof are Trademarks and © of DC Comics and are used
-        without permission.<br>
-        This site is not intended to make money. It provides resources to players of a game no longer being produced.
-      </p>
-    </div>
-  </details>
-
   <header>
-    <h1>Super Hero Character Generator v3.1.12</h1>
+    <h1>Super Hero Character Generator v3.2.0</h1>
   </header>
 
   <div class="tabs-container no-print">
@@ -55,6 +19,7 @@
       <button class="tab-btn active" onclick="openTab(event, 'tab-generate')">Generate</button>
       <button class="tab-btn" onclick="openTab(event, 'tab-options')">Rules & Options</button>
       <button class="tab-btn" onclick="openTab(event, 'tab-tests')">Debug & Tests</button>
+      <button class="tab-btn" onclick="openTab(event, 'tab-about')">About</button>
     </div>
 
     <div id="tab-generate" class="tab-content active">
@@ -70,12 +35,19 @@
     <div id="tab-options" class="tab-content">
       <div class="control-group">
         <label>System Mode:</label>
-        <input type="radio" name="generator" id="generator_generic" value="generic" />
-        <label for="generator_generic">Generic</label>
+        <input type="radio" name="generator" id="generator_basic" value="basic" checked/>
+        <label for="generator_basic">Basic</label>
         <input type="radio" name="generator" id="generator_advanced" value="advanced" />
         <label for="generator_advanced">Advanced</label>
-        <input type="radio" name="generator" id="generator_ultimate" value="ultimate" checked />
+        <input type="radio" name="generator" id="generator_ultimate" value="ultimate"  />
         <label for="generator_ultimate">Ultimate</label>
+      </div>
+      <div class="control-group">
+        <label>Display Mode:</label>
+        <input type="radio" name="display_mode" id="display_full" value="full" checked />
+        <label for="display_full">Full</label>
+        <input type="radio" name="display_mode" id="display_generic" value="generic" />
+        <label for="display_generic">Generic</label>
       </div>
       <div class="control-group">
         <label>Identity:</label>
@@ -83,6 +55,50 @@
         <label for="identity_secret">Secret</label>
         <input type="radio" name="identity" id="identity_public" />
         <label for="identity_public">Public</label>
+      </div>
+      <div id="basic-mode-options" class="basic-mode-options" style="display: none;">
+        <div class="control-group">
+          <label><strong>Basic Mode Options:</strong></label>
+        </div>
+        <div class="control-group">
+          <label>Origin:</label>
+          <input type="radio" name="origin_known" id="origin_secret" checked />
+          <label for="origin_secret">Secret</label>
+          <input type="radio" name="origin_known" id="origin_public" />
+          <label for="origin_public">Public</label>
+        </div>
+        <div class="control-group">
+          <label>Status:</label>
+          <input type="radio" name="status" id="status_none" checked />
+          <label for="status_none">None</label>
+          <input type="radio" name="status" id="status_new" />
+          <label for="status_new">New in the Area</label>
+          <input type="radio" name="status" id="status_established" />
+          <label for="status_established">Well-Established</label>
+        </div>
+        <div class="control-group">
+          <label>Popularity Adjustment:</label>
+          <input type="checkbox" id="looks_human" />
+          <label for="looks_human">Looks Human</label>
+        </div>
+        <div class="control-group">
+          <label>Contacts:</label>
+          <input type="radio" name="contacts_mode" id="contacts_equals_powers" checked />
+          <label for="contacts_equals_powers">Equals Number of Powers</label>
+          <input type="radio" name="contacts_mode" id="contacts_random" />
+          <label for="contacts_random">Randomly Generated</label>
+        </div>
+        <div class="control-group">
+          <label>Power Selection:</label>
+          <input type="radio" name="power_selection" id="power_choose" checked />
+          <label for="power_choose">Choose from Category</label>
+          <input type="radio" name="power_selection" id="power_random" />
+          <label for="power_random">Randomly Generated</label>
+        </div>
+        <div id="power-category-preview" class="power-category-preview" style="display:none;">
+          <label><strong>Power Categories (determined by rolls):</strong></label>
+          <div id="power-category-list"></div>
+        </div>
       </div>
       <div class="control-group">
         <label>Hi-Tech Resource Logic:</label>
@@ -98,6 +114,38 @@
         <input type="radio" name="optional_powers" id="optional_powers_ignore" />
         <label for="optional_powers_ignore">Ignore all Optional Powers</label>
       </div>
+
+    </div>
+    <div id="tab-about" class="tab-content">
+      <p>I have been a collector of comic books for over 40 years. One of my favorite books was the Official Handbook to
+        the Marvel Universe. This provided simple descriptions of the characters, including powers, talents, group
+        affiliations, contacts, etc. This format inspired me to create new characters using a very simple random number
+        generator and a set of rules that I created. The details of those rules are now lost to my childhood. Many years
+        ago I came across the Marvel Super Heroes RPG by TSR and was immediately drawn to the system. I have never been
+        an RPG player, but the system provided a simple character generation system.</p>
+      <p>This character generator was based heavily on the Marvel Super Heroes Advanced Rulebook, until I got my hands on
+        a copy of the Basic character generator. With v3.0, the generator mode can be switched between Basic, Advanced, 
+        and Ultimate mode.  For each mode, you can select between Full and Generic display mode.  Full display mode
+        gives you all of the rank information you will need for RPG purposes.  Generic strips some of the details to
+        provide a more generic character generator just for fun.
+      <p>
+        I am still in th process of finishing up v3.0. You can take a look at the TODO list to see what is left.  As I was 
+        changing the Generic Mode to Basic Mode (after finding the Basic handbook), I ran into some debugging issues, so 
+        I stopped and did some massive enhancements to the testing framework.  Currently, there are a small handful of 
+        Physical Form attributes that are not working. I also haven't put more than very basic descriptions for the Powers.
+        Currently, Ultimate mode is using the same Talents as the Advanced mode. I plan to add the unofficial Ultimate
+        Talents to the Ultimate mode. I will also be enhancing the Contacts types for the Ultimate mode.
+      </p>
+      <br>
+      <p class="center">
+        TSR is a registered trademark owned by TSR Inc. TSR inc. is a subsidiary of Wizards of the Coast, Inc., a
+        division of Hasbro, Inc.<br>
+        Names(s) of character(s) and the distinctive likeness(es) thereof are Trademarks and © of Marvel Characters,
+        Inc. and are used without permission.<br>
+        Names(s) of character(s) and the distinctive likeness(es) thereof are Trademarks and © of DC Comics and are used
+        without permission.<br>
+        This site is not intended to make money. It provides resources to players of a game no longer being produced.
+      </p>
     </div>
 
     <div id="tab-tests" class="tab-content">
@@ -117,14 +165,37 @@
 
   <div id="display-area"></div>
   <div class="no-print" id="test-area"></div>
+  <div id="boost-modal-container"></div>
+  <div id="power-select-modal-container"></div>
 
   <script type="text/javascript" src="Charactor.js"></script>
   <script type="text/javascript" src="CharactorGenerator.js"></script>
-  <script type="text/javascript" src="DataGeneric.js"></script>
+  <script type="text/javascript" src="DataBasic.js"></script>
   <script type="text/javascript" src="DataAdvanced.js"></script>
   <script type="text/javascript" src="DataUltimate.js"></script>
   <script type="text/javascript" src="Utility.js"></script>
   <script type="text/javascript" src="UnitTests.js"></script>
+  <script>
+    // Constants needed by test files (must be defined before test scripts load)
+    var PHYSICAL_ABILITIES = ["Fighting", "Agility", "Strength", "Endurance"];
+    var MENTAL_ABILITIES = ["Reason", "Intuition", "Psyche"];
+  </script>
+  <script type="text/javascript" src="tests/TestsHelpers.js"></script>
+  <script type="text/javascript" src="tests/TestsUtility.js"></script>
+  <script type="text/javascript" src="tests/TestsAbilities.js"></script>
+  <script type="text/javascript" src="tests/TestsPowers.js"></script>
+  <script type="text/javascript" src="tests/TestsWeakness.js"></script>
+  <script type="text/javascript" src="tests/TestsTalents.js"></script>
+  <script type="text/javascript" src="tests/TestsContacts.js"></script>
+  <script type="text/javascript" src="tests/TestsFuzz.js"></script>
+  <script type="text/javascript" src="tests/TestsBoundary.js"></script>
+  <script type="text/javascript" src="tests/TestsBenchmark.js"></script>
+  <script type="text/javascript" src="tests/TestsPhysicalForms.js"></script>
+  <script type="text/javascript" src="tests/TestsOrigins.js"></script>
+  <script type="text/javascript" src="tests/TestsGeneratorMethods.js"></script>
+  <script type="text/javascript" src="tests/TestsBranchCoverage.js"></script>
+  <script type="text/javascript" src="tests/TestsCoverageBoost.js"></script>
+  <script type="text/javascript" src="tests/TestsPowerSelection.js"></script>
 
   <script>
     // Tab switching logic
@@ -159,17 +230,20 @@
       { name: "Intuition", maxRoll: 86 },
       { name: "Psyche", maxRoll: 100 },
     ];
-    const PHYSICAL_ABILITIES = ["Fighting", "Agility", "Strength", "Endurance"];
-    const MENTAL_ABILITIES = ["Reason", "Intuition", "Psyche"];
 
     // --- CLASSES ---
     class Renderer {
       static render(char, mode) {
         const display = document.getElementById('display-area');
 
-        let powersHtml = char.powers.map(p => `<li class="power"><strong>${mode === 'ultimate' ? `${p.code}/` : ''}${p.name}${p.powerSlots > 1 ? `<span class="multiple-slots">*</span>` : ``}${p.bonusPower ? ` <span class="bonus-power" title="This is a Bonus Power">B</span>` : ``}${p.optionalPower ? ` <span class="bonus-power" title="This is an Optional Power">O</span>` : ``}</strong>: ${mode !== 'generic' ? ` ${p.rank} (${p.number})` : ``} &nbsp; <span class="power-description">${p.description}  ${p.extraInformation !== undefined && p.extraInformation !== "" ? "EXTRA: " + p.extraInformation : ""}</span></li>`).join('');
-        let talentsHtml = char.talents.map(t => `<li class="talent"><strong>${t.category}: ${t.name}${t.talentSlots > 1 ? `<span class="multiple-slots">*</span>` : ``}</strong> &nbsp; <span class="talent-description">${t.description}</span></li>`).join('');
-        let contactsHtml = char.contacts.map(c => `<li class="contact"><strong>${c.category}/${c.name}</strong> &nbsp; <span class="contact-description">${c.description}</span></li>`).join('');
+        const isBasic = mode === 'basic';
+        const isAdvanced = mode === 'advanced';
+        const isUltimate = mode === 'ultimate';
+        const isFullDisplay = document.querySelector('input[name="display_mode"]:checked').value === 'full';
+
+        let powersHtml = char.powers.map(p => `<li class="power"><strong>${isUltimate ? `${p.code}/` : ''}${p.name}${p.powerSlots > 1 ? `<span class="multiple-slots" title="This power uses ${p.powerSlots} slots.">${p.powerSlots}</span>` : ``}${p.bonusPower ? ` <span class="bonus-power" title="This is a Bonus Power">B</span>` : ``}${p.optionalPower ? ` <span class="bonus-power" title="This is an Optional Power">O</span>` : ``}</strong>: ${` ${p.rank} ${isFullDisplay ? "(" + p.number + ")" : ""}`} &nbsp; <span class="power-description">${p.description}  ${p.extraInformation !== undefined && p.extraInformation !== "" ? "EXTRA: " + p.extraInformation : ""}</span></li>`).join('');
+        let talentsHtml = char.talents.map(t => `<li class="talent"><strong>${t.category}: ${t.name}${t.talentSlots > 1 ? `<span class="multiple-slots" title="This talent uses ${t.talentSlots} slots.">${t.talentSlots}</span>` : ``}</strong> &nbsp; <span class="talent-description">${t.description}</span></li>`).join('');
+        let contactsHtml = char.contacts.map(c => `<li class="contact"><strong>${c.category}/${c.name}</strong>${c.contactSlots > 1 ? `<span class="multiple-slots" title="This contact uses ${c.contactSlots} slots.">${c.contactSlots}</span>` : ``} &nbsp; <span class="contact-description">${c.description}</span></li>`).join('');
         let logHtml = char.log.map(l => `<div>${l}</div>`).join('');
 
         let powers = char.powers.map(item => item.powerSlots).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
@@ -179,7 +253,7 @@
             <div class="character-sheet">
                 <div class="section-title">Identity</div>`;
 
-        if (mode !== 'ultimate') {
+        if (!isUltimate) {
           html += `
                 <div class="info-header">
                     <div class="info-item"><span>Name</span> ${char.name}</div>
@@ -188,7 +262,7 @@
                 </div>`;
         }
 
-        if (mode === 'ultimate') {
+        if (isUltimate) {
           let physicalForm = char.physicalForm;
           if (char.subType !== "") physicalForm += ` (${char.subType})`;
 
@@ -224,22 +298,22 @@
                 <div class="stat-block">
                     <span class="stat-label">Fighting</span>
                     <span class="stat-rank">${char.primaryAbilities[0].Fighting.rank}</span>
-                    <span class="stat-number">${mode === 'generic' ? "" : char.primaryAbilities[0].Fighting.number}</span>
+                    <span class="stat-number">${!isFullDisplay ? "" : char.primaryAbilities[0].Fighting.number}</span>
                 </div>
                 <div class="stat-block">
                     <span class="stat-label">Agility</span>
                     <span class="stat-rank">${char.primaryAbilities[0].Agility.rank}</span>
-                    <span class="stat-number">${mode === 'generic' ? "" : char.primaryAbilities[0].Agility.number}</span>
+                    <span class="stat-number">${!isFullDisplay ? "" : char.primaryAbilities[0].Agility.number}</span>
                 </div>
                 <div class="stat-block">
                     <span class="stat-label">Strength</span>
                     <span class="stat-rank">${char.primaryAbilities[0].Strength.rank}</span>
-                    <span class="stat-number">${mode === 'generic' ? "" : char.primaryAbilities[0].Strength.number}</span>
+                    <span class="stat-number">${!isFullDisplay ? "" : char.primaryAbilities[0].Strength.number}</span>
                 </div>
                 <div class="stat-block">
                     <span class="stat-label">Endurance</span>
                     <span class="stat-rank">${char.primaryAbilities[0].Endurance.rank}</span>
-                    <span class="stat-number">${mode === 'generic' ? "" : char.primaryAbilities[0].Endurance.number}</span>
+                    <span class="stat-number">${!isFullDisplay ? "" : char.primaryAbilities[0].Endurance.number}</span>
                 </div>`;
         }
         else {
@@ -283,17 +357,17 @@
         html += `<div class="stat-block">
                     <span class="stat-label">Reason</span>
                     <span class="stat-rank">${char.primaryAbilities[0].Reason.rank}</span>
-                    <span class="stat-number">${mode === 'generic' ? "" : char.primaryAbilities[0].Reason.number}</span>
+                    <span class="stat-number">${!isFullDisplay ? "" : char.primaryAbilities[0].Reason.number}</span>
                 </div>
                 <div class="stat-block">
                     <span class="stat-label">Intuition</span>
                     <span class="stat-rank">${char.primaryAbilities[0].Intuition.rank}</span>
-                    <span class="stat-number">${mode === 'generic' ? "" : char.primaryAbilities[0].Intuition.number}</span>
+                    <span class="stat-number">${!isFullDisplay ? "" : char.primaryAbilities[0].Intuition.number}</span>
                 </div>
                 <div class="stat-block">
                     <span class="stat-label">Psyche</span>
                     <span class="stat-rank">${char.primaryAbilities[0].Psyche.rank}</span>
-                    <span class="stat-number">${mode === 'generic' ? "" : char.primaryAbilities[0].Psyche.number}</span>
+                    <span class="stat-number">${!isFullDisplay ? "" : char.primaryAbilities[0].Psyche.number}</span>
                 </div>
 
                 <div class="section-title">Secondary Abilities</div>
@@ -317,7 +391,7 @@
                 </div>
                 </div>`;
 
-        if (mode === 'ultimate') {
+        if (isUltimate) {
           html += `
                 <div class="section-title">Weakness</div>
                 <div class="list-section"><ul><li class="weakness"><strong>Stimulus: ${char.weakness.stimulus}</strong> &nbsp; <span class="power-description">${char.weakness.stimulusDescription}</span></li>
@@ -350,24 +424,413 @@
       }
     }
 
+    // --- BOOST MODAL (Basic Rules p40) ---
+    let _boostCurrentChar = null;
+    let _boostCurrentGen = null;
+    let _boostCurrentMode = null;
+    let _boostSelectedType = null;  // 'ability' or 'power'
+    let _boostSelectedKey = null;   // ability name or power index
+
+    function showBoostModal(character, generator, mode) {
+      _boostCurrentChar = character;
+      _boostCurrentGen = generator;
+      _boostCurrentMode = mode;
+      _boostSelectedType = null;
+      _boostSelectedKey = null;
+
+      const isAlien = character.origin === 'Alien';
+      const boostLevel = isAlien ? 2 : 1;
+
+      const FASERIP = ['Fighting', 'Agility', 'Strength', 'Endurance', 'Reason', 'Intuition', 'Psyche'];
+      const ranksTable = generator.randomRanksTable;
+      let abilityRows = '';
+      FASERIP.forEach((name) => {
+        const ab = character.primaryAbilities[0][name];
+        const currentIndex = ranksTable.findIndex(r => r.rank === ab.rank);
+        const newRank = (currentIndex !== -1 && currentIndex + boostLevel < ranksTable.length)
+          ? ranksTable[currentIndex + boostLevel].rank : null;
+        const disabled = newRank === null;
+        const cls = 'boost-option' + (disabled ? ' disabled' : '');
+        const detail = disabled
+          ? ab.rank + ' — max reached'
+          : ab.rank + ' → ' + newRank;
+        abilityRows += '<div class="' + cls + '" data-type="ability" data-name="' + name + '">' +
+          '<span class="boost-label">' + name + '</span>' +
+          '<span class="boost-detail">' + detail + '</span>' +
+          '</div>';
+      });
+
+      let powerRows = '';
+      character.powers.forEach((p, i) => {
+        const currentIndex = ranksTable.findIndex(r => r.rank === p.rank);
+        const newRank = (currentIndex !== -1 && currentIndex + boostLevel < ranksTable.length)
+          ? ranksTable[currentIndex + boostLevel].rank : null;
+        const disabled = newRank === null;
+        const cls = 'boost-option' + (disabled ? ' disabled' : '');
+        const detail = disabled
+          ? p.rank + ' — max reached'
+          : p.rank + ' → ' + newRank;
+        powerRows += '<div class="' + cls + '" data-type="power" data-index="' + i + '">' +
+          '<span class="boost-label">' + p.name + '</span>' +
+          '<span class="boost-detail">' + detail + '</span>' +
+          '</div>';
+      });
+
+      let content = '<div class="boost-modal">' +
+        '<h2>⬆ Rank Boost</h2>' +
+        '<div class="boost-subtitle">Select one ability or power, then click OK to increase by ' + boostLevel + ' rank level' + (boostLevel > 1 ? 's' : '') + ' (Basic Rules p40)</div>' +
+        '<div class="boost-section-title">Abilities</div>' +
+        abilityRows;
+
+      if (character.powers.length > 0) {
+        content += '<div class="boost-section-title">Powers</div>' + powerRows;
+      }
+
+      content += '<div class="boost-actions">' +
+        '<button class="boost-confirm-btn" id="boost-confirm-btn">OK</button>' +
+        '<button class="boost-skip-btn" id="boost-skip-btn">Skip (No Boost)</button>' +
+        '</div></div>';
+
+      const overlay = document.createElement('div');
+      overlay.className = 'boost-modal-overlay';
+      overlay.id = 'boost-modal-overlay';
+      overlay.innerHTML = content;
+      document.getElementById('boost-modal-container').appendChild(overlay);
+
+      // Selection handler for all boost options (skip disabled)
+      overlay.querySelectorAll('.boost-option:not(.disabled)').forEach(el => {
+        el.addEventListener('click', function () {
+          // Clear previous selection
+          overlay.querySelectorAll('.boost-option').forEach(o => o.classList.remove('selected'));
+          // Set new selection
+          this.classList.add('selected');
+          _boostSelectedType = this.getAttribute('data-type');
+          _boostSelectedKey = this.getAttribute('data-type') === 'ability'
+            ? this.getAttribute('data-name')
+            : parseInt(this.getAttribute('data-index'));
+          // Enable confirm button
+          document.getElementById('boost-confirm-btn').classList.add('enabled');
+        });
+      });
+
+      // Confirm button
+      document.getElementById('boost-confirm-btn').addEventListener('click', function () {
+        if (!_boostSelectedType) { closeBoostModal(); return; }
+        const boostLevel = _boostCurrentChar.origin === 'Alien' ? 2 : 1;
+        let selectedName = '';
+        let oldRank = '';
+        if (_boostSelectedType === 'ability') {
+          selectedName = _boostSelectedKey;
+          oldRank = _boostCurrentChar.primaryAbilities[0][_boostSelectedKey].rank;
+        } else if (_boostSelectedType === 'power') {
+          selectedName = _boostCurrentChar.powers[_boostSelectedKey].name;
+          oldRank = _boostCurrentChar.powers[_boostSelectedKey].rank;
+        }
+        _boostCurrentChar.logRoll('Rank Boost', 'Player Choice', 'Selected: ' + selectedName + ' (' + oldRank + ' +' + boostLevel + ' rank' + (boostLevel > 1 ? 's' : '') + ')');
+        if (_boostSelectedType === 'ability') {
+          _boostCurrentGen.boostAbility(_boostCurrentChar, _boostSelectedKey);
+        } else if (_boostSelectedType === 'power') {
+          _boostCurrentGen.boostPower(_boostCurrentChar, _boostSelectedKey);
+        }
+        // Render BEFORE closing (closeBoostModal nulls out the references)
+        Renderer.render(_boostCurrentChar, _boostCurrentMode);
+        closeBoostModal();
+      });
+
+      // Skip button
+      document.getElementById('boost-skip-btn').addEventListener('click', function () {
+        closeBoostModal();
+      });
+    }
+
+    function closeBoostModal() {
+      const overlay = document.getElementById('boost-modal-overlay');
+      if (overlay) overlay.remove();
+      _boostCurrentChar = null;
+      _boostCurrentGen = null;
+      _boostCurrentMode = null;
+      _boostSelectedType = null;
+      _boostSelectedKey = null;
+    }
+
+    // --- POWER SELECTION MODAL (Choose Mode) ---
+    let _powerSelectGen = null;
+    let _powerSelectMode = null;
+    let _powerSelectResolve = null;
+    let _powerSelectSelections = {}; // { 0: powerName, 1: powerName, ... }
+    let _powerSelectData = null;    // phase1 result
+
+    function showPowerSelectionModal(generator, mode) {
+      _powerSelectGen = generator;
+      _powerSelectMode = mode;
+      _powerSelectSelections = {};
+
+      return new Promise(function(resolve) {
+        _powerSelectResolve = resolve;
+
+        // Phase 1: throw rolls and determine categories
+        const phase1 = generator.generatePhase1();
+        _powerSelectData = phase1;
+
+        const overlay = document.createElement('div');
+        overlay.className = 'power-select-overlay';
+        overlay.id = 'power-select-overlay';
+
+        let html = '<div class="power-select-modal">';
+        html += '<h2>Choose Your Powers</h2>';
+        html += '<div class="power-select-subtitle">' +
+          phase1.powersCount + ' power slot(s) — ' + phase1.physicalForm +
+          ' — Select one power from each category, then click Confirm</div>';
+
+        for (let i = 0; i < phase1.powerCategories.length; i++) {
+          const cat = phase1.availablePowers[i];
+          html += '<div class="power-select-section" id="ps-section-' + i + '">';
+          html += '<div class="power-select-section-title">' +
+            'Slot ' + (i + 1) + ': ' + cat.category + '</div>';
+
+          for (let j = 0; j < cat.powers.length; j++) {
+            const p = cat.powers[j];
+            const slots = p.powerCount > 1 ? ' (' + p.powerCount + ' slots)' : '';
+            html += '<div class="power-select-option" data-slot="' + i + '" data-name="' +
+              p.name.replace(/"/g, '&quot;') + '">';
+            html += '<span class="power-select-name">' + p.name + slots + '</span>';
+            html += '<span class="power-select-desc">' + p.description + '</span>';
+            html += '</div>';
+          }
+          html += '</div>';
+        }
+
+        html += '<div class="power-select-actions">';
+        html += '<button class="power-select-confirm-btn" id="power-select-confirm-btn">Confirm</button>';
+        html += '<div class="power-select-message" id="power-select-message"></div>';
+        html += '</div>';
+        html += '</div>';
+
+        overlay.innerHTML = html;
+        document.getElementById('power-select-modal-container').appendChild(overlay);
+
+        // Build a lookup of power names -> powerCount for this category
+        // --- Build lookup tables ---
+        // powerCount lookup: key = slotIndex|powerName -> powerCount
+        var _psPowerLookup = {};
+        for (var si = 0; si < phase1.availablePowers.length; si++) {
+          for (var pj = 0; pj < phase1.availablePowers[si].powers.length; pj++) {
+            var pw = phase1.availablePowers[si].powers[pj];
+            _psPowerLookup[si + '|' + pw.name] = pw.powerCount || 1;
+          }
+        }
+        // Category map: categoryName -> [slotIndex, ...]
+        var _psCategoryMap = {};
+        for (var ci = 0; ci < phase1.powerCategories.length; ci++) {
+          var catName = phase1.powerCategories[ci];
+          if (!_psCategoryMap[catName]) _psCategoryMap[catName] = [];
+          _psCategoryMap[catName].push(ci);
+        }
+        var _psTotalSlots = phase1.powersCount;
+        var _psMaxSlotIndex = phase1.powerCategories.length - 1;
+        var _psActiveSections = {};
+        for (var ai = 0; ai <= _psMaxSlotIndex; ai++) _psActiveSections[ai] = true;
+
+        // --- Hide/show power options within same category ---
+        function _psSyncDuplicateCategoryOptions() {
+          // For each category that appears more than once, hide options that
+          // are already selected in another section of the same category.
+          var catNames = Object.keys(_psCategoryMap);
+          for (var cn = 0; cn < catNames.length; cn++) {
+            var slots = _psCategoryMap[catNames[cn]];
+            if (slots.length < 2) continue;
+            // Collect selected power names in this category
+            var selectedNames = {};
+            for (var sn = 0; sn < slots.length; sn++) {
+              if (_powerSelectSelections[slots[sn]]) {
+                selectedNames[_powerSelectSelections[slots[sn]]] = true;
+              }
+            }
+            // For each section in this category, hide options whose name
+            // is selected in a DIFFERENT section
+            for (var ss = 0; ss < slots.length; ss++) {
+              var sectionOptions = overlay.querySelectorAll('.power-select-option[data-slot="' + slots[ss] + '"]');
+              sectionOptions.forEach(function(opt) {
+                var optName = opt.getAttribute('data-name');
+                var optSlot = parseInt(opt.getAttribute('data-slot'));
+                // Hide if another section in same category has this name selected
+                var hiddenByOther = false;
+                for (var hs = 0; hs < slots.length; hs++) {
+                  if (slots[hs] !== optSlot && _powerSelectSelections[slots[hs]] === optName) {
+                    hiddenByOther = true;
+                    break;
+                  }
+                }
+                if (hiddenByOther) {
+                  opt.style.display = 'none';
+                  // If this option was selected in this section, deselect it
+                  if (opt.classList.contains('selected')) {
+                    opt.classList.remove('selected');
+                    delete _powerSelectSelections[optSlot];
+                  }
+                } else {
+                  opt.style.display = '';
+                }
+              });
+            }
+          }
+        }
+
+        // --- Recalculate section visibility for multi-slot powers ---
+        function _psRecalcSections() {
+          var usedSlots = 0;
+          var keys = Object.keys(_powerSelectSelections);
+          for (var k = 0; k < keys.length; k++) {
+            usedSlots += _psPowerLookup[keys[k] + '|' + _powerSelectSelections[keys[k]]] || 1;
+          }
+          var remainingSlots = _psTotalSlots - usedSlots;
+          if (remainingSlots < 0) remainingSlots = 0;
+
+          // Count active unselected sections
+          var unselectedCount = 0;
+          for (var ui = 0; ui <= _psMaxSlotIndex; ui++) {
+            if (_psActiveSections[ui] && !_powerSelectSelections[ui]) unselectedCount++;
+          }
+
+          // Remove excess unselected sections from the end
+          if (unselectedCount > remainingSlots) {
+            var toRemove = unselectedCount - remainingSlots;
+            for (var ri = _psMaxSlotIndex; ri >= 0 && toRemove > 0; ri--) {
+              if (_psActiveSections[ri] && !_powerSelectSelections[ri]) {
+                document.getElementById('ps-section-' + ri).style.display = 'none';
+                _psActiveSections[ri] = false;
+                toRemove--;
+              }
+            }
+          }
+
+          // Restore sections that now fit
+          for (var xi = 0; xi <= _psMaxSlotIndex; xi++) {
+            if (!_psActiveSections[xi]) {
+              var currentUnselected = 0;
+              for (var cu = 0; cu <= _psMaxSlotIndex; cu++) {
+                if (_psActiveSections[cu] && !_powerSelectSelections[cu]) currentUnselected++;
+              }
+              if (currentUnselected < remainingSlots) {
+                document.getElementById('ps-section-' + xi).style.display = '';
+                _psActiveSections[xi] = true;
+              }
+            }
+          }
+
+          // Sync duplicate category options after sections change
+          _psSyncDuplicateCategoryOptions();
+
+          // Check for overflow and enable/disable confirm
+          var activeSelectedCount = 0;
+          for (var as = 0; as <= _psMaxSlotIndex; as++) {
+            if (_psActiveSections[as] && _powerSelectSelections[as]) activeSelectedCount++;
+          }
+          var activeSectionCount = 0;
+          for (var ac = 0; ac <= _psMaxSlotIndex; ac++) {
+            if (_psActiveSections[ac]) activeSectionCount++;
+          }
+          var allFilled = activeSelectedCount === activeSectionCount;
+          var overflow = usedSlots > _psTotalSlots;
+          var confirmBtn = document.getElementById('power-select-confirm-btn');
+          var msgEl = document.getElementById('power-select-message');
+          if (overflow) {
+            confirmBtn.classList.remove('enabled');
+            msgEl.textContent = 'Too many slots used (' + usedSlots + ' of ' + _psTotalSlots + '). Select a smaller power or change your selection.';
+          } else {
+            confirmBtn.classList.toggle('enabled', allFilled);
+            msgEl.textContent = '';
+          }
+        }
+
+        // --- Selection handler ---
+        overlay.querySelectorAll('.power-select-option').forEach(function(el) {
+          el.addEventListener('click', function() {
+            var slot = this.getAttribute('data-slot');
+            var name = this.getAttribute('data-name');
+            // Deselect others in same slot
+            overlay.querySelectorAll('.power-select-option[data-slot="' + slot + '"]').forEach(function(o) {
+              o.classList.remove('selected');
+            });
+            this.classList.add('selected');
+            _powerSelectSelections[slot] = name;
+            // Recalculate sections, sync duplicate categories
+            _psRecalcSections();
+            // Auto-scroll to next unselected section or Confirm button
+            var slotNum = parseInt(slot);
+            var nextSection = null;
+            for (var ni = slotNum + 1; ni <= _psMaxSlotIndex; ni++) {
+              if (_psActiveSections[ni] && !_powerSelectSelections[ni]) {
+                nextSection = document.getElementById('ps-section-' + ni);
+                break;
+              }
+            }
+            if (nextSection) {
+              nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+              document.getElementById('power-select-confirm-btn').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          });
+        });
+
+        // --- Confirm button ---
+        document.getElementById('power-select-confirm-btn').addEventListener('click', function() {
+          // Build preSelected from only active (visible) sections
+          var preSelected = [];
+          for (var pi = 0; pi <= _psMaxSlotIndex; pi++) {
+            if (_psActiveSections[pi] && _powerSelectSelections[pi]) {
+              preSelected.push({
+                category: phase1.powerCategories[pi],
+                powerName: _powerSelectSelections[pi]
+              });
+            }
+          }
+          if (preSelected.length === 0) return;
+          generator._preSelectedPowers = preSelected;
+          overlay.remove();
+          _powerSelectResolve();
+        });
+      });
+    }
+
     // --- APP CONTROLLER ---
     const app = {
-      generate: () => {
+      generate: async () => {
         const generator = new CharacterGenerator();
         generator.identitySecret = document.getElementById('identity_secret').checked;
+        generator.originPublic = document.getElementById('origin_public').checked;
         generator.hiTechToGood = document.getElementById('hi_tech_good').checked;
         generator.applyOptionalPowers = document.getElementById('optional_powers_apply').checked;
+        generator.contactsEqualToPowers = document.getElementById('contacts_equals_powers').checked;
+        generator.choosePowerInsteadOfRandom = document.getElementById('power_choose').checked;
+        generator.wellEstablished = !document.getElementById('status_none').checked && document.getElementById('status_established').checked;
+        generator.looksHuman = document.getElementById('looks_human').checked;
 
+        const basic = document.getElementById('generator_basic').checked;
         const advanced = document.getElementById('generator_advanced').checked;
         const ultimate = document.getElementById('generator_ultimate').checked;
 
-        generator.generatorMode = 'generic';
+        generator.generatorMode = 'basic';
         if (advanced && !ultimate) generator.generatorMode = 'advanced';
         if (!advanced && ultimate) generator.generatorMode = 'ultimate';
+
+        // If choosing powers, show modal first
+        if (generator.choosePowerInsteadOfRandom && basic) {
+          await showPowerSelectionModal(generator, generator.generatorMode);
+        }
 
         const character = generator.generate();
         Renderer.render(character, generator.generatorMode);
         document.getElementById('test-area').innerHTML = ""; // Clear tests
+
+        // Show boost modal for Basic mode (Basic Rules p40)
+        if (basic) {
+          showBoostModal(character, generator, generator.generatorMode);
+        }
+      },
+      updateModeOptions: () => {
+        const isBasic = document.getElementById('generator_basic').checked;
+        document.getElementById('basic-mode-options').style.display = isBasic ? 'block' : 'none';
       },
       runTests: () => {
         const unitTests = document.getElementById('run-unit-tests').checked;
@@ -399,12 +862,17 @@
 
     app.populateRenderTests();
 
+    document.querySelectorAll('input[name="generator"]').forEach(radio => {
+      radio.addEventListener('change', app.updateModeOptions);
+    });
+    app.updateModeOptions();
+
     // Initial Generation
     app.generate();
-    //app.runTests();
 
-    // TODO #2 Finish PowersTooMany test for Ultimate
-    // TODO #1 Finish ContactsTooMany test for Ultimate
+    // TODO #3 Finish PowersTooMany test for Ultimate
+    // TODO #2 Finish ContactsTooMany test for Ultimate
+    // TODO #1 Add Edit mode
 
   </script>
 </body>
