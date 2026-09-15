@@ -25,8 +25,8 @@ Table of Contents
 1: Heroes  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .2
 Definition: What Is a Hero?  . . . . . . . . . . . . . . . . . . . . . . . . . . .2
 Abilities  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .2
-Character Creation  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .4
-Character Modeling  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .12
+Charactor Creation  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .4
+Charactor Modeling  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .12
 2: FEATs  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .14
 Time Scale - the Turn  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .14
 Initiative  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .14
@@ -56,7 +56,7 @@ Programming and Reprogramming  . . . . . . . . . . . . . . . . . . . .69
 Appendix A: Powers  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .71
 Appendix B: Talents  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .89
 Appendix C: Contacts  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .92
-Character Shoot  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .94
+Charactor Shoot  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .94
 Index  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .95
 Power Listing  . . . . . . . . . . . . . . . . . . . . . . . . .inside back cover
 Universal Table  . . . . . . . . . . . . . . . . . . . . . . . . . . . . .back cover
@@ -155,10 +155,10 @@ SUPER HEROES Role-Playing Game the
 players take on the roles of heroes in the
 Marvel Universe. A hero who is being
 controlled by a player is called a Player-
-Character or PC. One that is being run by
+Charactor or PC. One that is being run by
 the Judge, including most opponents and
 supporting characters, is called a Non-
-Player Character or NPC.
+Player Charactor or NPC.
 The rank range includes all the rank
 numbers for that range. A character with a
 Strength of 15 can be said to have Good
@@ -181,7 +181,7 @@ Talents, Equipment, and Contacts. Special
 abilities use rank numbers or modify
 existing rank numbers.
 Abilities
-Characters in the MARVEL SUPER
+Charactors in the MARVEL SUPER
 HEROES game are defined by their
 abilities. These abilities determine their
 chances of performing certain actions in
@@ -398,7 +398,7 @@ Reason, Intuition, and Psyche
 ## Page 6
 
 CHARACTER CREATION
-Character Creation
+Charactor Creation
 generated character may start. Rank
 numbers may be improved with time and
 experience as normal.
@@ -440,7 +440,7 @@ heroes (such as alien, robot, mutant) may
 or may not apply to the hero in question.
 • Used to gain favors, information, and
 equipment from Contacts
-Pregenerated Characters
+Pregenerated Charactors
 Special Abilities
 The character cards provided with this set
 are for the most popular individuals in the
@@ -580,7 +580,7 @@ inborn as opposed to equipment-based.
 • They may be affected by mutant
 detection and mutant nullification
 devices.
-Generated Characters
+Generated Charactors
 The following system is for creating new
 characters in the Marvel Universe.
 Generated characters have an advantage
@@ -592,7 +592,7 @@ characters, they lack the background of the
 Marvel Universe, and their powers are
 more standardized than those of
 pregenerated characters.
-Character generation has five steps:
+Charactor generation has five steps:
 • Generate an origin 
 • Generate primary abilities 
 • Generate secondary abilities 
@@ -926,7 +926,7 @@ Monstrous
 01-05
 06-25
 26-75
-78-95
+76-95
 96-00
 ——
 ——
@@ -1150,7 +1150,7 @@ Examples of determining secondary abilities:
 Dice 
 Roll
 01-20
-21-80
+21-60
 61-90
 91-00
 Powers
@@ -1227,11 +1227,11 @@ Dice Roll
 Power Category
 01-05
 Resistances
-08-10
+06-10
 Senses
 11-15
 Movement
-18-25
+16-25
 Matter Control
 26-40
 Energy Control
@@ -1601,24 +1601,7 @@ Power negates use of all other powers
 for one week 
 Power only works at very high (200 +)
 temperatures
-9-10.
-Trivia
-Performer
-Animal Training*
-Heir to Fortune*
-Student*
-Leadership*
-Each hero gets a number of initial Contacts
-as rolled on the Maximum Initial Powers,
-Talents, and Contacts Table. Certain
-individuals get specific Contacts at start.
-High technology heroes must use one
-Contact slot for their "support." Aliens can
-have only one initial Contact, no matter
-what skills are chosen. Heroes who have
-more initial Contacts (as the result of
-Talents) than slots must discard the
-excess.
+
 Players, being the crafty lot they are, will
 undoubtedly find situations where these
 limitations are advantages (Example -- A
@@ -1633,86 +1616,22 @@ initial number, while the second number is
 the maximum of initial Talents. For each
 Talent gained, roll on the Talent category,
 and choose one Talent in that category.
-A hero may have fewer chosen Contacts
-than slots -- the others may appear as
-need be. For each Contact. the hero must
-provide a name (Example, early in his
-career, Prof. X had a Contact in the FBI,
-Fred Duncan). The hero's Contact is
-considered Friendly to the hero for NPC
-reactions, and may provide equipment and
-material according to that Contact's rank,
-Contacts are defined in full in Appendix C
-for the Marvel Universe, but the players
-may choose from the following general
-types.
+
 Talent Categories
-Professional Skills
-1.
-Medicine*
-2.
-Law
-Law-Enforcement
-3.
-Pilot
-4.
-Military
-5.
-Business/Finance
-6.
-Journalism
-7.
-Engineering
-8.
-Crime
-9.
-Psychiatry
-10.
-Detective/Espionage
-Dice
-Roll
-01-20
-21-45
-46-65
-66-85
-86-90
-91-00
-Talent
-Category
-Weapon Skills
-Fighting Skills
-Professional Skills
-Scientific Skills
-Mystic and Mental Skills
-Other Skills
-A character with a secret 10 may assign his
-Contacts either to his secret ID (noted by an
-S), his heroic identity (noted by an H), or
-both (no notation). The advantage of having
-the secret lD making Contacts is that it
-provides less risk to the hero. If your Contact
-does not know you are really a hero, then
-you cannot be called upon to do heroic acts.
+Dice    Talent
+Roll    Category
+01-20   Weapon Skills
+21-45   Fighting Skills
+46-65   Professional Skills
+66-85   Scientific Skills
+86-90   Mystic and Mental Skills
+91-00   Other SKills
+
 Talents are listed in Appendix B. Skills that
 require random rolls are determined on
 Column 2 of the Random Ranks Table.
 Most Talents will modify an existing ability.
-Scientific Skills 
-1-2.
-Chemistry
-3-4.
-Biology
-5-6.
-Geology
-7.
-Genetics
-8.
-Archeology
-9.
-Physics
-Computers
-10.
-Electronics
+
 Weapon Skills
 1-2.
 Guns
@@ -1729,25 +1648,7 @@ Oriental Weapons
 Marksman*
 Weapons Master*
 Weapons Specialist*
-Types of Contacts
-Professional
-Medicine
-Law
-Law-Enforcement
-Military
-Business World
-Mystical and Mental Skills or Abilities 
-1-2.
-Trance
-3-5.
-Mesmerism and Hypnosis
-6-7.
-Sleight of Hand
-8-9.
-Resist Domination
-Mystic Origin*
-10.
-Occult Lore
+
 Fighting Skills
 1.
 Martial Arts A
@@ -1767,6 +1668,61 @@ Thrown Objects
 Tumbling
 9-10.
 Acrobatics
+
+Professional Skills
+10.
+Medicine*
+20.
+Law
+25.
+Law-Enforcement
+30.
+Pilot
+40.
+Military
+50.
+Business/Finance
+60.
+Journalism
+70.
+Engineering
+80.
+Crime
+90.
+Psychiatry
+100.
+Detective/Espionage
+
+Scientific Skills 
+1-2.
+Chemistry
+3-4.
+Biology
+5-6.
+Geology
+7.
+Genetics
+8.
+Archeology
+9.
+Physics
+Computers
+10.
+Electronics
+
+Mystical and Mental Skills or Abilities 
+1-2.
+Trance
+3-5.
+Mesmerism and Hypnosis
+6-7.
+Sleight of Hand
+8-9.
+Resist Domination
+Mystic Origin*
+10.
+Occult Lore
+
 Other Skills 
 1-2.
 Artist
@@ -1776,39 +1732,89 @@ Languages
 First Aid
 7-8.
 Repair/Tinkering
-10
+9-10.
+Trivia
+Performer
+Animal Training*
+Heir to Fortune*
+Student*
+Leadership*
+
+Each hero gets a number of initial Contacts
+as rolled on the Maximum Initial Powers,
+Talents, and Contacts Table. Certain
+individuals get specific Contacts at start.
+High technology heroes must use one
+Contact slot for their "support." Aliens can
+have only one initial Contact, no matter
+what skills are chosen. Heroes who have
+more initial Contacts (as the result of
+Talents) than slots must discard the
+excess.
+
+A hero may have fewer chosen Contacts
+than slots -- the others may appear as
+need be. For each Contact. the hero must
+provide a name (Example, early in his
+career, Prof. X had a Contact in the FBI,
+Fred Duncan). The hero's Contact is
+considered Friendly to the hero for NPC
+reactions, and may provide equipment and
+material according to that Contact's rank,
+Contacts are defined in full in Appendix C
+for the Marvel Universe, but the players
+may choose from the following general
+types.
+
+A character with a secret ID may assign his
+Contacts either to his secret ID (noted by an
+S), his heroic identity (noted by an H), or
+both (no notation). The advantage of having
+the secret lD making Contacts is that it
+provides less risk to the hero. If your Contact
+does not know you are really a hero, then
+you cannot be called upon to do heroic acts.
+
+### Types of Contacts ###
+1. Professional
+2. Medicine
+3. Law
+4. Law-Enforcement
+5. Military
+6. Business World
 
 ---
 
 ## Page 13
 
-Journalism
-Crime
-Engineering
-Psychiatry
-Detective/Espionage
-Hero Group
-Artist/Performer
-Scientific
-Chemistry
-Biology
-Geology
-Genetics
-Archeology
-Physics
-Computers
-Electronics
-Political
-Local
-State
-National
-Other National
-International
-Planetary
-Mystic
-Religion
-Occult Lore
-Mythology
+7. Journalism
+8. Crime
+9. Engineering
+10. Psychiatry
+11. Detective/Espionage
+12. Hero Group
+13. Artist/Performer
+### Scientific ###
+1. Chemistry
+2. Biology
+3. Geology
+4. Genetics
+5. Archeology
+6. Physics
+7. Computers
+8. Electronics
+### Political ###
+1. Local
+2. State
+3. National
+4. Other National
+5. International
+6. Planetary
+### Mystic Arts ###
+1. Religion
+2. Occult Lore
+3. Mythology
+
 The Hero gets two Talents, and may have
 up to five by reducing Resources by one
 rank for each Talent gained. He rolls a 27:
@@ -1993,7 +1999,7 @@ trick shots and shooting curves. She
 operates in the tri-state area, but considers
 attempting to join the X-Men.
 characters you have invented yourself,
-without having to rely on tables. Character
+without having to rely on tables. Charactor
 modeling takes place as the result of the
 player answering a series of questions, and
 comparing the ranks of established heroes to
@@ -2135,7 +2141,7 @@ The Osprey, just as a regular guy in flashy
 outfit with non-operative wings, applied. The
 Frightful Four (er... Three) took him as a
 serious applicant until they discovered he had
-Character Modeling
+Charactor Modeling
 Given the length, breadth, and depth of the
 Marvel Universe, there will be heroes for
 whom we haven't written official versions. For
@@ -3003,7 +3009,7 @@ Everything is a yellow FEAT. The only
 modifier that comes into play is if the
 request is in the target's best interests
 ("Run, you dolts!" is in the target's interest).
-Characters with negative Popularity can
+Charactors with negative Popularity can
 never approach individuals other than
 Contacts for items and favors (which is why
 theft is always a major pan of criminal
@@ -3231,7 +3237,7 @@ Remarkable(30) Strength, helps She-Hulk
 lift up the crane. The column checked is
 still Monstrous, since Sunspot's Strength is
 significantly lower than She-Hulk's
-Bank Loans Option: Characters may
+Bank Loans Option: Charactors may
 purchase something up to one rank higher
 than their Resource rank through a lending
 institution. The character then has to worry
@@ -3742,7 +3748,7 @@ movement, except the heroes or vehicles
 involved must float (that is. must keep the
 water from getting inside the boat).
 As an aside. here is a good place to mention
-drowning. Characters can hold their breath a
+drowning. Charactors can hold their breath a
 number of rounds equal to their Endurance
 rank number. At this point. they must make a
 green Endurance FEAT. The next round,
@@ -4173,7 +4179,7 @@ rank), and the Thing (Monstrous Strength)
 would inflict Excellent damage (20 points).
 (That is why Ban Grimm does not normally
 use lead pipes in combat -- when he uses a
-Characters do not have to be adjacent in
+Charactors do not have to be adjacent in
 order to make ranged attacks. In general,
 ranged attacks start at the attacker. and
 proceed in a direct line to the target (yes,
@@ -5277,7 +5283,7 @@ the character is distracted, the attacker is
 playing possum (the target does not
 anticipate an attack), the attack comes from
 an unsuspected quarter (an ally or supposed
-friend makes the attack). Characters with
+friend makes the attack). Charactors with
 extraordinary senses (like Daredevil) or
 danger senses (like Rogue, Franklin
 Richards, and Spider-Man) cannot be
@@ -5555,7 +5561,7 @@ Endurance rank number in the hour (600
 turns) following the last damage. If the
 character takes further damage during that
 period, then the time is measured from that
-point. Characters with special abilities may be
+point. Charactors with special abilities may be
 able to heal for greater amounts or at faster
 rates. This rate is doubled by bedrest and
 medical supervision (doctors or hospitals).
@@ -6421,7 +6427,7 @@ the members. It may only be used by the
 individual to modify die rolls. Such a locking
 Karma pool may only be dissolved by a
 unanimous vote of those who belong.
-Advancement: Characters may put Karma
+Advancement: Charactors may put Karma
 aside for advancement. This Karma is put into
 a separate fund and is considered
 untouchable by the player for normal use (and
@@ -6600,7 +6606,7 @@ the advancement pool and seeking training.
 Additional Talents must always have a
 rationale. If your character wants to learn
 Martial Arts D, she must find someone to
-teach her. Characters may learn from other
+teach her. Charactors may learn from other
 player characters at a cost of 2000 points,
 or from NPCs at a cost of 1000 points per
 Talent. (This is to get them out the house.)
@@ -11451,7 +11457,7 @@ One is a native of another dimension — the
 dread dominion of Dormammu, to be exact.)
 Karma Awards, Popularity, and
 Advancement
-Characters who have true magic abilities
+Charactors who have true magic abilities
 (as opposed to those with mystic origins,
 the potential to gain magic, or using
 magical items) gain Karma at the standard
@@ -12718,7 +12724,7 @@ attempting to break into a new computer,
 compare this Power rank with the Reason
 of the computer or mechanical being. This
 Power also allows the reprogramming of
-simple robots (but not Player Character
+simple robots (but not Player Charactor
 robots under normal circumstances).
 Mutant Detection: The hero with this Power
 is attuned to the specific mental radiation
@@ -12923,11 +12929,11 @@ Speed is assumed to apply to ground
 movement, but may be applied to any of the
 following Powers, if the hero has them in his
 possession : Flight, Gliding, Wall-crawling,
-or Digging. Characters with Lightning Speed
+or Digging. Charactors with Lightning Speed
 can turn at maximum speed without penalty,
 and Agility FEATs may be made either with
 the Agility ability or with this Power rank.
-Characters with Lightning Speed can
+Charactors with Lightning Speed can
 accelerate to full speed in a single round,
 and decelerate from full speed to full stop in
 the space of one area.
@@ -13651,10 +13657,10 @@ instead of Strength when performing Feats of
 Strength, including wrestling combat.
 Charging, slugfest, and missile attacks on an
 enlarged character all receive positive
-column shifts to hit. Characters that
+column shifts to hit. Charactors that
 experience growth usually but not always
 draw their additional mass from an unknown
-source. Characters with growth are not
+source. Charactors with growth are not
 slowed or impaired by their added mass. 
 Rank
 Height
@@ -14079,7 +14085,7 @@ from whom he took it cannot use it (if the
 character it was stolen from had a higher
 rank than the Power rank of the Power
 thief, that ability is reduced by that
-amount). Characters with basic abilities
+amount). Charactors with basic abilities
 reduced to below Feeble are unconscious
 for 1-10 rounds.
 Raise Lowest Ability: Not really a Power by
@@ -14438,7 +14444,7 @@ developed as a Power Stunt. Range and
 damage are determined by the Power rank,
 though damage and effects may be
 voluntarily reduced.
-Characters with telepathy may develop
+Charactors with telepathy may develop
 Power Stunts, including:
 • Using the telepathic "push" as a bolt of
 mental force of Power rank range and
@@ -14480,7 +14486,7 @@ Image Generation: The hero with this
 Power may create vivid mental images.
 These images do not register on cameras,
 film, or in the minds of non-sentient robots.
-(Player Characters are considered to
+(Player Charactors are considered to
 duplicate human eye and brain patterns,
 and as such are subject to the effects of
 these Powers, though they gain a +1CS to
@@ -14632,7 +14638,7 @@ the Force column of the battle effects
 A character who has been Mind Controlled
 is unaware of his actions, knowing only that
 he has blanked out for a while. If a Player
-Character is under the effects of a Mind
+Charactor is under the effects of a Mind
 Control, run him normally, but all actions
 must be OK'd by the controlling character.
 Naturally, the controlled PC cannot pass on
@@ -14763,7 +14769,7 @@ A hero may choose to have a personal force
 field at +1CS instead of being able to project
 force fields. This choice is made at the start
 of play, and as such cannot be changed.
-Characters with individual force fields cannot
+Charactors with individual force fields cannot
 engage in Power Stunts using this option.
 A force field operates as a form of Body
 Armor. If the amount of damage incurred in
@@ -14998,7 +15004,7 @@ is immobile, in a trance. Damage to the
 body will be known to the astral traveler if it
 is in this dimension, and it is possible for
 the body to perish while the astral form is
-away. Characters whose bodies have
+away. Charactors whose bodies have
 perished are trapped in astral form.
 Precognition must choose a limitation to
 that Power. Suggestions include:
@@ -15061,7 +15067,7 @@ side that gains initiative has the precog with
 it, the player running that character may
 share the information with the others, and
 they may make their decisions accordingly.
-Characters with Astral Projection may also
+Charactors with Astral Projection may also
 detect the astral as a Power Stunt, and two
 characters in astral form will be able to see
 each other. Astral combat and other
@@ -15072,12 +15078,12 @@ the ability to project psionic force blasts at
 Power rank range and Intensity. The target
 of this attack must make a successful
 Psyche FEAT or be knocked unconscious
-for 1-10 rounds. Characters with Mental
+for 1-10 rounds. Charactors with Mental
 Powers may use their Power ranks instead
 of Psyche, and those with Psi-Screen should
 use that Power rank before any other. Force
 Field's operate against psionic attack.
-WARNING: Characters with precog Powers
+WARNING: Charactors with precog Powers
 often have unwanted images implanted by
 the Judge, whether to foreshadow
 upcoming adventures, or to throw the
@@ -15322,7 +15328,7 @@ amount of Health from the target to the hero.
 Previous damage is healed in an equal
 amount, up to the maximum Health of the
 character. Drained Health above that point is
-lost. Characters drained to 0 Health must
+lost. Charactors drained to 0 Health must
 make an Endurance FEAT to avoid dying. if
 they do so, the attack has no further effect.
 Reversing this process, directing one's own
@@ -15485,7 +15491,7 @@ Intensity or be considered Friendly to the
 character. Robots, aliens, and those unable
 to smell or be affected by the pheromones
 (behind a force field, for example) are not
-affected. Characters that are Hostile will still
+affected. Charactors that are Hostile will still
 be attracted to the character, but that
 attraction will not stop them from putting the
 hero in a deathtrap, from which the only
@@ -15687,7 +15693,7 @@ karate. The practitioner of this type of
 martial arts can Stun or Slam an opponent
 regardless of their comparative Strengths
 and Endurances.
-Thrown Weapons: Characters with this
+Thrown Weapons: Charactors with this
 Talent toss weapons designed to be thrown
 (including spears, daggers, Shuriken, disks,
 and snowballs) at +1CS to their Agility.
@@ -15720,7 +15726,7 @@ providing bonus Column Shifts in their field
 of specialty, the Talents can be used to
 increase initial Resource levels through
 gainful employment.
-Blunt Weapons: Characters with this Talent
+Blunt Weapons: Charactors with this Talent
 gain a +1CS to hit when attacking with a
 weapon that resolves attacks on the Blunt
 Attacks column of the Battle Effects Table.
@@ -15747,7 +15753,7 @@ natural healing. Finally, the character with
 Medicine as a Talent is +1CS on Reason
 FEATs that involve medical problems,
 medications, poisons, and surgery.
-Sharp Weapons: Characters with this
+Sharp Weapons: Charactors with this
 Talent gain a +1CS to hit when attacking
 with a weapon that resolves attacks on the
 Edged Attack column of the Battle Effects
@@ -16045,7 +16051,7 @@ has a natural understanding of languages.
 The character gains 1 additional language
 at start, and made add other languages at
 half the cost of a Talent (500 paints
-regardless of who teaches it). Characters
+regardless of who teaches it). Charactors
 without languages Talent must gain this
 Talent first to learn other languages. The
 gaining of additional languages assumes
@@ -16331,784 +16337,23 @@ dealing with other political Contacts.
 Mystic Contacts
 Mystic Arts: The hero has a Contact with
 someone who is aware of extra-
+dimensional powers greater than our own. 
+Occult Lore: The hero knows someone who
+"dabbles" in the darker arts, and as such
+has at least a Remarkable Reason
+involving these matters. The Contact may
+provide advice on mystic writings, spells
+and their castings, and curses. The Contact
+is not necessarily someone of Doctor
+Strange's category (a true magic-wielder),
+but most likely a college professor who has
+done copious reading on the subject. 
+Mythology: Similar to Occult Lore, with the
+direction towards recognized mythology:
+actions of the extra-dimensional beings
+known as gods (Olympians, Asgardians,
+etc.). The Contact will specialize in one
+"pantheon" of deities.
 93
 
 ---
-
-## Page 96
-
-Character Information Sheet
-Player Name
-Hero’s Name
-Group Affiliation
-Base of Operations
-Hero’s Identity               Secret       Public
-Age
-Origin
-Primary Abilities
-Secondary Abilities
-Initial
-Initial
-Current
-Current
-Roll
-Rank
-Rank
-Rank Number
-Health
-Karma
-Resources
-Popularity
-F
-F + A + S + E
-R + I + P
-A
-S
-E
-R
-I
-P
-Special Abilities
-Powers:
-Limitation:
-Talents:
-Contacts:
-Advancement Fund
-Karma
-Karma Pool
-
----
-
-## Page 97
-
-INDEX
-regaining, 32
-Contacts
-definition, 4
-generating, 10
-use with Popularity, 40
-see also Appendix C
-Control FEATs — see Vehicles, driving
-Crashes, 50-51
-Healing, 32
-Health
-definition, 4
-loss of, 32
-High-technology heroes, 5
-Holding fire, 30
-A
-Ability FEATs, 15,16
-(see also Fighting, Agility, Strength,
-Endurance, Intuition, and Psyche)
-Ability Modifier Table, 6
-Acceleration
-in flight, 21
-in vehicle, 47
-Actions while moving — see Movement
-Addition, 39
-Contact, 39 Power, 39 Talent, 39
-Advancement, 38-39
-Ability, 38-39 Popularity, 38-39 Power,
-38-39 Resource, 38-39
-Agility
-definition, 3 FEATs, 14, 21, 22, 27, 28,
-30,50,58,60
-Aiming, 31
-Aliens, 5
-Altered Humans, 5
-Ambush, 31
-Ammunition Table, 44
-Awards — see Karma
-I
-Initiative, 14
-Modifier Table, 14
-Intuition
-definition, 3
-FEATs, 58
-Impaired abilities, 32
-D
-Deceleration
-in flight, 21
-in vehicle, 50
-Defensive Actions
-Block, 27-28
-Catching, 28
-Claws, 29
-Combined Attacks, 30
-Dodging, 27
-Double-Teaming, 30
-Evading, 27 
-Disabilities, 32
-Distance Attacks — see Appendix A, 80 
-Diving, 21
-Drowning, 22
-K
-Karma
-Awards, 33-36
-gaming, 36
-magic-use, 65
-personal, 35
-definition, 3
-in combat, 31
-losses, 34-35
-Pools, 37
-adding to, 37
-dissolving/leaving, 37-38
-Locking, 38
-losses, 37
-spending, 38
-Advancement, 38-39
-building things, 38
-die rolls, 38 
-modifying combat results, 38
-Power stunts, 38
-Summary Listing, 37
-B
-Bank loans,19
-Blindsiding, 30
-Block — see Defensive Actions
-Body Alterations
-Defensive — see Appendix A, 87
-Offensive — see Appendix A, 86
-Body Armor, 29
-see also Appendix A
-Breaking things, 16
-Building 
-power suits, 67
-robots, 67
-special requirements for, 68
-success at, 69
-time requirements for, 68
-vehicles, 66-67
-weapons, 66
-E
-Effective Cost, 66
-Effects Results, 28
-Endurance
-definition, 3
-FEATs, 22, 23, 24, 28, 41, 45, 46, 50,
-58, 63
-Energies, 63-64
-Energy Attacks — see Ranged Attacks
-Energy Control Powers — 
-see Appendix A, 74
-Entangling weapons, 30
-Eyeballing, 20
-Exhaustion, 22
-L
-Leaping, 23
-Table, 24
-Lifting things (Strength FEAT), 16
-Limitations, 9
-Long-distance movement — 
-see Movement
-Table, 23
-Luring, 31
-F
-Failing, 21
-Fastball Special, 30
-FEAT rolls 
-Ability — see specific ability
-automatic, 16
-impossible, 16
-making, 15-16
-types, 15
-Fighting
-definition, 2
-FEATs, 27, 30
-Flight
-and Gliding, 21-22
-and Fight, 31
-Force Attacks — see Ranged Attacks
-Force Field, 29
-C
-Catching — see Defensive Actions 
-while falling — see Failing
-Characters
-creation/generation, 4-13
-generated, 5-12
-modelled, 12-13
-origins, 5
-pre-generated, 4-5
-Charging (Endurance), 26-27
-Charity awards, 36
-Claws — see Defensive Actions, 
-see also Appendix A
-Column Shifts (CS)
-positive, 16
-negative, 16
-for magicians, 64
-Combat
-Fighting — see Slugfest
-Agility — see Ranged Attacks
-Combined/Multiple FEATs, 18-19
-Consciousness
-losing, 31
-M
-Magic, 61-66
-limitations on spells (Table), 65
-Material Strength Table, 17
-Matter Control Powers — 
-see Appendix A, 73
-Mental Powers — see Appendix A, 81
-Modeling characters, 12-13
-Contacts, 13
-Primary abilities, 12
-Powers, 13
-Secondary abilities, 13
-Special abilities, 13
-Talents, 13
-Movement 
-actions while moving, 20 
-area, 19 
-downward, 21 
-eyeballing and the quarter-inch rule, 20
-long-distance, 22
-G
-Gaming awards — see Karma
-Grabbing — see Wrestling
-Grappling — see Wrestling
-Groundstrike, 30
-Growth, 29
-H
-Headquarters, 55-58
-
----
-
-## Page 98
-
-ranged, 19
-turning while moving, 20
-upward, 20
-Movement Powers — see Appendix A,
-72
-Multiple combat actions, 30
-Multiple targets, 30
-Mutants, 5
-Range modifiers, 25
-Range ranks, 66
-Ranks and rank numbers, 2
-Rationales, 39
-Reason
-definition, 3
-FEATS, 17, 32, 45, 61, 67, 66, 68, 69, 70
-Recovery, 32
-Repairs, 70
-Resistances — see Appendix A, 71
-Resources
-definition, 4
-FEATS, 15, 16, 18, 38, 66, 68
-for building, 68
-Robots, 5
-reactivation, 5, 32
-Room packages, 56-58
-Round — see Turn
-Sundries, 58-61
-Swimming, 22
-T
-Tactics, 29-30
-Talent Categories Table, 10
-Talents
-definition, 4
-FEATS, 15, 17
-generating, 10
-see also Appendix B
-Teleporting, 23
-Throwing — see also Ranged Attacks
-Range table, 25
-Turning
-in flight, 22
-on ground, 20
-in vehicle, 50
-Turns (game time), 14
-N
-Negative Popularity, 18
-effects on heroes, 41
-P
-Point blank range, 31
-Popularity
-awards and penalties table, 40
-definition, 3
-FEATS, 15, 17, 34, 36, 38, 40, 63, 64
-negative, 7, 18
-using, 17
-Power Categories Table, 8
-Powers, Contacts and Talents Table, 7
-Power listings, 8, inside back cover
-Power Rank Range Table, 16
-Powers
-definition, 4
-FEATS, 15, 16, 17, 29, 38
-stunts, 17, 38, 64
-Primary abilities, 2-3, 12
-Psyche
-definition, 3
-FEATS, 29, 63
-Pulling punches, 30
-S
-Salaries, 60
-Secondary abilities, 3-4, 7, 13
-Secret IDS, 7
-Senses — see Appendix A, 71
-Shielding, 31
-Shifts — see Column shifts
-Shockwave, 30
-Shooting — see also Ranged Attacks
-at moving target, 31
-to neutralize, 30
-to stun, 30
-Shrinking, 29
-Slugfest, 23-24
-Special abilities, 4, 13
-Speed FEATS, 23
-Stairs, 21
-Standard rank number, 2
-Strength
-definition, 3
-FEATS, 16, 23, 24, 28, 29, 30, 38, 50
-U
-Universal Table, back cover
-V
-Vehicles, 47-55
-and combat, 61
-crashes — see Crashes
-damage to, 51
-driving, 47, 50
-listing of specific, 52-55
-out of control, 50
-W
-Weapons
-Shooting, 41-44
-Melee, 45
-Other, 45-46
-Weight Intensity Table, 16
-Wrestling (Strength)
-Grabbing, 26
-Grappling, 26
-Q
-Quarter-inch rule, 20
-R
-Random Ranks Table, 6
-Ranged Attacks, 24-25
-This book is protected under the copyright laws of the United States of America, Any reproduction or other unauthorized use of the material or artwork contained herein is prohibited
-without the express written consent of TSR, Inc, and Marvel Comics Group. Distributed to the book trade in the United States by Random House Inc, and in Canada by Random House of
-Canada, Ltd. Distributed to the toy and hobby trade by regional distributors.
-The names of characters used herein are fictitious and do not refer to any persons living or dead. Any descriptions including similarities to persons living or dead are merely coincidental.
-All Marvel Characters and the distinctive likenesses thereof are trademarks of the Marvel Comics Group. MARVEL SUPER HEROES, MARVEL SUPER VILLAINS, MARVEL UNIVERSE,
-POWER PACK, ETERNITY, GALACTUS, SPIDER-MAN, GUARDIAN, SHE-HULK, NIGHTCRAWLER, X-MEN, CLOAK, FANTASTIC FOUR, HULK, NICK FURY, DOCTOR STRANGE, HOMO
-SUPERIOR, X-FACTOR, NEW MUTANTS, MACHINE MAN, VISION, JOCASTA, ULTRON, IRON MAN, CAPTAIN BRITAIN, DEATHLOK, HOMO MERMANUS, ASGARD, DARK DIMENSION,
-ATLANTIS, OLYMPUS, ETERNALS, KREE, SKRULL, SHI’AR, JUGGERNAUT, AUNT MAY, PROFESSOR CHARLES XAVIER, FRED DUNCAN, COMMANDER SALAMANDER, EMIHL HICKMAN,
-ROGER PRICE, LODESTONE, JENNY HOPKTNS, ALVIN HOPKINS, DOUGLAS COOK, LEOPARD, INHUMANS, WONDER MAN, THOR, OSPREY, TRAPSTER, WIZARD, SANDMAN, RIGHTFUL
-FOUR, TEXAS TWISTER, CAPTAIN ULTRA, CAPTAIN AMERICA, RICK JONES, INVISIBLE WOMAN, HUMAN TORCH, FLY, VIBRANIUM, ADAMANTIUM, DAILY BUGLE, S.H.l.E.L.D.,
-HELICARRIER, TONY STARK, J. JONAH JAMESON, PETER PARKER, VULTURE, LANCE BANNON, RHINO, MS. ARBOGAST, MRS. MUGGINS, STARK INTERNATIONAL, OBADIAH STANE,
-VISION, SUNSPOT, SHAMAN, BAXTER BUILDING, ANGEL, STORM, VANISHER, SIDEWINDER, CAPTAIN MARVEL, BLASTAAR, HERALDS OF GALACTUS, MISTER FANTASTIC, DOCTOR
-OCTOPUS, DAREDEVIL, BEN GRIMM, ICEMAN, BULLDOZER, BLACK KNIGHT, SLLVER SAMURAI, ROGUE, FRANKLIN RICHARDS, MOON KNIGHT, DOCTOR DOOM, SCORPION, PUPPET
-MASTER, JUSTIN HAMMER, CARNELLIA, MARVEL GIRL, CYCLOPS, APOCALYPSE, IRON MONGER, NOW MAGAZINE, CRIMSON DYNAMO, BOX, WYATT WINGFOOT, HERCULES, CAPTAIN
-OUTRAGEOUS, TERMINUS, ALBEDO MAN, MARVEL TWO-IN-ONE, AVENGERS, DEFENDERS, POTATO SALAD MAN, H.U.B.E.R.T., BETHANY CABE, BRUCE BANNER, JOHNNY STORM,
-WASP, QUINJET, PUNISHER, HULKBUSTERS, MOLE MAN, SKYMOBILE, HAWKEYE, WEST COAST AVENGERS, WAKANDA, OMNI-JET, ALPHA FLIGHT, POGO PLANE, FANTASTICAR,
-FLYING BATHTUB, HEROES FOR HIRE, SANCTUM SANCTORUM, SUPER SKRULL, T’CHALLA, BLACK PANTHER, SAVAGE LAND, DARKHOLD, VISHANTI, CEREBRO, FORGE, SENTINELS,
-JIM RHODES, ABSORBING MAN, WRECKING CREW, MAGIK, LOKI, ANCIENT ONE, CLEA, ULTERIOR MOTIVE MAN, DORMAMMU, IKONN, CYTTORAK, HOGGOTH, RAGGADORR,
-SERAPHIM, FALROTH, MINDLESS ONE, SORCERER SUPREME, WATOOMB, FALTINE, MUNNOPOR, SATANNISH, AMTOR, NIRVALON, OSHTUR, BALTHAKK, IKTHALON, DYZAKK, DENAK,
-DAVEROTH, CYNDRIARR, SET, D’SPAYRE, NIGHTMARE, AGGAMOTTO, COLOSSUS, ARCADE, DOUG RAMSEY, KITTY PRYDE, RADIOACTIVE MAN, DARKFORCE, HENRY PYM, MACHINE
-MAN, ELECTRO, RED SKULL, HERCULES, MAN-THING, LIMBO, and the distinctive likenesses thereof are trademarks of the Marvel Comics Group, Copyright ©1986 Marvel Comics Group, a
-division of Cadence lndustries Corporation, All Rights Reserved. Printed In the USA. Game design copyright ©1986 TSR Inc. All Rights Reserved.
-TSR, Inc.
-POB 756
-Lake Geneva, WI 53147
-ISBN 0-88038-368-2
-6871XXXI901
-TSR, Inc.
-PRODUCTS OF YOUR IMAGINATION™
-
----
-
-## Page 99
-
-Power Listing Summary
-Weather Control (Reduced cost for Power
-Stunts)
-Body Manipulation — Others (specify
-material, duration)
-Density Manipulation — Others
-Animal Transformation — Others
-Animate Objects
-Mental Powers — p.81
-Resistances — p. 71
-Animal Communication and Control
-Animal Empathy
-Animate Drawings
-Astral Projection
-Emotion Control (counts as two Powers)
-Empathy
-Force Field Generation (Projected or
-Personal)
-lmage Generation (counts as two Powers)
-Mechanical Intuition
-Mental Probe
-Mind Control
-Plant Control
-Possession (counts as two Powers)
-Postcognition
-Precognition (counts as two Powers, hero
-must take a limitation)
-Psionic Attack
-Psi-Screen
-Telekinesis
-Telepathy
-Transferral (counts as two Powers)
-Ultimate Skill
-Resistance to Cold
-Resistance to Corrosives
-Resistance to Disease
-Resistance to Electricity (specify Conductive
-or Non-conductive)
-Resistance to Energy Attacks
-Resistance to Emotion Attacks
-Resistance to Fire and Heat
-Resistance to Magical Attacks
-Resistance to Mental Attacks
-Resistance to Radiation
-Resistance to Toxins
-Invulnerability (counts as two Powers, spec-
-ify type of Invulnerability)
-Energy Control Powers — p. 75
-Darkforce Manipulation
-Electrical Manipulation
-Gravity Manipulation
-Light Manipulation
-Magnetic Manipulation
-Probability Manipulation (counts as two
-Powers, hero must take a limitation)
-Sound Manipulation (Sound Generation as
-a Bonus Power)
-Nullifying Power (counts as two Powers)
-Energy Reflection
-Time Control (counts as two Powers; hero
-must take a limitation)
-Senses — p. 71
-Astral Detection
-Emotion Detection
-Energy Detection
-Magic Detection
-Magnetic Detection
-Mutant Detection
-Psionic Detection
-Combat Sense (counts as two Powers)
-Computer Links
-Cosmic Awareness (counts as two Powers)
-Enhanced Senses
-Infravision
-Protected Senses
-Tracking Ability
-Body Control Powers — p. 77
-Alter Ego
-Animal Transformation — Self
-Body Transformation — Self (counts as two
-Powers)
-Blending
-Density Manipulation — Self
-Elongation
-Growth
-Imitation
-Invisibility
-Phasing
-Plasticity
-Power Absorption
-Raise Lowest Ability
-Shape-Shifting
-Shrinking
-Body Alterations/Offensive — p. 86
-Claws
-Extra Attacks
-Extra Body Parts (potential Bonus Powers)
-Blinding Touch
-Corrosive Touch
-Energy Touch (Energy Resistance as a
-Bonus Power)
-Health-Drain Touch
-Paralyzing Touch
-Rotting Touch
-Movement Powers — p. 72
-Climbing
-Digging (Claws as Bonus Power)
-Dimensional Travel (counts as two Powers)
-Flight
-Gliding
-Leaping
-Levitation
-Lightning Speed
-Swimming 
-Teleportation (counts as two Powers)
-Wall-Crawling
-Body Alterations/ Defensive — p. 87
-Absorption
-Body Armor (Natural or Artificial,
-modification for Hi-Techs)
-Damage Transfer
-Healing
-Immortality (counts as two Powers, unless
-alien)
-Life Support
-Pheromones
-Recovery (any Resistance as a Bonus
-Power)
-Regeneration
-Solar Regeneration
-Water Breathing (Swimming and/or Animal
-Control as Bonus Powers)
-Distance Attacks — p.80
-Darkforce Generation
-Fire Generation
-Energy Generation
-Ice Generation
-Sound Generation
-Corrosive Missile
-Ensnaring Missile
-Projectile Missile
-Nullifier Missile
-Slashing Missile
-Stunning Missile
-Matter Control Powers — p. 73
-Air Control
-Earth Control
-Fire Control
-Water Control
-
----
-
-## Page 100
-
-98-99
-95-97
-91-94
-86-90
-81-85
-76-80
-71-75
-66-70
-61-65
-56-60
-51-55
-46-50
-41-45
-36-40
-31-35
-26-30
-21-25
-16-20
-11-15
-07-10
-04-06
-02-03
-Red
-Stun
-Kill
-Kill
-Kill
-Stun
-Kill
-Stun
-Hold
-Break
-Reverse
-Stun
--6 CS
-+2 CS
-+1 CS
-Catch
-No
-No
-No
-Yellow
-Slam
-Stun
-Bullseye Stun
-Hit
-Bullseye Bullseye Partial
-Grab
-Escape
-Slam
--4 CS
-+1 CS
--2 CS
-Damage
-No
-Stagger
-No
-Green
-Hit
-Hit
-Hit
-Hit
-Hit
-Hit
-Hit
-Miss
-Take
-Miss
-Hit
--2 CS
-Evasion
--4 CS
-Miss
-1
-1 area
-E/S
-White
-Miss
-Miss
-Miss
-Miss
-Miss
-Miss
-Miss
-Miss
-Miss
-Miss
-Miss
-None
-Autohit
--6 CS
-Autohit
-1-10
-Gr. Slam
-En. Loss
-100
-01
-Shift
-Feeble
-Poor
-Typical
-Good
-Exce-
-Remark-
-Incre-
-Amaz-
-Monst-
-Unear-
-Shift
-Shift
-Shift
-llent
-able
-dible
-ing
-rous
-thly
-0
-Fe
-Pr
-Ty
-Gd
-Ex
-Rm
-In
-Am
-Mn
-Un
-X
-Y
-Z
-Fighting
-Fighting
-Agility
-Agility
-Agility
-Agility
-Agility
-Strength Strength Strength
-Endur-
-Agility
-Fighting
-Strength
-Agility
-Endur-
-Endur-
-Endur-
-ance
-ance
-ance
-ance
-0
-1-2
-3-4
-5-7
-8-15
-16-25
-26-36
-37-45
-46-62
-63-87
-88-125
-126-175
-176-350
-351+
-0
-2
-4
-6
-10
-20
-30
-40
-50
-75
-100
-150
-200
-500
-BA
-EA
-Sh
-TE
-TB
-En
-Fo
-Gp
-Gb
-Es
-Ch
-Do
-Ev
-Bl
-Ca
-St
-Sl
-Ki
-Blunt
-Edged
-Shooting Throwing Throwing
-Energy
-Force
-Grap-
-Grab-
-Escap-
-Charg-
-Dodging
-Evad-
-Blocking Catching
-Stun?
-Slam?
-Kill?
-Attacks
-Attacks
-Attacks
-Edged
-Blunt
-pling
-bing
-ing
-ing
-ing
-1000
-3000
-5000
-Class
-Class
-Class
-Beyond
-1000 3000 5000
-B
-
----
-

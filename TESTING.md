@@ -67,7 +67,7 @@ tests/
 
 All tests are methods on the `Tester` class. Each test method:
 
-- Takes an optional `gen` parameter (a `CharacterGenerator` instance)
+- Takes an optional `gen` parameter (a `CharactorGenerator` instance)
 - Uses `Tester.assert()`, `Tester.assertEquals()`, etc. for assertions
 - Is registered via `Tester.registerTest()` or `Tester.registerTestGroup()`
 
@@ -128,7 +128,7 @@ const MY_TEST_CASES = [
 
 Tester.MyTests = () => {
   for (const tc of MY_TEST_CASES) {
-    const gen = new CharacterGenerator();
+    const gen = new CharactorGenerator();
     gen.generatorMode = 'basic';
     gen.setTables();
     gen.setDeterministicRolls();
@@ -157,12 +157,12 @@ For new test files, follow the naming convention `tests/TestsYourName.js`.
 Tester.YourTestName = (gen) => {
   // If needsGen=true, gen is passed automatically
   // If needsGen=false, create your own gen:
-  const myGen = new CharacterGenerator();
+  const myGen = new CharactorGenerator();
   myGen.generatorMode = 'basic';
   myGen.setTables();
   myGen.setDeterministicRolls();
 
-  const char = new Character();
+  const char = new Charactor();
   char.physicalForm = 'Altered Human';
 
   // Test something
@@ -205,11 +205,11 @@ add the file to `TEST_MANIFEST` in `run-tests.js`.
 | `assertThrows(fn, expectedErr, msg)` | Assert function throws |
 | `assertHasPower(name, powersList, msg)` | Assert power exists in list |
 
-## CharacterGenerator Methods for Testing
+## CharactorGenerator Methods for Testing
 
 ```js
 // Create and configure
-const gen = new CharacterGenerator();
+const gen = new CharactorGenerator();
 gen.generatorMode = 'basic'; // 'basic', 'advanced', or 'ultimate'
 gen.setTables();               // Load data tables for the mode
 gen.setDeterministicRolls();   // Seed all rolls for reproducibility

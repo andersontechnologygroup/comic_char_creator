@@ -1,4 +1,4 @@
-# Super Hero Comic Character Creator
+# Super Hero Comic Charactor Creator
 
 I have been a collector of comic books for over 40 years. One of my favorite books was the **Official Handbook to the Marvel Universe**. This provided simple descriptions of the characters, including powers, talents, group affiliations, contacts, etc. This format inspired me to create new characters using a very simple random number generator and a set of rules that I created. The details of those rules are now lost to my childhood. Many years ago I came across the **Marvel Super Heroes** RPG by TSR and was immediately drawn to the system. I have never been an RPG player, but the system provided a simple character generation system.
 
@@ -35,7 +35,7 @@ Every time you generate a new character, the generation code writes to the Gener
 
 TSR is a registered trademark owned by TSR Inc. TSR inc. is a subsidiary of Wizards of the Coast, Inc., a division of Hasbro, Inc.
 
-Names(s) of character(s) and the distinctive likeness(es) thereof are Trademarks and © of Marvel Characters, Inc. and are used without permission.
+Names(s) of character(s) and the distinctive likeness(es) thereof are Trademarks and © of Marvel Charactors, Inc. and are used without permission.
 
 Names(s) of character(s) and the distinctive likeness(es) thereof are Trademarks and © of DC Comics and are used without permission.
 

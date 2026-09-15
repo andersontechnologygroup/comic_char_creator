@@ -4,14 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Super Hero Character Generator</title>
+  <title>Super Hero Charactor Generator</title>
   <link rel="stylesheet" href="comiccharcreator.css">
 </head>
 
 <body>
 
   <header>
-    <h1>Super Hero Character Generator v3.2.0</h1>
+    <h1>Super Hero Charactor Generator v3.2.1</h1>
   </header>
 
   <div class="tabs-container no-print">
@@ -35,11 +35,11 @@
     <div id="tab-options" class="tab-content">
       <div class="control-group">
         <label>System Mode:</label>
-        <input type="radio" name="generator" id="generator_basic" value="basic" checked/>
+        <input type="radio" name="generator" id="generator_basic" value="basic" />
         <label for="generator_basic">Basic</label>
-        <input type="radio" name="generator" id="generator_advanced" value="advanced" />
+        <input type="radio" name="generator" id="generator_advanced" value="advanced" checked />
         <label for="generator_advanced">Advanced</label>
-        <input type="radio" name="generator" id="generator_ultimate" value="ultimate"  />
+        <input type="radio" name="generator" id="generator_ultimate" value="ultimate" />
         <label for="generator_ultimate">Ultimate</label>
       </div>
       <div class="control-group">
@@ -100,21 +100,51 @@
           <div id="power-category-list"></div>
         </div>
       </div>
-      <div class="control-group">
-        <label>Hi-Tech Resource Logic:</label>
-        <input type="radio" name="hi_tech" id="hi_tech_good" checked />
-        <label for="hi_tech_good">Set to Good</label>
-        <input type="radio" name="hi_tech" id="hi_tech_roll" />
-        <label for="hi_tech_roll">Roll Randomly</label>
+      <div id="advanced-mode-options" class="advanced-mode-options" style="display: none;">
+        <div class="control-group">
+          <label><strong>Advanced Mode Options:</strong></label>
+        </div>
+        <div class="control-group">
+          <label>Hi-Tech Resource Logic:</label>
+          <input type="radio" name="hi_tech" id="hi_tech_good" checked />
+          <label for="hi_tech_good">Set to Good</label>
+          <input type="radio" name="hi_tech" id="hi_tech_roll" />
+          <label for="hi_tech_roll">Roll Randomly</label>
+        </div>
+        <div class="control-group">
+          <label>For Bonus Powers:</label>
+          <input type="radio" name="bonus_power_select" id="bonus_power_select" checked />
+          <label for="bonus_power_select">Select Bonus Powers</label>
+          <input type="radio" name="bonus_power_select" id="bonus_power_roll" />
+          <label for="bonus_power_roll">Roll for Bonus Powers</label>
+        </div>
+        <div class="control-group">
+          <label>Talent Groups:</label>
+          <input type="radio" name="talent_select" id="talent_select_manual" checked />
+          <label for="talent_select_manual">Select Talent Manually</label>
+          <input type="radio" name="talent_select" id="talent_select_roll" />
+          <label for="talent_select_roll">Roll Talent</label>
+        </div>
+        <div class="control-group">
+          <label>Contact Selection:</label>
+          <input type="radio" name="contact_select" id="contact_select_manual" checked />
+          <label for="contact_select_manual">Select Contact Types</label>
+          <input type="radio" name="contact_select" id="contact_select_roll" />
+          <label for="contact_select_roll">Roll Contact Types</label>
+        </div>
       </div>
-      <div class="control-group">
-        <label>Apply all Optional Powers:</label>
-        <input type="radio" name="optional_powers" id="optional_powers_apply" checked />
-        <label for="optional_powers_apply">Apply all Optional Powers</label>
-        <input type="radio" name="optional_powers" id="optional_powers_ignore" />
-        <label for="optional_powers_ignore">Ignore all Optional Powers</label>
+      <div id="ultimate-mode-options" class="ultimate-mode-options" style="display: none;">
+        <div class="control-group">
+          <label><strong>Ultimate Mode Options:</strong></label>
+        </div>
+        <div class="control-group">
+          <label>Apply all Optional Powers:</label>
+          <input type="radio" name="optional_powers" id="optional_powers_apply" checked />
+          <label for="optional_powers_apply">Apply all Optional Powers</label>
+          <input type="radio" name="optional_powers" id="optional_powers_ignore" />
+          <label for="optional_powers_select">Manually Select Optional Powers</label>
+        </div>
       </div>
-
     </div>
     <div id="tab-about" class="tab-content">
       <p>I have been a collector of comic books for over 40 years. One of my favorite books was the Official Handbook to
@@ -123,16 +153,19 @@
         generator and a set of rules that I created. The details of those rules are now lost to my childhood. Many years
         ago I came across the Marvel Super Heroes RPG by TSR and was immediately drawn to the system. I have never been
         an RPG player, but the system provided a simple character generation system.</p>
-      <p>This character generator was based heavily on the Marvel Super Heroes Advanced Rulebook, until I got my hands on
-        a copy of the Basic character generator. With v3.0, the generator mode can be switched between Basic, Advanced, 
-        and Ultimate mode.  For each mode, you can select between Full and Generic display mode.  Full display mode
-        gives you all of the rank information you will need for RPG purposes.  Generic strips some of the details to
+      <p>This character generator was based heavily on the Marvel Super Heroes Advanced Rulebook, until I got my hands
+        on
+        a copy of the Basic character generator. With v3.0, the generator mode can be switched between Basic, Advanced,
+        and Ultimate mode. For each mode, you can select between Full and Generic display mode. Full display mode
+        gives you all of the rank information you will need for RPG purposes. Generic strips some of the details to
         provide a more generic character generator just for fun.
       <p>
-        I am still in th process of finishing up v3.0. You can take a look at the TODO list to see what is left.  As I was 
-        changing the Generic Mode to Basic Mode (after finding the Basic handbook), I ran into some debugging issues, so 
-        I stopped and did some massive enhancements to the testing framework.  Currently, there are a small handful of 
-        Physical Form attributes that are not working. I also haven't put more than very basic descriptions for the Powers.
+        I am still in th process of finishing up v3.0. You can take a look at the TODO list to see what is left. As I
+        was
+        changing the Generic Mode to Basic Mode (after finding the Basic handbook), I ran into some debugging issues, so
+        I stopped and did some massive enhancements to the testing framework. Currently, there are a small handful of
+        Physical Form attributes that are not working. I also haven't put more than very basic descriptions for the
+        Powers.
         Currently, Ultimate mode is using the same Talents as the Advanced mode. I plan to add the unofficial Ultimate
         Talents to the Ultimate mode. I will also be enhancing the Contacts types for the Ultimate mode.
       </p>
@@ -140,7 +173,7 @@
       <p class="center">
         TSR is a registered trademark owned by TSR Inc. TSR inc. is a subsidiary of Wizards of the Coast, Inc., a
         division of Hasbro, Inc.<br>
-        Names(s) of character(s) and the distinctive likeness(es) thereof are Trademarks and © of Marvel Characters,
+        Names(s) of character(s) and the distinctive likeness(es) thereof are Trademarks and © of Marvel Charactors,
         Inc. and are used without permission.<br>
         Names(s) of character(s) and the distinctive likeness(es) thereof are Trademarks and © of DC Comics and are used
         without permission.<br>
@@ -151,8 +184,10 @@
     <div id="tab-tests" class="tab-content">
       <div class="control-group">
         <label>Test Type:</label>
-        <input type="radio" name="unit-tests-to-run" id="run-unit-tests" checked /> <label for="run-unit-tests">Unit</label>
-        <input type="radio" name="unit-tests-to-run" id="run-render-tests" /> <label for="run-render-tests">Render</label>
+        <input type="radio" name="unit-tests-to-run" id="run-unit-tests" checked /> <label
+          for="run-unit-tests">Unit</label>
+        <input type="radio" name="unit-tests-to-run" id="run-render-tests" /> <label
+          for="run-render-tests">Render</label>
         <input type="radio" name="unit-tests-to-run" id="run-both-tests" /> <label for="run-both-tests">Both</label>
       </div>
       <div class="control-group">
@@ -241,9 +276,18 @@
         const isUltimate = mode === 'ultimate';
         const isFullDisplay = document.querySelector('input[name="display_mode"]:checked').value === 'full';
 
-        let powersHtml = char.powers.map(p => `<li class="power"><strong>${isUltimate ? `${p.code}/` : ''}${p.name}${p.powerSlots > 1 ? `<span class="multiple-slots" title="This power uses ${p.powerSlots} slots.">${p.powerSlots}</span>` : ``}${p.bonusPower ? ` <span class="bonus-power" title="This is a Bonus Power">B</span>` : ``}${p.optionalPower ? ` <span class="bonus-power" title="This is an Optional Power">O</span>` : ``}</strong>: ${` ${p.rank} ${isFullDisplay ? "(" + p.number + ")" : ""}`} &nbsp; <span class="power-description">${p.description}  ${p.extraInformation !== undefined && p.extraInformation !== "" ? "EXTRA: " + p.extraInformation : ""}</span></li>`).join('');
+        let powersHtml = char.powers.map(p => `<li class="power"><strong>${isUltimate ? `${p.code}/` : ''}${p.name}${p.upgradedFrom ? ` (<span class="" title="Upgraded from ${p.upgradedFrom}">${p.upgradeCondition}</span>)` : ""}${p.powerSlots > 1 ? `<span class="multiple-slots" title="This power uses ${p.powerSlots} slots.">${p.powerSlots}</span>` : ``}${p.bonusPower ? ` <span class="bonus-power" title="This is a Bonus Power">B</span>` : ``}${p.optionalPower ? ` <span class="bonus-power" title="This is an Optional Power">O</span>` : ``}</strong>: ${` ${p.rank} ${isFullDisplay ? "(" + p.number + ")" : ""}`} &nbsp; <span class="power-description">${p.description}  ${p.extraInformation !== undefined && p.extraInformation !== "" ? "EXTRA: " + p.extraInformation : ""}</span></li>`).join('');
         let talentsHtml = char.talents.map(t => `<li class="talent"><strong>${t.category}: ${t.name}${t.talentSlots > 1 ? `<span class="multiple-slots" title="This talent uses ${t.talentSlots} slots.">${t.talentSlots}</span>` : ``}</strong> &nbsp; <span class="talent-description">${t.description}</span></li>`).join('');
-        let contactsHtml = char.contacts.map(c => `<li class="contact"><strong>${c.category}/${c.name}</strong>${c.contactSlots > 1 ? `<span class="multiple-slots" title="This contact uses ${c.contactSlots} slots.">${c.contactSlots}</span>` : ``} &nbsp; <span class="contact-description">${c.description}</span></li>`).join('');
+        let contactsHtml = char.contacts.map(c => {
+          var contactLabel = c.contactName ? c.contactName : c.name;
+          var contactMeta = c.contactName ? ` (${c.category}: ${c.name})` : c.category;
+          return `<li class="contact"><strong>${contactLabel}</strong>${c.contactSlots > 1 ? `<span class="multiple-slots" title="This contact uses ${c.contactSlots} slots.">${c.contactSlots}</span>` : ``} &nbsp; <span class="contact-meta">${contactMeta}</span> &nbsp; <span class="contact-description">${c.description}</span></li>`;
+        }).join('');
+        // Pad with empty lines up to contactsMax
+        var totalContactSlots = char.contacts.reduce(function (sum, c) { return sum + (c.contactSlots || 1); }, 0);
+        for (var ei = totalContactSlots; ei < char.contactsMax; ei++) {
+          contactsHtml += '<li class="contact empty-contact"></li>';
+        }
         let logHtml = char.log.map(l => `<div>${l}</div>`).join('');
 
         let powers = char.powers.map(item => item.powerSlots).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
@@ -553,6 +597,737 @@
       _boostSelectedKey = null;
     }
 
+    // --- POWER UPGRADE MODAL ---
+    let _upgradeGen = null;
+    let _upgradeChar = null;
+    let _upgradeMode = null;
+    let _upgradeResolve = null;
+    let _upgradeCurrentIndex = 0;
+    let _upgradeOptions = []; // Array of { powerIndex, upgradeInfo, canUpgrade, reason, originalPower, upgradePower, needsSwap, slotsNeeded, originalSlots, upgradeSlots }
+
+    function showUpgradeModal(generator, char, mode) {
+      _upgradeGen = generator;
+      _upgradeChar = char;
+      _upgradeMode = mode;
+      _upgradeCurrentIndex = 0;
+
+      // Collect all upgrade options
+      _upgradeOptions = [];
+      if (char._pendingPowerUpgrades) {
+        for (var i = 0; i < char._pendingPowerUpgrades.length; i++) {
+          var pending = char._pendingPowerUpgrades[i];
+          var option = generator.getUpgradeOption(pending.powerIndex, char);
+          if (option) {
+            _upgradeOptions.push(option);
+          }
+        }
+      }
+
+      if (_upgradeOptions.length === 0) {
+        return Promise.resolve();
+      }
+
+      return new Promise(function (resolve) {
+        _upgradeResolve = resolve;
+        _showCurrentUpgradeOption();
+      });
+    }
+
+    function _showCurrentUpgradeOption() {
+      // Remove any existing upgrade modal
+      var existing = document.getElementById('upgrade-modal-overlay');
+      if (existing) existing.remove();
+
+      if (_upgradeCurrentIndex >= _upgradeOptions.length) {
+        // All upgrades processed
+        _upgradeResolve();
+        return;
+      }
+
+      var option = _upgradeOptions[_upgradeCurrentIndex];
+      if (option.needsSwap) {
+        _showSwapModal(option);
+      } else {
+        _showSimpleModal(option);
+      }
+    }
+
+    function _showSimpleModal(option) {
+      var overlay = document.createElement('div');
+      overlay.className = 'boost-modal-overlay';
+      overlay.id = 'upgrade-modal-overlay';
+
+      var canUpgrade = option.canUpgrade;
+      var conditionText = option.upgradeInfo.condition
+        ? '<div class="upgrade-condition">Condition: ' + option.upgradeInfo.condition + '</div>'
+        : '';
+
+      var reasonText = !canUpgrade
+        ? '<div class="upgrade-reason">Cannot upgrade: ' + option.reason + '</div>'
+        : '';
+
+      var content = '<div class="boost-modal">' +
+        '<h2>⬆ Power Upgrade Available</h2>' +
+        '<div class="boost-subtitle">Your power "' + option.originalPower.name + '" can be upgraded</div>' +
+        '<div class="upgrade-original">' +
+        '<span class="upgrade-label">Current:</span> ' + option.originalPower.name +
+        ' (' + option.originalPower.rank + ', ' + option.originalPower.powerSlots + ' slot' + (option.originalPower.powerSlots > 1 ? 's' : '') + ')' +
+        '</div>' +
+        '<div class="upgrade-arrow">→</div>' +
+        '<div class="upgrade-target">' +
+        '<span class="upgrade-label">Upgrade to:</span> ' + option.upgradeInfo.powerName +
+        ' (' + option.upgradeSlots + ' slot' + (option.upgradeSlots > 1 ? 's' : '') + ')' +
+        '<div class="upgrade-desc">' + (option.upgradePower ? option.upgradePower.description : '') + '</div>' +
+        '</div>' +
+        conditionText +
+        reasonText +
+        '<div class="boost-actions">' +
+        '<button class="boost-confirm-btn' + (canUpgrade ? ' enabled' : '') + '" id="upgrade-accept-btn">Accept Upgrade</button>' +
+        '<button class="boost-skip-btn" id="upgrade-decline-btn">Decline</button>' +
+        '</div></div>';
+
+      overlay.innerHTML = content;
+      document.getElementById('boost-modal-container').appendChild(overlay);
+
+      document.getElementById('upgrade-accept-btn').addEventListener('click', function () {
+        if (!canUpgrade) return;
+        _upgradeGen.applyPowerUpgrade(_upgradeChar, option.powerIndex, option.upgradeInfo);
+        _upgradeCurrentIndex++;
+        _showCurrentUpgradeOption();
+      });
+
+      document.getElementById('upgrade-decline-btn').addEventListener('click', function () {
+        _upgradeCurrentIndex++;
+        _showCurrentUpgradeOption();
+      });
+    }
+
+    function _showSwapModal(option) {
+      var overlay = document.createElement('div');
+      overlay.className = 'boost-modal-overlay';
+      overlay.id = 'upgrade-modal-overlay';
+
+      var conditionText = option.upgradeInfo.condition
+        ? '<div class="upgrade-condition">Condition: ' + option.upgradeInfo.condition + '</div>'
+        : '';
+
+      // Calculate net slot change after removing original + adding upgrade
+      var netSlotChange = option.upgradeSlots - option.originalSlots;
+
+      // Build the list of removable powers (exclude the power being upgraded)
+      var removablePowers = [];
+      for (var ri = 0; ri < _upgradeChar.powers.length; ri++) {
+        if (ri === option.powerIndex) continue;
+        removablePowers.push({ index: ri, power: _upgradeChar.powers[ri] });
+      }
+
+      // Calculate which powers, if removed, would free enough slots
+      var canFitAfterRemoval = false;
+      for (var fi = 0; fi < removablePowers.length; fi++) {
+        var freedSlots = removablePowers[fi].power.powerSlots || 1;
+        // Net effect: -freedSlots + netSlotChange <= 0 means it fits
+        if (freedSlots >= netSlotChange) {
+          canFitAfterRemoval = true;
+          break;
+        }
+      }
+
+      // If no single power removal works, check if removing multiple could work
+      // (For simplicity, we only allow removing one power at a time)
+      var canUpgrade = option.canUpgrade && canFitAfterRemoval;
+
+      var powerListHtml = '';
+      for (var pi = 0; pi < removablePowers.length; pi++) {
+        var rp = removablePowers[pi];
+        var pSlots = rp.power.powerSlots || 1;
+        var fits = pSlots >= netSlotChange;
+        var disabledClass = fits ? '' : ' disabled';
+        var titleAttr = fits
+          ? 'Remove to free ' + pSlots + ' slot' + (pSlots > 1 ? 's' : '') + ' (upgrade needs ' + netSlotChange + ' extra)'
+          : 'Only frees ' + pSlots + ' slot' + (pSlots > 1 ? 's' : '') + ', need ' + netSlotChange;
+        powerListHtml += '<div class="upgrade-power-remove' + disabledClass + '" data-remove-index="' + rp.index + '" title="' + titleAttr + '">' +
+          '<span class="upgrade-remove-name">' + rp.power.name + '</span>' +
+          '<span class="upgrade-remove-info">' + rp.power.category + ' — ' + rp.power.rank + ' (' + pSlots + ' slot' + (pSlots > 1 ? 's' : '') + ')</span>' +
+          '</div>';
+      }
+
+      var noFitMessage = !canFitAfterRemoval
+        ? '<div class="upgrade-reason">No single power can be removed to make room. The upgrade needs ' + option.upgradeSlots + ' slot' + (option.upgradeSlots > 1 ? 's' : '') + ' (+' + netSlotChange + ' extra).</div>'
+        : '';
+
+      var content = '<div class="boost-modal">' +
+        '<h2>⬆ Power Upgrade Available</h2>' +
+        '<div class="boost-subtitle">Your power "' + option.originalPower.name + '" can be upgraded to "' + option.upgradeInfo.powerName + '"</div>' +
+        '<div class="upgrade-swap-info">' +
+        '<div class="upgrade-original">' +
+        '<span class="upgrade-label">Current:</span> ' + option.originalPower.name +
+        ' (' + option.originalSlots + ' slot' + (option.originalSlots > 1 ? 's' : '') + ')' +
+        '</div>' +
+        '<div class="upgrade-arrow">→</div>' +
+        '<div class="upgrade-target">' +
+        '<span class="upgrade-label">Upgrade to:</span> ' + option.upgradeInfo.powerName +
+        ' (' + option.upgradeSlots + ' slot' + (option.upgradeSlots > 1 ? 's' : '') + ')' +
+        '<div class="upgrade-desc">' + (option.upgradePower ? option.upgradePower.description : '') + '</div>' +
+        '</div>' +
+        '</div>' +
+        conditionText +
+        '<div class="upgrade-swap-section">' +
+        '<div class="upgrade-swap-header">Select a power to remove and replace:</div>' +
+        '<div class="upgrade-swap-subheader">Current slots: ' + _upgradeChar.powers.reduce(function (s, p) { return s + (p.powerSlots || 1); }, 0) + ' / ' + _upgradeChar.powersCount + ' (removing original frees ' + option.originalSlots + ', upgrade needs ' + option.upgradeSlots + ')</div>' +
+        '<div class="upgrade-power-list">' + powerListHtml + '</div>' +
+        '</div>' +
+        noFitMessage +
+        '<div class="boost-actions">' +
+        '<button class="boost-confirm-btn' + (canUpgrade ? ' enabled' : '') + '" id="upgrade-swap-confirm-btn">Confirm Swap</button>' +
+        '<button class="boost-skip-btn" id="upgrade-decline-btn">Decline Upgrade</button>' +
+        '</div></div>';
+
+      overlay.innerHTML = content;
+      document.getElementById('boost-modal-container').appendChild(overlay);
+
+      var _selectedRemoveIndex = null;
+
+      // Selection handler for removable powers
+      overlay.querySelectorAll('.upgrade-power-remove:not(.disabled)').forEach(function (el) {
+        el.addEventListener('click', function () {
+          overlay.querySelectorAll('.upgrade-power-remove').forEach(function (o) { o.classList.remove('selected'); });
+          this.classList.add('selected');
+          _selectedRemoveIndex = parseInt(this.getAttribute('data-remove-index'));
+          document.getElementById('upgrade-swap-confirm-btn').classList.add('enabled');
+        });
+      });
+
+      // Confirm swap button
+      document.getElementById('upgrade-swap-confirm-btn').addEventListener('click', function () {
+        if (_selectedRemoveIndex === null || !canUpgrade) return;
+        // Remove the selected power
+        _upgradeGen.removePower(_upgradeChar, _selectedRemoveIndex);
+        // Update the upgrade option's powerIndex if needed (removal may shift indices)
+        var adjustedIndex = option.powerIndex;
+        if (_selectedRemoveIndex < option.powerIndex) adjustedIndex--;
+        // Apply the upgrade
+        _upgradeGen.applyPowerUpgrade(_upgradeChar, adjustedIndex, option.upgradeInfo);
+        _upgradeCurrentIndex++;
+        _showCurrentUpgradeOption();
+      });
+
+      // Decline button
+      document.getElementById('upgrade-decline-btn').addEventListener('click', function () {
+        _upgradeCurrentIndex++;
+        _showCurrentUpgradeOption();
+      });
+    }
+
+    // --- BONUS POWER SELECTION MODAL ---
+    function showBonusPowerSelectionModal(generator, mode) {
+      // Throw rolls and set tables so we can determine the physical form
+      generator.throwAllRolls();
+      generator.setTables();
+      generator._phase1Complete = true;
+      // Determine physical form for the modal
+      const physicalFormRow = generator.physicalFormTable.find(o => generator.physicalFormRoll <= o.maxRoll);
+      generator._lastPhysicalForm = physicalFormRow ? physicalFormRow.name : generator.physicalFormTable[0].name;
+
+      const slots = generator.getBonusPowerOptions();
+      if (slots.length === 0) {
+        // No bonus powers available, nothing to select
+        return Promise.resolve();
+      }
+
+      return new Promise(function (resolve) {
+        const overlay = document.createElement('div');
+        overlay.className = 'boost-modal-overlay';
+        overlay.id = 'bonus-power-modal-overlay';
+
+        var html = '<div class="boost-modal">';
+        html += '<h2>Select Bonus Powers</h2>';
+        html += '<div class="boost-subtitle">Choose one bonus power for each triggered slot below</div>';
+
+        var selections = {};  // keyed by sourcePowerName (or 'physicalForm')
+
+        for (var si = 0; si < slots.length; si++) {
+          var slot = slots[si];
+          var slotKey = slot.source === 'physicalForm' ? 'physicalForm' : slot.sourcePowerName;
+          var slotLabel = slot.source === 'physicalForm'
+            ? 'Physical Form Bonus Power'
+            : 'Bonus from: ' + slot.sourcePowerName;
+          html += '<div class="boost-section-title">' + slotLabel + ':</div>';
+          for (var oi = 0; oi < slot.options.length; oi++) {
+            var opt = slot.options[oi];
+            // Look up the power details for description
+            var powerRow = generator.powerListTable.find(function (p) { return p.category === opt.category && p.name === opt.name; });
+            var desc = powerRow ? (powerRow.description || '').substring(0, 120) : '';
+            if (desc.length >= 120) desc += '...';
+            html += '<div class="boost-option-stacked" data-slot="' + si + '" data-key="' + slotKey + '" data-category="' + opt.category + '" data-name="' + opt.name.replace(/"/g, '&quot;') + '">';
+            html += '<span class="boost-label">' + opt.name + '</span>';
+            html += '<span class="boost-detail">' + opt.category + '</span>';
+            if (desc) html += '<span class="boost-detail">' + desc + '</span>';
+            html += '</div>';
+          }
+        }
+
+        html += '<div class="boost-actions">';
+        html += '<button class="boost-confirm-btn" id="bonus-power-confirm-btn">Confirm</button>';
+        html += '<button class="boost-skip-btn" id="bonus-power-skip-btn">Skip (Roll Instead)</button>';
+        html += '</div></div>';
+
+        overlay.innerHTML = html;
+        document.getElementById('boost-modal-container').appendChild(overlay);
+
+        // Selection handler
+        overlay.querySelectorAll('.boost-option-stacked').forEach(function (el) {
+          el.addEventListener('click', function () {
+            var slot = this.getAttribute('data-slot');
+            var slotKey = this.getAttribute('data-key');
+            // Deselect others in same slot
+            overlay.querySelectorAll('.boost-option-stacked[data-slot="' + slot + '"]').forEach(function (o) {
+              o.classList.remove('selected');
+            });
+            this.classList.add('selected');
+            selections[slotKey] = {
+              category: this.getAttribute('data-category'),
+              name: this.getAttribute('data-name')
+            };
+            // Check if all slots have selections
+            var allSelected = true;
+            for (var k = 0; k < slots.length; k++) {
+              var kKey = slots[k].source === 'physicalForm' ? 'physicalForm' : slots[k].sourcePowerName;
+              if (!selections[kKey]) { allSelected = false; break; }
+            }
+            if (allSelected) {
+              document.getElementById('bonus-power-confirm-btn').classList.add('enabled');
+            }
+          });
+        });
+
+        // Confirm button
+        document.getElementById('bonus-power-confirm-btn').addEventListener('click', function () {
+          generator._selectedBonusPowers = selections;
+          overlay.remove();
+          resolve();
+        });
+
+        // Skip button - use rolling instead
+        document.getElementById('bonus-power-skip-btn').addEventListener('click', function () {
+          generator.selectBonusPowers = false;
+          overlay.remove();
+          resolve();
+        });
+      });
+    }
+
+    // --- TALENT SELECTION MODAL (Advanced Mode) ---
+    function showTalentSelectionModal(generator, mode) {
+      generator.throwAllRolls();
+      generator.setTables();
+      generator._phase1Complete = true;
+      const physicalFormRow = generator.physicalFormTable.find(o => generator.physicalFormRoll <= o.maxRoll);
+      generator._lastPhysicalForm = physicalFormRow ? physicalFormRow.name : generator.physicalFormTable[0].name;
+
+      const availableCategories = generator.getAvailableTalents();
+      const maxSlots = generator.getTalentSlotCount();
+
+      return new Promise(function (resolve) {
+        const overlay = document.createElement('div');
+        overlay.className = 'boost-modal-overlay';
+        overlay.id = 'talent-select-modal-overlay';
+
+        var html = '<div class="boost-modal" style="max-height:80vh;overflow-y:auto;">';
+        html += '<h2>Select Talents</h2>';
+        html += '<div class="boost-subtitle">Pick talents from the categories below. Slots remaining: <span id="talent-slots-remaining">' + maxSlots + '</span>/' + maxSlots + '</div>';
+
+        var selections = [];
+        var usedNames = new Set();
+        var currentSlots = 0;
+
+        for (var ci = 0; ci < availableCategories.length; ci++) {
+          var cat = availableCategories[ci];
+          var catId = 'talent-cat-' + ci;
+          html += '<div class="boost-section-title collapsible" data-target="' + catId + '">' + cat.category + '</div>';
+          html += '<div class="boost-section-items" id="' + catId + '">';
+          for (var ti = 0; ti < cat.talents.length; ti++) {
+            var talent = cat.talents[ti];
+            var desc = talent.description || '';
+            var tcLabel = talent.talentCount > 1 ? ' (' + talent.talentCount + ' slots)' : '';
+            html += '<div class="boost-option-stacked" data-category="' + cat.category + '" data-name="' + talent.name.replace(/"/g, '&quot;') + '" data-talentcount="' + talent.talentCount + '">';
+            html += '<span class="boost-label">' + talent.name + tcLabel + '</span>';
+            html += '<span class="boost-detail">' + desc + '</span>';
+            html += '</div>';
+          }
+          html += '</div>';
+        }
+
+        html += '<div class="boost-actions">';
+        html += '<button class="boost-confirm-btn" id="talent-select-confirm-btn">Confirm</button>';
+        html += '</div></div>';
+
+        overlay.innerHTML = html;
+        document.getElementById('boost-modal-container').appendChild(overlay);
+
+        // Collapsible category headers
+        overlay.querySelectorAll('.boost-section-title.collapsible').forEach(function (el) {
+          el.addEventListener('click', function () {
+            var targetId = this.getAttribute('data-target');
+            var items = document.getElementById(targetId);
+            if (items) {
+              items.classList.toggle('collapsed');
+              this.classList.toggle('collapsed');
+            }
+          });
+        });
+
+        function updateUI() {
+          var remaining = maxSlots - currentSlots;
+          document.getElementById('talent-slots-remaining').textContent = remaining;
+          // Disable options that don't fit or are already selected
+          overlay.querySelectorAll('.boost-option-stacked').forEach(function (el) {
+            var tc = parseInt(el.getAttribute('data-talentcount')) || 1;
+            var name = el.getAttribute('data-name');
+            var isSelected = usedNames.has(name);
+            var wontFit = !isSelected && tc > remaining;
+            if (isSelected) {
+              el.classList.add('selected');
+              el.classList.remove('code-added');
+            } else if (wontFit) {
+              el.classList.remove('selected');
+              el.style.opacity = '0.3';
+              el.style.pointerEvents = 'none';
+            } else {
+              el.classList.remove('selected', 'code-added');
+              el.style.opacity = '1';
+              el.style.pointerEvents = 'auto';
+            }
+          });
+          // Enable/disable Confirm button — require all slots filled
+          var confirmBtn = document.getElementById('talent-select-confirm-btn');
+          if (currentSlots >= maxSlots) {
+            confirmBtn.classList.add('enabled');
+          } else {
+            confirmBtn.classList.remove('enabled');
+          }
+        }
+
+        // Click handler for each talent option
+        overlay.querySelectorAll('.boost-option-stacked').forEach(function (el) {
+          el.addEventListener('click', function () {
+            if (this.style.pointerEvents === 'none') return;
+            var cat = this.getAttribute('data-category');
+            var name = this.getAttribute('data-name');
+            var tc = parseInt(this.getAttribute('data-talentcount')) || 1;
+
+            // Toggle selection
+            var existingIndex = -1;
+            for (var i = 0; i < selections.length; i++) {
+              if (selections[i].name === name) { existingIndex = i; break; }
+            }
+            if (existingIndex >= 0) {
+              currentSlots -= selections[existingIndex].talentCount;
+              usedNames.delete(name);
+              selections.splice(existingIndex, 1);
+            } else {
+              if (currentSlots + tc > maxSlots) return;
+              var talentData = null;
+              for (var ci = 0; ci < availableCategories.length; ci++) {
+                for (var ti = 0; ti < availableCategories[ci].talents.length; ti++) {
+                  if (availableCategories[ci].talents[ti].name === name) {
+                    talentData = availableCategories[ci].talents[ti];
+                    break;
+                  }
+                }
+                if (talentData) break;
+              }
+              selections.push({
+                category: cat,
+                name: name,
+                talentCount: tc,
+                description: talentData ? talentData.description : ''
+              });
+              usedNames.add(name);
+              currentSlots += tc;
+            }
+            updateUI();
+          });
+        });
+
+        // Confirm button
+        document.getElementById('talent-select-confirm-btn').addEventListener('click', function () {
+          generator._selectedTalents = selections;
+          overlay.remove();
+          resolve();
+        });
+
+        updateUI();
+      });
+    }
+
+    // --- CONTACT SELECTION MODAL (Advanced Mode) ---
+    function showContactSelectionModal(generator, mode) {
+      generator.throwAllRolls();
+      generator.setTables();
+      generator._phase1Complete = true;
+      const physicalFormRow = generator.physicalFormTable.find(o => generator.physicalFormRoll <= o.maxRoll);
+      generator._lastPhysicalForm = physicalFormRow ? physicalFormRow.name : generator.physicalFormTable[0].name;
+
+      const availableCategories = generator.getAvailableContacts();
+      const maxSlots = generator.getContactSlotCount();
+
+      return new Promise(function (resolve) {
+        const overlay = document.createElement('div');
+        overlay.className = 'boost-modal-overlay';
+        overlay.id = 'contact-select-modal-overlay';
+
+        var html = '<div class="boost-modal" style="max-height:80vh;overflow-y:auto;">';
+        html += '<h2>Select Contacts</h2>';
+        html += '<div class="boost-subtitle">Pick contact types below. Max slots: ' + maxSlots + '. Slots used: <span id="contact-slots-used">0</span>/' + maxSlots + '</div>';
+
+        var selections = [];
+        var usedNames = new Set();
+        var currentSlots = 0;
+
+        for (var ci = 0; ci < availableCategories.length; ci++) {
+          var cat = availableCategories[ci];
+          var catId = 'contact-cat-' + ci;
+          html += '<div class="boost-section-title collapsible" data-target="' + catId + '">' + cat.category + '</div>';
+          html += '<div class="boost-section-items" id="' + catId + '">';
+          for (var ti = 0; ti < cat.contacts.length; ti++) {
+            var contact = cat.contacts[ti];
+            var desc = contact.description || '';
+            var ccLabel = contact.contactCount > 1 ? ' (' + contact.contactCount + ' slots)' : '';
+            html += '<div class="boost-option-stacked" data-category="' + cat.category + '" data-name="' + contact.name.replace(/"/g, '&quot;') + '" data-contactcount="' + (contact.contactCount || 1) + '">';
+            html += '<span class="boost-label">' + contact.name + ccLabel + '</span>';
+            html += '<span class="boost-detail">' + desc + '</span>';
+            html += '<input type="text" class="contact-name-input" placeholder="Enter contact name (required)" style="display:none;" />';
+            html += '</div>';
+          }
+          html += '</div>';
+        }
+
+        html += '<div class="boost-actions">';
+        html += '<button class="boost-confirm-btn" id="contact-select-confirm-btn">Confirm</button>';
+        html += '<button class="boost-skip-btn" id="contact-select-cancel-btn">Cancel</button>';
+        html += '</div></div>';
+
+        overlay.innerHTML = html;
+        document.getElementById('boost-modal-container').appendChild(overlay);
+
+        // Collapsible category headers
+        overlay.querySelectorAll('.boost-section-title.collapsible').forEach(function (el) {
+          el.addEventListener('click', function () {
+            var targetId = this.getAttribute('data-target');
+            var items = document.getElementById(targetId);
+            if (items) {
+              items.classList.toggle('collapsed');
+              this.classList.toggle('collapsed');
+            }
+          });
+        });
+
+        function updateUI() {
+          // Disable options that don't fit or are already selected
+          overlay.querySelectorAll('.boost-option-stacked').forEach(function (el) {
+            var cc = parseInt(el.getAttribute('data-contactcount')) || 1;
+            var name = el.getAttribute('data-name');
+            var isSelected = usedNames.has(name);
+            var wontFit = !isSelected && (currentSlots + cc > maxSlots);
+            var nameInput = el.querySelector('.contact-name-input');
+            if (isSelected) {
+              el.classList.add('selected');
+              el.style.opacity = '1';
+              el.style.pointerEvents = 'auto';
+              if (nameInput) nameInput.style.display = 'block';
+            } else if (wontFit) {
+              el.classList.remove('selected');
+              el.style.opacity = '0.3';
+              el.style.pointerEvents = 'none';
+              if (nameInput) nameInput.style.display = 'none';
+            } else {
+              el.classList.remove('selected');
+              el.style.opacity = '1';
+              el.style.pointerEvents = 'auto';
+              if (nameInput) nameInput.style.display = 'none';
+            }
+          });
+          document.getElementById('contact-slots-used').textContent = currentSlots;
+          // Confirm is always enabled (fewer selections than max is OK)
+          document.getElementById('contact-select-confirm-btn').classList.add('enabled');
+        }
+
+        // Click handler for each contact option
+        overlay.querySelectorAll('.boost-option-stacked').forEach(function (el) {
+          el.addEventListener('click', function (e) {
+            if (this.style.pointerEvents === 'none') return;
+            // Don't toggle if clicking the input field
+            if (e.target.tagName === 'INPUT') return;
+            var cat = this.getAttribute('data-category');
+            var name = this.getAttribute('data-name');
+            var cc = parseInt(this.getAttribute('data-contactcount')) || 1;
+
+            var existingIndex = -1;
+            for (var i = 0; i < selections.length; i++) {
+              if (selections[i].name === name) { existingIndex = i; break; }
+            }
+            if (existingIndex >= 0) {
+              currentSlots -= selections[existingIndex].contactCount;
+              usedNames.delete(name);
+              selections.splice(existingIndex, 1);
+            } else {
+              if (currentSlots + cc > maxSlots) return;
+              // Look up description from available data
+              var selDesc = '';
+              for (var sci = 0; sci < availableCategories.length; sci++) {
+                for (var sti = 0; sti < availableCategories[sci].contacts.length; sti++) {
+                  if (availableCategories[sci].contacts[sti].name === name) {
+                    selDesc = availableCategories[sci].contacts[sti].description || '';
+                    break;
+                  }
+                }
+                if (selDesc) break;
+              }
+              selections.push({
+                category: cat,
+                name: name,
+                contactCount: cc,
+                description: selDesc,
+                contactName: ''
+              });
+              usedNames.add(name);
+              currentSlots += cc;
+            }
+            updateUI();
+          });
+        });
+
+        // Contact name input handlers
+        overlay.querySelectorAll('.contact-name-input').forEach(function (input) {
+          input.addEventListener('input', function () {
+            var optionEl = this.closest('.boost-option-stacked');
+            var name = optionEl.getAttribute('data-name');
+            for (var i = 0; i < selections.length; i++) {
+              if (selections[i].name === name) {
+                selections[i].contactName = this.value;
+                break;
+              }
+            }
+            // Validate: highlight invalid if empty when selected
+            if (usedNames.has(name) && this.value.trim() === '') {
+              this.classList.add('invalid');
+            } else {
+              this.classList.remove('invalid');
+            }
+          });
+          input.addEventListener('click', function (e) { e.stopPropagation(); });
+        });
+
+        // Confirm button
+        document.getElementById('contact-select-confirm-btn').addEventListener('click', function () {
+          // Validate all selected contacts have names
+          var allValid = true;
+          for (var i = 0; i < selections.length; i++) {
+            if (!selections[i].contactName || selections[i].contactName.trim() === '') {
+              allValid = false;
+              // Find and highlight the input
+              var opt = overlay.querySelector('.boost-option-stacked[data-name="' + selections[i].name.replace(/"/g, '&quot;') + '"]');
+              if (opt) {
+                var inp = opt.querySelector('.contact-name-input');
+                if (inp) inp.classList.add('invalid');
+              }
+            }
+          }
+          if (!allValid) return;
+          generator._selectedContacts = selections;
+          overlay.remove();
+          resolve();
+        });
+
+        // Cancel button
+        document.getElementById('contact-select-cancel-btn').addEventListener('click', function () {
+          generator.selectContactManually = false;
+          overlay.remove();
+          resolve();
+        });
+
+        updateUI();
+      });
+    }
+
+    // --- CONTACT NAMING MODAL (post-roll) ---
+    function showContactNamingModal(character) {
+      // Only show if there are contacts without names
+      var unnamed = character.contacts.filter(function (c) { return !c.contactName; });
+      if (unnamed.length === 0) return Promise.resolve();
+
+      return new Promise(function (resolve) {
+        const overlay = document.createElement('div');
+        overlay.className = 'boost-modal-overlay';
+        overlay.id = 'contact-naming-modal-overlay';
+
+        var html = '<div class="boost-modal" style="max-height:80vh;overflow-y:auto;">';
+        html += '<h2>Name Your Contacts</h2>';
+        html += '<div class="boost-subtitle">Enter a name for each contact below.</div>';
+
+        for (var i = 0; i < character.contacts.length; i++) {
+          var c = character.contacts[i];
+          var displayName = c.contactName ? c.contactName : c.name;
+          var meta = c.contactName ? ' (' + c.category + ': ' + c.name + ')' : c.category;
+          var isUnnamed = !c.contactName;
+          html += '<div class="boost-option-stacked' + (isUnnamed ? '' : ' code-added') + '" data-index="' + i + '">';
+          html += '<span class="boost-label">' + displayName + '</span>';
+          html += '<span class="boost-detail">' + meta + '</span>';
+          if (isUnnamed) {
+            html += '<input type="text" class="contact-name-input" data-index="' + i + '" placeholder="Enter contact name (required)" />';
+          }
+          html += '</div>';
+        }
+
+        html += '<div class="boost-actions">';
+        html += '<button class="boost-confirm-btn" id="contact-naming-confirm-btn">Confirm</button>';
+        html += '</div></div>';
+
+        overlay.innerHTML = html;
+        document.getElementById('boost-modal-container').appendChild(overlay);
+
+        function checkAllFilled() {
+          var inputs = overlay.querySelectorAll('.contact-name-input');
+          var allFilled = true;
+          inputs.forEach(function (inp) {
+            if (inp.value.trim() === '') {
+              allFilled = false;
+              inp.classList.add('invalid');
+            } else {
+              inp.classList.remove('invalid');
+            }
+          });
+          var btn = document.getElementById('contact-naming-confirm-btn');
+          if (allFilled && inputs.length > 0) {
+            btn.classList.add('enabled');
+          } else {
+            btn.classList.remove('enabled');
+          }
+        }
+
+        // Input handlers
+        overlay.querySelectorAll('.contact-name-input').forEach(function (inp) {
+          inp.addEventListener('input', function () {
+            var idx = parseInt(this.getAttribute('data-index'));
+            character.contacts[idx].contactName = this.value;
+            checkAllFilled();
+          });
+          inp.addEventListener('click', function (e) { e.stopPropagation(); });
+        });
+
+        // Confirm button
+        document.getElementById('contact-naming-confirm-btn').addEventListener('click', function () {
+          overlay.remove();
+          resolve();
+        });
+
+        checkAllFilled();
+        // Focus the first empty input
+        var firstInput = overlay.querySelector('.contact-name-input');
+        if (firstInput) firstInput.focus();
+      });
+    }
+
     // --- POWER SELECTION MODAL (Choose Mode) ---
     let _powerSelectGen = null;
     let _powerSelectMode = null;
@@ -565,7 +1340,7 @@
       _powerSelectMode = mode;
       _powerSelectSelections = {};
 
-      return new Promise(function(resolve) {
+      return new Promise(function (resolve) {
         _powerSelectResolve = resolve;
 
         // Phase 1: throw rolls and determine categories
@@ -650,7 +1425,7 @@
             // is selected in a DIFFERENT section
             for (var ss = 0; ss < slots.length; ss++) {
               var sectionOptions = overlay.querySelectorAll('.power-select-option[data-slot="' + slots[ss] + '"]');
-              sectionOptions.forEach(function(opt) {
+              sectionOptions.forEach(function (opt) {
                 var optName = opt.getAttribute('data-name');
                 var optSlot = parseInt(opt.getAttribute('data-slot'));
                 // Hide if another section in same category has this name selected
@@ -744,12 +1519,12 @@
         }
 
         // --- Selection handler ---
-        overlay.querySelectorAll('.power-select-option').forEach(function(el) {
-          el.addEventListener('click', function() {
+        overlay.querySelectorAll('.power-select-option').forEach(function (el) {
+          el.addEventListener('click', function () {
             var slot = this.getAttribute('data-slot');
             var name = this.getAttribute('data-name');
             // Deselect others in same slot
-            overlay.querySelectorAll('.power-select-option[data-slot="' + slot + '"]').forEach(function(o) {
+            overlay.querySelectorAll('.power-select-option[data-slot="' + slot + '"]').forEach(function (o) {
               o.classList.remove('selected');
             });
             this.classList.add('selected');
@@ -774,7 +1549,7 @@
         });
 
         // --- Confirm button ---
-        document.getElementById('power-select-confirm-btn').addEventListener('click', function() {
+        document.getElementById('power-select-confirm-btn').addEventListener('click', function () {
           // Build preSelected from only active (visible) sections
           var preSelected = [];
           for (var pi = 0; pi <= _psMaxSlotIndex; pi++) {
@@ -796,7 +1571,7 @@
     // --- APP CONTROLLER ---
     const app = {
       generate: async () => {
-        const generator = new CharacterGenerator();
+        const generator = new CharactorGenerator();
         generator.identitySecret = document.getElementById('identity_secret').checked;
         generator.originPublic = document.getElementById('origin_public').checked;
         generator.hiTechToGood = document.getElementById('hi_tech_good').checked;
@@ -819,7 +1594,40 @@
           await showPowerSelectionModal(generator, generator.generatorMode);
         }
 
+        // If selecting bonus powers, show modal before generation
+        const selectBonus = document.getElementById('bonus_power_select').checked;
+        if (selectBonus) {
+          generator.selectBonusPowers = true;
+          await showBonusPowerSelectionModal(generator, generator.generatorMode);
+        }
+
+        // If selecting talents manually, show modal before generation
+        const selectTalent = advanced && document.getElementById('talent_select_manual').checked;
+        if (selectTalent) {
+          generator.selectTalentManually = true;
+          await showTalentSelectionModal(generator, generator.generatorMode);
+        }
+
+        // If selecting contacts manually, show modal before generation
+        const selectContact = advanced && document.getElementById('contact_select_manual').checked;
+        if (selectContact) {
+          generator.selectContactManually = true;
+          await showContactSelectionModal(generator, generator.generatorMode);
+        }
+
         const character = generator.generate();
+
+        // Show upgrade modal for powers with upgradePower attribute (Advanced mode)
+        if (character._pendingPowerUpgrades && character._pendingPowerUpgrades.length > 0) {
+          await showUpgradeModal(generator, character, generator.generatorMode);
+        }
+
+        // If contacts were rolled (not manually selected), show naming modal
+        const contactRollSelected = advanced && document.getElementById('contact_select_roll').checked;
+        if (contactRollSelected || !advanced) {
+          await showContactNamingModal(character);
+        }
+
         Renderer.render(character, generator.generatorMode);
         document.getElementById('test-area').innerHTML = ""; // Clear tests
 
@@ -830,7 +1638,11 @@
       },
       updateModeOptions: () => {
         const isBasic = document.getElementById('generator_basic').checked;
+        const isAdvanced = document.getElementById('generator_advanced').checked;
+        const isUltimate = document.getElementById('generator_ultimate').checked;
         document.getElementById('basic-mode-options').style.display = isBasic ? 'block' : 'none';
+        document.getElementById('advanced-mode-options').style.display = isAdvanced ? 'block' : 'none';
+        document.getElementById('ultimate-mode-options').style.display = isUltimate ? 'block' : 'none';
       },
       runTests: () => {
         const unitTests = document.getElementById('run-unit-tests').checked;
@@ -876,4 +1688,5 @@
 
   </script>
 </body>
+
 </html>
