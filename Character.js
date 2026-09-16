@@ -1,4 +1,4 @@
-class Charactor {
+class Character {
     constructor() {
         this.physicalForm = "";
         this.subType = "";

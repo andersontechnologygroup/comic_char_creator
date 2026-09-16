@@ -1,5 +1,5 @@
 // TestsGeneratorMethods.js
-// Isolated unit tests for individual CharactorGenerator methods.
+// Isolated unit tests for individual CharacterGenerator methods.
 //
 // These tests call a single method at a time (e.g., determineResources,
 // determinePopularity, determineAbility) to verify their behavior without
@@ -20,7 +20,7 @@ Tester.DetermineResourcesTests = (gen) => {
     gen.setDeterministicRolls();
 
     // Altered Human: resourcesAdjustment=1
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Altered Human";
     gen.determineResources(char1);
     Tester.assertNotNull(
@@ -38,7 +38,7 @@ Tester.DetermineResourcesTests = (gen) => {
 
     // Mutant (basic): no resourcesAdjustment
     gen.setDeterministicRolls();
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Mutant";
     gen.determineResources(char2);
     Tester.assertEquals(
@@ -49,7 +49,7 @@ Tester.DetermineResourcesTests = (gen) => {
 
     // Hi-Tech (basic): isHiTech flag
     gen.setDeterministicRolls();
-    const char3 = new Charactor();
+    const char3 = new Character();
     char3.physicalForm = "Hi-Tech";
     gen.determineResources(char3);
     Tester.assert(
@@ -62,7 +62,7 @@ Tester.DetermineResourcesTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char4 = new Charactor();
+    const char4 = new Character();
     char4.physicalForm = "Altered Human";
     gen.determineResources(char4);
     Tester.assertNotNull(
@@ -79,19 +79,19 @@ Tester.DetermineResourcesTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    // Gaseous: resourcesSet=1 (Feeble)
-    const char5 = new Charactor();
+    // Gaseous: resourcesSet=0 (Shift 0)
+    const char5 = new Character();
     char5.physicalForm = "Gaseous";
     gen.determineResources(char5);
     Tester.assertEquals(
-        "Feeble",
+        "Shift 0",
         char5.resources.rank,
-        "determineResources (Ultimate): Gaseous resources = Feeble.",
+        "determineResources (Ultimate): Gaseous resources = Shift 0.",
     );
     Tester.assertEquals(
-        1,
+        0,
         char5.state.resources.set,
-        "determineResources (Ultimate): state.resources.set = 1.",
+        "determineResources (Ultimate): state.resources.set = 0.",
     );
 };
 
@@ -105,7 +105,7 @@ Tester.DeterminePopularityTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Altered Human";
     gen.identitySecret = true;
     gen.originPublic = false;
@@ -131,7 +131,7 @@ Tester.DeterminePopularityTests = (gen) => {
     gen.wellEstablished = false;
     gen.looksHuman = false;
 
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Normal Human";
     gen.determinePopularity(char2);
     Tester.assert(
@@ -149,7 +149,7 @@ Tester.DeterminePopularityTests = (gen) => {
 
     // Ultimate: popularityStart overrides
     gen.setDeterministicRolls();
-    const char3 = new Charactor();
+    const char3 = new Character();
     char3.physicalForm = "Surgical Composite";
     gen.determinePopularity(char3);
     Tester.assertEquals(
@@ -173,7 +173,7 @@ Tester.DetermineAbilityTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
 
     // Manually set an ability roll
@@ -214,7 +214,7 @@ Tester.GetAbilityAfterModifierTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
 
     // No adjustment: Typical stays Typical
     const result1 = gen.getAbilityAfterModifier(char, "Fighting", "Typical", 0);
@@ -275,7 +275,7 @@ Tester.GetAbilityAfterModifierTests = (gen) => {
 // ============================================================================
 
 Tester.CalculateSecondaryTests = () => {
-    const char = new Charactor();
+    const char = new Character();
 
     // Set known ability values: F=8, A=5, S=16, E=10 → health = 8+5+16+10 = 39
     char.setAbility("Fighting", "Good", 8);
@@ -305,7 +305,7 @@ Tester.CalculateSecondaryTests = () => {
     );
 
     // Zero abilities
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.setAbility("Fighting", "Shift 0", 0);
     char2.setAbility("Agility", "Shift 0", 0);
     char2.setAbility("Strength", "Shift 0", 0);
@@ -327,7 +327,7 @@ Tester.CalculateSecondaryTests = () => {
     );
 
     // Stale data: change abilities AFTER calculateSecondary — health/karma should be stale
-    const char3 = new Charactor();
+    const char3 = new Character();
     char3.setAbility("Fighting", "Typical", 5);
     char3.setAbility("Agility", "Typical", 5);
     char3.setAbility("Strength", "Typical", 5);
@@ -366,7 +366,7 @@ Tester.CalculateSecondaryTests = () => {
     );
 
     // All same rank: Excellent (16) for all
-    const char4 = new Charactor();
+    const char4 = new Character();
     PHYSICAL_ABILITIES.forEach((a) => char4.setAbility(a, "Excellent", 16));
     MENTAL_ABILITIES.forEach((a) => char4.setAbility(a, "Excellent", 16));
 
@@ -384,17 +384,17 @@ Tester.CalculateSecondaryTests = () => {
 };
 
 // ============================================================================
-// generateCharactor() — pure wrapper isolation tests
+// generateCharacter() — pure wrapper isolation tests
 // ============================================================================
 
-Tester.GenerateCharactorWrapperTests = () => {
+Tester.GenerateCharacterWrapperTests = () => {
     // Call twice with different options and verify independence
-    const char1 = CharactorGenerator.generateCharactor("basic", {
+    const char1 = CharacterGenerator.generateCharacter("basic", {
         useDeterministicRolls: true,
         physicalFormRoll: 30, // Mutant
     });
 
-    const char2 = CharactorGenerator.generateCharactor("ultimate", {
+    const char2 = CharacterGenerator.generateCharacter("ultimate", {
         useDeterministicRolls: true,
         physicalFormRoll: 1, // Normal Human
         identitySecret: true,
@@ -404,32 +404,32 @@ Tester.GenerateCharactorWrapperTests = () => {
     Tester.assertNotEquals(
         char1.physicalForm,
         char2.physicalForm,
-        "generateCharactor: different modes produce different physical forms.",
+        "generateCharacter: different modes produce different physical forms.",
     );
 
     // Both have valid state
-    Tester.assertNotNull(char1.state, "generateCharactor: char1 has state.");
-    Tester.assertNotNull(char2.state, "generateCharactor: char2 has state.");
+    Tester.assertNotNull(char1.state, "generateCharacter: char1 has state.");
+    Tester.assertNotNull(char2.state, "generateCharacter: char2 has state.");
 
     // char2 is Ultimate so has weakness
     Tester.assert(
         char2.state.weakness.stimulus !== null,
-        "generateCharactor: Ultimate char has weakness stimulus.",
+        "generateCharacter: Ultimate char has weakness stimulus.",
     );
 
     // char1 is Basic so weakness is empty
     Tester.assertEquals(
         "",
         char1.weakness.stimulus,
-        "generateCharactor: Basic char has empty weakness.",
+        "generateCharacter: Basic char has empty weakness.",
     );
 
     // Verify no external state mutation — call with seed
-    const char3 = CharactorGenerator.generateCharactor("basic", {
+    const char3 = CharacterGenerator.generateCharacter("basic", {
         seed: 42,
         throwAllRolls: true,
     });
-    const char4 = CharactorGenerator.generateCharactor("basic", {
+    const char4 = CharacterGenerator.generateCharacter("basic", {
         seed: 42,
         throwAllRolls: true,
     });
@@ -437,7 +437,7 @@ Tester.GenerateCharactorWrapperTests = () => {
     Tester.assertEquals(
         char3.physicalForm,
         char4.physicalForm,
-        "generateCharactor: same seed produces same physical form.",
+        "generateCharacter: same seed produces same physical form.",
     );
 };
 
@@ -450,7 +450,7 @@ Tester.GetAbilityAfterModifierEdgeCaseTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
 
     // Empty string rank → findIndex returns -1 → defaults to Feeble (index 0)
     const result1 = gen.getAbilityAfterModifier(char, "Fighting", "", 0);
@@ -503,6 +503,6 @@ Tester.registerTestGroup(40, "deterministic", [
     { name: "DetermineAbilityTests", needsGen: true },
     { name: "GetAbilityAfterModifierTests", needsGen: true },
     { name: "CalculateSecondaryTests", needsGen: false },
-    { name: "GenerateCharactorWrapperTests", needsGen: false },
+    { name: "GenerateCharacterWrapperTests", needsGen: false },
     { name: "GetAbilityAfterModifierEdgeCaseTests", needsGen: true },
 ]);

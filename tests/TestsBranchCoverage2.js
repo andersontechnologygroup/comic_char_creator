@@ -1,5 +1,5 @@
 // ============================================================================
-// TestsBranchCoverage2 — Target remaining uncovered lines in CharactorGenerator.js
+// TestsBranchCoverage2 — Target remaining uncovered lines in CharacterGenerator.js
 // Each test directly exercises a specific uncovered code path.
 // ============================================================================
 
@@ -8,7 +8,7 @@
 //    Needs: physicalFormRow has abilityLower + 'Set' with { rank, rankNumber }
 // ---------------------------------------------------------------------------
 Tester.AbilitySetPathTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -44,7 +44,7 @@ Tester.AbilityNormalPathTests = () => {
     // The normal ability path (lines 622-624) is the ELSE branch of
     // if (value === -1) after *Set/*Start checks. Every ability without
     // a *Set/*Start override hits this path during generation.
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -62,12 +62,12 @@ Tester.AbilityNormalPathTests = () => {
 // 3. Lines 762-764, 768-770, 774-776: getAbilityAfterModifier min/max/Shift0
 // ---------------------------------------------------------------------------
 Tester.GetAbilityAfterModifierEdgeTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
 
     // min clamping (762-764): Feeble adjusted by 0, min=Typical → clamped up
     const r1 = gen.getAbilityAfterModifier(
@@ -119,7 +119,7 @@ Tester.GetAbilityAfterModifierEdgeTests = () => {
 // 4. Lines 812-814: hiTechToGood = false (resources keep original rank)
 // ---------------------------------------------------------------------------
 Tester.HiTechToGoodFalseTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -148,7 +148,7 @@ Tester.HiTechToGoodFalseTests = () => {
 // 5. Lines 882-887: popularitySet in ultimate mode
 // ---------------------------------------------------------------------------
 Tester.PopularitySetUltimateTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -162,7 +162,7 @@ Tester.PopularitySetUltimateTests = () => {
     form.popularitySet = 15;
 
     try {
-        const char = new Charactor();
+        const char = new Character();
         char.physicalForm = "Normal Human";
         gen.popularityRoll = 50;
         gen.determinePopularityUltimate(char);
@@ -186,7 +186,7 @@ Tester.PopularitySetUltimateTests = () => {
 // 6. Lines 905-907: popularityStart in ultimate mode
 // ---------------------------------------------------------------------------
 Tester.PopularityStartUltimateTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -200,7 +200,7 @@ Tester.PopularityStartUltimateTests = () => {
         return;
     }
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = form.name;
     gen.popularityRoll = 50;
     gen.identitySecret = true;
@@ -222,7 +222,7 @@ Tester.PopularityStartUltimateTests = () => {
 //    In ultimate mode — need a form with popularityMinimum/popularityMaximum
 // ---------------------------------------------------------------------------
 Tester.PopularityMinMaxUltimateTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -239,7 +239,7 @@ Tester.PopularityMinMaxUltimateTests = () => {
     form.popularityMaximum = 30;
 
     try {
-        const char = new Charactor();
+        const char = new Character();
         char.physicalForm = "Normal Human";
         gen.popularityRoll = 50;
         gen.identitySecret = false; // public → +10
@@ -265,7 +265,7 @@ Tester.PopularityMinMaxUltimateTests = () => {
 // 8. Lines 1008-1010: popularityStart in basic mode
 // ---------------------------------------------------------------------------
 Tester.PopularityStartBasicTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -279,7 +279,7 @@ Tester.PopularityStartBasicTests = () => {
     form.popularityStart = 25;
 
     try {
-        const char = new Charactor();
+        const char = new Character();
         char.physicalForm = "Mutant";
         gen.identitySecret = false;
         gen.originPublic = false;
@@ -299,7 +299,7 @@ Tester.PopularityStartBasicTests = () => {
 // 9. Lines 1061-1063, 1067-1069: wellEstablished / looksHuman in basic mode
 // ---------------------------------------------------------------------------
 Tester.WellEstablishedLooksHumanTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -311,7 +311,7 @@ Tester.WellEstablishedLooksHumanTests = () => {
     }
 
     // Test wellEstablished
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Mutant";
     gen.identitySecret = false;
     gen.originPublic = false;
@@ -320,7 +320,7 @@ Tester.WellEstablishedLooksHumanTests = () => {
     gen.determinePopularity(char1);
 
     // Test looksHuman
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Mutant";
     gen.identitySecret = false;
     gen.originPublic = false;
@@ -345,7 +345,7 @@ Tester.WellEstablishedLooksHumanTests = () => {
 // 10. Lines 1293-1295: powersCountMinimum
 // ---------------------------------------------------------------------------
 Tester.PowersCountMinimumTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -375,7 +375,7 @@ Tester.PowersCountMinimumTests = () => {
 //     Need: powerRoll doesn't match any power → scans category → cross-category
 // ---------------------------------------------------------------------------
 Tester.CrossCategoryRetryTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -407,7 +407,7 @@ Tester.CrossCategoryRetryTests = () => {
 //     powerCount > remainingSlots → tries next index
 // ---------------------------------------------------------------------------
 Tester.TooManyPowersRetryTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -427,7 +427,7 @@ Tester.TooManyPowersRetryTests = () => {
 //     Need a form with bonusPower containing "Any" and duplicate detection
 // ---------------------------------------------------------------------------
 Tester.BonusPowerAnyRetryTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -454,7 +454,7 @@ Tester.BonusPowerAnyRetryTests = () => {
 //     Need bonusPower roll > 100 to trigger the while loop
 // ---------------------------------------------------------------------------
 Tester.BonusPowerHighRollTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -480,7 +480,7 @@ Tester.BonusPowerHighRollTests = () => {
 //     Need a power with optionalPowers containing "Any"
 // ---------------------------------------------------------------------------
 Tester.OptionalPowerAnyRetryTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();

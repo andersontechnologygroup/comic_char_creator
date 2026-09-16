@@ -4,14 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Super Hero Charactor Generator</title>
+  <title>Super Hero Character Generator</title>
   <link rel="stylesheet" href="comiccharcreator.css">
 </head>
 
 <body>
 
   <header>
-    <h1>Super Hero Charactor Generator v3.2.1</h1>
+    <h1>Super Hero Character Generator v3.2.1</h1>
   </header>
 
   <div class="tabs-container no-print">
@@ -37,9 +37,9 @@
         <label>System Mode:</label>
         <input type="radio" name="generator" id="generator_basic" value="basic" />
         <label for="generator_basic">Basic</label>
-        <input type="radio" name="generator" id="generator_advanced" value="advanced" checked />
+        <input type="radio" name="generator" id="generator_advanced" value="advanced" />
         <label for="generator_advanced">Advanced</label>
-        <input type="radio" name="generator" id="generator_ultimate" value="ultimate" />
+        <input type="radio" name="generator" id="generator_ultimate" value="ultimate" checked />
         <label for="generator_ultimate">Ultimate</label>
       </div>
       <div class="control-group">
@@ -138,11 +138,46 @@
           <label><strong>Ultimate Mode Options:</strong></label>
         </div>
         <div class="control-group">
+          <label>Physical Form:</label>
+          <input type="radio" name="physical_form_select" id="physical_form_select"  />
+          <label for="physical_form_select">Select Sub Form</label>
+          <input type="radio" name="physical_form_select" id="physical_form_roll" checked />
+          <label for="physical_form_roll">Roll Sub Form</label>
+        </div>
+        <div class="control-group">
+          <label>Hi-Tech Resource Logic:</label>
+          <input type="radio" name="hi_tech_ultimate" id="hi_tech_good_ultimate"  />
+          <label for="hi_tech_good_ultimate">Set to Good</label>
+          <input type="radio" name="hi_tech_ultimate" id="hi_tech_roll_ultimate" checked />
+          <label for="hi_tech_roll_ultimate">Roll Randomly</label>
+        </div>
+        <div class="control-group">
+          <label>For Bonus Powers:</label>
+          <input type="radio" name="bonus_power_select_ultimate" id="bonus_power_select_ultimate"  />
+          <label for="bonus_power_select_ultimate">Select Bonus Powers</label>
+          <input type="radio" name="bonus_power_select_ultimate" id="bonus_power_roll_ultimate" checked />
+          <label for="bonus_power_roll_ultimate">Roll for Bonus Powers</label>
+        </div>
+        <div class="control-group">
+          <label>Talent Groups:</label>
+          <input type="radio" name="talent_select_ultimate" id="talent_select_manual_ultimate"  />
+          <label for="talent_select_manual_ultimate">Select Talent Manually</label>
+          <input type="radio" name="talent_select_ultimate" id="talent_select_roll_ultimate" checked />
+          <label for="talent_select_roll_ultimate">Roll Talent</label>
+        </div>
+        <div class="control-group">
+          <label>Contact Selection:</label>
+          <input type="radio" name="contact_select_ultimate" id="contact_select_manual_ultimate"  />
+          <label for="contact_select_manual_ultimate">Select Contact Types</label>
+          <input type="radio" name="contact_select_ultimate" id="contact_select_roll_ultimate" checked />
+          <label for="contact_select_roll_ultimate">Roll Contact Types</label>
+        </div>
+        <div class="control-group">
           <label>Apply all Optional Powers:</label>
-          <input type="radio" name="optional_powers" id="optional_powers_apply" checked />
+          <input type="radio" name="optional_powers" id="optional_powers_apply"  />
           <label for="optional_powers_apply">Apply all Optional Powers</label>
-          <input type="radio" name="optional_powers" id="optional_powers_ignore" />
-          <label for="optional_powers_select">Manually Select Optional Powers</label>
+          <input type="radio" name="optional_powers" id="optional_powers_manual" checked />
+          <label for="optional_powers_manual">Manually Select Optional Powers</label>
         </div>
       </div>
     </div>
@@ -173,7 +208,7 @@
       <p class="center">
         TSR is a registered trademark owned by TSR Inc. TSR inc. is a subsidiary of Wizards of the Coast, Inc., a
         division of Hasbro, Inc.<br>
-        Names(s) of character(s) and the distinctive likeness(es) thereof are Trademarks and © of Marvel Charactors,
+        Names(s) of character(s) and the distinctive likeness(es) thereof are Trademarks and © of Marvel Characters,
         Inc. and are used without permission.<br>
         Names(s) of character(s) and the distinctive likeness(es) thereof are Trademarks and © of DC Comics and are used
         without permission.<br>
@@ -202,9 +237,11 @@
   <div class="no-print" id="test-area"></div>
   <div id="boost-modal-container"></div>
   <div id="power-select-modal-container"></div>
+  <div id="physical-form-modal-container"></div>
+  <div id="optional-power-modal-container"></div>
 
-  <script type="text/javascript" src="Charactor.js"></script>
-  <script type="text/javascript" src="CharactorGenerator.js"></script>
+  <script type="text/javascript" src="Character.js"></script>
+  <script type="text/javascript" src="CharacterGenerator.js"></script>
   <script type="text/javascript" src="DataBasic.js"></script>
   <script type="text/javascript" src="DataAdvanced.js"></script>
   <script type="text/javascript" src="DataUltimate.js"></script>
@@ -276,7 +313,7 @@
         const isUltimate = mode === 'ultimate';
         const isFullDisplay = document.querySelector('input[name="display_mode"]:checked').value === 'full';
 
-        let powersHtml = char.powers.map(p => `<li class="power"><strong>${isUltimate ? `${p.code}/` : ''}${p.name}${p.upgradedFrom ? ` (<span class="" title="Upgraded from ${p.upgradedFrom}">${p.upgradeCondition}</span>)` : ""}${p.powerSlots > 1 ? `<span class="multiple-slots" title="This power uses ${p.powerSlots} slots.">${p.powerSlots}</span>` : ``}${p.bonusPower ? ` <span class="bonus-power" title="This is a Bonus Power">B</span>` : ``}${p.optionalPower ? ` <span class="bonus-power" title="This is an Optional Power">O</span>` : ``}</strong>: ${` ${p.rank} ${isFullDisplay ? "(" + p.number + ")" : ""}`} &nbsp; <span class="power-description">${p.description}  ${p.extraInformation !== undefined && p.extraInformation !== "" ? "EXTRA: " + p.extraInformation : ""}</span></li>`).join('');
+        let powersHtml = char.powers.map(p => `<li class="power"><strong>${isUltimate ? `${p.code}/` : ''}${p.name}${p.upgradedFrom ? ` (<span class="" title="Upgraded from ${p.upgradedFrom}">${p.upgradeCondition}</span>)` : ""}${p.powerSlots > 1 ? `<span class="multiple-slots" title="This power uses ${p.powerSlots} slots.">${p.powerSlots}</span>` : ``}${p.bonusPower ? ` <span class="bonus-power" title="This is a Bonus Power">B</span>` : ``}${p.optionalPower ? ` <span class="optional-power" title="This is an Optional Power">O</span>` : ``}</strong>: ${` ${p.rank} ${isFullDisplay ? "(" + p.number + ")" : ""}`} &nbsp; <span class="power-description">${p.description}  ${p.extraInformation !== undefined && p.extraInformation !== "" ? "EXTRA: " + p.extraInformation : ""}</span></li>`).join('');
         let talentsHtml = char.talents.map(t => `<li class="talent"><strong>${t.category}: ${t.name}${t.talentSlots > 1 ? `<span class="multiple-slots" title="This talent uses ${t.talentSlots} slots.">${t.talentSlots}</span>` : ``}</strong> &nbsp; <span class="talent-description">${t.description}</span></li>`).join('');
         let contactsHtml = char.contacts.map(c => {
           var contactLabel = c.contactName ? c.contactName : c.name;
@@ -820,14 +857,6 @@
 
     // --- BONUS POWER SELECTION MODAL ---
     function showBonusPowerSelectionModal(generator, mode) {
-      // Throw rolls and set tables so we can determine the physical form
-      generator.throwAllRolls();
-      generator.setTables();
-      generator._phase1Complete = true;
-      // Determine physical form for the modal
-      const physicalFormRow = generator.physicalFormTable.find(o => generator.physicalFormRoll <= o.maxRoll);
-      generator._lastPhysicalForm = physicalFormRow ? physicalFormRow.name : generator.physicalFormTable[0].name;
-
       const slots = generator.getBonusPowerOptions();
       if (slots.length === 0) {
         // No bonus powers available, nothing to select
@@ -916,14 +945,164 @@
       });
     }
 
+    // --- PHYSICAL FORM SELECTION MODAL (Ultimate Mode) ---
+    function showPhysicalFormSelectionModal(generator, mode) {
+      const options = generator.getPhysicalFormSubOptions();
+      if (options.length === 0) {
+        // No sub-forms to choose from, nothing to select
+        return Promise.resolve();
+      }
+
+      return new Promise(function (resolve) {
+        const overlay = document.createElement('div');
+        overlay.className = 'physical-form-overlay';
+        overlay.id = 'physical-form-modal-overlay';
+
+        var html = '<div class="physical-form-modal">';
+        html += '<h2>Select Physical Form</h2>';
+        html += '<div class="physical-form-subtitle">Multiple sub-forms match your roll. Choose one:</div>';
+
+        for (var i = 0; i < options.length; i++) {
+          var opt = options[i];
+          html += '<div class="physical-form-option" data-name="' + opt.name.replace(/"/g, '&quot;') + '">';
+          html += '<span class="pf-label">' + opt.name + '</span>';
+          if (opt.description) {
+            var desc = opt.description.substring(0, 150);
+            if (opt.description.length > 150) desc += '...';
+            html += '<span class="pf-detail">' + desc + '</span>';
+          }
+          html += '</div>';
+        }
+
+        html += '<div class="physical-form-actions">';
+        html += '<button class="physical-form-confirm-btn" id="physical-form-confirm-btn">Confirm</button>';
+        html += '</div></div>';
+
+        overlay.innerHTML = html;
+        document.getElementById('physical-form-modal-container').appendChild(overlay);
+
+        var selectedName = null;
+
+        // Selection handler
+        overlay.querySelectorAll('.physical-form-option').forEach(function (el) {
+          el.addEventListener('click', function () {
+            // Deselect others
+            overlay.querySelectorAll('.physical-form-option').forEach(function (o) {
+              o.classList.remove('selected');
+            });
+            this.classList.add('selected');
+            selectedName = this.getAttribute('data-name');
+            document.getElementById('physical-form-confirm-btn').classList.add('enabled');
+          });
+        });
+
+        // Confirm button
+        document.getElementById('physical-form-confirm-btn').addEventListener('click', function () {
+          if (!selectedName) return;
+          generator._selectedPhysicalForm = selectedName;
+          overlay.remove();
+          resolve();
+        });
+      });
+    }
+
+    // --- OPTIONAL POWER SELECTION MODAL ---
+    function showOptionalPowerSelectionModal(generator, mode) {
+      const optionalGroups = generator.getOptionalPowerOptions();
+      if (optionalGroups.length === 0) {
+        return Promise.resolve();
+      }
+
+      return new Promise(function (resolve) {
+        const overlay = document.createElement('div');
+        overlay.className = 'boost-modal-overlay';
+        overlay.id = 'optional-power-modal-overlay';
+
+        var html = '<div class="boost-modal">';
+        html += '<h2>Select Optional Powers</h2>';
+        html += '<div class="boost-subtitle">Choose optional powers to add. Some powers limit how many you can pick.</div>';
+
+        var selections = {};  // keyed by sourcePowerName -> array of {category, name}
+
+        for (var gi = 0; gi < optionalGroups.length; gi++) {
+          var group = optionalGroups[gi];
+          var groupKey = group.sourcePowerName;
+          selections[groupKey] = [];
+
+          var limitText = group.maxCount < group.options.length
+            ? ' (max ' + group.maxCount + ')'
+            : '';
+          html += '<div class="boost-section-title">' + group.sourcePowerCategory + ' / ' + group.sourcePowerName + limitText + ':</div>';
+
+          for (var oi = 0; oi < group.options.length; oi++) {
+            var opt = group.options[oi];
+            var powerRow = generator.powerListTable.find(function (p) { return p.category === opt.category && p.name === opt.name; });
+            var desc = powerRow ? (powerRow.description || '').substring(0, 120) : '';
+            if (desc.length >= 120) desc += '...';
+            html += '<div class="boost-option-stacked opt-power-option" data-group="' + groupKey + '" data-max="' + group.maxCount + '" data-category="' + opt.category + '" data-name="' + opt.name.replace(/"/g, '&quot;') + '">';
+            html += '<span class="boost-label">' + opt.name + '</span>';
+            html += '<span class="boost-detail">' + opt.category + '</span>';
+            if (desc) html += '<span class="boost-detail">' + desc + '</span>';
+            html += '</div>';
+          }
+        }
+
+        html += '<div class="boost-actions">';
+        html += '<button class="boost-confirm-btn enabled" id="optional-power-confirm-btn">Confirm</button>';
+        html += '</div></div>';
+
+        overlay.innerHTML = html;
+        document.getElementById('optional-power-modal-container').appendChild(overlay);
+
+        // Selection handler
+        overlay.querySelectorAll('.opt-power-option').forEach(function (el) {
+          el.addEventListener('click', function () {
+            var groupKey = this.getAttribute('data-group');
+            var maxCount = parseInt(this.getAttribute('data-max'), 10);
+            var category = this.getAttribute('data-category');
+            var name = this.getAttribute('data-name');
+
+            // Toggle selection
+            var isSelected = this.classList.contains('selected');
+            if (isSelected) {
+              // Deselect
+              this.classList.remove('selected');
+              selections[groupKey] = selections[groupKey].filter(function (s) {
+                return !(s.category === category && s.name === name);
+              });
+            } else {
+              // Check if at max
+              if (selections[groupKey].length >= maxCount) {
+                // Remove oldest selection to make room
+                selections[groupKey].shift();
+                // Deselect the oldest visually
+                var allInGroup = overlay.querySelectorAll('.opt-power-option[data-group="' + groupKey + '"]');
+                allInGroup.forEach(function (opt) {
+                  var optCat = opt.getAttribute('data-category');
+                  var optName = opt.getAttribute('data-name');
+                  var stillSelected = selections[groupKey].some(function (s) {
+                    return s.category === optCat && s.name === optName;
+                  });
+                  if (!stillSelected) opt.classList.remove('selected');
+                });
+              }
+              this.classList.add('selected');
+              selections[groupKey].push({ category: category, name: name });
+            }
+          });
+        });
+
+        // Confirm button
+        document.getElementById('optional-power-confirm-btn').addEventListener('click', function () {
+          generator._selectedOptionalPowers = selections;
+          overlay.remove();
+          resolve();
+        });
+      });
+    }
+
     // --- TALENT SELECTION MODAL (Advanced Mode) ---
     function showTalentSelectionModal(generator, mode) {
-      generator.throwAllRolls();
-      generator.setTables();
-      generator._phase1Complete = true;
-      const physicalFormRow = generator.physicalFormTable.find(o => generator.physicalFormRoll <= o.maxRoll);
-      generator._lastPhysicalForm = physicalFormRow ? physicalFormRow.name : generator.physicalFormTable[0].name;
-
       const availableCategories = generator.getAvailableTalents();
       const maxSlots = generator.getTalentSlotCount();
 
@@ -1062,12 +1241,6 @@
 
     // --- CONTACT SELECTION MODAL (Advanced Mode) ---
     function showContactSelectionModal(generator, mode) {
-      generator.throwAllRolls();
-      generator.setTables();
-      generator._phase1Complete = true;
-      const physicalFormRow = generator.physicalFormTable.find(o => generator.physicalFormRoll <= o.maxRoll);
-      generator._lastPhysicalForm = physicalFormRow ? physicalFormRow.name : generator.physicalFormTable[0].name;
-
       const availableCategories = generator.getAvailableContacts();
       const maxSlots = generator.getContactSlotCount();
 
@@ -1571,16 +1744,9 @@
     // --- APP CONTROLLER ---
     const app = {
       generate: async () => {
-        const generator = new CharactorGenerator();
+        const generator = new CharacterGenerator();
         generator.identitySecret = document.getElementById('identity_secret').checked;
         generator.originPublic = document.getElementById('origin_public').checked;
-        generator.hiTechToGood = document.getElementById('hi_tech_good').checked;
-        generator.applyOptionalPowers = document.getElementById('optional_powers_apply').checked;
-        generator.contactsEqualToPowers = document.getElementById('contacts_equals_powers').checked;
-        generator.choosePowerInsteadOfRandom = document.getElementById('power_choose').checked;
-        generator.wellEstablished = !document.getElementById('status_none').checked && document.getElementById('status_established').checked;
-        generator.looksHuman = document.getElementById('looks_human').checked;
-
         const basic = document.getElementById('generator_basic').checked;
         const advanced = document.getElementById('generator_advanced').checked;
         const ultimate = document.getElementById('generator_ultimate').checked;
@@ -1589,30 +1755,87 @@
         if (advanced && !ultimate) generator.generatorMode = 'advanced';
         if (!advanced && ultimate) generator.generatorMode = 'ultimate';
 
+        // Read mode-specific options (Ultimate uses _ultimate suffix, Advanced uses non-suffixed)
+        if (ultimate) {
+          generator.hiTechToGood = document.getElementById('hi_tech_good_ultimate').checked;
+        } else {
+          generator.hiTechToGood = document.getElementById('hi_tech_good').checked;
+        }
+        generator.applyOptionalPowers = document.getElementById('optional_powers_apply').checked;
+        generator.selectOptionalPowersManually = document.getElementById('optional_powers_manual').checked;
+        generator.contactsEqualToPowers = document.getElementById('contacts_equals_powers').checked;
+        generator.choosePowerInsteadOfRandom = document.getElementById('power_choose').checked;
+        generator.wellEstablished = !document.getElementById('status_none').checked && document.getElementById('status_established').checked;
+        generator.looksHuman = document.getElementById('looks_human').checked;
+
+        // Throw rolls and set tables ONCE before any modals, so all modals
+        // and generation use the same rolls.
+        generator.throwAllRolls();
+        generator.setTables();
+        generator._phase1Complete = true;
+
         // If choosing powers, show modal first
         if (generator.choosePowerInsteadOfRandom && basic) {
           await showPowerSelectionModal(generator, generator.generatorMode);
         }
 
         // If selecting bonus powers, show modal before generation
-        const selectBonus = document.getElementById('bonus_power_select').checked;
-        if (selectBonus) {
-          generator.selectBonusPowers = true;
-          await showBonusPowerSelectionModal(generator, generator.generatorMode);
+        if (ultimate) {
+          const selectBonusUlt = document.getElementById('bonus_power_select_ultimate').checked;
+          if (selectBonusUlt) {
+            generator.selectBonusPowers = true;
+            await showBonusPowerSelectionModal(generator, generator.generatorMode);
+          }
+        } else {
+          const selectBonus = document.getElementById('bonus_power_select').checked;
+          if (selectBonus) {
+            generator.selectBonusPowers = true;
+            await showBonusPowerSelectionModal(generator, generator.generatorMode);
+          }
+        }
+
+        // If manually selecting optional powers, show modal before generation
+        // Force applyOptionalPowers=true so the generator processes them
+        if (generator.selectOptionalPowersManually) {
+          generator.applyOptionalPowers = true;
+          await showOptionalPowerSelectionModal(generator, generator.generatorMode);
+        }
+
+        // If selecting physical form sub-type in Ultimate mode, show modal before generation
+        const selectPhysForm = ultimate && document.getElementById('physical_form_select').checked;
+        if (selectPhysForm) {
+          generator.selectPhysicalFormManually = true;
+          await showPhysicalFormSelectionModal(generator, generator.generatorMode);
         }
 
         // If selecting talents manually, show modal before generation
-        const selectTalent = advanced && document.getElementById('talent_select_manual').checked;
-        if (selectTalent) {
-          generator.selectTalentManually = true;
-          await showTalentSelectionModal(generator, generator.generatorMode);
+        if (ultimate) {
+          const selectTalentUlt = document.getElementById('talent_select_manual_ultimate').checked;
+          if (selectTalentUlt) {
+            generator.selectTalentManually = true;
+            await showTalentSelectionModal(generator, generator.generatorMode);
+          }
+        } else if (advanced) {
+          const selectTalent = document.getElementById('talent_select_manual').checked;
+          if (selectTalent) {
+            generator.selectTalentManually = true;
+            await showTalentSelectionModal(generator, generator.generatorMode);
+          }
         }
 
         // If selecting contacts manually, show modal before generation
-        const selectContact = advanced && document.getElementById('contact_select_manual').checked;
-        if (selectContact) {
-          generator.selectContactManually = true;
-          await showContactSelectionModal(generator, generator.generatorMode);
+        if (ultimate) {
+          const selectContactUlt = document.getElementById('contact_select_manual_ultimate').checked;
+          if (selectContactUlt) {
+            generator.selectContactManually = true;
+            await showContactSelectionModal(generator, generator.generatorMode);
+          }
+        } else if (advanced) {
+          const selectContact = document.getElementById('contact_select_manual').checked;
+          if (selectContact) {
+            generator.selectContactManually = true;
+            await showContactSelectionModal(generator, generator.generatorMode);
+          }
         }
 
         const character = generator.generate();
@@ -1623,7 +1846,12 @@
         }
 
         // If contacts were rolled (not manually selected), show naming modal
-        const contactRollSelected = advanced && document.getElementById('contact_select_roll').checked;
+        let contactRollSelected = false;
+        if (ultimate) {
+          contactRollSelected = document.getElementById('contact_select_roll_ultimate').checked;
+        } else if (advanced) {
+          contactRollSelected = document.getElementById('contact_select_roll').checked;
+        }
         if (contactRollSelected || !advanced) {
           await showContactNamingModal(character);
         }
@@ -1682,9 +1910,9 @@
     // Initial Generation
     app.generate();
 
-    // TODO #3 Finish PowersTooMany test for Ultimate
-    // TODO #2 Finish ContactsTooMany test for Ultimate
-    // TODO #1 Add Edit mode
+    // TODO #3 Add Ultimate Talents
+    // TODO #2 Add Edit mode
+    // TODO #1 Add Save/Load
 
   </script>
 </body>

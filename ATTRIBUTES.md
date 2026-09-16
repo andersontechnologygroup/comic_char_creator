@@ -40,6 +40,9 @@ All attributes used across Basic, Advanced, and Ultimate data tables.
 | `bonusContact` | — | — | ✅ | Bonus contact string |
 | `bonusContactCount` | — | — | ✅ | Number of bonus contacts |
 | `subType` | — | — | ✅ | Sub-type filter (e.g., Angel/Demon) |
+| `subRoll` | — | — | ✅ | Sub-form roll threshold (for shared maxRoll entries) |
+| `bonusTalentCount` | — | — | ✅ | Number of bonus talents granted |
+| `bonusTalent` | — | — | ✅ | Bonus talent string (pipe-delimited) |
 
 ---
 

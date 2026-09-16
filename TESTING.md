@@ -47,7 +47,7 @@ node run-tests.js --benchmark
 tests/
 ├── TestsAbilities.js       # Primary ability generation
 ├── TestsBoundary.js        # Edge cases, error paths, boundary conditions
-├── TestsBranchCoverage.js  # Branch coverage for CharactorGenerator.js
+├── TestsBranchCoverage.js  # Branch coverage for CharacterGenerator.js
 ├── TestsContacts.js        # Contact generation
 ├── TestsCoverageBoost.js   # Targeted coverage for uncovered code paths
 ├── TestsEdgeCases.js       # Additional edge cases
@@ -67,7 +67,7 @@ tests/
 
 All tests are methods on the `Tester` class. Each test method:
 
-- Takes an optional `gen` parameter (a `CharactorGenerator` instance)
+- Takes an optional `gen` parameter (a `CharacterGenerator` instance)
 - Uses `Tester.assert()`, `Tester.assertEquals()`, etc. for assertions
 - Is registered via `Tester.registerTest()` or `Tester.registerTestGroup()`
 
@@ -128,7 +128,7 @@ const MY_TEST_CASES = [
 
 Tester.MyTests = () => {
   for (const tc of MY_TEST_CASES) {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = 'basic';
     gen.setTables();
     gen.setDeterministicRolls();
@@ -157,12 +157,12 @@ For new test files, follow the naming convention `tests/TestsYourName.js`.
 Tester.YourTestName = (gen) => {
   // If needsGen=true, gen is passed automatically
   // If needsGen=false, create your own gen:
-  const myGen = new CharactorGenerator();
+  const myGen = new CharacterGenerator();
   myGen.generatorMode = 'basic';
   myGen.setTables();
   myGen.setDeterministicRolls();
 
-  const char = new Charactor();
+  const char = new Character();
   char.physicalForm = 'Altered Human';
 
   // Test something
@@ -205,11 +205,11 @@ add the file to `TEST_MANIFEST` in `run-tests.js`.
 | `assertThrows(fn, expectedErr, msg)` | Assert function throws |
 | `assertHasPower(name, powersList, msg)` | Assert power exists in list |
 
-## CharactorGenerator Methods for Testing
+## CharacterGenerator Methods for Testing
 
 ```js
 // Create and configure
-const gen = new CharactorGenerator();
+const gen = new CharacterGenerator();
 gen.generatorMode = 'basic'; // 'basic', 'advanced', or 'ultimate'
 gen.setTables();               // Load data tables for the mode
 gen.setDeterministicRolls();   // Seed all rolls for reproducibility
@@ -241,7 +241,7 @@ Coverage is **Node.js only** — browser tests do not support coverage.
 
 | File | Target | Current |
 |------|--------|---------|
-| CharactorGenerator.js | >95% lines | ~94.5% |
+| CharacterGenerator.js | >95% lines | ~94.5% |
 | Overall | >97% lines | ~96.6% |
 
 ### Improving Coverage
@@ -249,7 +249,7 @@ Coverage is **Node.js only** — browser tests do not support coverage.
 To improve coverage for a specific uncovered area:
 
 1. Run `node run-tests.js --coverage` to see uncovered lines
-2. Read the uncovered code in `CharactorGenerator.js`
+2. Read the uncovered code in `CharacterGenerator.js`
 3. Determine what data/inputs would trigger that code path
 4. Add a test in `TestsCoverageBoost.js` (or appropriate test file)
 5. If the code path requires data that doesn't exist, temporarily patch form rows:

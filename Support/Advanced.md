@@ -25,8 +25,8 @@ Table of Contents
 1: Heroes  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .2
 Definition: What Is a Hero?  . . . . . . . . . . . . . . . . . . . . . . . . . . .2
 Abilities  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .2
-Charactor Creation  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .4
-Charactor Modeling  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .12
+Character Creation  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .4
+Character Modeling  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .12
 2: FEATs  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .14
 Time Scale - the Turn  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .14
 Initiative  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .14
@@ -56,7 +56,7 @@ Programming and Reprogramming  . . . . . . . . . . . . . . . . . . . .69
 Appendix A: Powers  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .71
 Appendix B: Talents  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .89
 Appendix C: Contacts  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .92
-Charactor Shoot  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .94
+Character Shoot  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .94
 Index  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .95
 Power Listing  . . . . . . . . . . . . . . . . . . . . . . . . .inside back cover
 Universal Table  . . . . . . . . . . . . . . . . . . . . . . . . . . . . .back cover
@@ -155,10 +155,10 @@ SUPER HEROES Role-Playing Game the
 players take on the roles of heroes in the
 Marvel Universe. A hero who is being
 controlled by a player is called a Player-
-Charactor or PC. One that is being run by
+Character or PC. One that is being run by
 the Judge, including most opponents and
 supporting characters, is called a Non-
-Player Charactor or NPC.
+Player Character or NPC.
 The rank range includes all the rank
 numbers for that range. A character with a
 Strength of 15 can be said to have Good
@@ -181,7 +181,7 @@ Talents, Equipment, and Contacts. Special
 abilities use rank numbers or modify
 existing rank numbers.
 Abilities
-Charactors in the MARVEL SUPER
+Characters in the MARVEL SUPER
 HEROES game are defined by their
 abilities. These abilities determine their
 chances of performing certain actions in
@@ -398,7 +398,7 @@ Reason, Intuition, and Psyche
 ## Page 6
 
 CHARACTER CREATION
-Charactor Creation
+Character Creation
 generated character may start. Rank
 numbers may be improved with time and
 experience as normal.
@@ -440,7 +440,7 @@ heroes (such as alien, robot, mutant) may
 or may not apply to the hero in question.
 • Used to gain favors, information, and
 equipment from Contacts
-Pregenerated Charactors
+Pregenerated Characters
 Special Abilities
 The character cards provided with this set
 are for the most popular individuals in the
@@ -580,7 +580,7 @@ inborn as opposed to equipment-based.
 • They may be affected by mutant
 detection and mutant nullification
 devices.
-Generated Charactors
+Generated Characters
 The following system is for creating new
 characters in the Marvel Universe.
 Generated characters have an advantage
@@ -592,7 +592,7 @@ characters, they lack the background of the
 Marvel Universe, and their powers are
 more standardized than those of
 pregenerated characters.
-Charactor generation has five steps:
+Character generation has five steps:
 • Generate an origin 
 • Generate primary abilities 
 • Generate secondary abilities 
@@ -1999,7 +1999,7 @@ trick shots and shooting curves. She
 operates in the tri-state area, but considers
 attempting to join the X-Men.
 characters you have invented yourself,
-without having to rely on tables. Charactor
+without having to rely on tables. Character
 modeling takes place as the result of the
 player answering a series of questions, and
 comparing the ranks of established heroes to
@@ -2141,7 +2141,7 @@ The Osprey, just as a regular guy in flashy
 outfit with non-operative wings, applied. The
 Frightful Four (er... Three) took him as a
 serious applicant until they discovered he had
-Charactor Modeling
+Character Modeling
 Given the length, breadth, and depth of the
 Marvel Universe, there will be heroes for
 whom we haven't written official versions. For
@@ -3009,7 +3009,7 @@ Everything is a yellow FEAT. The only
 modifier that comes into play is if the
 request is in the target's best interests
 ("Run, you dolts!" is in the target's interest).
-Charactors with negative Popularity can
+Characters with negative Popularity can
 never approach individuals other than
 Contacts for items and favors (which is why
 theft is always a major pan of criminal
@@ -3237,7 +3237,7 @@ Remarkable(30) Strength, helps She-Hulk
 lift up the crane. The column checked is
 still Monstrous, since Sunspot's Strength is
 significantly lower than She-Hulk's
-Bank Loans Option: Charactors may
+Bank Loans Option: Characters may
 purchase something up to one rank higher
 than their Resource rank through a lending
 institution. The character then has to worry
@@ -3748,7 +3748,7 @@ movement, except the heroes or vehicles
 involved must float (that is. must keep the
 water from getting inside the boat).
 As an aside. here is a good place to mention
-drowning. Charactors can hold their breath a
+drowning. Characters can hold their breath a
 number of rounds equal to their Endurance
 rank number. At this point. they must make a
 green Endurance FEAT. The next round,
@@ -4179,7 +4179,7 @@ rank), and the Thing (Monstrous Strength)
 would inflict Excellent damage (20 points).
 (That is why Ban Grimm does not normally
 use lead pipes in combat -- when he uses a
-Charactors do not have to be adjacent in
+Characters do not have to be adjacent in
 order to make ranged attacks. In general,
 ranged attacks start at the attacker. and
 proceed in a direct line to the target (yes,
@@ -5283,7 +5283,7 @@ the character is distracted, the attacker is
 playing possum (the target does not
 anticipate an attack), the attack comes from
 an unsuspected quarter (an ally or supposed
-friend makes the attack). Charactors with
+friend makes the attack). Characters with
 extraordinary senses (like Daredevil) or
 danger senses (like Rogue, Franklin
 Richards, and Spider-Man) cannot be
@@ -5561,7 +5561,7 @@ Endurance rank number in the hour (600
 turns) following the last damage. If the
 character takes further damage during that
 period, then the time is measured from that
-point. Charactors with special abilities may be
+point. Characters with special abilities may be
 able to heal for greater amounts or at faster
 rates. This rate is doubled by bedrest and
 medical supervision (doctors or hospitals).
@@ -6427,7 +6427,7 @@ the members. It may only be used by the
 individual to modify die rolls. Such a locking
 Karma pool may only be dissolved by a
 unanimous vote of those who belong.
-Advancement: Charactors may put Karma
+Advancement: Characters may put Karma
 aside for advancement. This Karma is put into
 a separate fund and is considered
 untouchable by the player for normal use (and
@@ -6606,7 +6606,7 @@ the advancement pool and seeking training.
 Additional Talents must always have a
 rationale. If your character wants to learn
 Martial Arts D, she must find someone to
-teach her. Charactors may learn from other
+teach her. Characters may learn from other
 player characters at a cost of 2000 points,
 or from NPCs at a cost of 1000 points per
 Talent. (This is to get them out the house.)
@@ -11457,7 +11457,7 @@ One is a native of another dimension — the
 dread dominion of Dormammu, to be exact.)
 Karma Awards, Popularity, and
 Advancement
-Charactors who have true magic abilities
+Characters who have true magic abilities
 (as opposed to those with mystic origins,
 the potential to gain magic, or using
 magical items) gain Karma at the standard
@@ -12724,7 +12724,7 @@ attempting to break into a new computer,
 compare this Power rank with the Reason
 of the computer or mechanical being. This
 Power also allows the reprogramming of
-simple robots (but not Player Charactor
+simple robots (but not Player Character
 robots under normal circumstances).
 Mutant Detection: The hero with this Power
 is attuned to the specific mental radiation
@@ -12929,11 +12929,11 @@ Speed is assumed to apply to ground
 movement, but may be applied to any of the
 following Powers, if the hero has them in his
 possession : Flight, Gliding, Wall-crawling,
-or Digging. Charactors with Lightning Speed
+or Digging. Characters with Lightning Speed
 can turn at maximum speed without penalty,
 and Agility FEATs may be made either with
 the Agility ability or with this Power rank.
-Charactors with Lightning Speed can
+Characters with Lightning Speed can
 accelerate to full speed in a single round,
 and decelerate from full speed to full stop in
 the space of one area.
@@ -13657,10 +13657,10 @@ instead of Strength when performing Feats of
 Strength, including wrestling combat.
 Charging, slugfest, and missile attacks on an
 enlarged character all receive positive
-column shifts to hit. Charactors that
+column shifts to hit. Characters that
 experience growth usually but not always
 draw their additional mass from an unknown
-source. Charactors with growth are not
+source. Characters with growth are not
 slowed or impaired by their added mass. 
 Rank
 Height
@@ -14085,7 +14085,7 @@ from whom he took it cannot use it (if the
 character it was stolen from had a higher
 rank than the Power rank of the Power
 thief, that ability is reduced by that
-amount). Charactors with basic abilities
+amount). Characters with basic abilities
 reduced to below Feeble are unconscious
 for 1-10 rounds.
 Raise Lowest Ability: Not really a Power by
@@ -14444,7 +14444,7 @@ developed as a Power Stunt. Range and
 damage are determined by the Power rank,
 though damage and effects may be
 voluntarily reduced.
-Charactors with telepathy may develop
+Characters with telepathy may develop
 Power Stunts, including:
 • Using the telepathic "push" as a bolt of
 mental force of Power rank range and
@@ -14486,7 +14486,7 @@ Image Generation: The hero with this
 Power may create vivid mental images.
 These images do not register on cameras,
 film, or in the minds of non-sentient robots.
-(Player Charactors are considered to
+(Player Characters are considered to
 duplicate human eye and brain patterns,
 and as such are subject to the effects of
 these Powers, though they gain a +1CS to
@@ -14638,7 +14638,7 @@ the Force column of the battle effects
 A character who has been Mind Controlled
 is unaware of his actions, knowing only that
 he has blanked out for a while. If a Player
-Charactor is under the effects of a Mind
+Character is under the effects of a Mind
 Control, run him normally, but all actions
 must be OK'd by the controlling character.
 Naturally, the controlled PC cannot pass on
@@ -14769,7 +14769,7 @@ A hero may choose to have a personal force
 field at +1CS instead of being able to project
 force fields. This choice is made at the start
 of play, and as such cannot be changed.
-Charactors with individual force fields cannot
+Characters with individual force fields cannot
 engage in Power Stunts using this option.
 A force field operates as a form of Body
 Armor. If the amount of damage incurred in
@@ -15004,7 +15004,7 @@ is immobile, in a trance. Damage to the
 body will be known to the astral traveler if it
 is in this dimension, and it is possible for
 the body to perish while the astral form is
-away. Charactors whose bodies have
+away. Characters whose bodies have
 perished are trapped in astral form.
 Precognition must choose a limitation to
 that Power. Suggestions include:
@@ -15067,7 +15067,7 @@ side that gains initiative has the precog with
 it, the player running that character may
 share the information with the others, and
 they may make their decisions accordingly.
-Charactors with Astral Projection may also
+Characters with Astral Projection may also
 detect the astral as a Power Stunt, and two
 characters in astral form will be able to see
 each other. Astral combat and other
@@ -15078,12 +15078,12 @@ the ability to project psionic force blasts at
 Power rank range and Intensity. The target
 of this attack must make a successful
 Psyche FEAT or be knocked unconscious
-for 1-10 rounds. Charactors with Mental
+for 1-10 rounds. Characters with Mental
 Powers may use their Power ranks instead
 of Psyche, and those with Psi-Screen should
 use that Power rank before any other. Force
 Field's operate against psionic attack.
-WARNING: Charactors with precog Powers
+WARNING: Characters with precog Powers
 often have unwanted images implanted by
 the Judge, whether to foreshadow
 upcoming adventures, or to throw the
@@ -15328,7 +15328,7 @@ amount of Health from the target to the hero.
 Previous damage is healed in an equal
 amount, up to the maximum Health of the
 character. Drained Health above that point is
-lost. Charactors drained to 0 Health must
+lost. Characters drained to 0 Health must
 make an Endurance FEAT to avoid dying. if
 they do so, the attack has no further effect.
 Reversing this process, directing one's own
@@ -15491,7 +15491,7 @@ Intensity or be considered Friendly to the
 character. Robots, aliens, and those unable
 to smell or be affected by the pheromones
 (behind a force field, for example) are not
-affected. Charactors that are Hostile will still
+affected. Characters that are Hostile will still
 be attracted to the character, but that
 attraction will not stop them from putting the
 hero in a deathtrap, from which the only
@@ -15693,7 +15693,7 @@ karate. The practitioner of this type of
 martial arts can Stun or Slam an opponent
 regardless of their comparative Strengths
 and Endurances.
-Thrown Weapons: Charactors with this
+Thrown Weapons: Characters with this
 Talent toss weapons designed to be thrown
 (including spears, daggers, Shuriken, disks,
 and snowballs) at +1CS to their Agility.
@@ -15726,7 +15726,7 @@ providing bonus Column Shifts in their field
 of specialty, the Talents can be used to
 increase initial Resource levels through
 gainful employment.
-Blunt Weapons: Charactors with this Talent
+Blunt Weapons: Characters with this Talent
 gain a +1CS to hit when attacking with a
 weapon that resolves attacks on the Blunt
 Attacks column of the Battle Effects Table.
@@ -15753,7 +15753,7 @@ natural healing. Finally, the character with
 Medicine as a Talent is +1CS on Reason
 FEATs that involve medical problems,
 medications, poisons, and surgery.
-Sharp Weapons: Charactors with this
+Sharp Weapons: Characters with this
 Talent gain a +1CS to hit when attacking
 with a weapon that resolves attacks on the
 Edged Attack column of the Battle Effects
@@ -16051,7 +16051,7 @@ has a natural understanding of languages.
 The character gains 1 additional language
 at start, and made add other languages at
 half the cost of a Talent (500 paints
-regardless of who teaches it). Charactors
+regardless of who teaches it). Characters
 without languages Talent must gain this
 Talent first to learn other languages. The
 gaining of additional languages assumes

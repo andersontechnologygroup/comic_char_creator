@@ -166,8 +166,8 @@ const CORE_FILES = [
     "DataBasic.js",
     "DataAdvanced.js",
     "DataUltimate.js",
-    "Charactor.js",
-    "CharactorGenerator.js",
+    "Character.js",
+    "CharacterGenerator.js",
     "UnitTests.js",
 ];
 
@@ -217,7 +217,7 @@ var __alertMsg = "";
 global.alert = (msg) => { __alertMsg = msg; };
 
 (function validateDeterministicRolls() {
-  var gen = new CharactorGenerator();
+  var gen = new CharacterGenerator();
   gen.generatorMode = "basic";
   gen.setTables();
   gen.setDeterministicRolls();

@@ -1,7 +1,7 @@
 // TestsNegative.js
 // Extensive negative tests including failure tests where none exist.
 // Exercises error paths, invalid inputs, edge cases, and failure scenarios
-// across CharactorGenerator, Charactor, Utility, Dice, and data tables.
+// across CharacterGenerator, Character, Utility, Dice, and data tables.
 
 // ============================================================================
 // CHARACTERGENERATOR — invalid mode, null options, and edge cases
@@ -9,7 +9,7 @@
 
 Tester.GenInvalidModeTests = () => {
     // Invalid mode should fall back to basic tables
-    const char1 = CharactorGenerator.generateCharactor("bogus_mode", {
+    const char1 = CharacterGenerator.generateCharacter("bogus_mode", {
         useDeterministicRolls: true,
     });
     Tester.assert(char1 !== null, "InvalidMode: returns a character.");
@@ -19,19 +19,19 @@ Tester.GenInvalidModeTests = () => {
     );
 
     // Empty string mode
-    const char2 = CharactorGenerator.generateCharactor("", {
+    const char2 = CharacterGenerator.generateCharacter("", {
         useDeterministicRolls: true,
     });
     Tester.assert(char2 !== null, "EmptyMode: returns a character.");
 
     // Null mode
-    const char3 = CharactorGenerator.generateCharactor(null, {
+    const char3 = CharacterGenerator.generateCharacter(null, {
         useDeterministicRolls: true,
     });
     Tester.assert(char3 !== null, "NullMode: returns a character.");
 
     // Undefined mode
-    const char4 = CharactorGenerator.generateCharactor(undefined, {
+    const char4 = CharacterGenerator.generateCharacter(undefined, {
         useDeterministicRolls: true,
     });
     Tester.assert(char4 !== null, "UndefinedMode: returns a character.");
@@ -43,7 +43,7 @@ Tester.GenInvalidModeTests = () => {
 
 Tester.GenNullOptionsTests = () => {
     // null options — should still produce a character (uses defaults)
-    const char1 = CharactorGenerator.generateCharactor("basic", null);
+    const char1 = CharacterGenerator.generateCharacter("basic", null);
     Tester.assert(char1 !== null, "NullOptions: returns a character.");
     // physicalForm may be empty if no deterministic rolls are set
     Tester.assert(
@@ -52,15 +52,15 @@ Tester.GenNullOptionsTests = () => {
     );
 
     // undefined options
-    const char2 = CharactorGenerator.generateCharactor("basic", undefined);
+    const char2 = CharacterGenerator.generateCharacter("basic", undefined);
     Tester.assert(char2 !== null, "UndefinedOptions: returns a character.");
 
     // empty options
-    const char3 = CharactorGenerator.generateCharactor("basic", {});
+    const char3 = CharacterGenerator.generateCharacter("basic", {});
     Tester.assert(char3 !== null, "EmptyOptions: returns a character.");
 
     // options with only seed (no useDeterministicRolls)
-    const char4 = CharactorGenerator.generateCharactor("basic", { seed: 42 });
+    const char4 = CharacterGenerator.generateCharacter("basic", { seed: 42 });
     Tester.assert(char4 !== null, "SeedOnlyOptions: returns a character.");
     Tester.assert(
         typeof char4.physicalForm === "string",
@@ -73,7 +73,7 @@ Tester.GenNullOptionsTests = () => {
 // ============================================================================
 
 Tester.GenExtremeRollTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -159,7 +159,7 @@ Tester.GenExtremeRollTests = () => {
 // ============================================================================
 
 Tester.GenResetTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -196,8 +196,8 @@ Tester.GenResetTests = () => {
 // CHARACTER — setAbility edge cases
 // ============================================================================
 
-Tester.CharactorSetAbilityTests = () => {
-    const char = new Charactor();
+Tester.CharacterSetAbilityTests = () => {
+    const char = new Character();
 
     // Set ability at index 0 (normal)
     char.setAbility("Fighting", "Good", 10, 0);
@@ -312,15 +312,15 @@ Tester.CharactorSetAbilityTests = () => {
 // CHARACTER — calculateSecondary edge cases
 // ============================================================================
 
-Tester.CharactorCalculateSecondaryTests = () => {
+Tester.CharacterCalculateSecondaryTests = () => {
     // All zero abilities
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.calculateSecondary();
     Tester.assertEquals(0, char1.health, "CalcSecondary(zeros): health = 0.");
     Tester.assertEquals(0, char1.karma, "CalcSecondary(zeros): karma = 0.");
 
     // All max abilities (Amazing = 50)
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.setAbility("Fighting", "Amazing", 50, 0);
     char2.setAbility("Agility", "Amazing", 50, 0);
     char2.setAbility("Strength", "Amazing", 50, 0);
@@ -333,7 +333,7 @@ Tester.CharactorCalculateSecondaryTests = () => {
     Tester.assertEquals(150, char2.karma, "CalcSecondary(max): karma = 150.");
 
     // Mixed abilities
-    const char3 = new Charactor();
+    const char3 = new Character();
     char3.setAbility("Fighting", "Good", 10, 0);
     char3.setAbility("Agility", "Typical", 6, 0);
     char3.setAbility("Strength", "Excellent", 20, 0);
@@ -346,7 +346,7 @@ Tester.CharactorCalculateSecondaryTests = () => {
     Tester.assertEquals(90, char3.karma, "CalcSecondary(mixed): karma = 90.");
 
     // Recalculate after changing abilities
-    const char4 = new Charactor();
+    const char4 = new Character();
     char4.setAbility("Fighting", "Good", 10, 0);
     char4.calculateSecondary();
     const health1 = char4.health;
@@ -446,7 +446,7 @@ Tester.UtilityGetValueEdgeCases = () => {
 // ============================================================================
 
 Tester.UtilityFindRowEdgeCases = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
 
@@ -580,13 +580,13 @@ Tester.DiceEdgeCasesStressTests = () => {
 // ============================================================================
 
 Tester.PowerGenerationFailureTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.setDeterministicRolls();
 
     // No remaining power slots
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Altered Human";
     char1.powersCount = 0;
     char1.powersMax = 0;
@@ -598,7 +598,7 @@ Tester.PowerGenerationFailureTests = () => {
     );
 
     // Invalid category roll (0)
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Altered Human";
     char2.powersCount = 10;
     char2.powersMax = 10;
@@ -613,7 +613,7 @@ Tester.PowerGenerationFailureTests = () => {
     );
 
     // Invalid category roll (150)
-    const char3 = new Charactor();
+    const char3 = new Character();
     char3.physicalForm = "Altered Human";
     char3.powersCount = 10;
     char3.powersMax = 10;
@@ -628,7 +628,7 @@ Tester.PowerGenerationFailureTests = () => {
     );
 
     // All power rolls > 100 (exhausted array)
-    const char4 = new Charactor();
+    const char4 = new Character();
     char4.physicalForm = "Altered Human";
     char4.powersCount = 10;
     char4.powersMax = 10;
@@ -643,7 +643,7 @@ Tester.PowerGenerationFailureTests = () => {
     );
 
     // Exhaust all powers in a category (duplicate handling)
-    const char5 = new Charactor();
+    const char5 = new Character();
     char5.physicalForm = "Altered Human";
     char5.powersCount = 20;
     char5.powersMax = 20;
@@ -701,13 +701,13 @@ Tester.PowerGenerationFailureTests = () => {
 // ============================================================================
 
 Tester.TalentGenerationFailureTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.setDeterministicRolls();
 
     // No talent slots
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Altered Human";
     char1.talentsCount = 0;
     char1.talentsMax = 0;
@@ -719,7 +719,7 @@ Tester.TalentGenerationFailureTests = () => {
     );
 
     // Invalid talent category roll
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Altered Human";
     char2.talentsCount = 5;
     char2.talentsMax = 5;
@@ -737,7 +737,7 @@ Tester.TalentGenerationFailureTests = () => {
 // ============================================================================
 
 Tester.ContactGenerationFailureTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -771,14 +771,14 @@ Tester.ContactGenerationFailureTests = () => {
 // ============================================================================
 
 Tester.OriginFailureTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
 
     // Invalid origin roll (0)
     gen.setDeterministicRolls();
     gen.originRoll = 0;
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Altered Human";
     gen.determineOrigin(char1);
     Tester.assert(
@@ -789,7 +789,7 @@ Tester.OriginFailureTests = () => {
     // Invalid origin roll (101)
     gen.setDeterministicRolls();
     gen.originRoll = 101;
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Altered Human";
     gen.determineOrigin(char2);
     Tester.assert(
@@ -800,7 +800,7 @@ Tester.OriginFailureTests = () => {
     // Negative origin roll
     gen.setDeterministicRolls();
     gen.originRoll = -5;
-    const char3 = new Charactor();
+    const char3 = new Character();
     char3.physicalForm = "Altered Human";
     gen.determineOrigin(char3);
     Tester.assert(
@@ -814,13 +814,13 @@ Tester.OriginFailureTests = () => {
 // ============================================================================
 
 Tester.PopularityEdgeCaseTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
 
     // Secret identity, secret origin (both -20 in basic)
     gen.setDeterministicRolls();
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Normal Human";
     gen.identitySecret = true;
     gen.originPublic = false;
@@ -834,7 +834,7 @@ Tester.PopularityEdgeCaseTests = () => {
 
     // Public identity, public origin (both +20 in basic)
     gen.setDeterministicRolls();
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Normal Human";
     gen.identitySecret = false;
     gen.originPublic = true;
@@ -848,7 +848,7 @@ Tester.PopularityEdgeCaseTests = () => {
 
     // Popularity set to 0 via form
     gen.setDeterministicRolls();
-    const char3 = new Charactor();
+    const char3 = new Character();
     char3.physicalForm = "Normal Human";
     gen.identitySecret = true;
     gen.originPublic = false;
@@ -867,7 +867,7 @@ Tester.PopularityEdgeCaseTests = () => {
 // ============================================================================
 
 Tester.HealthAdjustmentEdgeCaseTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
 
@@ -879,7 +879,7 @@ Tester.HealthAdjustmentEdgeCaseTests = () => {
     // healthAdjustment = 0 (no-op)
     row.healthAdjustment = 0;
     gen.setDeterministicRolls();
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Altered Human";
     char1.health = 50;
     gen.determineHealth(char1);
@@ -888,7 +888,7 @@ Tester.HealthAdjustmentEdgeCaseTests = () => {
     // healthAdjustment = very large integer
     row.healthAdjustment = 1000;
     gen.setDeterministicRolls();
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Altered Human";
     char2.health = 10;
     gen.determineHealth(char2);
@@ -897,7 +897,7 @@ Tester.HealthAdjustmentEdgeCaseTests = () => {
     // healthAdjustment = very negative integer
     row.healthAdjustment = -1000;
     gen.setDeterministicRolls();
-    const char3 = new Charactor();
+    const char3 = new Character();
     char3.physicalForm = "Altered Human";
     char3.health = 10;
     gen.determineHealth(char3);
@@ -910,7 +910,7 @@ Tester.HealthAdjustmentEdgeCaseTests = () => {
     // healthAdjustment = '/100' (divide by large number)
     row.healthAdjustment = "/100";
     gen.setDeterministicRolls();
-    const char4 = new Charactor();
+    const char4 = new Character();
     char4.physicalForm = "Altered Human";
     char4.health = 100;
     gen.determineHealth(char4);
@@ -926,14 +926,14 @@ Tester.HealthAdjustmentEdgeCaseTests = () => {
 // ============================================================================
 
 Tester.ResourceEdgeCaseTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
 
     // Hi-tech form with hiTechToGood = false
     gen.setDeterministicRolls();
     gen.hiTechToGood = false;
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Altered Human";
     gen.determineResources(char1);
     Tester.assert(
@@ -950,13 +950,13 @@ Tester.ResourceEdgeCaseTests = () => {
 // ============================================================================
 
 Tester.AbilityModifierEdgeCaseTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.setDeterministicRolls();
 
     // getAbilityAfterModifier with invalid rank
-    const char = new Charactor();
+    const char = new Character();
     const result = gen.getAbilityAfterModifier(
         char,
         "Test",
@@ -971,7 +971,7 @@ Tester.AbilityModifierEdgeCaseTests = () => {
     );
 
     // getAbilityAfterModifier with very large adjustment
-    const char2 = new Charactor();
+    const char2 = new Character();
     const result2 = gen.getAbilityAfterModifier(
         char2,
         "Test",
@@ -987,7 +987,7 @@ Tester.AbilityModifierEdgeCaseTests = () => {
     );
 
     // getAbilityAfterModifier with very negative adjustment
-    const char3 = new Charactor();
+    const char3 = new Character();
     const result3 = gen.getAbilityAfterModifier(
         char3,
         "Test",
@@ -1003,7 +1003,7 @@ Tester.AbilityModifierEdgeCaseTests = () => {
     );
 
     // getAbilityAfterModifier with minimum clamp
-    const char4 = new Charactor();
+    const char4 = new Character();
     const result4 = gen.getAbilityAfterModifier(
         char4,
         "Test",
@@ -1018,7 +1018,7 @@ Tester.AbilityModifierEdgeCaseTests = () => {
     );
 
     // getAbilityAfterModifier with maximum clamp
-    const char5 = new Charactor();
+    const char5 = new Character();
     const result5 = gen.getAbilityAfterModifier(
         char5,
         "Test",
@@ -1038,7 +1038,7 @@ Tester.AbilityModifierEdgeCaseTests = () => {
 // ============================================================================
 
 Tester.BoostEdgeCaseTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -1088,7 +1088,7 @@ Tester.BoostEdgeCaseTests = () => {
 // ============================================================================
 
 Tester.WeaknessEdgeCaseTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -1121,7 +1121,7 @@ Tester.WeaknessEdgeCaseTests = () => {
 // ============================================================================
 
 Tester.DataTableEdgeCaseTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
 
@@ -1183,7 +1183,7 @@ Tester.DataTableEdgeCaseTests = () => {
 // ============================================================================
 
 Tester.CompoundFormEdgeCaseTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
 
@@ -1232,8 +1232,8 @@ Tester.registerTestGroup(90, "deterministic", [
     { name: "GenNullOptionsTests", needsGen: false },
     { name: "GenExtremeRollTests", needsGen: false },
     { name: "GenResetTests", needsGen: false },
-    { name: "CharactorSetAbilityTests", needsGen: false },
-    { name: "CharactorCalculateSecondaryTests", needsGen: false },
+    { name: "CharacterSetAbilityTests", needsGen: false },
+    { name: "CharacterCalculateSecondaryTests", needsGen: false },
     { name: "UtilityGetValueEdgeCases", needsGen: false },
     { name: "UtilityFindRowEdgeCases", needsGen: false },
     { name: "DiceEdgeCasesStressTests", needsGen: false },

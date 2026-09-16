@@ -937,12 +937,9 @@ Tester._assertHiTechFlag = (tableName, table, mode) => {
         let shouldHave = false;
         if (n === "hi-tech") {
             shouldHave = true; // Hi-Tech is always isHiTech
-        } else if (
-            mode === "ultimate" &&
-            (n.includes("cyborg") || n.includes("robot"))
-        ) {
-            shouldHave = true; // Ultimate Cyborgs/Robots are isHiTech
-        }
+        } 
+        
+        // It sounds counter-untuitive, but Ultimate modes Robots and Cyborg are not considered HiTech
 
         if (shouldHave) {
             Tester.assert(

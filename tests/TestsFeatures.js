@@ -307,7 +307,7 @@ Tester.TalentCategorySingleTalentTests = (gen) => {
 
 // Happy path: parseBonusPowerOptions parses correctly
 Tester.BonusPowerParseTests = () => {
-    const options = CharactorGenerator.parseBonusPowerOptions(
+    const options = CharacterGenerator.parseBonusPowerOptions(
         "Body Alterations/Offensive\\Claws(100)",
     );
     Tester.assertEquals(1, options.length, "BonusPowerParse: 1 option parsed.");
@@ -330,7 +330,7 @@ Tester.BonusPowerParseTests = () => {
 
 // Parse with multiple options
 Tester.BonusPowerParseMultipleTests = () => {
-    const options = CharactorGenerator.parseBonusPowerOptions(
+    const options = CharacterGenerator.parseBonusPowerOptions(
         "Movement\\Swimming(50)|Mental Powers\\Animal Communication and Control(100)",
     );
     Tester.assertEquals(
@@ -352,7 +352,7 @@ Tester.BonusPowerParseMultipleTests = () => {
 
 // Parse with empty string
 Tester.BonusPowerParseEmptyTests = () => {
-    const options = CharactorGenerator.parseBonusPowerOptions("");
+    const options = CharacterGenerator.parseBonusPowerOptions("");
     Tester.assertEquals(
         0,
         options.length,
@@ -362,7 +362,7 @@ Tester.BonusPowerParseEmptyTests = () => {
 
 // Parse with null
 Tester.BonusPowerParseNullTests = () => {
-    const options = CharactorGenerator.parseBonusPowerOptions(null);
+    const options = CharacterGenerator.parseBonusPowerOptions(null);
     Tester.assertEquals(
         0,
         options.length,
@@ -502,7 +502,7 @@ Tester.BonusPowerSelectionAppliedTests = (gen) => {
     gen.setDeterministicRolls();
     gen._lastPhysicalForm = "Hi-Tech";
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Hi-Tech";
     char.powersCount = 5;
     char.powersMax = 5;
@@ -544,7 +544,7 @@ Tester.BonusPowerFallbackRollTests = (gen) => {
     gen.setDeterministicRolls();
     gen._lastPhysicalForm = "Hi-Tech";
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Hi-Tech";
     char.powersCount = 5;
     char.powersMax = 5;

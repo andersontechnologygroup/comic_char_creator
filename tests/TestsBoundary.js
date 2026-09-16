@@ -7,8 +7,8 @@
 // ============================================================================
 
 Tester.ErrorPathTests = () => {
-    // Test that Charactor.setAbility handles invalid abilityIndex gracefully
-    const char = new Charactor();
+    // Test that Character.setAbility handles invalid abilityIndex gracefully
+    const char = new Character();
     // Accessing an out-of-range index should auto-expand the array
     char.setAbility("Fighting", "Good", 10, 99);
     Tester.assert(
@@ -65,7 +65,7 @@ Tester.ErrorPathTests = () => {
     );
 
     // Test Utility.findRow with out-of-range roll
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
 
@@ -123,8 +123,8 @@ Tester.ErrorPathTests = () => {
         `Utility.findRow: Roll 100 = Amazing (last row).`,
     );
 
-    // Test Charactor.calculateSecondary with all-zero abilities
-    const charZero = new Charactor();
+    // Test Character.calculateSecondary with all-zero abilities
+    const charZero = new Character();
     charZero.calculateSecondary();
     Tester.assertEquals(
         0,
@@ -146,7 +146,7 @@ Tester.BoundaryInvariantTests = (gen) => {
     // Generate a character in each mode and verify invariants
     const modes = ["basic", "advanced", "ultimate"];
     for (const mode of modes) {
-        const g = new CharactorGenerator();
+        const g = new CharacterGenerator();
         g.generatorMode = mode;
         g.setTables();
         g.setDeterministicRolls();
@@ -396,8 +396,8 @@ Tester.NegativeInputTests = () => {
         `Dice.getRandomItem([]): Returns null for empty array (fixed from undefined).`,
     );
 
-    // --- Charactor.getAbility with invalid ability name ---
-    const char = new Charactor();
+    // --- Character.getAbility with invalid ability name ---
+    const char = new Character();
     char.setAbility("Fighting", "Good", 10, 0);
     // getAbility returns undefined for unknown keys (no throw)
     const invalidAbility = char.getAbility("InvalidAbility");
@@ -407,7 +407,7 @@ Tester.NegativeInputTests = () => {
         `getAbility("InvalidAbility"): Returns undefined for unknown ability.`,
     );
 
-    // --- Charactor.setAbility with empty rank string (falsy, so skipped) ---
+    // --- Character.setAbility with empty rank string (falsy, so skipped) ---
     char.setAbility("Fighting", "", 0, 0);
     Tester.assertEquals(
         "Good",
@@ -421,7 +421,7 @@ Tester.NegativeInputTests = () => {
     );
 
     // --- Utility.findRow with invalid column index ---
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     const invalidColRow = Utility.findRow(gen, 50, 999);
@@ -443,8 +443,8 @@ Tester.NegativeInputTests = () => {
         `Utility.getValue: Missing empty string key returns default.`,
     );
 
-    // --- CharactorGenerator with unrecognized mode (should use basic tables) ---
-    const genBad = new CharactorGenerator();
+    // --- CharacterGenerator with unrecognized mode (should use basic tables) ---
+    const genBad = new CharacterGenerator();
     genBad.generatorMode = "bogus_mode";
     genBad.setTables();
     // Should not crash; tables should be set to basic defaults
@@ -459,8 +459,8 @@ Tester.NegativeInputTests = () => {
         `setTables("bogus_mode"): talentCategoriesTable is set (uses basic default).`,
     );
 
-    // --- Charactor.calculateSecondary with partial abilities set ---
-    const charPartial = new Charactor();
+    // --- Character.calculateSecondary with partial abilities set ---
+    const charPartial = new Character();
     charPartial.setAbility("Fighting", "Good", 10, 0);
     // Only Fighting is set; others default to 0
     charPartial.calculateSecondary();
@@ -475,9 +475,9 @@ Tester.NegativeInputTests = () => {
         `calculateSecondary: Partial abilities — karma = 0 (no mental abilities set).`,
     );
 
-    // --- CharactorGenerator.generateWithoutThrows with missing rolls ---
+    // --- CharacterGenerator.generateWithoutThrows with missing rolls ---
     // Should not crash; missing rolls use default values
-    const genMinimal = new CharactorGenerator();
+    const genMinimal = new CharacterGenerator();
     genMinimal.generatorMode = "basic";
     genMinimal.setTables();
     // Don't set any rolls — let defaults handle it
@@ -502,7 +502,7 @@ Tester.CorruptedTableTests = () => {
     // (missing fields, empty arrays, null entries)
 
     // --- Empty power list table ---
-    const gen1 = new CharactorGenerator();
+    const gen1 = new CharacterGenerator();
     gen1.generatorMode = "basic";
     gen1.setTables();
     gen1.setDeterministicRolls();
@@ -521,7 +521,7 @@ Tester.CorruptedTableTests = () => {
     );
 
     // --- Power entries with missing 'name' field ---
-    const gen2 = new CharactorGenerator();
+    const gen2 = new CharacterGenerator();
     gen2.generatorMode = "basic";
     gen2.setTables();
     gen2.setDeterministicRolls();
@@ -543,7 +543,7 @@ Tester.CorruptedTableTests = () => {
     gen2.powerListTable[0] = origPower;
 
     // --- Talent entries with null category ---
-    const gen3 = new CharactorGenerator();
+    const gen3 = new CharacterGenerator();
     gen3.generatorMode = "basic";
     gen3.setTables();
     gen3.setDeterministicRolls();
@@ -559,7 +559,7 @@ Tester.CorruptedTableTests = () => {
     );
 
     // --- Contact entries with missing fields ---
-    const gen4 = new CharactorGenerator();
+    const gen4 = new CharacterGenerator();
     gen4.generatorMode = "basic";
     gen4.setTables();
     gen4.setDeterministicRolls();
@@ -577,7 +577,7 @@ Tester.CorruptedTableTests = () => {
     );
 
     // --- Random ranks table with negative rankNumber ---
-    const gen5 = new CharactorGenerator();
+    const gen5 = new CharacterGenerator();
     gen5.generatorMode = "basic";
     gen5.setTables();
     gen5.setDeterministicRolls();
@@ -595,7 +595,7 @@ Tester.CorruptedTableTests = () => {
     gen5.randomRanksTable = origRanksTable;
 
     // --- Physical form table with missing 'column' field ---
-    const gen6 = new CharactorGenerator();
+    const gen6 = new CharacterGenerator();
     gen6.generatorMode = "basic";
     gen6.setTables();
     gen6.setDeterministicRolls();
@@ -609,43 +609,43 @@ Tester.CorruptedTableTests = () => {
         `CorruptedTable: Missing 'column' in physical form doesn't crash.`,
     );
 
-    // --- generateCharactor static method (pure function) ---
-    const charPure = CharactorGenerator.generateCharactor("basic", {
+    // --- generateCharacter static method (pure function) ---
+    const charPure = CharacterGenerator.generateCharacter("basic", {
         useDeterministicRolls: true,
     });
-    Tester.assert(charPure !== null, `generateCharactor: Returns a character.`);
+    Tester.assert(charPure !== null, `generateCharacter: Returns a character.`);
     Tester.assert(
         charPure.physicalForm !== "",
-        `generateCharactor: physicalForm is populated.`,
+        `generateCharacter: physicalForm is populated.`,
     );
     Tester.assert(
         charPure.origin !== "",
-        `generateCharactor: origin is populated.`,
+        `generateCharacter: origin is populated.`,
     );
     Tester.assert(
         typeof charPure.health === "number" && charPure.health >= 0,
-        `generateCharactor: health is a non-negative number.`,
+        `generateCharacter: health is a non-negative number.`,
     );
     Tester.assert(
         typeof charPure.karma === "number" && charPure.karma >= 0,
-        `generateCharactor: karma is a non-negative number.`,
+        `generateCharacter: karma is a non-negative number.`,
     );
 
     // Verify pure function doesn't mutate external state
-    const charPureUlt = CharactorGenerator.generateCharactor("ultimate", {
+    const charPureUlt = CharacterGenerator.generateCharacter("ultimate", {
         useDeterministicRolls: true,
     });
     Tester.assert(
         charPureUlt !== null,
-        `generateCharactor (ultimate): Returns a character.`,
+        `generateCharacter (ultimate): Returns a character.`,
     );
     Tester.assert(
         charPureUlt.weakness.stimulus !== "",
-        `generateCharactor (ultimate): weakness is populated.`,
+        `generateCharacter (ultimate): weakness is populated.`,
     );
 
     // --- Number rolls out of range (> 100) should be clamped, not crash ---
-    const genClamp = new CharactorGenerator();
+    const genClamp = new CharacterGenerator();
     genClamp.generatorMode = "basic";
     genClamp.setTables();
     genClamp.setDeterministicRolls();
@@ -677,7 +677,7 @@ Tester.CorruptedTableTests = () => {
 // ============================================================================
 
 Tester.UtilityFindRowTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
 

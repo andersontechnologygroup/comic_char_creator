@@ -318,7 +318,7 @@ const WEAKNESS_TEST_CASES = [
 // ============================================================================
 
 Tester.WeaknessTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();

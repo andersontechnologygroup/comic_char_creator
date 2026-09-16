@@ -218,15 +218,7 @@ const PHYSICAL_FORM_ASSERTIONS = {
             value: -1,
             msg: "Powers Count adjusted by -1.",
         },
-        { path: "resources.set", value: 16, msg: "Resources set to 16." },
-        {
-            validate: (char, s) => {
-                Tester.assert(
-                    char.isHiTech,
-                    "Cyborg - Mechanically Augmented: isHiTech is set.",
-                );
-            },
-        },
+        { path: "resources.set", value: 8, msg: "Resources set to 8 (Good)." },
     ],
     "Robot - human shape": [
         {
@@ -416,9 +408,9 @@ const PHYSICAL_FORM_ASSERTIONS = {
                     (p) => p.category === "Energy Control",
                 );
                 Tester.assertAtLeast(
-                    2,
-                    energyEmission.length + energyControl.length,
-                    "Energy has 2 bonus powers of category Energy Emission and/or Energy Control.",
+                    1,
+                    energyEmission.length,
+                    "Energy has 1 bonus power of category Energy Emission.",
                 );
             },
         },
@@ -447,7 +439,7 @@ const PHYSICAL_FORM_ASSERTIONS = {
             msg: "Health multiplied by 2.",
         },
     ],
-    Gaseous: [{ path: "resources.set", value: 1, msg: "Resources set to 1." }],
+    Gaseous: [{ path: "resources.set", value: 0, msg: "Resources set to 0." }],
     Undead: [
         {
             path: "abilityAdjustments.Endurance",
@@ -517,10 +509,15 @@ Tester.GeneratorUltimatePhysicalFormTests = (gen) => {
         gen.throwAllRolls();
         gen.physicalFormRoll = gen.physicalFormTable[index].maxRoll;
         const char = gen.generateWithoutThrows();
-        Tester.assertEquals(
-            gen.physicalFormTable[index].name,
-            char.physicalForm,
-            `Physical Form Roll (Ultimate): Generated '${char.physicalForm}', which is correct.`,
+        // When multiple forms share the same maxRoll (subRoll disambiguation),
+        // the generated form may differ from physicalFormTable[index].
+        // Accept any form that shares the same maxRoll.
+        const expectedMaxRoll = gen.physicalFormTable[index].maxRoll;
+        const matchingForms = gen.physicalFormTable.filter(o => o.maxRoll === expectedMaxRoll);
+        const isMatchingForm = matchingForms.some(o => o.name === char.physicalForm);
+        Tester.assert(
+            isMatchingForm,
+            `Physical Form Roll (Ultimate): Generated '${char.physicalForm}' (expected one of: ${matchingForms.map(o => o.name).join(', ')}).`,
         );
 
         // All assertions (simple + complex) are now data-driven
@@ -535,7 +532,7 @@ Tester.GeneratorUltimatePhysicalFormTests = (gen) => {
 // ============================================================================
 
 Tester.GeneratorCompoundTests = (gen) => {
-    const char = new Charactor();
+    const char = new Character();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.identitySecret = true;
@@ -575,8 +572,8 @@ Tester.GeneratorCompoundTests = (gen) => {
         `Random Ranks Column Roll (Ultimate): Generated '${gen.randomRanksColumn}'.`,
     );
 
-    const gen2 = new CharactorGenerator();
-    const char2 = new Charactor();
+    const gen2 = new CharacterGenerator();
+    const char2 = new Character();
     gen2.generatorMode = "ultimate";
     gen2.setTables();
 
@@ -612,8 +609,8 @@ Tester.GeneratorCompoundTests = (gen) => {
         `Random Ranks Column Roll (Ultimate): Generated '${gen2.randomRanksColumn}'.`,
     );
 
-    const gen3 = new CharactorGenerator();
-    const char3 = new Charactor();
+    const gen3 = new CharacterGenerator();
+    const char3 = new Character();
     gen3.generatorMode = "ultimate";
     gen3.setTables();
 

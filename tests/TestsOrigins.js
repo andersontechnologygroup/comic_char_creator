@@ -165,7 +165,7 @@ Tester.OriginBasicTests = (gen) => {
         gen.setDeterministicRolls();
         gen.physicalFormRoll = tc.physicalFormRoll;
         gen.originRoll = tc.originRoll;
-        const char = new Charactor();
+        const char = new Character();
         char.physicalForm = tc.physicalForm;
         gen.determineOrigin(char);
         Tester.assertEquals(
@@ -189,7 +189,7 @@ Tester.OriginAdvancedTests = (gen) => {
         gen.setDeterministicRolls();
         gen.physicalFormRoll = tc.physicalFormRoll;
         gen.originRoll = tc.originRoll;
-        const char = new Charactor();
+        const char = new Character();
         char.physicalForm = tc.physicalForm;
         gen.determineOrigin(char);
         Tester.assertEquals(

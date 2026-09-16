@@ -3,7 +3,7 @@
 //
 // Iteration notes:
 //   By default, tests run 30 iterations (or 1 when --filter is active).
-//   Each iteration creates a fresh CharactorGenerator, so state leaks between
+//   Each iteration creates a fresh CharacterGenerator, so state leaks between
 //   iterations are caught. Tests that rely on setDeterministicRolls() produce
 //   the same assertions every iteration — these could benefit from seeding
 //   different random values per iteration. Tests that call throwAllRolls()
@@ -326,7 +326,7 @@ class Tester {
 
     /** Register a test method. Call from domain files after defining the method.
      *  @param {string} name - Test method name (must match Tester.<name>)
-     *  @param {boolean} needsGen - If true, passes a CharactorGenerator instance
+     *  @param {boolean} needsGen - If true, passes a CharacterGenerator instance
      *  @param {number} order - Execution order (lower runs first). Default 100.
      *     Orders >= 900 are treated as benchmark tests and run separately.
      *  @param {string} iterationMode - 'deterministic' (default): same result every
@@ -416,7 +416,7 @@ class Tester {
         // Phase 1: Run deterministic tests ONCE — all rolls are seeded/pinned
         this.failureCount = 0;
         this.assertCount = 0;
-        const gen = new CharactorGenerator();
+        const gen = new CharacterGenerator();
         for (const test of deterministicTests) {
             gen.reset();
             const fn = test.needsGen
@@ -433,7 +433,7 @@ class Tester {
                 if (this.bailTriggered) break;
                 this.failureCount = 0;
                 this.assertCount = 0;
-                const fuzzGen = new CharactorGenerator();
+                const fuzzGen = new CharacterGenerator();
                 for (const test of fuzzTests) {
                     fuzzGen.reset();
                     const fn = test.needsGen
@@ -460,7 +460,7 @@ class Tester {
         this.end();
         let alertMessage = `All Tests Passed!!!\r\n${this.totalAssertCount} assertions across ${deterministicTests.length} deterministic + ${fuzzTests.length} fuzz × ${fuzzIters}.`;
         if (this.totalFailureCount !== 0) {
-            alertMessage = `Tests Failed! ${this.totalFailureCount} failures.\r\n${this.totalAssertCount} assertions.\r\n${((this.totalFailureCount / this.totalAssertCount) * 100).toFixed(4)}% failure rate.`;
+            alertMessage = `Tests Failed! ${this.totalFailureCount} failures.\r\n${this.totalAssertCount} assertions.\r\n${((this.totalFailureCount / this.totalAssertCount) * 100).toFixed(4)}% failure rate.\r\nNote: Some failures may be intentional (e.g., ValidateUltimatePowerCatchTests) — these deliberately corrupt data to verify error handling. Look for [INTENTIONAL FAILURE TEST] markers in verbose output.`;
         }
         alert(alertMessage);
     }

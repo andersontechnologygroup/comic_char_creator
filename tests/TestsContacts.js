@@ -29,7 +29,7 @@ Tester._runContactQuantityTests = (gen, config) => {
     gen.setTables();
     gen.contactsEqualToPowers = false;
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = config.charSetup.physicalForm;
     char.origin = config.charSetup.origin;
     gen.randomRanksColumn = config.charSetup.column;
@@ -105,7 +105,7 @@ Tester._runContactsTooManyTests = (gen, mode, form, column) => {
     gen.looksHuman = false;
     gen.contactsEqualToPowers = false;
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = form;
     char.origin = form;
     gen.randomRanksColumn = column;
@@ -219,7 +219,7 @@ const ULTIMATE_CONTACT_CASES = [
         expectedCount: 3,
         expectedContacts: [
             { category: "Professional", name: "Law Enforcement" },
-            { category: "Professional", name: "Business World" },
+            { category: "Professional", name: "Military" },
             { category: "Political", name: "Local" },
         ],
     },

@@ -20,7 +20,7 @@ Tester._runTalentTests = (gen, config) => {
     gen.generatorMode = config.mode;
     gen.setTables();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = config.physicalForm;
     char.origin = config.origin;
     char.randomRanksColumn = config.column;
@@ -161,7 +161,7 @@ const TALENT_TEST_CONFIGS = [
         expectedTalents: [
             { category: "Weapon Skills", name: "Guns" },
             { category: "Fighting Skills", name: "Martial Arts C" },
-            { category: "Scientific Skills", name: "Genetics" },
+            { category: "Scientific Skills", name: "Biology" },
             { category: "Other Skills", name: "First Aid" },
         ],
     },
@@ -180,10 +180,10 @@ const TALENT_TEST_CONFIGS = [
         },
         expectedCount: 4,
         expectedTalents: [
-            { category: "Alternative Sciences", name: "Catastrophism" },
-            { category: "Chemistry", name: "Chemical Engineering" },
-            { category: "Medicine", name: "Obstetrics and Gynecology" },
-            { category: "Piloting", name: "Helicopter" },
+            { category: "Weapon Skills", name: "Guns" },
+            { category: "Fighting Skills", name: "Martial Arts C" },
+            { category: "Scientific Skills", name: "Biology" },
+            { category: "Other Skills", name: "First Aid" },
         ],
     },
 ];

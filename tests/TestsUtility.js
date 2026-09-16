@@ -159,7 +159,7 @@ Tester.registerTest("DiceRollCountTests", false, 21, "deterministic");
 
 Tester.DiceRollCountIntegrationTests = () => {
     // --- Basic mode: count rolls during full generation ---
-    const gen1 = new CharactorGenerator();
+    const gen1 = new CharacterGenerator();
     gen1.generatorMode = "basic";
     gen1.setTables();
     gen1.setDeterministicRolls();
@@ -188,7 +188,7 @@ Tester.DiceRollCountIntegrationTests = () => {
 
     // --- setDeterministicRolls() sets values directly (no Dice.roll() calls) ---
     // Verify rolls were set correctly by checking key values are non-zero
-    const gen2 = new CharactorGenerator();
+    const gen2 = new CharacterGenerator();
     gen2.generatorMode = "basic";
     gen2.setTables();
     gen2.setDeterministicRolls();
@@ -206,7 +206,7 @@ Tester.DiceRollCountIntegrationTests = () => {
     );
 
     // --- Ultimate mode: verify deterministic values set ---
-    const gen3 = new CharactorGenerator();
+    const gen3 = new CharacterGenerator();
     gen3.generatorMode = "ultimate";
     gen3.setTables();
     gen3.setDeterministicRolls();
@@ -220,14 +220,14 @@ Tester.DiceRollCountIntegrationTests = () => {
     );
 
     // Verify reproducibility: same seed → same roll count
-    const gen4 = new CharactorGenerator();
+    const gen4 = new CharacterGenerator();
     gen4.generatorMode = "basic";
     gen4.setTables();
     Dice.seed(42);
     gen4.setDeterministicRolls();
     const countA = Dice.rollCount;
 
-    const gen5 = new CharactorGenerator();
+    const gen5 = new CharacterGenerator();
     gen5.generatorMode = "basic";
     gen5.setTables();
     Dice.seed(42);
@@ -262,7 +262,7 @@ Tester.DiceRollCountConsistencyTests = () => {
         // Use throwAllRolls + generate (which uses Dice.roll)
         Dice.seed(100);
         Dice.rollCount = 0;
-        const gen = new CharactorGenerator();
+        const gen = new CharacterGenerator();
         gen.generatorMode = mode;
         gen.setTables();
         const char = gen.generate();
@@ -275,7 +275,7 @@ Tester.DiceRollCountConsistencyTests = () => {
         // Verify same seed produces same roll count
         const countA = Dice.rollCount;
         Dice.seed(100);
-        const gen2 = new CharactorGenerator();
+        const gen2 = new CharacterGenerator();
         gen2.generatorMode = mode;
         gen2.setTables();
         gen2.generate();

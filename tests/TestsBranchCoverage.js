@@ -1,5 +1,5 @@
 // TestsBranchCoverage.js
-// Targeted tests for uncovered branches in CharactorGenerator.js.
+// Targeted tests for uncovered branches in CharacterGenerator.js.
 // These exercises code paths not hit by the existing test suite,
 // improving branch coverage from ~79% toward 90%+.
 
@@ -7,66 +7,66 @@
 // GENERATECHARACTER() — invalid options tests
 // ============================================================================
 
-Tester.GenerateCharactorInvalidOptionsTests = () => {
+Tester.GenerateCharacterInvalidOptionsTests = () => {
     // Invalid mode: should fall back to basic tables
-    const char1 = CharactorGenerator.generateCharactor("bogus_mode", {
+    const char1 = CharacterGenerator.generateCharacter("bogus_mode", {
         useDeterministicRolls: true,
     });
     Tester.assert(
         char1 !== null,
-        "generateCharactor('bogus_mode'): returns a character.",
+        "generateCharacter('bogus_mode'): returns a character.",
     );
     Tester.assert(
         char1.physicalForm !== "",
-        "generateCharactor('bogus_mode'): physicalForm is set.",
+        "generateCharacter('bogus_mode'): physicalForm is set.",
     );
 
     // Null seed: should work without seeding
-    const char2 = CharactorGenerator.generateCharactor("basic", {
+    const char2 = CharacterGenerator.generateCharacter("basic", {
         seed: null,
         useDeterministicRolls: true,
     });
     Tester.assert(
         char2 !== null,
-        "generateCharactor(seed=null): returns a character.",
+        "generateCharacter(seed=null): returns a character.",
     );
 
     // Undefined options: should use defaults
-    const char3 = CharactorGenerator.generateCharactor("basic", undefined);
+    const char3 = CharacterGenerator.generateCharacter("basic", undefined);
     Tester.assert(
         char3 !== null,
-        "generateCharactor(undefined options): returns a character.",
+        "generateCharacter(undefined options): returns a character.",
     );
 
     // Empty options object
-    const char4 = CharactorGenerator.generateCharactor("ultimate", {});
+    const char4 = CharacterGenerator.generateCharacter("ultimate", {});
     Tester.assert(
         char4 !== null,
-        "generateCharactor(empty options): returns a character.",
+        "generateCharacter(empty options): returns a character.",
     );
     Tester.assert(
         char4.weakness.stimulus !== undefined,
-        "generateCharactor(ultimate): weakness object exists.",
+        "generateCharacter(ultimate): weakness object exists.",
     );
 
     // Physical form roll out of range (negative)
-    const char5 = CharactorGenerator.generateCharactor("basic", {
+    const char5 = CharacterGenerator.generateCharacter("basic", {
         useDeterministicRolls: true,
         physicalFormRoll: -1,
     });
     Tester.assert(
         char5 !== null,
-        "generateCharactor(physicalFormRoll=-1): returns a character.",
+        "generateCharacter(physicalFormRoll=-1): returns a character.",
     );
 
     // Physical form roll > 100
-    const char6 = CharactorGenerator.generateCharactor("basic", {
+    const char6 = CharacterGenerator.generateCharacter("basic", {
         useDeterministicRolls: true,
         physicalFormRoll: 200,
     });
     Tester.assert(
         char6 !== null,
-        "generateCharactor(physicalFormRoll=200): returns a character.",
+        "generateCharacter(physicalFormRoll=200): returns a character.",
     );
 };
 
@@ -81,7 +81,7 @@ Tester.DetermineHealthEdgeCaseTests = (gen) => {
     gen.setDeterministicRolls();
 
     // Mineral form has healthAdjustment = "*2" (multiply)
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Mineral";
     char1.setAbility("Fighting", "Typical", 5);
     char1.setAbility("Agility", "Typical", 5);
@@ -105,7 +105,7 @@ Tester.DetermineHealthEdgeCaseTests = (gen) => {
     const origRow = gen.physicalFormTable.find((o) => o.name === "Gaseous");
     const origHA = origRow.healthAdjustment;
     origRow.healthAdjustment = "/2"; // temporarily set divide adjustment
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Gaseous";
     char2.setAbility("Fighting", "Excellent", 16);
     char2.setAbility("Agility", "Excellent", 16);
@@ -124,7 +124,7 @@ Tester.DetermineHealthEdgeCaseTests = (gen) => {
     // Form with integer healthAdjustment (add) — temporarily set
     gen.setDeterministicRolls();
     origRow.healthAdjustment = 5; // temporarily set integer add
-    const char3 = new Charactor();
+    const char3 = new Character();
     char3.physicalForm = "Gaseous";
     char3.setAbility("Fighting", "Typical", 5);
     char3.setAbility("Agility", "Typical", 5);
@@ -151,7 +151,7 @@ Tester.DeterminePopularityBranchTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Altered Human";
     gen.identitySecret = true;
     gen.originPublic = true;
@@ -166,7 +166,7 @@ Tester.DeterminePopularityBranchTests = (gen) => {
 
     // Basic mode: identitySecret=false, originPublic=false
     gen.setDeterministicRolls();
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Altered Human";
     gen.identitySecret = false;
     gen.originPublic = false;
@@ -181,7 +181,7 @@ Tester.DeterminePopularityBranchTests = (gen) => {
 
     // Basic mode: wellEstablished=true
     gen.setDeterministicRolls();
-    const char3 = new Charactor();
+    const char3 = new Character();
     char3.physicalForm = "Altered Human";
     gen.identitySecret = true;
     gen.originPublic = false;
@@ -196,7 +196,7 @@ Tester.DeterminePopularityBranchTests = (gen) => {
 
     // Basic mode: looksHuman=true
     gen.setDeterministicRolls();
-    const char4 = new Charactor();
+    const char4 = new Character();
     char4.physicalForm = "Altered Human";
     gen.identitySecret = true;
     gen.originPublic = false;
@@ -214,7 +214,7 @@ Tester.DeterminePopularityBranchTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char5 = new Charactor();
+    const char5 = new Character();
     char5.physicalForm = "Altered Human";
     gen.identitySecret = false;
     gen.originPublic = false;
@@ -238,7 +238,7 @@ Tester.DetermineOriginBranchTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Altered Human";
     gen.originRoll = 0;
     gen.determineOrigin(char1);
@@ -251,7 +251,7 @@ Tester.DetermineOriginBranchTests = (gen) => {
 
     // Invalid origin roll (> 100)
     gen.setDeterministicRolls();
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Altered Human";
     gen.originRoll = 101;
     gen.determineOrigin(char2);
@@ -273,7 +273,7 @@ Tester.DetermineAbilityBranchTests = (gen) => {
     gen.setDeterministicRolls();
 
     // Robot - Computer has fightingSet, reasonSet, etc.
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Robot - Computer";
     const physicalFormRow = gen.physicalFormTable.find(
         (o) => o.name === "Robot - Computer",
@@ -287,7 +287,7 @@ Tester.DetermineAbilityBranchTests = (gen) => {
 
     // Test ability *Start path
     gen.setDeterministicRolls();
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Normal Human";
     const nhRow = gen.physicalFormTable.find((o) => o.name === "Normal Human");
     // Check if Normal Human has any *Start attributes
@@ -319,7 +319,7 @@ Tester.DetermineSpecialAbilitiesValidationTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
 
     // Set invalid powerCategoryRoll entries (undefined, null, out of range)
@@ -351,7 +351,7 @@ Tester.GenerateWithSeedTests = () => {
     // generate() calls throwAllRolls() then generateWithoutThrows()
     // Verify it produces valid characters with a seed
     for (const mode of ["basic", "advanced", "ultimate"]) {
-        const gen = new CharactorGenerator();
+        const gen = new CharacterGenerator();
         gen.generatorMode = mode;
         gen.setTables();
         gen.identitySecret = true;
@@ -408,13 +408,13 @@ Tester.GenerateWithSeedTests = () => {
     }
 
     // Verify same seed produces same result (reproducibility)
-    const gen1 = new CharactorGenerator();
+    const gen1 = new CharacterGenerator();
     gen1.generatorMode = "basic";
     gen1.setTables();
     Dice.seed(12345);
     const char1 = gen1.generate();
 
-    const gen2 = new CharactorGenerator();
+    const gen2 = new CharacterGenerator();
     gen2.generatorMode = "basic";
     gen2.setTables();
     Dice.seed(12345);
@@ -466,7 +466,7 @@ Tester.AbilitySetStartPathTests = (gen) => {
     // Temporarily add fightingSet to the form row
     row.fightingSet = { rank: "Excellent", rankNumber: 20 };
     gen.setDeterministicRolls();
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Altered Human";
     gen.determinePrimaryAbilities(char1);
     Tester.assertEquals(
@@ -482,7 +482,7 @@ Tester.AbilitySetStartPathTests = (gen) => {
     // Temporarily add fightingStart to the form row
     row.fightingStart = "Good"; // Rank name that exists in randomRanksTable
     gen.setDeterministicRolls();
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Altered Human";
     gen.determinePrimaryAbilities(char2);
     Tester.assertEquals(
@@ -496,7 +496,7 @@ Tester.AbilitySetStartPathTests = (gen) => {
 
     // --- Verify normal path still works after restoration ---
     gen.setDeterministicRolls();
-    const char3 = new Charactor();
+    const char3 = new Character();
     char3.physicalForm = "Altered Human";
     gen.determinePrimaryAbilities(char3);
     Tester.assert(
@@ -510,7 +510,7 @@ Tester.AbilitySetStartPathTests = (gen) => {
 // ============================================================================
 
 Tester.registerTestGroup(85, "deterministic", [
-    { name: "GenerateCharactorInvalidOptionsTests", needsGen: false },
+    { name: "GenerateCharacterInvalidOptionsTests", needsGen: false },
     { name: "DetermineHealthEdgeCaseTests", needsGen: true },
     { name: "DeterminePopularityBranchTests", needsGen: true },
     { name: "DetermineOriginBranchTests", needsGen: true },

@@ -1,5 +1,5 @@
 // TestsCoverageBoost.js
-// Targeted tests to push CharactorGenerator.js branch coverage toward 95%+.
+// Targeted tests to push CharacterGenerator.js branch coverage toward 95%+.
 // Exercises uncovered code paths not hit by any existing test suite.
 
 // ============================================================================
@@ -8,7 +8,7 @@
 
 Tester.BoostFunctionTests = () => {
     // Generate a character with known abilities to test boost
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -86,7 +86,7 @@ Tester.BoostFunctionTests = () => {
 
 Tester.PopularitySubTypeRulesTests = () => {
     // Angel/Demon has popularityAdjustment: "Angel(+2)|Demon(-2)"
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -119,7 +119,7 @@ Tester.PopularitySubTypeRulesTests = () => {
     gen.setDeterministicRolls();
     const row = gen.physicalFormTable.find((o) => o.name === "Angel/Demon");
     if (row) {
-        const char = new Charactor();
+        const char = new Character();
         char.physicalForm = "Angel/Demon";
         char.subType = "Angel";
         gen.popularityRoll = 50;
@@ -130,7 +130,7 @@ Tester.PopularitySubTypeRulesTests = () => {
         );
 
         gen.setDeterministicRolls();
-        const char2 = new Charactor();
+        const char2 = new Character();
         char2.physicalForm = "Angel/Demon";
         char2.subType = "Demon";
         gen.popularityRoll = 50;
@@ -148,13 +148,13 @@ Tester.PopularitySubTypeRulesTests = () => {
 
 Tester.DeterminePopularityBasicOriginIdentityTests = () => {
     // Basic mode has separate identity + origin modifiers (lines 1000-1030)
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.setDeterministicRolls();
 
     // Test: identitySecret + originPublic
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Normal Human";
     gen.identitySecret = true;
     gen.originPublic = true;
@@ -169,7 +169,7 @@ Tester.DeterminePopularityBasicOriginIdentityTests = () => {
 
     // Test: identityPublic + originSecret
     gen.setDeterministicRolls();
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Normal Human";
     gen.identitySecret = false;
     gen.originPublic = false;
@@ -184,7 +184,7 @@ Tester.DeterminePopularityBasicOriginIdentityTests = () => {
 
     // Test: both public (identityPublic + originPublic)
     gen.setDeterministicRolls();
-    const char3 = new Charactor();
+    const char3 = new Character();
     char3.physicalForm = "Normal Human";
     gen.identitySecret = false;
     gen.originPublic = true;
@@ -199,7 +199,7 @@ Tester.DeterminePopularityBasicOriginIdentityTests = () => {
 
     // Test: both secret (identitySecret + originSecret)
     gen.setDeterministicRolls();
-    const char4 = new Charactor();
+    const char4 = new Character();
     char4.physicalForm = "Normal Human";
     gen.identitySecret = true;
     gen.originPublic = false;
@@ -218,7 +218,7 @@ Tester.DeterminePopularityBasicOriginIdentityTests = () => {
 // ============================================================================
 
 Tester.DeterminePopularityMinMaxClampTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
 
@@ -235,7 +235,7 @@ Tester.DeterminePopularityMinMaxClampTests = () => {
     if (formsWithMin.length > 0) {
         const form = formsWithMin[0];
         gen.setDeterministicRolls();
-        const char = new Charactor();
+        const char = new Character();
         char.physicalForm = form.name;
         gen.identitySecret = true;
         gen.originPublic = false;
@@ -252,7 +252,7 @@ Tester.DeterminePopularityMinMaxClampTests = () => {
     if (formsWithMax.length > 0) {
         const form = formsWithMax[0];
         gen.setDeterministicRolls();
-        const char = new Charactor();
+        const char = new Character();
         char.physicalForm = form.name;
         gen.identitySecret = false;
         gen.originPublic = true;
@@ -271,13 +271,13 @@ Tester.DeterminePopularityMinMaxClampTests = () => {
 // ============================================================================
 
 Tester.ContactsEqualToPowersTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.setDeterministicRolls();
 
     gen.contactsEqualToPowers = true;
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     gen.determineSpecialAbilities(char);
     Tester.assertEquals(
@@ -293,7 +293,7 @@ Tester.ContactsEqualToPowersTests = () => {
     // Also test when false (normal behavior)
     gen.setDeterministicRolls();
     gen.contactsEqualToPowers = false;
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Altered Human";
     gen.determineSpecialAbilities(char2);
     // contacts may or may not equal powers when false, just verify no crash
@@ -308,7 +308,7 @@ Tester.ContactsEqualToPowersTests = () => {
 // ============================================================================
 
 Tester.ContactTalentCountMinMaxTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.contactsEqualToPowers = false; // Must disable to test min/max independently
@@ -330,7 +330,7 @@ Tester.ContactTalentCountMinMaxTests = () => {
     // Test contactsCountMinimum
     row.contactsCountMinimum = 99; // Force high minimum
     gen.setDeterministicRolls();
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Altered Human";
     gen.determineSpecialAbilities(char1);
     // contacts may or may not reach 99, but the code path should execute
@@ -343,7 +343,7 @@ Tester.ContactTalentCountMinMaxTests = () => {
     row.contactsCountMinimum = undefined;
     row.contactsCountMaximum = 0; // Force low maximum
     gen.setDeterministicRolls();
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Altered Human";
     gen.determineSpecialAbilities(char2);
     Tester.assert(
@@ -354,7 +354,7 @@ Tester.ContactTalentCountMinMaxTests = () => {
     // Test talentsCountMinimum
     row.talentsCountMinimum = 99;
     gen.setDeterministicRolls();
-    const char3 = new Charactor();
+    const char3 = new Character();
     char3.physicalForm = "Altered Human";
     gen.determineSpecialAbilities(char3);
     Tester.assert(
@@ -365,7 +365,7 @@ Tester.ContactTalentCountMinMaxTests = () => {
     // Test talentsCountMaximum
     row.talentsCountMaximum = 0;
     gen.setDeterministicRolls();
-    const char4 = new Charactor();
+    const char4 = new Character();
     char4.physicalForm = "Altered Human";
     gen.determineSpecialAbilities(char4);
     Tester.assert(
@@ -386,7 +386,7 @@ Tester.ContactTalentCountMinMaxTests = () => {
 
 Tester.BonusPowerOfPhysicalFormTests = () => {
     // Angel/Demon has bonusPower with subType filtering
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -421,7 +421,7 @@ Tester.BonusPowerOfPhysicalFormTests = () => {
         // Calculate what roll selects this form
         const maxRolls = gen.physicalFormTable.map((r) => r.maxRoll);
         // Just set the form directly
-        const char2 = new Charactor();
+        const char2 = new Character();
         char2.physicalForm = form.name;
         // Need to trigger determineSpecialAbilities which calls generatorBonusPowerOfPhysicalForm
         gen.powerCategoryRolls = Array(gen.rollArraySize).fill(50);
@@ -447,7 +447,7 @@ Tester.BonusPowerOfPhysicalFormTests = () => {
 // ============================================================================
 
 Tester.GenerateOptionalPowerTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
 
@@ -458,7 +458,7 @@ Tester.GenerateOptionalPowerTests = () => {
 
     if (formWithOptional) {
         gen.setDeterministicRolls();
-        const char = new Charactor();
+        const char = new Character();
         char.physicalForm = formWithOptional.name;
         char.powersCount = 10;
         char.powersMax = 10;
@@ -493,7 +493,7 @@ Tester.GenerateOptionalPowerTests = () => {
 
     if (formWithTilde) {
         gen.setDeterministicRolls();
-        const char = new Charactor();
+        const char = new Character();
         char.physicalForm = formWithTilde.name;
         char.powersCount = 10;
         char.powersMax = 10;
@@ -514,7 +514,7 @@ Tester.GenerateOptionalPowerTests = () => {
 // ============================================================================
 
 Tester.GenerateBonusPowerFromAbilityTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
 
@@ -528,7 +528,7 @@ Tester.GenerateBonusPowerFromAbilityTests = () => {
 
     if (powerRow) {
         gen.setDeterministicRolls();
-        const char = new Charactor();
+        const char = new Character();
         char.physicalForm = "Altered Human";
         char.powersCount = 10;
         char.powersMax = 10;
@@ -559,12 +559,12 @@ Tester.GenerateBonusPowerFromAbilityTests = () => {
 // ============================================================================
 
 Tester.GenerateSinglePowerDuplicateTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     char.powersCount = 10;
     char.powersMax = 10;
@@ -611,12 +611,12 @@ Tester.GenerateSinglePowerDuplicateTests = () => {
 // ============================================================================
 
 Tester.GenerateSinglePowerUndefinedRowTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     char.powersCount = 10;
     char.powersMax = 10;
@@ -641,12 +641,12 @@ Tester.GenerateSinglePowerUndefinedRowTests = () => {
 // ============================================================================
 
 Tester.GenerateTalentsReRollTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     char.talentsCount = 1; // Only 1 talent slot
     char.talentsMax = 1;
@@ -667,12 +667,12 @@ Tester.GenerateTalentsReRollTests = () => {
 // ============================================================================
 
 Tester.ContactGenerationBranchTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     char.contactsCount = 5;
     char.contactsMax = 5;
@@ -692,7 +692,7 @@ Tester.ContactGenerationBranchTests = () => {
 // ============================================================================
 
 Tester.PopularityUltimateStartPathTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
 
@@ -703,7 +703,7 @@ Tester.PopularityUltimateStartPathTests = () => {
 
     if (formWithStart) {
         gen.setDeterministicRolls();
-        const char = new Charactor();
+        const char = new Character();
         char.physicalForm = formWithStart.name;
         gen.popularityRoll = 50;
         gen.determinePopularityUltimate(char);
@@ -721,7 +721,7 @@ Tester.PopularityUltimateStartPathTests = () => {
 // ============================================================================
 
 Tester.HealthAdjustmentBranchTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
 
@@ -736,7 +736,7 @@ Tester.HealthAdjustmentBranchTests = () => {
     // --- Integer add path (line 845-848) ---
     row.healthAdjustment = 5; // integer add
     gen.setDeterministicRolls();
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Altered Human";
     char1.health = 30; // base health before adjustment
     gen.determineHealth(char1);
@@ -750,7 +750,7 @@ Tester.HealthAdjustmentBranchTests = () => {
     // --- Integer negative add path ---
     row.healthAdjustment = -3;
     gen.setDeterministicRolls();
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Altered Human";
     char2.health = 30;
     gen.determineHealth(char2);
@@ -759,7 +759,7 @@ Tester.HealthAdjustmentBranchTests = () => {
     // --- Divide path (line 859-861) ---
     row.healthAdjustment = "/2";
     gen.setDeterministicRolls();
-    const char3 = new Charactor();
+    const char3 = new Character();
     char3.physicalForm = "Altered Human";
     char3.health = 30;
     gen.determineHealth(char3);
@@ -773,7 +773,7 @@ Tester.HealthAdjustmentBranchTests = () => {
     // --- Divide /3 path ---
     row.healthAdjustment = "/3";
     gen.setDeterministicRolls();
-    const char4 = new Charactor();
+    const char4 = new Character();
     char4.physicalForm = "Altered Human";
     char4.health = 30;
     gen.determineHealth(char4);
@@ -782,7 +782,7 @@ Tester.HealthAdjustmentBranchTests = () => {
     // --- healthAdjustment = 0 → no-op ---
     row.healthAdjustment = 0;
     gen.setDeterministicRolls();
-    const char5 = new Charactor();
+    const char5 = new Character();
     char5.physicalForm = "Altered Human";
     char5.health = 30;
     gen.determineHealth(char5);
@@ -801,7 +801,7 @@ Tester.HealthAdjustmentBranchTests = () => {
 
 Tester.AbilityAdjustmentBranchTests = () => {
     // --- anyPrimaryAbilityAdjustment (line 676-691) ---
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -812,7 +812,7 @@ Tester.AbilityAdjustmentBranchTests = () => {
     );
     if (mutantRow) {
         // Temporarily add anyPrimaryAbilityAdjustment to a basic form
-        const geng = new CharactorGenerator();
+        const geng = new CharacterGenerator();
         geng.generatorMode = "basic";
         geng.setTables();
         const testRow = geng.physicalFormTable.find(
@@ -823,7 +823,7 @@ Tester.AbilityAdjustmentBranchTests = () => {
             testRow.anyPrimaryAbilityAdjustment = 1; // +1 CS to one random ability
             geng.setDeterministicRolls();
             geng.anyAbilityAdjustmentRoll = 50; // deterministic ability selection
-            const char = new Charactor();
+            const char = new Character();
             char.physicalForm = "Altered Human";
             char.calculateSecondary();
             geng.determinePrimaryAbilities(char);
@@ -839,7 +839,7 @@ Tester.AbilityAdjustmentBranchTests = () => {
 
     // --- allPrimaryAbilitiesAdjustment (line 693-708) ---
     {
-        const geng = new CharactorGenerator();
+        const geng = new CharacterGenerator();
         geng.generatorMode = "basic";
         geng.setTables();
         const testRow = geng.physicalFormTable.find(
@@ -849,7 +849,7 @@ Tester.AbilityAdjustmentBranchTests = () => {
             const origVal = testRow.allPrimaryAbilitiesAdjustment;
             testRow.allPrimaryAbilitiesAdjustment = -1; // -1 CS to all abilities
             geng.setDeterministicRolls();
-            const char = new Charactor();
+            const char = new Character();
             char.physicalForm = "Altered Human";
             char.calculateSecondary();
             geng.determinePrimaryAbilities(char);
@@ -869,7 +869,7 @@ Tester.AbilityAdjustmentBranchTests = () => {
 
     // --- allPhysicalAbilitiesAdjustment (line 710-725) ---
     {
-        const geng = new CharactorGenerator();
+        const geng = new CharacterGenerator();
         geng.generatorMode = "basic";
         geng.setTables();
         const testRow = geng.physicalFormTable.find(
@@ -879,7 +879,7 @@ Tester.AbilityAdjustmentBranchTests = () => {
             const origVal = testRow.allPhysicalAbilitiesAdjustment;
             testRow.allPhysicalAbilitiesAdjustment = 1; // +1 CS to physical abilities
             geng.setDeterministicRolls();
-            const char = new Charactor();
+            const char = new Character();
             char.physicalForm = "Altered Human";
             char.calculateSecondary();
             geng.determinePrimaryAbilities(char);
@@ -902,12 +902,12 @@ Tester.AbilityAdjustmentBranchTests = () => {
 // ============================================================================
 
 Tester.CrossCategoryPowerShiftTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     char.powersCount = 20;
     char.powersMax = 20;
@@ -969,12 +969,12 @@ Tester.CrossCategoryPowerShiftTests = () => {
 
     // Also test: undefined powerRow (roll doesn't match any power) with cross-category fallback
     {
-        const gen2 = new CharactorGenerator();
+        const gen2 = new CharacterGenerator();
         gen2.generatorMode = "basic";
         gen2.setTables();
         gen2.setDeterministicRolls();
 
-        const char2 = new Charactor();
+        const char2 = new Character();
         char2.physicalForm = "Altered Human";
         char2.powersCount = 20;
         char2.powersMax = 20;
@@ -1096,7 +1096,7 @@ Tester.DiceClassTests = () => {
 // ============================================================================
 
 Tester.PopularitySubTypeMinMaxTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
 
@@ -1114,7 +1114,7 @@ Tester.PopularitySubTypeMinMaxTests = () => {
 
     // Test with Angel subtype
     gen.setDeterministicRolls();
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Angel/Demon";
     char1.subType = "Angel";
     gen.popularityRoll = 50;
@@ -1126,7 +1126,7 @@ Tester.PopularitySubTypeMinMaxTests = () => {
 
     // Test with Demon subtype
     gen.setDeterministicRolls();
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Angel/Demon";
     char2.subType = "Demon";
     gen.popularityRoll = 50;
@@ -1148,13 +1148,13 @@ Tester.PopularitySubTypeMinMaxTests = () => {
 // ============================================================================
 
 Tester.PopularityWellEstablishedLooksHumanTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
 
     // Test wellEstablished = true
     gen.setDeterministicRolls();
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Normal Human";
     gen.identitySecret = false;
     gen.originPublic = false;
@@ -1168,7 +1168,7 @@ Tester.PopularityWellEstablishedLooksHumanTests = () => {
 
     // Test looksHuman = true
     gen.setDeterministicRolls();
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Normal Human";
     gen.identitySecret = false;
     gen.originPublic = false;
@@ -1182,7 +1182,7 @@ Tester.PopularityWellEstablishedLooksHumanTests = () => {
 
     // Test both
     gen.setDeterministicRolls();
-    const char3 = new Charactor();
+    const char3 = new Character();
     char3.physicalForm = "Normal Human";
     gen.identitySecret = false;
     gen.originPublic = false;
@@ -1204,7 +1204,7 @@ Tester.PopularityWellEstablishedLooksHumanTests = () => {
 // ============================================================================
 
 Tester.SpecialAbilitySetAdjustmentTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.contactsEqualToPowers = false;
@@ -1236,7 +1236,7 @@ Tester.SpecialAbilitySetAdjustmentTests = () => {
     // --- contactsCountSet (line 1186-1189) ---
     row.contactsCountSet = 7;
     gen.setDeterministicRolls();
-    let char1 = new Charactor();
+    let char1 = new Character();
     char1.physicalForm = "Altered Human";
     gen.determineSpecialAbilities(char1);
     Tester.assertEquals(
@@ -1250,7 +1250,7 @@ Tester.SpecialAbilitySetAdjustmentTests = () => {
     delete row.contactsCountSet;
     row.contactsCountAdjustment = 3;
     gen.setDeterministicRolls();
-    char1 = new Charactor();
+    char1 = new Character();
     char1.physicalForm = "Altered Human";
     const origCC = char1.contactsCount;
     gen.determineSpecialAbilities(char1);
@@ -1263,7 +1263,7 @@ Tester.SpecialAbilitySetAdjustmentTests = () => {
     // --- talentsCountSet (line 1229-1232) ---
     row.talentsCountSet = 5;
     gen.setDeterministicRolls();
-    char1 = new Charactor();
+    char1 = new Character();
     char1.physicalForm = "Altered Human";
     gen.determineSpecialAbilities(char1);
     Tester.assertEquals(
@@ -1277,7 +1277,7 @@ Tester.SpecialAbilitySetAdjustmentTests = () => {
     delete row.talentsCountSet;
     row.talentsCountAdjustment = 2;
     gen.setDeterministicRolls();
-    char1 = new Charactor();
+    char1 = new Character();
     char1.physicalForm = "Altered Human";
     const origTC = char1.talentsCount;
     gen.determineSpecialAbilities(char1);
@@ -1290,7 +1290,7 @@ Tester.SpecialAbilitySetAdjustmentTests = () => {
     // --- powersCountSet (line 1272-1275) ---
     row.powersCountSet = 8;
     gen.setDeterministicRolls();
-    char1 = new Charactor();
+    char1 = new Character();
     char1.physicalForm = "Altered Human";
     gen.determineSpecialAbilities(char1);
     Tester.assertEquals(
@@ -1304,7 +1304,7 @@ Tester.SpecialAbilitySetAdjustmentTests = () => {
     delete row.powersCountSet;
     row.powersCountAdjustment = 1;
     gen.setDeterministicRolls();
-    char1 = new Charactor();
+    char1 = new Character();
     char1.physicalForm = "Altered Human";
     const origPC = char1.powersCount;
     gen.determineSpecialAbilities(char1);
@@ -1318,7 +1318,7 @@ Tester.SpecialAbilitySetAdjustmentTests = () => {
     delete row.powersCountAdjustment;
     row.powersCountMinimum = 99;
     gen.setDeterministicRolls();
-    char1 = new Charactor();
+    char1 = new Character();
     char1.physicalForm = "Altered Human";
     gen.determineSpecialAbilities(char1);
     Tester.assert(
@@ -1331,7 +1331,7 @@ Tester.SpecialAbilitySetAdjustmentTests = () => {
     delete row.powersCountMinimum;
     row.powersCountMaximum = 0;
     gen.setDeterministicRolls();
-    char1 = new Charactor();
+    char1 = new Character();
     char1.physicalForm = "Altered Human";
     gen.determineSpecialAbilities(char1);
     Tester.assert(
@@ -1353,13 +1353,13 @@ Tester.SpecialAbilitySetAdjustmentTests = () => {
 // ============================================================================
 
 Tester.InvalidCategoryAndPowerRollTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.setDeterministicRolls();
 
     // --- Invalid category roll (catRoll = 0 → return early) ---
-    const char1 = new Charactor();
+    const char1 = new Character();
     char1.physicalForm = "Altered Human";
     char1.powersCount = 10;
     char1.powersMax = 10;
@@ -1374,7 +1374,7 @@ Tester.InvalidCategoryAndPowerRollTests = () => {
     );
 
     // --- Invalid category roll (catRoll = 150 → return early) ---
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Altered Human";
     char2.powersCount = 10;
     char2.powersMax = 10;
@@ -1389,7 +1389,7 @@ Tester.InvalidCategoryAndPowerRollTests = () => {
     );
 
     // --- powerRoll > 100 → skip to next valid roll ---
-    const char3 = new Charactor();
+    const char3 = new Character();
     char3.physicalForm = "Altered Human";
     char3.powersCount = 10;
     char3.powersMax = 10;
@@ -1405,7 +1405,7 @@ Tester.InvalidCategoryAndPowerRollTests = () => {
     );
 
     // --- powerRoll > 100 exhausting to end of array ---
-    const char4 = new Charactor();
+    const char4 = new Character();
     char4.physicalForm = "Altered Human";
     char4.powersCount = 10;
     char4.powersMax = 10;
@@ -1427,7 +1427,7 @@ Tester.InvalidCategoryAndPowerRollTests = () => {
 // ============================================================================
 
 Tester.BonusPowerAnyPathTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
@@ -1439,7 +1439,7 @@ Tester.BonusPowerAnyPathTests = () => {
         return;
     }
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Deity";
     char.powersCount = 20;
     char.powersMax = 20;
@@ -1472,14 +1472,14 @@ Tester.BonusPowerAnyPathTests = () => {
 // ============================================================================
 
 Tester.OptionalPowerAnyPathTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "ultimate";
     gen.setTables();
     gen.setDeterministicRolls();
 
     // "optionalPowers" with "Any" is on POWER rows, not form rows.
     // Call generateOptionalPower directly with a string containing "Any".
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     char.powersCount = 20;
     char.powersMax = 20;
@@ -1498,7 +1498,7 @@ Tester.OptionalPowerAnyPathTests = () => {
 
     // Test with multiple options including "Any"
     gen.setDeterministicRolls();
-    const char2 = new Charactor();
+    const char2 = new Character();
     char2.physicalForm = "Altered Human";
     char2.powersCount = 20;
     char2.powersMax = 20;
@@ -1515,7 +1515,7 @@ Tester.OptionalPowerAnyPathTests = () => {
 
     // Test with tilde (~) random selection containing "Any"
     gen.setDeterministicRolls();
-    const char3 = new Charactor();
+    const char3 = new Character();
     char3.physicalForm = "Altered Human";
     char3.powersCount = 20;
     char3.powersMax = 20;
@@ -1539,12 +1539,12 @@ Tester.OptionalPowerAnyPathTests = () => {
 // ============================================================================
 
 Tester.CrossCategoryInvalidCatRollTests = () => {
-    const gen = new CharactorGenerator();
+    const gen = new CharacterGenerator();
     gen.generatorMode = "basic";
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     char.powersCount = 20;
     char.powersMax = 20;

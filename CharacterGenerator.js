@@ -1,4 +1,4 @@
-class CharactorGenerator {
+class CharacterGenerator {
     rollArraySize = 100;
 
     physicalFormRoll = 0;
@@ -52,6 +52,8 @@ class CharactorGenerator {
     originPublic = false;
     hiTechToGood = true;
     applyOptionalPowers = true;
+    selectOptionalPowersManually = false;
+    _selectedOptionalPowers = null; // Object: { sourcePowerName: [{category, name}] }
     contactsEqualToPowers = true;
     choosePowerInsteadOfRandom = false;
     wellEstablished = false;
@@ -66,6 +68,8 @@ class CharactorGenerator {
     selectTalentManually = false; // If true, show talent selection dialog
     _selectedContacts = null; // Array of { category, name, contactName } for user-selected contacts
     selectContactManually = false; // If true, show contact selection dialog
+    _selectedPhysicalForm = null; // String name of user-selected physical form sub-type
+    selectPhysicalFormManually = false; // If true, show physical form selection dialog
 
     physicalFormTable = PHYSICAL_FORM_TABLE;
     originTable = ORIGIN_TABLE;
@@ -124,6 +128,8 @@ class CharactorGenerator {
         this.originPublic = false;
         this.hiTechToGood = true;
         this.applyOptionalPowers = true;
+        this.selectOptionalPowersManually = false;
+        this._selectedOptionalPowers = null;
         this.contactsEqualToPowers = true;
         this.choosePowerInsteadOfRandom = false;
         this.wellEstablished = false;
@@ -140,10 +146,12 @@ class CharactorGenerator {
         this.selectTalentManually = false;
         this._selectedContacts = null;
         this.selectContactManually = false;
+        this._selectedPhysicalForm = null;
+        this.selectPhysicalFormManually = false;
     }
 
     generateWithoutThrows() {
-        const char = new Charactor();
+        const char = new Character();
 
         this.setTables();
         this._assignedPowerNames = new Set(); // O(1) duplicate detection
@@ -233,8 +241,8 @@ class CharactorGenerator {
         this._phase1Complete = true;
     }
 
-    static generateCharactor(mode, options) {
-        const gen = new CharactorGenerator();
+    static generateCharacter(mode, options) {
+        const gen = new CharacterGenerator();
         gen.generatorMode = mode;
         gen.setTables();
 
@@ -530,15 +538,90 @@ class CharactorGenerator {
         }
     }
 
+    /**
+     * Find the physical form entry matching a roll, handling subRoll disambiguation.
+     * When multiple entries share the same maxRoll, subRoll (from subTypeRoll)
+     * determines which sub-form is selected.
+     */
+    _findPhysicalForm(roll, subRoll) {
+        // Find all entries where roll <= maxRoll, grouped by maxRoll
+        const candidates = this.physicalFormTable.filter(
+            (o) => roll <= o.maxRoll,
+        );
+        if (candidates.length === 0) return null;
+
+        // Find the smallest maxRoll among candidates (tightest match)
+        const minMaxRoll = Math.min(...candidates.map((c) => c.maxRoll));
+        const tightest = candidates.filter((c) => c.maxRoll === minMaxRoll);
+
+        if (tightest.length === 1) return tightest[0];
+
+        // Multiple entries share this maxRoll — use subRoll to disambiguate
+        // Entries with subRoll are checked against subRoll; others get priority
+        const withSub = tightest.filter((c) => c.subRoll != null);
+        const withoutSub = tightest.filter((c) => c.subRoll == null);
+
+        if (withSub.length > 0) {
+            // Find the entry whose subRoll >= subRoll (smallest qualifying)
+            const match = withSub.find((c) => subRoll <= c.subRoll);
+            if (match) return match;
+            // If subRoll exceeds all, return the last one
+            return withSub[withSub.length - 1];
+        }
+
+        // No subRoll entries — return first without subRoll
+        return withoutSub[0] || tightest[0];
+    }
+
+    /**
+     * Get all physical form sub-options for a given maxRoll group.
+     * Used by the UI modal to let the user select a sub-form.
+     */
+    getPhysicalFormSubOptions() {
+        if (!this.physicalFormTable) return [];
+        const roll = this.physicalFormRoll;
+        const candidates = this.physicalFormTable.filter(
+            (o) => roll <= o.maxRoll,
+        );
+        if (candidates.length === 0) return [];
+
+        const minMaxRoll = Math.min(...candidates.map((c) => c.maxRoll));
+        const tightest = candidates.filter((c) => c.maxRoll === minMaxRoll);
+        if (tightest.length <= 1) return [];
+
+        // Multiple entries — return them all for user selection
+        return tightest.map((c) => ({
+            name: c.name,
+            subRoll: c.subRoll,
+            description: c.description || "",
+        }));
+    }
+
     determinePhysicalForm(char) {
         if (this.physicalFormRoll < 1 || this.physicalFormRoll > 100) {
             char.logRoll("Physical Form", -1, "Invalid Roll");
             return;
         }
 
-        const physicalFormData = this.physicalFormTable.find(
-            (o) => this.physicalFormRoll <= o.maxRoll,
-        );
+        let physicalFormData;
+        if (this._selectedPhysicalForm) {
+            // User manually selected a sub-form — find it by name within the matching maxRoll group
+            physicalFormData = this.physicalFormTable.find(
+                (o) =>
+                    this.physicalFormRoll <= o.maxRoll &&
+                    o.name === this._selectedPhysicalForm,
+            );
+        }
+        if (!physicalFormData) {
+            physicalFormData = this._findPhysicalForm(
+                this.physicalFormRoll,
+                this.subTypeRoll,
+            );
+        }
+        if (!physicalFormData) {
+            char.logRoll("Physical Form", this.physicalFormRoll, "No match");
+            return;
+        }
         let randomRanksColumn = -1;
 
         const subType = Utility.getValue(physicalFormData, "subType", -1);
@@ -676,16 +759,92 @@ class CharactorGenerator {
         char.logRoll("Physical Form", this.physicalFormRoll, char.physicalForm);
 
         let value = Utility.getValue(physicalFormData, "bonusContactCount", 0);
-        if (value !== 0) {
+        if (value > 0) {
             let bonusContact = Utility.getValue(
                 physicalFormData,
                 "bonusContact",
                 "",
             );
-            for (let index = 0; index < value; index++) {
-                this.generateBonusContact(char, bonusContact, true);
+            if (bonusContact) {
+                for (let index = 0; index < value; index++) {
+                    this.generateBonusContact(char, bonusContact, true);
+                }
             }
         }
+
+        // Generate Bonus Talents from physical form
+        value = Utility.getValue(physicalFormData, "bonusTalentCount", 0);
+        if (value > 0) {
+            let bonusTalent = Utility.getValue(
+                physicalFormData,
+                "bonusTalent",
+                "",
+            );
+            if (bonusTalent) {
+                for (let index = 0; index < value; index++) {
+                    this.generateBonusTalent(char, bonusTalent);
+                }
+            }
+        }
+    }
+
+    generateBonusTalent(char, bonusTalentString) {
+        if (!bonusTalentString) return;
+        // Bonus talent strings use backslash as separator: "Fighting\\Climbing(100)"
+        const talents = bonusTalentString.split("|");
+        for (let index = 0; index < talents.length; index++) {
+            const parts = talents[index].split("\\");
+            const category = parts[0];
+            const otherParts = parts[1].split("(");
+            const type = otherParts[0];
+            const roll = +otherParts[1].replace(")", "");
+
+            talents[index] = {
+                category: category,
+                type: type,
+                maxRoll: roll,
+            };
+        }
+
+        const startIndex = char.talents.length;
+        const roll = this.talentCategoryRolls[startIndex];
+        const talent = talents.find((c) => roll <= c.maxRoll);
+        if (!talent) return;
+
+        const t = this.talentListTable.find(
+            (t) => t.category === talent.category && t.name === talent.type,
+        );
+        if (!t) return;
+
+        // Skip duplicate bonus talents
+        if (
+            this._assignedTalentNames &&
+            this._assignedTalentNames.has(t.name)
+        ) {
+            char.logRoll(
+                "Bonus Talent Gen",
+                `Duplicate`,
+                `${talent.category}: ${t.name}`,
+            );
+            return;
+        }
+
+        if (this._assignedTalentNames) this._assignedTalentNames.add(t.name);
+
+        char.logRoll(
+            "Bonus Talent Gen",
+            `Physical Form: ${roll}`,
+            `${talent.category}: ${t.name}`,
+        );
+
+        const talentSlots = Utility.getValue(t, "talentCount", 1);
+        char.talents.push({
+            category: talent.category,
+            name: t.name,
+            description: t.description,
+            talentSlots: talentSlots,
+            bonusTalent: true,
+        });
     }
 
     determineOrigin(char) {
@@ -1110,16 +1269,18 @@ class CharactorGenerator {
             const rankData = this.randomRanksTable.find(
                 (r) => r.rankNumber === value,
             );
-            char.resources.rank = rankData.rank;
-            char.resources.number = rankData.rankNumber;
-            char.state.resources.set = value;
-            char.state.resources.final = rankData.rank;
-            char.logRoll(
-                "Resources",
-                "Base Rules",
-                `Resources set to ${value}/${rankData.rank}`,
-            );
-            return;
+            if (rankData) {
+                char.resources.rank = rankData.rank;
+                char.resources.number = rankData.rankNumber;
+                char.state.resources.set = value;
+                char.state.resources.final = rankData.rank;
+                char.logRoll(
+                    "Resources",
+                    "Base Rules",
+                    `Resources set to ${value}/${rankData.rank}`,
+                );
+                return;
+            }
         }
 
         value = Utility.getValue(physicalFormRow, "resourcesStart", -1);
@@ -1715,6 +1876,15 @@ class CharactorGenerator {
             );
             for (let index = 0; index < value; index++) {
                 this.generatorBonusPowerOfPhysicalForm(char, bonusPower, index);
+            }
+        }
+
+        // Generate Optional Power from Physical Form (e.g., Energy has optionalPowers)
+        if (this.applyOptionalPowers) {
+            value = Utility.getValue(physicalFormRow, "optionalPowers", "");
+            if (value !== "") {
+                const optMax = Utility.getValue(physicalFormRow, "optionalPowersMax", 100);
+                this.generateOptionalPower(char, optMax, value, physicalFormRow.name);
             }
         }
 
@@ -2458,9 +2628,15 @@ class CharactorGenerator {
     }
 
     generateBonusContact(char, bonusContactString, forcedContact) {
+        if (!bonusContactString) return;
         const contacts = bonusContactString.split("|");
         for (let index = 0; index < contacts.length; index++) {
-            const parts = contacts[index].split("/");
+            // Support both "/" and "\\" as separator between category and type
+            let sep = "/";
+            if (!contacts[index].includes("/") && contacts[index].includes("\\")) {
+                sep = "\\";
+            }
+            const parts = contacts[index].split(sep);
             const category = parts[0];
             const otherParts = parts[1].split("(");
             const type = otherParts[0];
@@ -2478,9 +2654,32 @@ class CharactorGenerator {
         const contact = contacts.find((c) => roll <= c.maxRoll);
         if (!contact) return;
 
-        const c = this.contactTypeListTable.find(
-            (c) => c.category === contact.category && c.name === contact.type,
-        );
+        let c;
+        if (contact.category === "Any" && contact.type === "Any") {
+            // "Any/Any" — pick a random contact from all available
+            const allContacts = this.contactTypeListTable.filter(
+                (ct) => ct.name && ct.name !== "",
+            );
+            if (allContacts.length === 0) return;
+            // Use the contact roll to pick from the filtered list
+            const pickIndex = (roll - 1) % allContacts.length;
+            c = allContacts[pickIndex];
+        } else if (contact.category === "Any") {
+            // "Any/Type" — pick from any category matching the type name
+            c = this.contactTypeListTable.find((ct) => ct.name === contact.type);
+        } else if (contact.type === "Any") {
+            // "Category/Any" — pick a random contact from the category
+            const catContacts = this.contactTypeListTable.filter(
+                (ct) => ct.category === contact.category,
+            );
+            if (catContacts.length === 0) return;
+            const pickIndex = (roll - 1) % catContacts.length;
+            c = catContacts[pickIndex];
+        } else {
+            c = this.contactTypeListTable.find(
+                (ct) => ct.category === contact.category && ct.name === contact.type,
+            );
+        }
         if (!c) return;
 
         // Skip duplicate bonus contacts
@@ -2586,16 +2785,16 @@ class CharactorGenerator {
             ? Utility.getValue(
                   upgradeRow,
                   "duplicateCost",
-                  CharactorGenerator._safeSlotCount(upgradeRow),
+                  CharacterGenerator._safeSlotCount(upgradeRow),
               )
-            : CharactorGenerator._safeSlotCount(upgradeRow);
+            : CharacterGenerator._safeSlotCount(upgradeRow);
         const originalSlots = originalPower.powerSlots || 1;
         const slotsNeeded = upgradeSlots - originalSlots;
 
         // Determine if there's enough room without swapping
         let needsSwap = false;
         if (slotsNeeded > 0) {
-            if (!CharactorGenerator._hasRemainingSlots(char, slotsNeeded)) {
+            if (!CharacterGenerator._hasRemainingSlots(char, slotsNeeded)) {
                 needsSwap = true;
             }
         }
@@ -2654,10 +2853,10 @@ class CharactorGenerator {
             upgradeSlots = Utility.getValue(
                 upgradeRow,
                 "duplicateCost",
-                CharactorGenerator._safeSlotCount(upgradeRow),
+                CharacterGenerator._safeSlotCount(upgradeRow),
             );
         } else {
-            upgradeSlots = CharactorGenerator._safeSlotCount(upgradeRow);
+            upgradeSlots = CharacterGenerator._safeSlotCount(upgradeRow);
         }
 
         const rankRoll = this.powerRankRolls[powerIndex];
@@ -2866,7 +3065,7 @@ class CharactorGenerator {
                     description: powerRow.description,
                     rank: rankRow.rank,
                     number: rankRow.rankNumber,
-                    powerSlots: CharactorGenerator._safeSlotCount(powerRow),
+                    powerSlots: CharacterGenerator._safeSlotCount(powerRow),
                     extraInformation: extraInformation,
                 });
                 if (this._assignedPowerNames)
@@ -2881,7 +3080,7 @@ class CharactorGenerator {
                 value = Utility.getValue(powerRow, "upgradePower", "");
                 if (value !== "" && this._pendingPowerUpgrades) {
                     const upgradeInfo =
-                        CharactorGenerator._parseUpgradePower(value);
+                        CharacterGenerator._parseUpgradePower(value);
                     if (upgradeInfo) {
                         this._pendingPowerUpgrades.push({
                             powerIndex: char.powers.length - 1,
@@ -2916,6 +3115,7 @@ class CharactorGenerator {
                             char,
                             value,
                             powerRow.optionalPowers,
+                            powerRow.name,
                         );
                     }
                 }
@@ -3203,7 +3403,7 @@ class CharactorGenerator {
             description: powerRow.description,
             rank: rankRow.rank,
             number: rankRow.rankNumber,
-            powerSlots: CharactorGenerator._safeSlotCount(powerRow),
+            powerSlots: CharacterGenerator._safeSlotCount(powerRow),
             extraInformation: extraInformation,
         });
         if (this._assignedPowerNames)
@@ -3217,7 +3417,7 @@ class CharactorGenerator {
         // Check for upgradePower option
         value = Utility.getValue(powerRow, "upgradePower", "");
         if (value !== "" && this._pendingPowerUpgrades) {
-            const upgradeInfo = CharactorGenerator._parseUpgradePower(value);
+            const upgradeInfo = CharacterGenerator._parseUpgradePower(value);
             if (upgradeInfo) {
                 this._pendingPowerUpgrades.push({
                     powerIndex: char.powers.length - 1,
@@ -3249,6 +3449,7 @@ class CharactorGenerator {
                     char,
                     value,
                     powerRow.optionalPowers,
+                    powerRow.name,
                 );
             }
         }
@@ -3317,9 +3518,9 @@ class CharactorGenerator {
                 );
                 if (
                     rankRow &&
-                    CharactorGenerator._hasRemainingSlots(
+                    CharacterGenerator._hasRemainingSlots(
                         char,
-                        CharactorGenerator._safeSlotCount(p),
+                        CharacterGenerator._safeSlotCount(p),
                     )
                 ) {
                     char.powers.push({
@@ -3329,7 +3530,7 @@ class CharactorGenerator {
                         description: p.description,
                         rank: rankRow.rank,
                         number: rankRow.rankNumber,
-                        powerSlots: CharactorGenerator._safeSlotCount(p),
+                        powerSlots: CharacterGenerator._safeSlotCount(p),
                         bonusPower: true,
                     });
                     if (this._assignedPowerNames)
@@ -3446,8 +3647,8 @@ class CharactorGenerator {
             `${power.category}: ${p.name} (${rankRow.rank})`,
         );
 
-        const bonusSlotCount = CharactorGenerator._safeSlotCount(p);
-        if (CharactorGenerator._hasRemainingSlots(char, bonusSlotCount)) {
+        const bonusSlotCount = CharacterGenerator._safeSlotCount(p);
+        if (CharacterGenerator._hasRemainingSlots(char, bonusSlotCount)) {
             char.powers.push({
                 category: p.category,
                 name: p.name,
@@ -3464,7 +3665,7 @@ class CharactorGenerator {
 
     /**
      * Apply a user-selected bonus power from the selection dialog.
-     * @param {Charactor} char
+     * @param {Character} char
      * @param {{ category: string, name: string }} selection
      */
     applySelectedBonusPower(char, selection) {
@@ -3493,9 +3694,9 @@ class CharactorGenerator {
             p.category + ": " + p.name + " (" + rankRow.rank + ")",
         );
 
-        const bonusSlotCount = CharactorGenerator._safeSlotCount(p);
+        const bonusSlotCount = CharacterGenerator._safeSlotCount(p);
         if (
-            CharactorGenerator._hasRemainingSlots(char, bonusSlotCount) &&
+            CharacterGenerator._hasRemainingSlots(char, bonusSlotCount) &&
             !this.isPowerAlreadyAssigned(char.powers, p)
         ) {
             char.powers.push({
@@ -3557,9 +3758,9 @@ class CharactorGenerator {
             `${power.category}: ${p.name} (${rankRow.rank})`,
         );
 
-        const bonusSlotCount2 = CharactorGenerator._safeSlotCount(p);
+        const bonusSlotCount2 = CharacterGenerator._safeSlotCount(p);
         if (
-            CharactorGenerator._hasRemainingSlots(char, bonusSlotCount2) &&
+            CharacterGenerator._hasRemainingSlots(char, bonusSlotCount2) &&
             !this.isPowerAlreadyAssigned(char.powers, p)
         ) {
             char.powers.push({
@@ -3576,9 +3777,61 @@ class CharactorGenerator {
         }
     }
 
-    generateOptionalPower(char, maxNumber, optionalPowersString) {
+    generateOptionalPower(char, maxNumber, optionalPowersString, sourcePowerName) {
         // This will work sort of like the bonus.  Except it will fill up any power slots using optional powers
         // This means we aren't rolling to determine which optional power, but we will roll for the rank.
+
+        // If manual selection is active, only apply user-selected optional powers for this source
+        if (this.selectOptionalPowersManually && this._selectedOptionalPowers && sourcePowerName) {
+            const selected = this._selectedOptionalPowers[sourcePowerName];
+            if (!selected || selected.length === 0) return; // User selected none for this source
+            // Rebuild potentialPowers from selections only
+            const potentialPowers = [];
+            for (let i = 0; i < selected.length; i++) {
+                potentialPowers.push({ category: selected[i].category, name: selected[i].name });
+            }
+            const startIndex = char.powers.length;
+            let roll = this.powerRolls[startIndex];
+            let indexAdjustment = 0;
+            while (roll > 100) {
+                roll = this.powerRolls[startIndex + indexAdjustment];
+                indexAdjustment++;
+            }
+            const maxCount = Math.min(maxNumber, potentialPowers.length);
+            for (let index = 0; index < maxCount; index++) {
+                const power = potentialPowers[index];
+                let p = this.powerListTable.find(
+                    (c) => c.category === power.category && c.name === power.name,
+                );
+                // Handle "Any" — roll for a random power in the category
+                if (!p && power.name === "Any") {
+                    let pRoll = this.powerRolls[startIndex + index];
+                    let adj = 1;
+                    while (pRoll > 100) {
+                        pRoll = this.powerRolls[startIndex + index + adj];
+                        adj++;
+                    }
+                    p = this.powerListTable.find(
+                        (c) => c.category === power.category && pRoll <= c.maxRoll,
+                    );
+                }
+                if (!p) continue;
+                const optionalPowerRankColumn = this.generatorMode === "basic" ? 1 : 3;
+                const rankRoll = this.powerRankRolls[startIndex + index];
+                const rankRow = Utility.findRow(this, rankRoll, optionalPowerRankColumn);
+                if (!rankRow) continue;
+                const optSlotCount = CharacterGenerator._safeSlotCount(p);
+                if (CharacterGenerator._hasRemainingSlots(char, optSlotCount) && !this.isPowerAlreadyAssigned(char.powers, p)) {
+                    char.powers.push({
+                        category: p.category, name: p.name, code: p.code,
+                        description: p.description, rank: rankRow.rank, number: rankRow.rankNumber,
+                        powerSlots: optSlotCount, optionalPower: true,
+                    });
+                    if (this._assignedPowerNames) this._assignedPowerNames.add(p.name);
+                }
+            }
+            return;
+        }
 
         let indexAdjustment = 0;
         let potentialPowers = [];
@@ -3664,9 +3917,9 @@ class CharactorGenerator {
                 `${power.category}: ${p.name} (${rankRow.rank})`,
             );
 
-            const optSlotCount = CharactorGenerator._safeSlotCount(p);
+            const optSlotCount = CharacterGenerator._safeSlotCount(p);
             if (
-                CharactorGenerator._hasRemainingSlots(char, optSlotCount) &&
+                CharacterGenerator._hasRemainingSlots(char, optSlotCount) &&
                 !this.isPowerAlreadyAssigned(char.powers, p)
             ) {
                 char.powers.push({
@@ -3857,7 +4110,7 @@ class CharactorGenerator {
                 );
                 if (formBonusPower) {
                     const allOptions =
-                        CharactorGenerator.parseBonusPowerOptions(
+                        CharacterGenerator.parseBonusPowerOptions(
                             formBonusPower,
                         );
                     if (allOptions.length > 1) {
@@ -3890,7 +4143,7 @@ class CharactorGenerator {
             );
             if (!bonusPowerString) continue;
             const options =
-                CharactorGenerator.parseBonusPowerOptions(bonusPowerString);
+                CharacterGenerator.parseBonusPowerOptions(bonusPowerString);
             if (options.length <= 1) continue; // Single option — auto-assign, no selection needed
             slots.push({
                 source: "powerList",
@@ -3903,6 +4156,107 @@ class CharactorGenerator {
         return slots;
     }
 
+    /**
+     * Collect all available optional powers from the power list table.
+     * Returns an array of objects: { sourcePowerName, sourcePowerCategory, maxCount, options: [{category, name}] }
+     * Each entry represents a power that has optionalPowers defined.
+     */
+    getOptionalPowerOptions() {
+        if (!this.powerListTable) return [];
+
+        const result = [];
+
+        /**
+         * Parse an optional powers string into expanded options.
+         * Format: "Category\\Power(maxRoll)|Category\\Any(maxRoll)"
+         * If name is "Any", expand to all powers in that category.
+         * Strips (maxRoll) suffix from names.
+         */
+        const parseOptionalString = (optString) => {
+            const options = [];
+            const parts = optString.split("|");
+            for (let i = 0; i < parts.length; i++) {
+                let part = parts[i];
+                if (!part) continue;
+
+                // Handle ~ for random alternatives — expand each alternative
+                if (part.indexOf("~") !== -1) {
+                    const alts = part.split("~");
+                    for (let k = 0; k < alts.length; k++) {
+                        const expanded = parseOptionalString(alts[k]);
+                        options.push(...expanded);
+                    }
+                    continue;
+                }
+
+                const pParts = part.split("\\");
+                if (pParts.length < 2) continue;
+
+                const category = pParts[0];
+                // Strip (maxRoll) suffix: "Cold Generation(100)" -> "Cold Generation"
+                const rawName = pParts[1];
+                const name = rawName.replace(/\(\d+\)/, "");
+
+                if (name === "Any") {
+                    // Expand to all powers in this category from the power list
+                    const catPowers = this.powerListTable.filter(
+                        (p) => p.category === category,
+                    );
+                    for (let p = 0; p < catPowers.length; p++) {
+                        options.push({ category: category, name: catPowers[p].name });
+                    }
+                } else {
+                    options.push({ category: category, name: name });
+                }
+            }
+            return options;
+        };
+
+        // Physical form optional powers (e.g., Energy has optionalPowers)
+        const physicalFormRow = this.physicalFormTable.find(
+            (r) => r.name === this._lastPhysicalForm,
+        );
+        if (physicalFormRow) {
+            const optPowers = Utility.getValue(physicalFormRow, "optionalPowers", "");
+            if (optPowers) {
+                const maxCount = Utility.getValue(physicalFormRow, "optionalPowersMax", 100);
+                const allOptions = parseOptionalString(optPowers);
+                if (allOptions.length > 0) {
+                    result.push({
+                        sourcePowerName: physicalFormRow.name,
+                        sourcePowerCategory: "Physical Form",
+                        maxCount: maxCount,
+                        options: allOptions,
+                    });
+                }
+            }
+        }
+
+        // Power list optional powers
+        const rolledPowers = this._simulateRolledPowers();
+
+        for (let i = 0; i < this.powerListTable.length; i++) {
+            const powerRow = this.powerListTable[i];
+            if (!rolledPowers.has(powerRow.name)) continue;
+
+            const optionalPowersString = Utility.getValue(powerRow, "optionalPowers", "");
+            if (!optionalPowersString) continue;
+
+            const maxCount = Utility.getValue(powerRow, "optionalPowersMax", 100);
+            const allOptions = parseOptionalString(optionalPowersString);
+
+            if (allOptions.length > 0) {
+                result.push({
+                    sourcePowerName: powerRow.name,
+                    sourcePowerCategory: powerRow.category,
+                    maxCount: maxCount,
+                    options: allOptions,
+                });
+            }
+        }
+        return result;
+    }
+
     // --- Power Selection (Choose Mode) ---
     // When choosePowerInsteadOfRandom is true, the UI or test API
     // populates _preSelectedPowers before generate() is called.
@@ -3910,7 +4264,7 @@ class CharactorGenerator {
     // of rolling category + power, but still rolls the rank.
 
     getPowerSlotsAndCategories() {
-        const char = new Charactor();
+        const char = new Character();
         // Resolve physical form: use _lastPhysicalForm if set, otherwise compute from physicalFormRoll
         if (this._lastPhysicalForm) {
             char.physicalForm = this._lastPhysicalForm;

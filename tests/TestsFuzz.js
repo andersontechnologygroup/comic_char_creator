@@ -73,10 +73,18 @@ Tester._assertResourceInvariants = (char, mode) => {
         char.resources.rank !== "" && char.resources.rank !== undefined,
         `Fuzz (${mode}): resources.rank is populated (was "${char.resources.rank}").`,
     );
-    Tester.assert(
-        typeof char.resources.number === "number" && char.resources.number > 0,
-        `Fuzz (${mode}): resources.number > 0 (was ${char.resources.number}).`,
-    );
+    if(char.physicalForm === "Animal" || char.physicalForm === "Vegetable" || char.physicalForm === "Gaseous") {
+        Tester.assert(
+            typeof char.resources.number === "number" && char.resources.number === 0,
+            `Fuzz (${mode}): resources.number = 0 for ${char.physicalForm} (was ${char.resources.number}).`,
+        );
+    }
+    else {
+        Tester.assert(
+            typeof char.resources.number === "number" && char.resources.number > 0,
+            `Fuzz (${mode}): resources.number > 0 for ${char.physicalForm} (was ${char.resources.number}).`,
+        );
+    }
     // Resources rank should be a known FASERIP rank
     const validRanks = [
         "Shift 0",
@@ -111,7 +119,7 @@ Tester._assertIdentityInvariants = (char, mode) => {
 };
 
 /** Master invariant check — validates all character properties. */
-Tester._assertCharactorInvariants = (char, mode) => {
+Tester._assertCharacterInvariants = (char, mode) => {
     // Structural invariants
     Tester.assertNotNull(char, `Fuzz (${mode}): char is not null.`);
     Tester.assert(
@@ -286,7 +294,7 @@ Tester.FuzzBasicTests = (gen) => {
     gen.generatorMode = "basic";
     gen.setTables();
     const char = gen.generate();
-    Tester._assertCharactorInvariants(char, "basic");
+    Tester._assertCharacterInvariants(char, "basic");
 };
 
 // --- Advanced mode full generation ---
@@ -294,7 +302,7 @@ Tester.FuzzAdvancedTests = (gen) => {
     gen.generatorMode = "advanced";
     gen.setTables();
     const char = gen.generate();
-    Tester._assertCharactorInvariants(char, "advanced");
+    Tester._assertCharacterInvariants(char, "advanced");
 };
 
 // --- Ultimate mode full generation ---
@@ -302,7 +310,7 @@ Tester.FuzzUltimateTests = (gen) => {
     gen.generatorMode = "ultimate";
     gen.setTables();
     const char = gen.generate();
-    Tester._assertCharactorInvariants(char, "ultimate");
+    Tester._assertCharacterInvariants(char, "ultimate");
 };
 
 // ============================================================================

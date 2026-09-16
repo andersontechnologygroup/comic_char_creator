@@ -8,8 +8,8 @@
 // ============================================================================
 Tester.UpgradePowerParseTests = () => {
     // Basic parse: Category\Power\Condition
-    const result1 = CharactorGenerator._parseUpgradePower(
-        "Resistances\\\\Invulnerability\\\\Fire and Heat",
+    const result1 = CharacterGenerator._parseUpgradePower(
+        "Resistances\\Invulnerability\\Fire and Heat",
     );
     Tester.assertNotNull(result1, "Parse: returns non-null for valid string.");
     Tester.assertEquals(
@@ -29,7 +29,7 @@ Tester.UpgradePowerParseTests = () => {
     );
 
     // Parse without condition: Category\Power
-    const result2 = CharactorGenerator._parseUpgradePower("Movement\\\\Flight");
+    const result2 = CharacterGenerator._parseUpgradePower("Movement\\Flight");
     Tester.assertNotNull(
         result2,
         "Parse: returns non-null for two-part string.",
@@ -51,15 +51,15 @@ Tester.UpgradePowerParseTests = () => {
     );
 
     // Empty string
-    const result3 = CharactorGenerator._parseUpgradePower("");
+    const result3 = CharacterGenerator._parseUpgradePower("");
     Tester.assertEquals(null, result3, "Parse: returns null for empty string.");
 
     // Null
-    const result4 = CharactorGenerator._parseUpgradePower(null);
+    const result4 = CharacterGenerator._parseUpgradePower(null);
     Tester.assertEquals(null, result4, "Parse: returns null for null.");
 
     // Single part
-    const result5 = CharactorGenerator._parseUpgradePower("JustOneThing");
+    const result5 = CharacterGenerator._parseUpgradePower("JustOneThing");
     Tester.assertEquals(null, result5, "Parse: returns null for single part.");
 };
 
@@ -71,7 +71,7 @@ Tester.UpgradePowerCanUpgradeTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     char.powersCount = 5;
     char.powersMax = 5;
@@ -107,7 +107,7 @@ Tester.UpgradePowerNotEnoughSlotsTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     char.powersCount = 2;
     char.powersMax = 2;
@@ -167,7 +167,7 @@ Tester.UpgradePowerDuplicateAllowedTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     char.powersCount = 10;
     char.powersMax = 10;
@@ -220,7 +220,7 @@ Tester.UpgradePowerDuplicateBlockedTests = (gen) => {
     if (invRow) invRow.allowDuplicate = false;
 
     try {
-        const char = new Charactor();
+        const char = new Character();
         char.physicalForm = "Altered Human";
         char.powersCount = 10;
         char.powersMax = 10;
@@ -273,7 +273,7 @@ Tester.UpgradePowerInvalidIndexTests = (gen) => {
     gen.generatorMode = "advanced";
     gen.setTables();
 
-    const char = new Charactor();
+    const char = new Character();
     char.powers = [];
 
     const upgradeInfo = {
@@ -296,7 +296,7 @@ Tester.UpgradePowerNotFoundTests = (gen) => {
     gen.generatorMode = "advanced";
     gen.setTables();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     char.powersCount = 5;
     char.powersMax = 5;
@@ -334,7 +334,7 @@ Tester.UpgradePowerApplyTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     char.powersCount = 5;
     char.powersMax = 5;
@@ -394,7 +394,7 @@ Tester.UpgradePowerApplyRejectedTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     char.powersCount = 5;
     char.powersMax = 5;
@@ -434,7 +434,7 @@ Tester.UpgradePowerGetOptionTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     char.powersCount = 5;
     char.powersMax = 5;
@@ -498,7 +498,7 @@ Tester.UpgradePowerNoPendingTests = (gen) => {
     gen.generatorMode = "advanced";
     gen.setTables();
 
-    const char = new Charactor();
+    const char = new Character();
     char.powers = [];
     gen._pendingPowerUpgrades = [];
 
@@ -569,7 +569,7 @@ Tester.UpgradePowerDuplicateAllowTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     char.powersCount = 10;
     char.powersMax = 10;
@@ -631,7 +631,7 @@ Tester.UpgradePowerRemoveTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     char.powersCount = 5;
     char.powersMax = 5;
@@ -741,7 +741,7 @@ Tester.UpgradePowerSwapScenarioTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
 
-    const char = new Charactor();
+    const char = new Character();
     char.physicalForm = "Altered Human";
     char.powersCount = 2;
     char.powersMax = 2;

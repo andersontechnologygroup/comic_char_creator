@@ -183,7 +183,7 @@ to the toy and hobby trade by regional distributors.
 
 The names or characters used herein are fictitious and do not refer to any person living or dead. Any descriptions including similarities to persons living or dead are merely coincidental. All Marvel
 
-Charactors and the distinctive likenesses thereof are trademarks of the Marvel Comics Group. MARVEL SUPER HEROES and MARVEL SUPER VILLAINS are trademarks of the Marvel Comics
+Characters and the distinctive likenesses thereof are trademarks of the Marvel Comics Group. MARVEL SUPER HEROES and MARVEL SUPER VILLAINS are trademarks of the Marvel Comics
 
 Seni 1984 Marvel Comics Group, a division of Cadence Industries Corporation. All Rights Reserved. Printed in U.S.A.
 
@@ -233,7 +233,7 @@ i \ : HEROES ......3 Chapter 3: CAMPAIGNS . .22 7 ‘a
 
 mE Strength andom Encounters ........27 th] §
 
-im / z Endurance cesses 5 Non-Player Charactors ......27 ry
+im / z Endurance cesses 5 Non-Player Characters ......27 ry
 
 =, (iy) shee cue Wee ENO! /RORCUONG i cose wos arene nde ) .
 
@@ -249,7 +249,7 @@ a = Popuisity teseeeseeeeees+s.8 A Word from the Bad Guys .. .33 | | Ul | |
 
 pan - so de 4 Chapter 2: HARDWARE . .12 ee ee ea me Ba
 
-ar | | ~CC(Meticles Charactor Generation Steps . .37 \ mas
+ar | | ~CC(Meticles Character Generation Steps . .37 \ mas
 
 oe seseeeeseeeeeeees 13 Explanations of Powers......39 | |= TT
 
@@ -265,7 +265,7 @@ y ba oa LTNONE savcecucve ses ot | fa)
 
 , a rigin of...Mach1.......46 | tT
 
-Ce Alien Technology ...........21 | Charactor Information Sheet . .47 >
+Ce Alien Technology ...........21 | Character Information Sheet . .47 >
 
 (GER entesawesnsesaa ee
 
@@ -2053,7 +2053,7 @@ when | cover gases. > Rat
 
 A guided missile is really a vehicle that a Hand grenades are thrown items. |=)
 
-carries a bomb, and either steers itself or | 5 Charactoristics of grenades, explosives, and = =}
+carries a bomb, and either steers itself or | 5 Characteristics of grenades, explosives, and = =}
 
 can be steered remotely. A standard gases vary; see the individual descriptions . —
 
@@ -4498,7 +4498,7 @@ explained later in this section.
 To create any type of hero, answer the
 questions on the following checklist
 
-Charactor Generation Checklist
+Character Generation Checklist
 1. What kind of being is the hero, and how
 did he get his powers?
 2. What are the hero's ability ranks?
@@ -4555,7 +4555,7 @@ or times, or even isolated places on Earth.
 This category includes Inhumans, Eternals, Asgardians, Atlanteans, and natives
 of the Kree Galaxy.
 STEP 2. Assign ranks and rank numbers to the hero's abilities.
-Begin by making a copy of the blank Charactor Information Sheet.
+Begin by making a copy of the blank Character Information Sheet.
 For each of the seven abilities, roll the
 dice and check Table 25: Random Ranks
 to find that ability's rank.

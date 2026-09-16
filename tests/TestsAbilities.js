@@ -26,7 +26,7 @@ Tester._runPrimaryAbilityTests = (gen, config) => {
     gen.generatorMode = config.mode;
     gen.setTables();
 
-    const charStats = new Charactor();
+    const charStats = new Character();
     charStats.physicalForm = config.form;
     charStats.origin = config.origin;
     charStats.randomRanksColumn = config.column;
@@ -285,7 +285,7 @@ Tester._runResourceTests = (
     gen.looksHuman = false;
     gen.hiTechToGood = true;
 
-    const charRes = new Charactor();
+    const charRes = new Character();
     charRes.physicalForm = physicalForm;
     charRes.origin = origin;
     charRes.randomRanksColumn = column;
@@ -342,7 +342,7 @@ Tester._runUltimateResourceTests = (gen) => {
     ];
 
     for (const test of resourceTests) {
-        const charRes = new Charactor();
+        const charRes = new Character();
         charRes.physicalForm = test.form;
         charRes.origin = test.origin;
         charRes.randomRanksColumn = test.column;
@@ -389,7 +389,7 @@ Tester._runPopularityTests_GenAdv = (gen, mode) => {
     gen.looksHuman = false;
 
     for (const tc of POPULARITY_GEN_ADV_CONFIGS) {
-        const charPop = new Charactor();
+        const charPop = new Character();
         charPop.physicalForm = tc.form;
         charPop.origin = tc.origin;
         gen.determinePopularity(charPop);
@@ -522,7 +522,7 @@ Tester._runUltimatePopularityTests = (gen) => {
     gen.originRoll = 1;
 
     for (const test of POPULARITY_ULTIMATE_CONFIGS) {
-        const charPop = new Charactor();
+        const charPop = new Character();
         charPop.physicalForm = test.form;
         charPop.origin = test.origin;
         if (test.subType) charPop.subType = test.subType;
@@ -579,7 +579,7 @@ Tester._runUltimateHealthTests = (gen) => {
     gen.setTables();
 
     for (const tc of HEALTH_TEST_CONFIGS) {
-        const char = new Charactor();
+        const char = new Character();
         char.physicalForm = tc.form;
         char.origin = tc.origin;
 

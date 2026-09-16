@@ -8,7 +8,7 @@ Tester.PerformanceBenchmarkTests = () => {
     const results = {};
 
     for (const mode of modes) {
-        const gen = new CharactorGenerator();
+        const gen = new CharacterGenerator();
         gen.generatorMode = mode;
         gen.setTables();
         gen.identitySecret = true;
@@ -65,7 +65,7 @@ Tester.LightweightBenchmarkTests = () => {
     const iterationsPerMode = 10;
 
     for (const mode of modes) {
-        const gen = new CharactorGenerator();
+        const gen = new CharacterGenerator();
         gen.generatorMode = mode;
         gen.setTables();
         gen.identitySecret = true;
