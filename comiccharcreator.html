@@ -1251,6 +1251,24 @@
       const availableCategories = generator.getAvailableContacts();
       const maxSlots = generator.getContactSlotCount();
 
+      // If there aren't enough contact slots, or no contact can fit,
+      // don't show the dialog at all.
+      if (maxSlots <= 0) {
+        return Promise.resolve();
+      }
+      var minContactCount = Infinity;
+      var totalContacts = 0;
+      for (var ci = 0; ci < availableCategories.length; ci++) {
+        for (var ti = 0; ti < availableCategories[ci].contacts.length; ti++) {
+          var cc = availableCategories[ci].contacts[ti].contactCount || 1;
+          totalContacts += cc;
+          if (cc < minContactCount) minContactCount = cc;
+        }
+      }
+      if (minContactCount > maxSlots) {
+        return Promise.resolve();
+      }
+
       return new Promise(function (resolve) {
         const overlay = document.createElement('div');
         overlay.className = 'boost-modal-overlay';

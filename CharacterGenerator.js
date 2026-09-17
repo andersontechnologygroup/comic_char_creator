@@ -1709,7 +1709,8 @@ class CharacterGenerator {
             }
         }
 
-        if (this.wellEstablished) {
+        // wellEstablished and looksHuman are Basic-only options
+        if (this.generatorMode === "basic" && this.wellEstablished) {
             char.popularity += 20;
             char.logRoll(
                 "Popularity",
@@ -1718,7 +1719,7 @@ class CharacterGenerator {
             );
         }
 
-        if (this.looksHuman) {
+        if (this.generatorMode === "basic" && this.looksHuman) {
             char.popularity += 10;
             char.logRoll(
                 "Popularity",
