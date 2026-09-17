@@ -32,6 +32,8 @@ class CharacterGenerator {
     talentRolls = Array(this.rollArraySize).fill(0);
     talentSubRolls = Array(this.rollArraySize).fill(0);
 
+    useUltimateTalents = false;
+
     contactNumberRoll = 0;
     contactCategoryRolls = Array(this.rollArraySize).fill(0);
     contactRolls = Array(this.rollArraySize).fill(0);
@@ -113,6 +115,7 @@ class CharacterGenerator {
         this.talentCategoryRolls.fill(0);
         this.talentRolls.fill(0);
         this.talentSubRolls.fill(0);
+        this.useUltimateTalents = false;
         this.contactNumberRoll = 0;
         this.contactCategoryRolls.fill(0);
         this.contactRolls.fill(0);
@@ -152,6 +155,22 @@ class CharacterGenerator {
 
     generateWithoutThrows() {
         const char = new Character();
+
+        char.logRoll(`generatorMode`, 'N/A', this.generatorMode);
+        char.logRoll(`identitySecret`, 'N/A', this.identitySecret);
+        char.logRoll(`originPublic`, 'N/A', this.originPublic);
+        char.logRoll(`hiTechToGood`, 'N/A', this.hiTechToGood);
+        char.logRoll(`applyOptionalPowers`, 'N/A', this.applyOptionalPowers);
+        char.logRoll(`selectOptionalPowersManually`, 'N/A', this.selectOptionalPowersManually);
+        char.logRoll(`contactsEqualToPowers`, 'N/A', this.contactsEqualToPowers);
+        char.logRoll(`choosePowerInsteadOfRandom`, 'N/A', this.choosePowerInsteadOfRandom);
+        char.logRoll(`wellEstablished`, 'N/A', this.wellEstablished);
+        char.logRoll(`looksHuman`, 'N/A', this.looksHuman);
+        char.logRoll(`selectBonusPowers`, 'N/A', this.selectBonusPowers);
+        char.logRoll(`selectPhysicalFormManually`, 'N/A', this.selectPhysicalFormManually);
+        char.logRoll(`selectTalentManually`, 'N/A', this.selectTalentManually);
+        char.logRoll(`selectContactManually`, 'N/A', this.selectContactManually);
+        char.logRoll('useUltimateTalents', 'N/A', this.useUltimateTalents);
 
         this.setTables();
         this._assignedPowerNames = new Set(); // O(1) duplicate detection
@@ -514,8 +533,15 @@ class CharacterGenerator {
             this.quantityTable = QUANTITY_ULTIMATE_TABLE;
             this.powerCategoriesTable = POWER_CATEGORIES_ULTIMATE_TABLE;
             this.powerListTable = POWER_LIST_ULTIMATE_TABLE;
-            this.talentCategoriesTable = TALENT_CATEGORIES_ULTIMATE_TABLE;
-            this.talentListTable = TALENT_LIST_ULTIMATE_TABLE;
+
+            this.talentCategoriesTable = TALENT_CATEGORIES_ADVANCED_TABLE;
+            this.talentListTable = TALENT_LIST_ADVANCED_TABLE;
+
+            if(this.useUltimateTalents) {
+                this.talentCategoriesTable = TALENT_CATEGORIES_ULTIMATE_TABLE;
+                this.talentListTable = TALENT_LIST_ULTIMATE_TABLE;
+            }
+
             this.contactCategoriesTable = CONTACT_CATEGORIES_ULTIMATE_TABLE;
             this.contactTypeListTable = CONTACT_TYPE_LIST_ULTIMATE_TABLE;
             this.weaknessStimulusTable = WEAKNESS_STIMULUS_ULTIMATE_TABLE;

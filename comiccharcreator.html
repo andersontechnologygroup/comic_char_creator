@@ -139,45 +139,52 @@
         </div>
         <div class="control-group">
           <label>Physical Form:</label>
-          <input type="radio" name="physical_form_select" id="physical_form_select"  />
+          <input type="radio" name="physical_form_select" id="physical_form_select" checked />
           <label for="physical_form_select">Select Sub Form</label>
-          <input type="radio" name="physical_form_select" id="physical_form_roll" checked />
+          <input type="radio" name="physical_form_select" id="physical_form_roll" />
           <label for="physical_form_roll">Roll Sub Form</label>
         </div>
         <div class="control-group">
           <label>Hi-Tech Resource Logic:</label>
-          <input type="radio" name="hi_tech_ultimate" id="hi_tech_good_ultimate"  />
+          <input type="radio" name="hi_tech_ultimate" id="hi_tech_good_ultimate" checked />
           <label for="hi_tech_good_ultimate">Set to Good</label>
-          <input type="radio" name="hi_tech_ultimate" id="hi_tech_roll_ultimate" checked />
+          <input type="radio" name="hi_tech_ultimate" id="hi_tech_roll_ultimate" />
           <label for="hi_tech_roll_ultimate">Roll Randomly</label>
         </div>
         <div class="control-group">
           <label>For Bonus Powers:</label>
-          <input type="radio" name="bonus_power_select_ultimate" id="bonus_power_select_ultimate"  />
+          <input type="radio" name="bonus_power_select_ultimate" id="bonus_power_select_ultimate" checked />
           <label for="bonus_power_select_ultimate">Select Bonus Powers</label>
-          <input type="radio" name="bonus_power_select_ultimate" id="bonus_power_roll_ultimate" checked />
+          <input type="radio" name="bonus_power_select_ultimate" id="bonus_power_roll_ultimate" />
           <label for="bonus_power_roll_ultimate">Roll for Bonus Powers</label>
         </div>
         <div class="control-group">
           <label>Talent Groups:</label>
-          <input type="radio" name="talent_select_ultimate" id="talent_select_manual_ultimate"  />
+          <input type="radio" name="talent_select_ultimate" id="talent_select_manual_ultimate" checked />
           <label for="talent_select_manual_ultimate">Select Talent Manually</label>
-          <input type="radio" name="talent_select_ultimate" id="talent_select_roll_ultimate" checked />
+          <input type="radio" name="talent_select_ultimate" id="talent_select_roll_ultimate" />
           <label for="talent_select_roll_ultimate">Roll Talent</label>
         </div>
         <div class="control-group">
           <label>Contact Selection:</label>
-          <input type="radio" name="contact_select_ultimate" id="contact_select_manual_ultimate"  />
+          <input type="radio" name="contact_select_ultimate" id="contact_select_manual_ultimate" checked />
           <label for="contact_select_manual_ultimate">Select Contact Types</label>
-          <input type="radio" name="contact_select_ultimate" id="contact_select_roll_ultimate" checked />
+          <input type="radio" name="contact_select_ultimate" id="contact_select_roll_ultimate" />
           <label for="contact_select_roll_ultimate">Roll Contact Types</label>
         </div>
         <div class="control-group">
           <label>Apply all Optional Powers:</label>
-          <input type="radio" name="optional_powers" id="optional_powers_apply"  />
-          <label for="optional_powers_apply">Apply all Optional Powers</label>
           <input type="radio" name="optional_powers" id="optional_powers_manual" checked />
           <label for="optional_powers_manual">Manually Select Optional Powers</label>
+          <input type="radio" name="optional_powers" id="optional_powers_apply"  />
+          <label for="optional_powers_apply">Apply all Optional Powers</label>
+        </div>
+        <div class="control-group">
+          <label>Talent Selection:</label>
+          <input type="radio" name="talent_select_ultimate" id="talent_select_advanced_ultimate" checked />
+          <label for="talent_select_manual_ultimate">Use Advanced Talents</label>
+          <input type="radio" name="talent_select_ultimate" id="talent_select_ultimate_ultimate" />
+          <label for="talent_select_ultimate_ultimate">Use Ultimate Talents</label>
         </div>
       </div>
     </div>
@@ -1750,10 +1757,12 @@
         const basic = document.getElementById('generator_basic').checked;
         const advanced = document.getElementById('generator_advanced').checked;
         const ultimate = document.getElementById('generator_ultimate').checked;
+        const useUltimateTalents = ultimate && document.getElementById('talent_select_ultimate_ultimate').checked;
 
         generator.generatorMode = 'basic';
         if (advanced && !ultimate) generator.generatorMode = 'advanced';
         if (!advanced && ultimate) generator.generatorMode = 'ultimate';
+        generator.useUltimateTalents = useUltimateTalents;
 
         // Read mode-specific options (Ultimate uses _ultimate suffix, Advanced uses non-suffixed)
         if (ultimate) {
@@ -1910,7 +1919,6 @@
     // Initial Generation
     app.generate();
 
-    // TODO #3 Add Ultimate Talents
     // TODO #2 Add Edit mode
     // TODO #1 Add Save/Load
 
