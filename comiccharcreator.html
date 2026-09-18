@@ -160,10 +160,10 @@
         </div>
         <div class="control-group">
           <label>Talent Groups:</label>
-          <input type="radio" name="talent_select_ultimate" id="talent_select_manual_ultimate" checked />
-          <label for="talent_select_manual_ultimate">Select Talent Manually</label>
-          <input type="radio" name="talent_select_ultimate" id="talent_select_roll_ultimate" />
-          <label for="talent_select_roll_ultimate">Roll Talent</label>
+          <input type="radio" name="talent_groups_select_ultimate" id="talent_groups_select_manual_ultimate" checked />
+          <label for="talent_groups_select_manual_ultimate">Select Talent Manually</label>
+          <input type="radio" name="talent_groups_select_ultimate" id="talent_groups_select_roll_ultimate" />
+          <label for="talent_groups_select_roll_ultimate">Roll Talent</label>
         </div>
         <div class="control-group">
           <label>Contact Selection:</label>
@@ -182,7 +182,7 @@
         <div class="control-group">
           <label>Talent Selection:</label>
           <input type="radio" name="talent_select_ultimate" id="talent_select_advanced_ultimate" checked />
-          <label for="talent_select_manual_ultimate">Use Advanced Talents</label>
+          <label for="talent_select_advanced_ultimate">Use Advanced Talents</label>
           <input type="radio" name="talent_select_ultimate" id="talent_select_ultimate_ultimate" />
           <label for="talent_select_ultimate_ultimate">Use Ultimate Talents</label>
         </div>
@@ -512,6 +512,22 @@
       }
     }
 
+    // --- Modal Content Wrapper Helper ---
+    function wrapModalContentForScrolling(overlay) {
+      var modal = overlay.querySelector('.boost-modal, .power-select-modal, .physical-form-modal');
+      if (!modal) return;
+      var actions = modal.querySelector('.boost-actions, .power-select-actions, .physical-form-actions');
+      if (!actions) return;
+      var contentClass = modal.classList.contains('boost-modal') ? 'boost-modal-content' :
+                         modal.classList.contains('power-select-modal') ? 'power-select-content' : 'physical-form-content';
+      var wrapper = document.createElement('div');
+      wrapper.className = contentClass;
+      while (modal.firstChild && modal.firstChild !== actions) {
+        wrapper.appendChild(modal.firstChild);
+      }
+      modal.insertBefore(wrapper, actions);
+    }
+
     // --- BOOST MODAL (Basic Rules p40) ---
     let _boostCurrentChar = null;
     let _boostCurrentGen = null;
@@ -584,6 +600,7 @@
       overlay.id = 'boost-modal-overlay';
       overlay.innerHTML = content;
       document.getElementById('boost-modal-container').appendChild(overlay);
+      wrapModalContentForScrolling(overlay);
 
       // Selection handler for all boost options (skip disabled)
       overlay.querySelectorAll('.boost-option:not(.disabled)').forEach(el => {
@@ -732,6 +749,7 @@
 
       overlay.innerHTML = content;
       document.getElementById('boost-modal-container').appendChild(overlay);
+      wrapModalContentForScrolling(overlay);
 
       document.getElementById('upgrade-accept-btn').addEventListener('click', function () {
         if (!canUpgrade) return;
@@ -828,6 +846,7 @@
 
       overlay.innerHTML = content;
       document.getElementById('boost-modal-container').appendChild(overlay);
+      wrapModalContentForScrolling(overlay);
 
       var _selectedRemoveIndex = null;
 
@@ -909,6 +928,7 @@
 
         overlay.innerHTML = html;
         document.getElementById('boost-modal-container').appendChild(overlay);
+        wrapModalContentForScrolling(overlay);
 
         // Selection handler
         overlay.querySelectorAll('.boost-option-stacked').forEach(function (el) {
@@ -987,6 +1007,7 @@
 
         overlay.innerHTML = html;
         document.getElementById('physical-form-modal-container').appendChild(overlay);
+        wrapModalContentForScrolling(overlay);
 
         var selectedName = null;
 
@@ -1060,6 +1081,7 @@
 
         overlay.innerHTML = html;
         document.getElementById('optional-power-modal-container').appendChild(overlay);
+        wrapModalContentForScrolling(overlay);
 
         // Selection handler
         overlay.querySelectorAll('.opt-power-option').forEach(function (el) {
@@ -1118,7 +1140,7 @@
         overlay.className = 'boost-modal-overlay';
         overlay.id = 'talent-select-modal-overlay';
 
-        var html = '<div class="boost-modal" style="max-height:80vh;overflow-y:auto;">';
+        var html = '<div class="boost-modal">';
         html += '<h2>Select Talents</h2>';
         html += '<div class="boost-subtitle">Pick talents from the categories below. Slots remaining: <span id="talent-slots-remaining">' + maxSlots + '</span>/' + maxSlots + '</div>';
 
@@ -1149,6 +1171,7 @@
 
         overlay.innerHTML = html;
         document.getElementById('boost-modal-container').appendChild(overlay);
+        wrapModalContentForScrolling(overlay);
 
         // Collapsible category headers
         overlay.querySelectorAll('.boost-section-title.collapsible').forEach(function (el) {
@@ -1274,7 +1297,7 @@
         overlay.className = 'boost-modal-overlay';
         overlay.id = 'contact-select-modal-overlay';
 
-        var html = '<div class="boost-modal" style="max-height:80vh;overflow-y:auto;">';
+        var html = '<div class="boost-modal">';
         html += '<h2>Select Contacts</h2>';
         html += '<div class="boost-subtitle">Pick contact types below. Max slots: ' + maxSlots + '. Slots used: <span id="contact-slots-used">0</span>/' + maxSlots + '</div>';
 
@@ -1307,6 +1330,7 @@
 
         overlay.innerHTML = html;
         document.getElementById('boost-modal-container').appendChild(overlay);
+        wrapModalContentForScrolling(overlay);
 
         // Collapsible category headers
         overlay.querySelectorAll('.boost-section-title.collapsible').forEach(function (el) {
@@ -1459,7 +1483,7 @@
         overlay.className = 'boost-modal-overlay';
         overlay.id = 'contact-naming-modal-overlay';
 
-        var html = '<div class="boost-modal" style="max-height:80vh;overflow-y:auto;">';
+        var html = '<div class="boost-modal">';
         html += '<h2>Name Your Contacts</h2>';
         html += '<div class="boost-subtitle">Enter a name for each contact below.</div>';
 
@@ -1483,6 +1507,7 @@
 
         overlay.innerHTML = html;
         document.getElementById('boost-modal-container').appendChild(overlay);
+        wrapModalContentForScrolling(overlay);
 
         function checkAllFilled() {
           var inputs = overlay.querySelectorAll('.contact-name-input');
@@ -1581,6 +1606,7 @@
 
         overlay.innerHTML = html;
         document.getElementById('power-select-modal-container').appendChild(overlay);
+        wrapModalContentForScrolling(overlay);
 
         // Build a lookup of power names -> powerCount for this category
         // --- Build lookup tables ---
@@ -1837,7 +1863,7 @@
 
         // If selecting talents manually, show modal before generation
         if (ultimate) {
-          const selectTalentUlt = document.getElementById('talent_select_manual_ultimate').checked;
+          const selectTalentUlt = document.getElementById('talent_groups_select_manual_ultimate').checked;
           if (selectTalentUlt) {
             generator.selectTalentManually = true;
             await showTalentSelectionModal(generator, generator.generatorMode);

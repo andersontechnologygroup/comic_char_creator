@@ -474,8 +474,15 @@ p.center {
     max-width: 600px;
     width: 90%;
     max-height: 80vh;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
     box-shadow: 0 0 40px rgba(252, 163, 17, 0.3);
+}
+
+.boost-modal-content {
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
 }
 
 .boost-modal h2 {
@@ -547,10 +554,12 @@ p.center {
 
 .boost-modal .boost-actions {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 0;
+    padding-top: 15px;
     display: flex;
     justify-content: center;
     gap: 12px;
+    flex-shrink: 0;
 }
 
 .boost-modal .boost-confirm-btn {
@@ -832,8 +841,15 @@ p.center {
     max-width: 700px;
     width: 90%;
     max-height: 80vh;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
     box-shadow: 0 0 40px rgba(252, 163, 17, 0.3);
+}
+
+.power-select-content {
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
 }
 
 .power-select-modal h2 {
@@ -901,10 +917,12 @@ p.center {
 
 .power-select-modal .power-select-actions {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 0;
+    padding-top: 15px;
     display: flex;
     justify-content: center;
     gap: 12px;
+    flex-shrink: 0;
 }
 
 .power-select-modal .power-select-confirm-btn {
@@ -979,8 +997,15 @@ p.center {
     max-width: 700px;
     width: 90%;
     max-height: 80vh;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
     box-shadow: 0 0 40px rgba(252, 163, 17, 0.3);
+}
+
+.physical-form-content {
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
 }
 
 .physical-form-modal h2 {
@@ -1032,7 +1057,9 @@ p.center {
 
 .physical-form-modal .physical-form-actions {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 0;
+    padding-top: 15px;
+    flex-shrink: 0;
 }
 
 .physical-form-modal .physical-form-confirm-btn {
