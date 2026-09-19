@@ -1923,6 +1923,41 @@ class CharacterGenerator {
             this.generateSinglePower(char, i);
         }
 
+        // Process any remaining manually-selected optional powers whose source
+        // power was never generated (e.g. simulation predicted it but slot
+        // exhaustion or multi-slot powers prevented it from being rolled).
+        if (this.selectOptionalPowersManually && this._selectedOptionalPowers) {
+            const processedSources = this._processedOptionalSources || new Set();
+            let nextRankIdx = char.powers.length;
+            for (const srcName of Object.keys(this._selectedOptionalPowers)) {
+                if (processedSources.has(srcName)) continue;
+                const selected = this._selectedOptionalPowers[srcName];
+                if (!selected || selected.length === 0) continue;
+                for (let si = 0; si < selected.length; si++) {
+                    const sel = selected[si];
+                    const p = this.powerListTable.find(
+                        (c) => c.category === sel.category && c.name === sel.name,
+                    );
+                    if (!p) continue;
+                    const optionalPowerRankColumn = this.generatorMode === "basic" ? 1 : 3;
+                    const rankRoll = this.powerRankRolls[nextRankIdx];
+                    nextRankIdx++;
+                    const rankRow = Utility.findRow(this, rankRoll, optionalPowerRankColumn);
+                    const rankNum = rankRow ? rankRow.rankNumber : 1;
+                    const rankName = rankRow ? rankRow.rank : "Typical";
+                    const optSlotCount = CharacterGenerator._safeSlotCount(p);
+                    if (CharacterGenerator._hasRemainingSlots(char, optSlotCount) && !this.isPowerAlreadyAssigned(char.powers, p)) {
+                        char.powers.push({
+                            category: p.category, name: p.name, code: p.code,
+                            description: p.description, rank: rankName, number: rankNum,
+                            powerSlots: optSlotCount, optionalPower: true,
+                        });
+                        if (this._assignedPowerNames) this._assignedPowerNames.add(p.name);
+                    }
+                }
+            }
+        }
+
         // Generate Talents
         for (let i = 0; i < char.talentsCount; i++) {
             this.generateTalents(char, i);
@@ -3812,6 +3847,9 @@ class CharacterGenerator {
         if (this.selectOptionalPowersManually && this._selectedOptionalPowers && sourcePowerName) {
             const selected = this._selectedOptionalPowers[sourcePowerName];
             if (!selected || selected.length === 0) return; // User selected none for this source
+            // Track that this source has been processed
+            if (!this._processedOptionalSources) this._processedOptionalSources = new Set();
+            this._processedOptionalSources.add(sourcePowerName);
             // Rebuild potentialPowers from selections only
             const potentialPowers = [];
             for (let i = 0; i < selected.length; i++) {
@@ -4069,8 +4107,8 @@ class CharacterGenerator {
         )
             return rolled;
 
-        // Determine how many powers to roll
-        const pRoll = this.powerNumberRoll;
+        // Determine how many powers to roll — must match determineSpecialPowerAdjustment()
+        const pRoll = Math.max(1, Math.min(100, this.powerNumberRoll || 1));
         const pQtyRow = this.quantityTable.find((o) => pRoll <= o.maxRoll);
         if (!pQtyRow) return rolled;
         let powersCount = pQtyRow.powers.initial;
@@ -4078,12 +4116,50 @@ class CharacterGenerator {
             (r) => r.name === this._lastPhysicalForm,
         );
         if (physicalFormRow) {
-            const adj = Utility.getValue(
+            // Mirror determineSpecialPowerAdjustment logic
+            let value = Utility.getValue(physicalFormRow, "powersCountSet", -1);
+            if (value !== -1) {
+                powersCount = value;
+            } else {
+                value = Utility.getValue(
+                    physicalFormRow,
+                    "powersCountAdjustment",
+                    0,
+                );
+                if (value !== 0) {
+                    powersCount += value;
+                }
+                if (powersCount > pQtyRow.powers.maximum) {
+                    powersCount = pQtyRow.powers.maximum;
+                }
+                value = Utility.getValue(
+                    physicalFormRow,
+                    "powersCountMinimum",
+                    -1,
+                );
+                if (value !== -1 && value > powersCount) {
+                    powersCount = value;
+                }
+                value = Utility.getValue(
+                    physicalFormRow,
+                    "powersCountMaximum",
+                    -1,
+                );
+                if (value !== -1 && value < powersCount) {
+                    powersCount = value;
+                }
+            }
+
+            // Account for bonus power slot consumption — bonus powers are
+            // generated before the regular power loop and consume slots
+            const bonusCount = Utility.getValue(
                 physicalFormRow,
-                "powersCountAdjustment",
+                "bonusPowerCount",
                 0,
             );
-            powersCount = Math.max(0, powersCount + adj);
+            if (bonusCount > 0) {
+                powersCount = Math.max(0, powersCount - bonusCount);
+            }
         }
 
         for (let i = 0; i < powersCount; i++) {
