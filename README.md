@@ -14,13 +14,51 @@ Loading the page will automatically generate a new character.
 Clicking the **Generate New Hero** button will clear the current character and generate a new character.   
 
 ### Options 
-There are three options that can be changed when generating a new hero.
-* Generator
-    * You can select between generating a character using the **Basic** rules, the **Advanced** rules, or the **Ultimate** rules.  The Basic rules are a bit simpler and provide a more streamlined experience.  It is intended to be used for non-RPG purposed.  Powers, Talents, and Contacts have basic descriptions.   Abilities do not have rank values associated.  The Advanced rules are more complex and provide information for RPG purposes.  Advanced descriptions are based on the **Marvel Super Heroes Advanced Playeers Book**.  The Ultimate rules are based on the **Marvel Super Heroes The Ultimate Powers Book**, as such, the physical forms, origins, and powers are completely revamped.  The default is the Basic rules.
+There are a number of options that can be changed when generating a new hero.
+* System Mode
+	* You can select between generating a character using the **Basic** rules, the **Advanced** rules, or the **Ultimate** rules.  The Basic rules are derived from the original **Marvel Super Heroes Campaign Book** (TSR6850XXXI919).  The Advanced rules are derived from the **Marvel Super Heroes Players' Book** (TSR6871XXXI901).  The Ultimate rules are derived from the Advanced rules plus the application of the **Marvel Super Heroes The Ultimate Powers Book** plus all UPB Addendas.  
+* Display Mode
+	* You can select between Full Display Mode and Generic Display Mode.  Full Mode is intended for for RPG purposes.  All Ranks and Rank Numbers are included on the character sheet.  Generic is intended for non-RPG purposes.  It displays the Rank name but does not include Rank Numbers.  In future versions, the descriptions will also be generalized.
 * Identity
-	* You can select between having a public identity and a secret identity.  Each has it's own advantages and disadvantages.  On the plus side, a secret identity protects those that are close to you.  From a generation standpoint, this setting will effect the Popularity score with a public identity raising your Popularity significantly (+10) and a secret identity lowering it some (-5).
-* If Hi-tech
-	* A Hi-tech origin is generally considered to be from a character that has some money.   Therefore, the default position is that they have Good resources.  But you can choose to randomly roll your resources.   This might randomly roll a higher resource.  Or it might roll a lower one.   Only the "dice" can tell.   
+	* You can select between having a public identity and a secret identity.  Each has it's own advantages and disadvantages.  On the plus side, a secret identity protects those that are close to you.  From a generation standpoint, this setting will effect the Popularity scores.  Basic and Advanced/Ultimate handle Popularity in their own ways.
+
+#### Basic Mode Options
+* Origin
+	* You can select between having a public origin or a private origin.  Each has it's own advantages and disadvantages.  From a generation standpoint, this setting will further effect the Popularity scores.
+* Status
+	* You can select between None, New in the Area, or Well-Established.  A Well-Established hero receives a +20 bonus to Popularity, reflecting the public's existing familiarity with the character.  A hero who is New in the Area will loose Popularity points.
+* Popularity Adjustment
+	* A "Looks Human" checkbox that, when enabled, grants a +10 bonus to Popularity.  This reflects the public's tendency to be more accepting of heroes who appear human in form.
+* Contacts
+	* Controls how many contacts the hero has.  "Equals Number of Powers" gives the hero a number of contacts equal to their power count.  "Randomly Generated" rolls the number of contacts from the quantity table.
+* Power Selection
+	* Controls how powers are determined.  "Choose from Category" allows you to manually select a power from each rolled category.  "Randomly Generated" rolls a random power within each category.
+
+#### Advanced Mode Options
+* Hi-Tech Resource Logic
+	* Applies to Hi-Tech physical forms.  "Set to Good" automatically sets the hero's Resources rank to Good.  "Roll Randomly" rolls Resources normally from the random ranks table.
+* For Bonus Powers
+	* Controls how bonus powers are determined.  "Select Bonus Powers" opens a dialog where you can choose which bonus powers to add.  "Roll for Bonus Powers" randomly generates the bonus powers.
+* Talent Groups
+	* Controls how talents are determined.  "Select Talent Manually" opens a dialog where you can pick a talent from each available category.  "Roll Talent" randomly rolls a talent from each category.
+* Contact Selection
+	* Controls how contact types are determined.  "Select Contact Types" opens a dialog where you can choose the type for each contact.  "Roll Contact Types" randomly rolls the contact type.
+
+#### Ultimate Mode Options
+* Physical Form
+	* Controls how the physical form sub-type is determined.  "Select Sub Form" opens a dialog where you can choose the physical form from a list.  "Roll Sub Form" randomly rolls the physical form.
+* Hi-Tech Resource Logic
+	* Same as Advanced mode.  Applies to Hi-Tech physical forms.  "Set to Good" automatically sets the hero's Resources rank to Good.  "Roll Randomly" rolls Resources normally from the random ranks table.
+* For Bonus Powers
+	* Same as Advanced mode.  "Select Bonus Powers" opens a dialog where you can choose which bonus powers to add.  "Roll for Bonus Powers" randomly generates the bonus powers.
+* Talent Groups
+	* Same as Advanced mode.  "Select Talent Manually" opens a dialog where you can pick a talent from each available category.  "Roll Talent" randomly rolls a talent from each category.
+* Contact Selection
+	* Same as Advanced mode.  "Select Contact Types" opens a dialog where you can choose the type for each contact.  "Roll Contact Types" randomly rolls the contact type.
+* Apply all Optional Powers
+	* Controls how optional powers are handled.  "Manually Select Optional Powers" opens a dialog where you can choose which optional powers to add, respecting the optionalPowerCount limit for each source and the total maximum power slots.  Powers that were already rolled are excluded from the selection.  "Apply all Optional Powers" automatically adds every listed optional power from each source.
+* Talent Selection
+	* Controls which talent table is used.  "Use Advanced Talents" generates talents from the Advanced mode talent table.  "Use Ultimate Talents" generates talents from the Ultimate Powers Book talent table, which includes additional talent options not found in the Advanced rules.
 
 ## Run Unit Tests
 I tried to cover every possibility when programming and to make things organized and testable.   Unit Tests are small tests that exercise different parts of the generation process.  Clicking the **Run Unit Tests** button will run these unit tests and show the results of the tests below the character generation area.  This is helpful if you decide to expand the code in any way, so you can retest currently working parts of the system to make sure they are still working.  The Generator option is ignored when running Unit Tests.  All three generators are tested.

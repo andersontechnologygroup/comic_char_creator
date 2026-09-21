@@ -120,16 +120,16 @@
         </div>
         <div class="control-group">
           <label>Talent Groups:</label>
-          <input type="radio" name="talent_select" id="talent_select_manual" checked />
+          <input type="radio" name="talent_select" id="talent_select_manual" />
           <label for="talent_select_manual">Select Talent Manually</label>
-          <input type="radio" name="talent_select" id="talent_select_roll" />
+          <input type="radio" name="talent_select" id="talent_select_roll" checked />
           <label for="talent_select_roll">Roll Talent</label>
         </div>
         <div class="control-group">
           <label>Contact Selection:</label>
-          <input type="radio" name="contact_select" id="contact_select_manual" checked />
+          <input type="radio" name="contact_select" id="contact_select_manual" />
           <label for="contact_select_manual">Select Contact Types</label>
-          <input type="radio" name="contact_select" id="contact_select_roll" />
+          <input type="radio" name="contact_select" id="contact_select_roll" checked />
           <label for="contact_select_roll">Roll Contact Types</label>
         </div>
       </div>
@@ -176,7 +176,7 @@
           <label>Apply all Optional Powers:</label>
           <input type="radio" name="optional_powers" id="optional_powers_manual" checked />
           <label for="optional_powers_manual">Manually Select Optional Powers</label>
-          <input type="radio" name="optional_powers" id="optional_powers_apply"  />
+          <input type="radio" name="optional_powers" id="optional_powers_apply" />
           <label for="optional_powers_apply">Apply all Optional Powers</label>
         </div>
         <div class="control-group">
@@ -205,11 +205,9 @@
         I am still in th process of finishing up v3.0. You can take a look at the TODO list to see what is left. As I
         was
         changing the Generic Mode to Basic Mode (after finding the Basic handbook), I ran into some debugging issues, so
-        I stopped and did some massive enhancements to the testing framework. Currently, there are a small handful of
-        Physical Form attributes that are not working. I also haven't put more than very basic descriptions for the
-        Powers.
-        Currently, Ultimate mode is using the same Talents as the Advanced mode. I plan to add the unofficial Ultimate
-        Talents to the Ultimate mode. I will also be enhancing the Contacts types for the Ultimate mode.
+        I stopped and did some massive enhancements to the testing framework.  Now I have rebuilt the entire sytem to
+        better conform with the various systems.  This includes the Ultimate Mode having the option to use Advanced Mode
+        Talents or the player created Ultimate Talents.  
       </p>
       <br>
       <p class="center">
@@ -232,9 +230,33 @@
           for="run-render-tests">Render</label>
         <input type="radio" name="unit-tests-to-run" id="run-both-tests" /> <label for="run-both-tests">Both</label>
       </div>
-      <div class="control-group">
+      <div class="control-group" style="display: none;">
         <label>Select Render Test:</label>
         <select id="render-tests" style="padding: 5px;"></select>
+      </div>
+      <div class="control-group">
+        <label style="font-weight: bold; text-decoration: underline;">Debug Roll Overrides (Render):</label>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px 20px; margin-top: 8px;">
+          <div><label for="dbg-phys-form">Physical Form:</label><br><select id="dbg-phys-form" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-sub-type">Sub Type:</label><br><select id="dbg-sub-type" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-origin-roll">Origin:</label><br><select id="dbg-origin-roll" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-resource-mod">Resource Modifier:</label><br><select id="dbg-resource-mod" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-power-num">Power Number:</label><br><select id="dbg-power-num" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-power-cat">Power Category (1st):</label><br><select id="dbg-power-cat" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-power-roll">Power (1st):</label><br><select id="dbg-power-roll" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-talent-num">Talent Number:</label><br><select id="dbg-talent-num" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-talent-cat">Talent Category (1st):</label><br><select id="dbg-talent-cat" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-talent-roll">Talent (1st):</label><br><select id="dbg-talent-roll" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-contact-num">Contact Number:</label><br><select id="dbg-contact-num" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-contact-cat">Contact Category (1st):</label><br><select id="dbg-contact-cat" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-contact-type">Contact Type (1st):</label><br><select id="dbg-contact-type" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-popularity">Popularity:</label><br><select id="dbg-popularity" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-weak-stim">Weakness Stimulus:</label><br><select id="dbg-weak-stim" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-weak-effect">Weakness Effect:</label><br><select id="dbg-weak-effect" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-weak-dur">Weakness Duration:</label><br><select id="dbg-weak-dur" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-weak-rank">Weakness Rank:</label><br><select id="dbg-weak-rank" style="padding: 5px; width: 100%;"></select></div>
+          <div><label for="dbg-seed">Seed:</label><br><input type="number" id="dbg-seed" min="1" max="99999" placeholder="Any" style="width: 100%; padding: 5px; box-sizing: border-box;"></div>
+        </div>
       </div>
       <button class="action-btn" onclick="app.runTests()">Run Selected Tests</button>
     </div>
@@ -885,7 +907,6 @@
     function showBonusPowerSelectionModal(generator, mode) {
       const slots = generator.getBonusPowerOptions();
       if (slots.length === 0) {
-        // No bonus powers available, nothing to select
         return Promise.resolve();
       }
 
@@ -894,11 +915,16 @@
         overlay.className = 'boost-modal-overlay';
         overlay.id = 'bonus-power-modal-overlay';
 
+        // Track selections per slot as arrays (multiple picks allowed up to count)
+        var slotSelections = {};
+        // slotSelections[si] = Set of selected 'name' values
+        for (var si = 0; si < slots.length; si++) {
+          slotSelections[si] = new Set();
+        }
+
         var html = '<div class="boost-modal">';
         html += '<h2>Select Bonus Powers</h2>';
-        html += '<div class="boost-subtitle">Choose one bonus power for each triggered slot below</div>';
-
-        var selections = {};  // keyed by sourcePowerName (or 'physicalForm')
+        html += '<div class="boost-subtitle">Choose bonus powers for each triggered slot</div>';
 
         for (var si = 0; si < slots.length; si++) {
           var slot = slots[si];
@@ -906,23 +932,41 @@
           var slotLabel = slot.source === 'physicalForm'
             ? 'Physical Form Bonus Power'
             : 'Bonus from: ' + slot.sourcePowerName;
-          html += '<div class="boost-section-title">' + slotLabel + ':</div>';
+          var remaining = slot.count;
+          html += '<div class="boost-section-title">' + slotLabel + ' <span class="bp-remaining" data-si="' + si + '">(0 / ' + slot.count + ' selected)</span></div>';
+
+          // Group options by category
+          var categories = {};
           for (var oi = 0; oi < slot.options.length; oi++) {
             var opt = slot.options[oi];
-            // Look up the power details for description
-            var powerRow = generator.powerListTable.find(function (p) { return p.category === opt.category && p.name === opt.name; });
-            var desc = powerRow ? (powerRow.description || '').substring(0, 120) : '';
-            if (desc.length >= 120) desc += '...';
-            html += '<div class="boost-option-stacked" data-slot="' + si + '" data-key="' + slotKey + '" data-category="' + opt.category + '" data-name="' + opt.name.replace(/"/g, '&quot;') + '">';
-            html += '<span class="boost-label">' + opt.name + '</span>';
-            html += '<span class="boost-detail">' + opt.category + '</span>';
-            if (desc) html += '<span class="boost-detail">' + desc + '</span>';
-            html += '</div>';
+            if (!categories[opt.category]) categories[opt.category] = [];
+            categories[opt.category].push(opt);
+          }
+
+          var catNames = Object.keys(categories).sort();
+          for (var ci = 0; ci < catNames.length; ci++) {
+            var catName = catNames[ci];
+            var catPowers = categories[catName];
+            html += '<div class="bp-category-group">';
+            html += '<div class="bp-category-header" data-si="' + si + '">';
+            html += '<span class="bp-caret"></span> ' + catName + ' (' + catPowers.length + ')</div>';
+            html += '<div class="bp-category-body">';
+            for (var pi = 0; pi < catPowers.length; pi++) {
+              var opt = catPowers[pi];
+              var powerRow = generator.powerListTable.find(function (p) { return p.category === opt.category && p.name === opt.name; });
+              var desc = powerRow ? (powerRow.description || '').substring(0, 100) : '';
+              if (desc.length >= 100) desc += '...';
+              html += '<div class="boost-option-stacked bp-power" data-si="' + si + '" data-key="' + slotKey + '" data-category="' + opt.category + '" data-name="' + opt.name.replace(/"/g, '&quot;') + '">';
+              html += '<span class="boost-label">' + opt.name + '</span>';
+              if (desc) html += '<span class="boost-detail">' + desc + '</span>';
+              html += '</div>';
+            }
+            html += '</div></div>';
           }
         }
 
         html += '<div class="boost-actions">';
-        html += '<button class="boost-confirm-btn" id="bonus-power-confirm-btn">Confirm</button>';
+        html += '<button class="boost-confirm-btn enabled" id="bonus-power-confirm-btn">Confirm</button>';
         html += '<button class="boost-skip-btn" id="bonus-power-skip-btn">Skip (Roll Instead)</button>';
         html += '</div></div>';
 
@@ -930,40 +974,93 @@
         document.getElementById('boost-modal-container').appendChild(overlay);
         wrapModalContentForScrolling(overlay);
 
-        // Selection handler
-        overlay.querySelectorAll('.boost-option-stacked').forEach(function (el) {
+        // Helper: update disabled state for a slot based on count
+        function updateSlotState(si) {
+          var count = slots[si].count;
+          var selected = slotSelections[si].size;
+          // Update counter text
+          var counterEl = overlay.querySelector('.bp-remaining[data-si="' + si + '"]');
+          if (counterEl) counterEl.textContent = '(' + selected + ' / ' + count + ' selected)';
+          // Disable all powers in this slot if at max, enable if under max
+          overlay.querySelectorAll('.bp-power[data-si="' + si + '"]').forEach(function (el) {
+            var name = el.getAttribute('data-name');
+            if (slotSelections[si].has(name)) {
+              el.classList.add('selected');
+              el.classList.remove('disabled');
+            } else if (selected >= count) {
+              el.classList.remove('selected');
+              el.classList.add('disabled');
+            } else {
+              el.classList.remove('selected');
+              el.classList.remove('disabled');
+            }
+          });
+        }
+
+        // Category collapse/expand
+        overlay.querySelectorAll('.bp-category-header').forEach(function (header) {
+          header.addEventListener('click', function () {
+            this.parentElement.classList.toggle('collapsed');
+          });
+        });
+
+        // Power selection handler
+        overlay.querySelectorAll('.bp-power').forEach(function (el) {
           el.addEventListener('click', function () {
-            var slot = this.getAttribute('data-slot');
+            var si = parseInt(this.getAttribute('data-si'));
+            var name = this.getAttribute('data-name');
             var slotKey = this.getAttribute('data-key');
-            // Deselect others in same slot
-            overlay.querySelectorAll('.boost-option-stacked[data-slot="' + slot + '"]').forEach(function (o) {
-              o.classList.remove('selected');
-            });
-            this.classList.add('selected');
-            selections[slotKey] = {
-              category: this.getAttribute('data-category'),
-              name: this.getAttribute('data-name')
-            };
-            // Check if all slots have selections
-            var allSelected = true;
-            for (var k = 0; k < slots.length; k++) {
-              var kKey = slots[k].source === 'physicalForm' ? 'physicalForm' : slots[k].sourcePowerName;
-              if (!selections[kKey]) { allSelected = false; break; }
+            var count = slots[si].count;
+
+            if (this.classList.contains('disabled')) return;
+
+            if (this.classList.contains('selected')) {
+              // Deselect this power
+              slotSelections[si].delete(name);
+            } else {
+              // Select this power (if under limit)
+              if (slotSelections[si].size < count) {
+                slotSelections[si].add(name);
+              }
             }
-            if (allSelected) {
-              document.getElementById('bonus-power-confirm-btn').classList.add('enabled');
-            }
+            // Update disabled state
+            updateSlotState(si);
           });
         });
 
         // Confirm button
         document.getElementById('bonus-power-confirm-btn').addEventListener('click', function () {
-          generator._selectedBonusPowers = selections;
+          // Build selections object from slotSelections
+          var result = {};
+          for (var si = 0; si < slots.length; si++) {
+            var picks = Array.from(slotSelections[si]);
+            if (slots[si].source === 'physicalForm') {
+              // Physical form bonus powers: store each pick by slot index
+              // so generatorBonusPowerOfPhysicalForm can look up _selectedBonusPowers[slotIndex]
+              for (var pi = 0; pi < picks.length; pi++) {
+                var opt = slots[si].options.find(function (o) { return o.name === picks[pi]; });
+                if (opt) result[pi] = { category: opt.category, name: opt.name };
+              }
+            } else {
+              // Power-list bonus powers: store by power name
+              var slotKey = slots[si].sourcePowerName;
+              if (picks.length === 1) {
+                var opt = slots[si].options.find(function (o) { return o.name === picks[0]; });
+                result[slotKey] = opt ? { category: opt.category, name: opt.name } : null;
+              } else if (picks.length > 1) {
+                result[slotKey] = picks.map(function (n) {
+                  var opt = slots[si].options.find(function (o) { return o.name === n; });
+                  return opt ? { category: opt.category, name: opt.name } : null;
+                }).filter(Boolean);
+              }
+            }
+          }
+          generator._selectedBonusPowers = result;
           overlay.remove();
           resolve();
         });
 
-        // Skip button - use rolling instead
+        // Skip button
         document.getElementById('bonus-power-skip-btn').addEventListener('click', function () {
           generator.selectBonusPowers = false;
           overlay.remove();
@@ -1041,6 +1138,11 @@
         return Promise.resolve();
       }
 
+      // Global limit: minimum of physical form's optionalPowerCount and max power slots
+      var formMax = generator.getOptionalPowerGlobalCount();
+      var slotMax = generator.getMaxOptionalPowerSlots();
+      var globalMax = formMax !== null ? Math.min(formMax, slotMax) : slotMax;
+
       return new Promise(function (resolve) {
         const overlay = document.createElement('div');
         overlay.className = 'boost-modal-overlay';
@@ -1048,7 +1150,16 @@
 
         var html = '<div class="boost-modal">';
         html += '<h2>Select Optional Powers</h2>';
-        html += '<div class="boost-subtitle">Choose optional powers to add. Some powers limit how many you can pick.</div>';
+        html += '<div class="boost-subtitle">Choose optional powers to add.';
+        if (globalMax !== null) {
+          html += ' You may select up to ' + globalMax + ' total.';
+        }
+        html += '</div>';
+
+        // Global counter (shown when physical form has optionalPowerCount)
+        if (globalMax !== null) {
+          html += '<div class="optional-power-global-counter" id="optional-power-global-counter">Total: 0/' + globalMax + ' selected</div>';
+        }
 
         var selections = {};  // keyed by sourcePowerName -> array of {category, name}
 
@@ -1057,9 +1168,8 @@
           var groupKey = group.sourcePowerName;
           selections[groupKey] = [];
 
-          var limitText = group.maxCount < group.options.length
-            ? ' (max ' + group.maxCount + ')'
-            : '';
+          var hasGroupLimit = group.maxCount < group.options.length;
+          var limitText = hasGroupLimit ? ' (max ' + group.maxCount + ')' : '';
           html += '<div class="boost-section-title">' + group.sourcePowerCategory + ' / ' + group.sourcePowerName + limitText + ':</div>';
 
           for (var oi = 0; oi < group.options.length; oi++) {
@@ -1083,6 +1193,47 @@
         document.getElementById('optional-power-modal-container').appendChild(overlay);
         wrapModalContentForScrolling(overlay);
 
+        // Compute total selected across all groups
+        function totalSelected() {
+          var total = 0;
+          for (var k in selections) {
+            total += selections[k].length;
+          }
+          return total;
+        }
+
+        // Update disabled state across ALL groups
+        function updateAllGroups() {
+          var total = totalSelected();
+          var globalAtMax = globalMax !== null && total >= globalMax;
+
+          // Update global counter
+          var globalEl = document.getElementById('optional-power-global-counter');
+          if (globalEl) {
+            globalEl.textContent = 'Total: ' + total + '/' + globalMax + ' selected';
+            globalEl.className = 'optional-power-global-counter' + (globalAtMax ? ' at-limit' : '');
+          }
+
+          // Per-group: update disabled state and cycle when group max reached
+          for (var gi = 0; gi < optionalGroups.length; gi++) {
+            var groupKey = optionalGroups[gi].sourcePowerName;
+            var allOpts = overlay.querySelectorAll('.opt-power-option[data-group="' + groupKey + '"]');
+            var groupMax = allOpts.length > 0 ? parseInt(allOpts[0].getAttribute('data-max'), 10) : 100;
+            var groupCount = selections[groupKey].length;
+            var groupAtMax = groupCount >= groupMax;
+
+            // Disable non-selected options when at group max OR global max
+            allOpts.forEach(function (opt) {
+              var isSel = opt.classList.contains('selected');
+              if ((groupAtMax || globalAtMax) && !isSel) {
+                opt.classList.add('disabled');
+              } else {
+                opt.classList.remove('disabled');
+              }
+            });
+          }
+        }
+
         // Selection handler
         overlay.querySelectorAll('.opt-power-option').forEach(function (el) {
           el.addEventListener('click', function () {
@@ -1091,8 +1242,8 @@
             var category = this.getAttribute('data-category');
             var name = this.getAttribute('data-name');
 
-            // Toggle selection
             var isSelected = this.classList.contains('selected');
+
             if (isSelected) {
               // Deselect
               this.classList.remove('selected');
@@ -1100,26 +1251,20 @@
                 return !(s.category === category && s.name === name);
               });
             } else {
-              // Check if at max
-              if (selections[groupKey].length >= maxCount) {
-                // Remove oldest selection to make room
-                selections[groupKey].shift();
-                // Deselect the oldest visually
-                var allInGroup = overlay.querySelectorAll('.opt-power-option[data-group="' + groupKey + '"]');
-                allInGroup.forEach(function (opt) {
-                  var optCat = opt.getAttribute('data-category');
-                  var optName = opt.getAttribute('data-name');
-                  var stillSelected = selections[groupKey].some(function (s) {
-                    return s.category === optCat && s.name === optName;
-                  });
-                  if (!stillSelected) opt.classList.remove('selected');
-                });
-              }
+              // Check per-group max
+              if (selections[groupKey].length >= maxCount) return;
+              // Check global max
+              if (globalMax !== null && totalSelected() >= globalMax) return;
+
               this.classList.add('selected');
               selections[groupKey].push({ category: category, name: name });
             }
+            updateAllGroups();
           });
         });
+
+        // Initialize disabled state for all groups
+        updateAllGroups();
 
         // Confirm button
         document.getElementById('optional-power-confirm-btn').addEventListener('click', function () {
@@ -1824,7 +1969,39 @@
         // Throw rolls and set tables ONCE before any modals, so all modals
         // and generation use the same rolls.
         generator.throwAllRolls();
+
+        // Apply debug overrides immediately so modals see the overridden rolls
+        if (CharacterGenerator._debugOverrides) {
+          const o = CharacterGenerator._debugOverrides;
+          const rollKeys = [
+            'physicalFormRoll', 'subTypeRoll', 'originRoll',
+            'resourceModifierRoll', 'powerNumberRoll', 'talentNumberRoll',
+            'contactNumberRoll', 'popularityRoll',
+            'weaknessStimulusRoll', 'weaknessEffectRoll',
+            'weaknessDurationRoll', 'weaknessRankRoll',
+          ];
+          for (const key of rollKeys) {
+            if (o[key] !== undefined) generator[key] = o[key];
+          }
+          // Array overrides: set first element
+          const arrayKeys = [
+            'powerCategoryRolls', 'powerRolls',
+            'talentCategoryRolls', 'talentRolls',
+            'contactCategoryRolls', 'contactRolls',
+          ];
+          for (const key of arrayKeys) {
+            if (o[key] !== undefined) generator[key][0] = o[key][0];
+          }
+        }
+
         generator.setTables();
+        // Determine physical form name early so bonus power modal can see it
+        const earlyPhysRow = generator.physicalFormTable.find(
+          (o) => generator.physicalFormRoll <= o.maxRoll,
+        );
+        generator._lastPhysicalForm = earlyPhysRow
+          ? earlyPhysRow.name
+          : (generator.physicalFormTable[0] ? generator.physicalFormTable[0].name : "");
         generator._phase1Complete = true;
 
         // If choosing powers, show modal first
@@ -1925,7 +2102,7 @@
         document.getElementById('advanced-mode-options').style.display = isAdvanced ? 'block' : 'none';
         document.getElementById('ultimate-mode-options').style.display = isUltimate ? 'block' : 'none';
       },
-      runTests: () => {
+      runTests: async () => {
         const unitTests = document.getElementById('run-unit-tests').checked;
         const renderTests = document.getElementById('run-render-tests').checked;
         const bothTests = document.getElementById('run-both-tests').checked;
@@ -1937,9 +2114,71 @@
           Tester.run();
         }
         if (renderTests || bothTests) {
-          const select = document.getElementById('render-tests').value;
-          Tester[select]();
+          // Build debug overrides from the Debug page fields
+          const overrides = {};
+          const fieldMap = {
+            'dbg-phys-form':       'physicalFormRoll',
+            'dbg-sub-type':        'subTypeRoll',
+            'dbg-origin-roll':     'originRoll',
+            'dbg-resource-mod':    'resourceModifierRoll',
+            'dbg-power-num':       'powerNumberRoll',
+            'dbg-talent-num':      'talentNumberRoll',
+            'dbg-contact-num':     'contactNumberRoll',
+            'dbg-popularity':      'popularityRoll',
+            'dbg-weak-stim':       'weaknessStimulusRoll',
+            'dbg-weak-effect':     'weaknessEffectRoll',
+            'dbg-weak-dur':        'weaknessDurationRoll',
+            'dbg-weak-rank':       'weaknessRankRoll',
+          };
+          for (const [elemId, rollKey] of Object.entries(fieldMap)) {
+            const val = document.getElementById(elemId).value;
+            if (val !== "") overrides[rollKey] = parseInt(val, 10);
+          }
+          // Array roll overrides (set first element only)
+          const arrayFieldMap = {
+            'dbg-power-cat':       'powerCategoryRolls',
+            'dbg-power-roll':      'powerRolls',
+            'dbg-talent-cat':      'talentCategoryRolls',
+            'dbg-talent-roll':     'talentRolls',
+            'dbg-contact-cat':     'contactCategoryRolls',
+            'dbg-contact-type':    'contactRolls',
+          };
+          for (const [elemId, arrayKey] of Object.entries(arrayFieldMap)) {
+            const val = document.getElementById(elemId).value;
+            if (val !== "") overrides[arrayKey] = [parseInt(val, 10)];
+          }
+          const seedVal = document.getElementById('dbg-seed').value;
+          if (seedVal !== "") Dice.seed(parseInt(seedVal, 10));
+          CharacterGenerator._debugOverrides = Object.keys(overrides).length > 0 ? overrides : null;
+          try {
+            await app.generate();
+          } finally {
+            CharacterGenerator._debugOverrides = null;
+          }
         }
+      },
+      populateDebugOverrides: () => {
+        // Populate 1-100 dropdowns for debug override fields
+        const fields = [
+          'dbg-phys-form', 'dbg-sub-type', 'dbg-origin-roll',
+          'dbg-resource-mod', 'dbg-power-num', 'dbg-talent-num', 'dbg-contact-num',
+          'dbg-popularity', 'dbg-power-cat', 'dbg-power-roll',
+          'dbg-talent-cat', 'dbg-talent-roll', 'dbg-contact-cat', 'dbg-contact-type',
+          'dbg-weak-stim', 'dbg-weak-effect', 'dbg-weak-dur', 'dbg-weak-rank',
+        ];
+        fields.forEach(id => {
+          const select = document.getElementById(id);
+          const placeholder = document.createElement('option');
+          placeholder.value = "";
+          placeholder.text = "Any";
+          select.appendChild(placeholder);
+          for (let i = 1; i <= 100; i++) {
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.text = i;
+            select.appendChild(opt);
+          }
+        });
       },
       populateRenderTests: () => {
         const tests = Tester.getRenderMethodNames();
@@ -1953,6 +2192,7 @@
       }
     };
 
+    app.populateDebugOverrides();
     app.populateRenderTests();
 
     document.querySelectorAll('input[name="generator"]').forEach(radio => {

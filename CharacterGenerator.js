@@ -1,4 +1,6 @@
 class CharacterGenerator {
+    static _debugOverrides = null;  // { physicalFormRoll, originRoll, ... } — applied during generateWithoutThrows()
+
     rollArraySize = 100;
 
     physicalFormRoll = 0;
@@ -178,6 +180,30 @@ class CharacterGenerator {
         this._assignedContactNames = new Set();
         this._pendingPowerUpgrades = [];
 
+        // Apply debug overrides from Debug & Tests page (used by Render generates)
+        if (CharacterGenerator._debugOverrides) {
+            const o = CharacterGenerator._debugOverrides;
+            const rollKeys = [
+                'physicalFormRoll', 'subTypeRoll', 'originRoll',
+                'resourceModifierRoll', 'powerNumberRoll', 'talentNumberRoll',
+                'contactNumberRoll', 'popularityRoll',
+                'weaknessStimulusRoll', 'weaknessEffectRoll',
+                'weaknessDurationRoll', 'weaknessRankRoll',
+            ];
+            for (const key of rollKeys) {
+                if (o[key] !== undefined) this[key] = o[key];
+            }
+            // Array overrides: set first element
+            const arrayKeys = [
+                'powerCategoryRolls', 'powerRolls',
+                'talentCategoryRolls', 'talentRolls',
+                'contactCategoryRolls', 'contactRolls',
+            ];
+            for (const key of arrayKeys) {
+                if (o[key] !== undefined) this[key][0] = o[key][0];
+            }
+        }
+
         // 1. Determine Physical Form (for Ultimate)
         this.determinePhysicalForm(char);
 
@@ -274,7 +300,6 @@ class CharacterGenerator {
                 "randomRanksColumn",
                 "compoundRandomRanksColumnRoll",
                 "combinationsRoll",
-                "originOfPowerRoll",
                 "anyAbilityAdjustmentRoll",
                 "resourceModifierRoll",
                 "powerNumberRoll",
@@ -367,7 +392,6 @@ class CharacterGenerator {
             this.bodyTypeRolls[i] = Dice.roll100();
         }
         this.originRoll = Dice.roll100();
-        this.originOfPowerRoll = Dice.roll100(); // For Ultimate
 
         this.anyAbilityAdjustmentRoll = Dice.roll100();
         for (let index = 0; index < this.physicalAbilityRolls.length; index++) {
@@ -1910,7 +1934,9 @@ class CharacterGenerator {
         if (this.applyOptionalPowers) {
             value = Utility.getValue(physicalFormRow, "optionalPowers", "");
             if (value !== "") {
-                const optMax = Utility.getValue(physicalFormRow, "optionalPowersMax", 100);
+                // Use optionalPowerCount if set; if absent but optionalPowers exists, default to 1
+                const optMax = Utility.getValue(physicalFormRow, "optionalPowerCount",
+                    value ? 1 : 100);
                 this.generateOptionalPower(char, optMax, value, physicalFormRow.name);
             }
         }
@@ -3168,10 +3194,12 @@ class CharacterGenerator {
                 if (this.applyOptionalPowers) {
                     value = Utility.getValue(powerRow, "optionalPowers", "");
                     if (value !== "") {
+                        // Use optionalPowerCount if set, else optionalPowersMax, else default to 1
                         value = Utility.getValue(
                             powerRow,
-                            "optionalPowersMax",
-                            100,
+                            "optionalPowerCount",
+                            Utility.getValue(powerRow, "optionalPowersMax",
+                                value ? 1 : 100),
                         );
                         this.generateOptionalPower(
                             char,
@@ -3506,7 +3534,11 @@ class CharacterGenerator {
         if (this.applyOptionalPowers) {
             value = Utility.getValue(powerRow, "optionalPowers", "");
             if (value !== "") {
-                value = Utility.getValue(powerRow, "optionalPowersMax", 100);
+                // Use optionalPowerCount if set, else optionalPowersMax, else default to 1
+                value = Utility.getValue(powerRow, "optionalPowerCount",
+                    Utility.getValue(powerRow, "optionalPowersMax",
+                        value ? 1 : 100),
+                );
                 this.generateOptionalPower(
                     char,
                     value,
@@ -3566,45 +3598,49 @@ class CharacterGenerator {
             this._selectedBonusPowers[slotIndex]
         ) {
             const sel = this._selectedBonusPowers[slotIndex];
-            const p = this.powerListTable.find(
-                (c) => c.category === sel.category && c.name === sel.name,
-            );
-            if (p) {
-                const bonusPowerRankColumn =
-                    this.generatorMode === "basic" ? 1 : 3;
-                const rankRoll = this.powerRankRolls[char.powers.length];
-                const rankRow = Utility.findRow(
-                    this,
-                    rankRoll,
-                    bonusPowerRankColumn,
+            // sel may be a single object or an array of objects
+            const picks = Array.isArray(sel) ? sel : [sel];
+            for (const pick of picks) {
+                const p = this.powerListTable.find(
+                    (c) => c.category === pick.category && c.name === pick.name,
                 );
-                if (
-                    rankRow &&
-                    CharacterGenerator._hasRemainingSlots(
-                        char,
-                        CharacterGenerator._safeSlotCount(p),
-                    )
-                ) {
-                    char.powers.push({
-                        category: p.category,
-                        name: p.name,
-                        code: p.code,
-                        description: p.description,
-                        rank: rankRow.rank,
-                        number: rankRow.rankNumber,
-                        powerSlots: CharacterGenerator._safeSlotCount(p),
-                        bonusPower: true,
-                    });
-                    if (this._assignedPowerNames)
-                        this._assignedPowerNames.add(p.name);
-                    char.logRoll(
-                        "Bonus Power Gen",
-                        "Selected",
-                        `${p.category}: ${p.name} (${rankRow.rank})`,
+                if (p) {
+                    const bonusPowerRankColumn =
+                        this.generatorMode === "basic" ? 1 : 3;
+                    const rankRoll = this.powerRankRolls[char.powers.length];
+                    const rankRow = Utility.findRow(
+                        this,
+                        rankRoll,
+                        bonusPowerRankColumn,
                     );
+                    if (
+                        rankRow &&
+                        CharacterGenerator._hasRemainingSlots(
+                            char,
+                            CharacterGenerator._safeSlotCount(p),
+                        )
+                    ) {
+                        char.powers.push({
+                            category: p.category,
+                            name: p.name,
+                            code: p.code,
+                            description: p.description,
+                            rank: rankRow.rank,
+                            number: rankRow.rankNumber,
+                            powerSlots: CharacterGenerator._safeSlotCount(p),
+                            bonusPower: true,
+                        });
+                        if (this._assignedPowerNames)
+                            this._assignedPowerNames.add(p.name);
+                        char.logRoll(
+                            "Bonus Power Gen",
+                            "Selected",
+                            `${p.category}: ${p.name} (${rankRow.rank})`,
+                        );
+                    }
                 }
-                return;
             }
+            return;
         }
 
         // Fall through to rolling logic
@@ -3731,47 +3767,52 @@ class CharacterGenerator {
      * @param {{ category: string, name: string }} selection
      */
     applySelectedBonusPower(char, selection) {
-        if (!selection || !selection.name) return;
-        const p = this.powerListTable.find(
-            (c) =>
-                c.category === selection.category && c.name === selection.name,
-        );
-        if (!p) return;
+        if (!selection) return;
+        // selection may be a single object or an array of objects
+        const picks = Array.isArray(selection) ? selection : [selection];
+        for (const pick of picks) {
+            if (!pick || !pick.name) continue;
+            const p = this.powerListTable.find(
+                (c) =>
+                    c.category === pick.category && c.name === pick.name,
+            );
+            if (!p) continue;
 
-        const startIndex = char.powers.length;
-        let roll = this.powerRolls[startIndex];
-        let indexAdjustment = 1;
-        while (roll > 100) {
-            roll = this.powerRolls[startIndex + indexAdjustment];
-            indexAdjustment++;
-        }
+            const startIndex = char.powers.length;
+            let roll = this.powerRolls[startIndex];
+            let indexAdjustment = 1;
+            while (roll > 100) {
+                roll = this.powerRolls[startIndex + indexAdjustment];
+                indexAdjustment++;
+            }
 
-        const bonusPowerRankColumn = this.generatorMode === "basic" ? 1 : 3;
-        const rankRoll = this.powerRankRolls[startIndex];
-        const rankRow = Utility.findRow(this, rankRoll, bonusPowerRankColumn);
-        if (!rankRow) return;
-        char.logRoll(
-            "Bonus Power Select",
-            "Player Choice",
-            p.category + ": " + p.name + " (" + rankRow.rank + ")",
-        );
+            const bonusPowerRankColumn = this.generatorMode === "basic" ? 1 : 3;
+            const rankRoll = this.powerRankRolls[startIndex];
+            const rankRow = Utility.findRow(this, rankRoll, bonusPowerRankColumn);
+            if (!rankRow) continue;
+            char.logRoll(
+                "Bonus Power Select",
+                "Player Choice",
+                p.category + ": " + p.name + " (" + rankRow.rank + ")",
+            );
 
-        const bonusSlotCount = CharacterGenerator._safeSlotCount(p);
-        if (
-            CharacterGenerator._hasRemainingSlots(char, bonusSlotCount) &&
-            !this.isPowerAlreadyAssigned(char.powers, p)
-        ) {
-            char.powers.push({
-                category: p.category,
-                name: p.name,
-                code: p.code,
-                description: p.description,
-                rank: rankRow.rank,
-                number: rankRow.rankNumber,
-                powerSlots: bonusSlotCount,
-                bonusPower: true,
-            });
-            if (this._assignedPowerNames) this._assignedPowerNames.add(p.name);
+            const bonusSlotCount = CharacterGenerator._safeSlotCount(p);
+            if (
+                CharacterGenerator._hasRemainingSlots(char, bonusSlotCount) &&
+                !this.isPowerAlreadyAssigned(char.powers, p)
+            ) {
+                char.powers.push({
+                    category: p.category,
+                    name: p.name,
+                    code: p.code,
+                    description: p.description,
+                    rank: rankRow.rank,
+                    number: rankRow.rankNumber,
+                    powerSlots: bonusSlotCount,
+                    bonusPower: true,
+                });
+                if (this._assignedPowerNames) this._assignedPowerNames.add(p.name);
+            }
         }
     }
 
@@ -4216,12 +4257,13 @@ class CharacterGenerator {
                         CharacterGenerator.parseBonusPowerOptions(
                             formBonusPower,
                         );
-                    if (allOptions.length > 1) {
+                    const expanded = this._expandBonusPowerAny(allOptions);
+                    if (expanded.length > 1) {
                         return [
                             {
                                 source: "physicalForm",
                                 count: formCount,
-                                options: allOptions,
+                                options: expanded,
                             },
                         ];
                     }
@@ -4247,16 +4289,55 @@ class CharacterGenerator {
             if (!bonusPowerString) continue;
             const options =
                 CharacterGenerator.parseBonusPowerOptions(bonusPowerString);
-            if (options.length <= 1) continue; // Single option — auto-assign, no selection needed
+            const expanded = this._expandBonusPowerAny(options);
+            if (expanded.length <= 1) continue; // Single option — auto-assign, no selection needed
             slots.push({
                 source: "powerList",
                 sourcePowerName: powerRow.name,
                 sourcePowerCategory: powerRow.category,
                 count: count,
-                options: options,
+                options: expanded,
             });
         }
         return slots;
+    }
+
+    /**
+     * Expand "Any" entries in bonus power options to list all powers
+     * in the category. If category is also "Any", list all powers.
+     */
+    _expandBonusPowerAny(options) {
+        if (!this.powerListTable) return options;
+        const expanded = [];
+        for (const opt of options) {
+            if (opt.name === "Any") {
+                if (opt.category === "Any") {
+                    // All powers in all categories
+                    for (const p of this.powerListTable) {
+                        expanded.push({
+                            category: p.category,
+                            name: p.name,
+                            maxRoll: opt.maxRoll,
+                        });
+                    }
+                } else {
+                    // All powers in this specific category
+                    const catPowers = this.powerListTable.filter(
+                        (p) => p.category === opt.category,
+                    );
+                    for (const p of catPowers) {
+                        expanded.push({
+                            category: p.category,
+                            name: p.name,
+                            maxRoll: opt.maxRoll,
+                        });
+                    }
+                }
+            } else {
+                expanded.push(opt);
+            }
+        }
+        return expanded;
     }
 
     /**
@@ -4264,6 +4345,77 @@ class CharacterGenerator {
      * Returns an array of objects: { sourcePowerName, sourcePowerCategory, maxCount, options: [{category, name}] }
      * Each entry represents a power that has optionalPowers defined.
      */
+
+    /**
+     * Get the total number of power slots the character has (before bonus
+     * power subtraction). This is the maximum number of powers the character
+     * can have total.
+     */
+    getTotalPowerCount() {
+        if (!this.physicalFormTable || !this.quantityTable) return 0;
+        const pRoll = Math.max(1, Math.min(100, this.powerNumberRoll || 1));
+        const pQtyRow = this.quantityTable.find((o) => pRoll <= o.maxRoll);
+        if (!pQtyRow) return 0;
+        let powersCount = pQtyRow.powers.initial;
+        const powersMax = pQtyRow.powers.maximum;
+        const physicalFormRow = this.physicalFormTable.find(
+            (r) => r.name === this._lastPhysicalForm,
+        );
+        if (physicalFormRow) {
+            let value = Utility.getValue(physicalFormRow, "powersCountSet", -1);
+            if (value !== -1) {
+                powersCount = value;
+            } else {
+                value = Utility.getValue(physicalFormRow, "powersCountAdjustment", 0);
+                if (value !== 0) powersCount += value;
+                if (powersCount > powersMax) powersCount = powersMax;
+                value = Utility.getValue(physicalFormRow, "powersCountMinimum", -1);
+                if (value !== -1 && value > powersCount) powersCount = value;
+                value = Utility.getValue(physicalFormRow, "powersCountMaximum", -1);
+                if (value !== -1 && value < powersCount) powersCount = value;
+            }
+        }
+        return powersCount;
+    }
+
+    /**
+     * Get the maximum number of optional powers that can be selected, based on
+     * total power slots minus the primary power and bonus powers.
+     */
+    getMaxOptionalPowerSlots() {
+        const total = this.getTotalPowerCount();
+        if (total <= 0) return 0;
+        // 1 slot is always the primary power
+        let slots = total - 1;
+        // Subtract bonus powers (they consume slots but are auto-generated)
+        if (this.physicalFormTable && this._lastPhysicalForm) {
+            const physicalFormRow = this.physicalFormTable.find(
+                (r) => r.name === this._lastPhysicalForm,
+            );
+            if (physicalFormRow) {
+                const bonusCount = Utility.getValue(physicalFormRow, "bonusPowerCount", 0);
+                slots -= bonusCount;
+            }
+        }
+        return Math.max(0, slots);
+    }
+
+    /**
+     * Get the physical form's optionalPowerCount — the global limit on how many
+     * optional powers may be selected across ALL groups in the dialog.
+     * Returns null if the physical form has no optionalPowers.
+     */
+    getOptionalPowerGlobalCount() {
+        if (!this.physicalFormTable || !this._lastPhysicalForm) return null;
+        const physicalFormRow = this.physicalFormTable.find(
+            (r) => r.name === this._lastPhysicalForm,
+        );
+        if (!physicalFormRow) return null;
+        const optPowers = Utility.getValue(physicalFormRow, "optionalPowers", "");
+        if (!optPowers) return null;
+        return Utility.getValue(physicalFormRow, "optionalPowerCount", 1);
+    }
+
     getOptionalPowerOptions() {
         if (!this.powerListTable) return [];
 
@@ -4322,7 +4474,9 @@ class CharacterGenerator {
         if (physicalFormRow) {
             const optPowers = Utility.getValue(physicalFormRow, "optionalPowers", "");
             if (optPowers) {
-                const maxCount = Utility.getValue(physicalFormRow, "optionalPowersMax", 100);
+                // Use optionalPowerCount if set; if absent but optionalPowers exists, default to 1
+                const maxCount = Utility.getValue(physicalFormRow, "optionalPowerCount",
+                    optPowers ? 1 : 100);
                 const allOptions = parseOptionalString(optPowers);
                 if (allOptions.length > 0) {
                     result.push({
@@ -4338,6 +4492,16 @@ class CharacterGenerator {
         // Power list optional powers
         const rolledPowers = this._simulateRolledPowers();
 
+        // Filter out powers that are already rolled (user already has them)
+        const filterRolled = (options) => options.filter(
+            (o) => !rolledPowers.has(o.name),
+        );
+
+        // Filter physical form optional powers against rolled powers too
+        if (result.length > 0 && result[0].sourcePowerCategory === "Physical Form") {
+            result[0].options = filterRolled(result[0].options);
+        }
+
         for (let i = 0; i < this.powerListTable.length; i++) {
             const powerRow = this.powerListTable[i];
             if (!rolledPowers.has(powerRow.name)) continue;
@@ -4345,8 +4509,12 @@ class CharacterGenerator {
             const optionalPowersString = Utility.getValue(powerRow, "optionalPowers", "");
             if (!optionalPowersString) continue;
 
-            const maxCount = Utility.getValue(powerRow, "optionalPowersMax", 100);
-            const allOptions = parseOptionalString(optionalPowersString);
+            // Use optionalPowerCount if set, else optionalPowersMax, else default to 1
+            const maxCount = Utility.getValue(powerRow, "optionalPowerCount",
+                Utility.getValue(powerRow, "optionalPowersMax",
+                    optionalPowersString ? 1 : 100),
+            );
+            const allOptions = filterRolled(parseOptionalString(optionalPowersString));
 
             if (allOptions.length > 0) {
                 result.push({

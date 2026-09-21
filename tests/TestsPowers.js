@@ -616,27 +616,20 @@ const ULTIMATE_BONUS_POWERS = {
 // Each entry: { name, matchBy, type: 'bonusPower'|'optionalPower', alt? }
 // 'alt' = alternative name that also matches (for "or" cases like Telekinesis/Kinetic Bolt).
 const ULTIMATE_OPTIONAL_POWERS = {
+    // Each power gets only the first optionalPower entry — the default
+    // optionalPowerCount is 1 (matching physical form behavior).
     EC3: [
         { name: "Cold Generation", matchBy: "name", type: "bonusPower" },
         { name: "Thermal Control", matchBy: "name", type: "optionalPower" },
-        { name: "Molding", matchBy: "name", type: "optionalPower" },
-        { name: "Body Coating", matchBy: "name", type: "optionalPower" },
     ],
     EC7: [
         { name: "Energy Emission", matchBy: "category", type: "optionalPower" },
-        { name: "Hard Radiation", matchBy: "name", type: "optionalPower" },
     ],
     EC10: [
         { name: "Fire Generation", matchBy: "name", type: "optionalPower" },
-        { name: "Thermal Control", matchBy: "name", type: "optionalPower" },
-        { name: "Energy Sheath", matchBy: "name", type: "optionalPower" },
-        { name: "Energy Body", matchBy: "name", type: "optionalPower" },
     ],
     EC12: [
         { name: "Hard Radiation", matchBy: "name", type: "optionalPower" },
-        { name: "Energy Doppelganger", matchBy: "name", type: "optionalPower" },
-        { name: "Energy Sheath", matchBy: "name", type: "optionalPower" },
-        { name: "Energy Body", matchBy: "name", type: "optionalPower" },
     ],
     EC13: [
         {
@@ -654,100 +647,54 @@ const ULTIMATE_OPTIONAL_POWERS = {
     ],
     EC14: [
         { name: "Light Emission", matchBy: "name", type: "optionalPower" },
-        { name: "Energy Sheath", matchBy: "name", type: "optionalPower" },
-        { name: "Carrier Wave", matchBy: "name", type: "optionalPower" },
-        { name: "Illusion Casting", matchBy: "name", type: "optionalPower" },
     ],
     EC16: [
         { name: "Plasma Generation", matchBy: "name", type: "optionalPower" },
-        { name: "Energy Doppelganger", matchBy: "name", type: "optionalPower" },
-        { name: "Energy Sheath", matchBy: "name", type: "optionalPower" },
-        { name: "Energy Body", matchBy: "name", type: "optionalPower" },
     ],
     EC17: [
         { name: "Radiowave Generation", matchBy: "name", type: "bonusPower" },
         { name: "Energy Doppelganger", matchBy: "name", type: "optionalPower" },
-        { name: "Energy Sheath", matchBy: "name", type: "optionalPower" },
-        { name: "Carrier Wave", matchBy: "name", type: "optionalPower" },
     ],
     EC18: [
         { name: "Shadowcasting", matchBy: "name", type: "bonusPower" },
         { name: "Light Control", matchBy: "name", type: "optionalPower" },
-        { name: "Energy Sheath", matchBy: "name", type: "optionalPower" },
-        { name: "Energy Body", matchBy: "name", type: "optionalPower" },
     ],
     EC19: [
         { name: "Sonic Generation", matchBy: "name", type: "bonusPower" },
         { name: "Vibration", matchBy: "name", type: "optionalPower" },
-        { name: "Vibration Control", matchBy: "name", type: "optionalPower" },
     ],
     EC20: [
         { name: "Heat", matchBy: "name", type: "optionalPower" },
-        { name: "Fire Generation", matchBy: "name", type: "optionalPower" },
-        { name: "Cold Generation", matchBy: "name", type: "optionalPower" },
-        { name: "Fire Control", matchBy: "name", type: "optionalPower" },
-        { name: "Coldshaping", matchBy: "name", type: "optionalPower" },
     ],
     EC21: [
         { name: "Vibration", matchBy: "name", type: "optionalPower" },
-        { name: "Sonic Generation", matchBy: "name", type: "optionalPower" },
-        { name: "Sound Manipulation", matchBy: "name", type: "optionalPower" },
     ],
     EE1: [
         { name: "Coldshaping", matchBy: "name", type: "optionalPower" },
-        {
-            name: "Energy Solidification",
-            matchBy: "name",
-            type: "optionalPower",
-        },
-        { name: "Molding", matchBy: "name", type: "optionalPower" },
     ],
     EE7: [
         { name: "Kinetic Control", matchBy: "name", type: "optionalPower" },
-        { name: "Telekinesis", matchBy: "name", type: "optionalPower" },
     ],
     EE11: [
         { name: "Radiowave Control", matchBy: "name", type: "optionalPower" },
-        { name: "Energy Sheath", matchBy: "name", type: "optionalPower" },
-        { name: "Carrier Wave", matchBy: "name", type: "optionalPower" },
     ],
     EE12: [
         { name: "Shadowshaping", matchBy: "name", type: "optionalPower" },
-        {
-            name: "Darkforce Manipulation",
-            matchBy: "name",
-            type: "optionalPower",
-        },
     ],
     EE13: [
         { name: "Sound Manipulation", matchBy: "name", type: "optionalPower" },
-        { name: "Vibration", matchBy: "name", type: "optionalPower" },
-        { name: "Vibration Control", matchBy: "name", type: "optionalPower" },
     ],
     EE14: [
         { name: "Vibration Control", matchBy: "name", type: "optionalPower" },
-        { name: "Sonic Generation", matchBy: "name", type: "optionalPower" },
     ],
     F2: [
         { name: "Iron Will", matchBy: "name", type: "optionalPower" },
-        { name: "Weapons Creation", matchBy: "name", type: "optionalPower" },
     ],
     I1: [
         {
             name: "Telescopic Vision",
             matchBy: "name-or",
             alt: "Clairvoyance",
-            type: "optionalPower",
-        },
-        {
-            name: "Energy Solidification",
-            matchBy: "name",
-            type: "optionalPower",
-        },
-        {
-            name: "Elemental Creation",
-            matchBy: "name-or",
-            alt: "Molecular Creation",
             type: "optionalPower",
         },
     ],

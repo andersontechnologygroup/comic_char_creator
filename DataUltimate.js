@@ -381,6 +381,7 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
         column: 5,
         bonusPowerCount: 1,
         bonusPower: "Energy Emission\\Any(100)",
+        optionalPowerCount: 1,
         optionalPowers: "Energy Control\\Any(100)",
         description:
             "The hero is a field of coherent energy. The basis for this can be any Energy form found in the Energy Emission and Control sections.  ",
@@ -1037,7 +1038,6 @@ const POWER_LIST_ULTIMATE_TABLE = [
         code: "EC4",
         maxRoll: 18,
         name: "Darkforce Manipulation",
-
         description:
             'The hero can generate and control the extra-dimensional energy-form known as "Darkforce". This resembles a tangible, impenetrable shadow.',
     },
@@ -1074,7 +1074,6 @@ const POWER_LIST_ULTIMATE_TABLE = [
         code: "EC8",
         maxRoll: 36,
         name: "Energy Sponge",
-
         description:
             "The hero can absorb any form of energy, whether natural or Power-based, and not suffer any damage. This stored energy can be released at any time the hero desires. The hero may also choose to harmlessly dissipate the energy over a long period. If he attempts to absorb more than his limit, he may suffer physical damage.",
     },
@@ -1083,7 +1082,6 @@ const POWER_LIST_ULTIMATE_TABLE = [
         code: "EC9",
         maxRoll: 38,
         name: "Energy Vampirism",
-
         description:
             "The hero can drain the energy from a target and convert that energy into extra Strength, Endurance, Psyche, and other Powers he possesses. Powers that do not emit energy cannot be affected by this Power. The drained energy is added in equal amounts to the Vampire's Strength, Endurance, Psyche, and any other Powers he possesses. The exception is this Power; no Vampire of any type can increase his own Power.  Energy Vampirism is communicable.",
     },
@@ -1092,7 +1090,6 @@ const POWER_LIST_ULTIMATE_TABLE = [
         code: "EC10",
         maxRoll: 45,
         name: "Fire Control",
-
         optionalPowers:
             "Energy Emission\\Fire Generation|Energy Control\\Thermal Control|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
         description:
@@ -1103,7 +1100,6 @@ const POWER_LIST_ULTIMATE_TABLE = [
         code: "EC11",
         maxRoll: 49,
         name: "Gravity Manipulation",
-
         description:
             "The hero can control gravity, the force that attracts all particles to all other particles. Gravity always exists wherever there is tangible matter. This effect may be centered on himself or projected onto a target.",
     },
@@ -1112,7 +1108,6 @@ const POWER_LIST_ULTIMATE_TABLE = [
         code: "EC12",
         maxRoll: 53,
         name: "Hard Radiation Control",
-
         optionalPowers:
             "Energy Emission\\Hard Radiation|Energy Emission\\Energy Doppelganger|Self-Alteration\\Energy Sheath|Self-Alteration\\Energy Body",
         description:
