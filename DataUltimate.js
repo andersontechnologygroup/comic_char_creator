@@ -57,7 +57,7 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
         anyPrimaryAbilityAdjustment: 1,
         popularityAdjustment: -1,
         bonusContactCount: 1,
-        bonusContact: "Scientific/Laboratory(100)",
+        bonusContact: "Scientific/Any(100)",
         description:
             "These are artificially created organic beings. An android is made of laboratory-created protoplasm and grows to maturity in an artificial womb. More intricately made Androids can actually interbreed with Normal Humans.",
     },
@@ -68,7 +68,7 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
         anyPrimaryAbilityAdjustment: 1,
         resourcesStart: 3 /* Poor */,
         bonusContactCount: 1,
-        bonusContact: "Political/Race(100)",
+        bonusContact: "Political/Planetary(100)",
         description:
             'The hero is a normal member of a human-like race from "somewhere else." This may be another world, era, dimension, or lost land hidden somewhere on the Earth. Most can pass as Normal Humans with a little disguise or explanation. ',
     },
@@ -91,7 +91,7 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
         name: "Modified Human - Organic",
         column: 1,
         bonusContactCount: 1,
-        bonusContact: "Scientific/Laboratory(100)",
+        bonusContact: "Scientific/Any(100)",
         description:
             "This is someone who started life as a Normal Human and was later altered by some means. The change affected his body on a physical level but did not alter his DNA. Genetically, the hero is still very much human and cannot pass on his Powers to his descendants.  The hero's internal organs and nervous system have been altered.  Organics heal twice as fast as Normal Humans.",
     },
@@ -102,7 +102,7 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
         enduranceAdjustment: 1,
         strengthAdjustment: 1,
         bonusContactCount: 1,
-        bonusContact: "Scientific/Laboratory(100)",
+        bonusContact: "Scientific/Any(100)",
         description:
             "This is someone who started life as a Normal Human and was later altered by some means. The change affected his body on a physical level but did not alter his DNA. Genetically, the hero is still very much human and cannot pass on his Powers to his descendants. Muscular Modification is easy to detect; just look for a person with outrageous muscular development.",
     },
@@ -111,7 +111,7 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
         name: "Modified Human - Skeletal",
         column: 1,
         bonusContactCount: 1,
-        bonusContact: "Scientific/Laboratory(100)",
+        bonusContact: "Scientific/Any(100)",
         description:
             "This is someone who started life as a Normal Human and was later altered by some means. The change affected his body on a physical level but did not alter his DNA. Genetically, the hero is still very much human and cannot pass on his Powers to his descendants.  The hero's original skeletal structure has been replaced or augmented by artificial means.  Skeletals gain + 1CS Resistance to Physical Attacks.",
     },
@@ -223,7 +223,7 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
         column: 2,
         intuitionAdjustment: -1,
         bonusContactCount: 1,
-        bonusContact: "Scientific/Laboratory(100)",
+        bonusContact: "Scientific/Any(100)",
         description:
             "The hero began as a Normal Human but has had parts of his body replaced by artificial devices.  ",
     },
@@ -232,7 +232,7 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
         name: "Cyborg - Exoskeleton",
         column: 2,
         bonusContactCount: 1,
-        bonusContact: "Scientific/Laboratory(100)",
+        bonusContact: "Scientific/Any(100)",
         description:
             "The hero's body is intact but is encased in a mechanical suit that provides him with life-support and Powers. The natural and artificial bodies exist in symbiosis. ",
     },
@@ -243,7 +243,7 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
         intuitionAdjustment: -1,
         psycheAdjustment: -1,
         bonusContactCount: 1,
-        bonusContact: "Scientific/Laboratory(100)",
+        bonusContact: "Scientific/Any(100)",
         description:
             "The only part of the hero's original body that remains is his brain and the nervous system. This is housed in a special life-support module that fills most of the brain's needs (oxygen, blood, nutrients). The life-support module is mated with a mechanical form that serves the brain as its new body. The nervous system is directly linked with the machine's control circuits, allowing both control and sensory feedback.  Mech Bodies have Monstrous Resistance to Disease and Poisons of all sorts.",
     },
@@ -254,7 +254,7 @@ const PHYSICAL_FORM_ULTIMATE_TABLE = [
         powersCountAdjustment: -1,
         resourcesSet: 8, /* Good */
         bonusContactCount: 1,
-        bonusContact: "Scientific/Laboratory(100)",
+        bonusContact: "Scientific/Any(100)",
         description:
             "This is a Cyborg who still has all his original (human) equipment but carries some options inside. Unused spaces in his body are now filled with various useful devices. These can be directly controlled through the nervous system. It is these devices that give the hero his Powers.",
     },

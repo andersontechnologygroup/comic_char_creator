@@ -62,6 +62,7 @@ class CharacterGenerator {
     choosePowerInsteadOfRandom = false;
     wellEstablished = false;
     looksHuman = false;
+    buildMode = "random"; // "random" or "selected"
 
     generatorMode = "basic";
     _preSelectedPowers = null; // Array of { category, powerName } for Choose mode

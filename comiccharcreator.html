@@ -11,7 +11,7 @@
 <body>
 
   <header>
-    <h1>Super Hero Character Generator v3.2.1</h1>
+    <h1>Super Hero Character Generator v3.3.0</h1>
   </header>
 
   <div class="tabs-container no-print">
@@ -25,7 +25,7 @@
     <div id="tab-generate" class="tab-content active">
       <div style="display: flex; gap: 10px; justify-content: center;">
         <button class="action-btn" onclick="app.generate()">🎲 Generate New Hero</button>
-        <button class="action-btn" onclick="window.print()">🖨️ Print Hero Sheet</button>
+        <button class="action-btn" onclick="printHeroSheet()">🖨️ Print Hero Sheet</button>
       </div>
       <p style="text-align: center; font-size: 0.85em; color: #666; margin-top: 10px;">
         Adjust settings in the "Options" tab to change generation logic.
@@ -41,6 +41,13 @@
         <label for="generator_advanced">Advanced</label>
         <input type="radio" name="generator" id="generator_ultimate" value="ultimate" checked />
         <label for="generator_ultimate">Ultimate</label>
+      </div>
+      <div class="control-group">
+        <label>Build Mode:</label>
+        <input type="radio" name="build_mode" id="build_mode_random" value="random"  />
+        <label for="build_mode_random">Generated</label>
+        <input type="radio" name="build_mode" id="build_mode_selected" value="selected" checked />
+        <label for="build_mode_selected">Manual</label>
       </div>
       <div class="control-group">
         <label>Display Mode:</label>
@@ -82,18 +89,18 @@
           <label for="looks_human">Looks Human</label>
         </div>
         <div class="control-group">
-          <label>Contacts:</label>
+          <label>Number of Contacts:</label>
           <input type="radio" name="contacts_mode" id="contacts_equals_powers" checked />
-          <label for="contacts_equals_powers">Equals Number of Powers</label>
+          <label for="contacts_equals_powers">Same as Powers</label>
           <input type="radio" name="contacts_mode" id="contacts_random" />
-          <label for="contacts_random">Randomly Generated</label>
+          <label for="contacts_random">Generated</label>
         </div>
         <div class="control-group">
           <label>Power Selection:</label>
           <input type="radio" name="power_selection" id="power_choose" checked />
-          <label for="power_choose">Choose from Category</label>
+          <label for="power_choose">Selected</label>
           <input type="radio" name="power_selection" id="power_random" />
-          <label for="power_random">Randomly Generated</label>
+          <label for="power_random">Generated</label>
         </div>
         <div id="power-category-preview" class="power-category-preview" style="display:none;">
           <label><strong>Power Categories (determined by rolls):</strong></label>
@@ -109,28 +116,28 @@
           <input type="radio" name="hi_tech" id="hi_tech_good" checked />
           <label for="hi_tech_good">Set to Good</label>
           <input type="radio" name="hi_tech" id="hi_tech_roll" />
-          <label for="hi_tech_roll">Roll Randomly</label>
+          <label for="hi_tech_roll">Generated</label>
         </div>
         <div class="control-group">
-          <label>For Bonus Powers:</label>
+          <label>Bonus Powers:</label>
           <input type="radio" name="bonus_power_select" id="bonus_power_select" checked />
-          <label for="bonus_power_select">Select Bonus Powers</label>
+          <label for="bonus_power_select">Selected</label>
           <input type="radio" name="bonus_power_select" id="bonus_power_roll" />
-          <label for="bonus_power_roll">Roll for Bonus Powers</label>
+          <label for="bonus_power_roll">Generated</label>
         </div>
         <div class="control-group">
-          <label>Talent Groups:</label>
+          <label>Talents:</label>
           <input type="radio" name="talent_select" id="talent_select_manual" />
-          <label for="talent_select_manual">Select Talent Manually</label>
+          <label for="talent_select_manual">Selected</label>
           <input type="radio" name="talent_select" id="talent_select_roll" checked />
-          <label for="talent_select_roll">Roll Talent</label>
+          <label for="talent_select_roll">Generated</label>
         </div>
         <div class="control-group">
-          <label>Contact Selection:</label>
+          <label>Contacts:</label>
           <input type="radio" name="contact_select" id="contact_select_manual" />
-          <label for="contact_select_manual">Select Contact Types</label>
+          <label for="contact_select_manual">Selected</label>
           <input type="radio" name="contact_select" id="contact_select_roll" checked />
-          <label for="contact_select_roll">Roll Contact Types</label>
+          <label for="contact_select_roll">Generated</label>
         </div>
       </div>
       <div id="ultimate-mode-options" class="ultimate-mode-options" style="display: none;">
@@ -140,44 +147,44 @@
         <div class="control-group">
           <label>Physical Form:</label>
           <input type="radio" name="physical_form_select" id="physical_form_select" checked />
-          <label for="physical_form_select">Select Sub Form</label>
+          <label for="physical_form_select">Selected</label>
           <input type="radio" name="physical_form_select" id="physical_form_roll" />
-          <label for="physical_form_roll">Roll Sub Form</label>
+          <label for="physical_form_roll">Generated</label>
         </div>
         <div class="control-group">
           <label>Hi-Tech Resource Logic:</label>
           <input type="radio" name="hi_tech_ultimate" id="hi_tech_good_ultimate" checked />
           <label for="hi_tech_good_ultimate">Set to Good</label>
           <input type="radio" name="hi_tech_ultimate" id="hi_tech_roll_ultimate" />
-          <label for="hi_tech_roll_ultimate">Roll Randomly</label>
+          <label for="hi_tech_roll_ultimate">Generated</label>
         </div>
         <div class="control-group">
-          <label>For Bonus Powers:</label>
+          <label>Bonus Powers:</label>
           <input type="radio" name="bonus_power_select_ultimate" id="bonus_power_select_ultimate" checked />
-          <label for="bonus_power_select_ultimate">Select Bonus Powers</label>
+          <label for="bonus_power_select_ultimate">Selected</label>
           <input type="radio" name="bonus_power_select_ultimate" id="bonus_power_roll_ultimate" />
-          <label for="bonus_power_roll_ultimate">Roll for Bonus Powers</label>
+          <label for="bonus_power_roll_ultimate">Generated</label>
         </div>
         <div class="control-group">
-          <label>Talent Groups:</label>
+          <label>Talents:</label>
           <input type="radio" name="talent_groups_select_ultimate" id="talent_groups_select_manual_ultimate" checked />
-          <label for="talent_groups_select_manual_ultimate">Select Talent Manually</label>
+          <label for="talent_groups_select_manual_ultimate">Selected</label>
           <input type="radio" name="talent_groups_select_ultimate" id="talent_groups_select_roll_ultimate" />
-          <label for="talent_groups_select_roll_ultimate">Roll Talent</label>
+          <label for="talent_groups_select_roll_ultimate">Generated</label>
         </div>
         <div class="control-group">
-          <label>Contact Selection:</label>
+          <label>Contacts:</label>
           <input type="radio" name="contact_select_ultimate" id="contact_select_manual_ultimate" checked />
-          <label for="contact_select_manual_ultimate">Select Contact Types</label>
+          <label for="contact_select_manual_ultimate">Selected</label>
           <input type="radio" name="contact_select_ultimate" id="contact_select_roll_ultimate" />
-          <label for="contact_select_roll_ultimate">Roll Contact Types</label>
+          <label for="contact_select_roll_ultimate">Generated</label>
         </div>
         <div class="control-group">
-          <label>Apply all Optional Powers:</label>
+          <label>Optional Powers:</label>
           <input type="radio" name="optional_powers" id="optional_powers_manual" checked />
-          <label for="optional_powers_manual">Manually Select Optional Powers</label>
+          <label for="optional_powers_manual">Manually Selected</label>
           <input type="radio" name="optional_powers" id="optional_powers_apply" />
-          <label for="optional_powers_apply">Apply all Optional Powers</label>
+          <label for="optional_powers_apply">All Applied</label>
         </div>
         <div class="control-group">
           <label>Talent Selection:</label>
@@ -332,10 +339,152 @@
       { name: "Psyche", maxRoll: 100 },
     ];
 
+    // --- HERO NAME (editable in both Generated and Manual build modes) ---
+    function escapeHeroName(v) {
+      return String(v == null ? '' : v)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // Renders the editable hero name plus a print-only mirror of it.
+    // The print stylesheet hides inputs (.build-select) and shows .build-text,
+    // so the printed sheet always shows the latest typed name.
+    function heroNameHtml(currentName) {
+      const name = currentName == null ? '' : String(currentName);
+      return '<input type="text" id="hero-name-input" class="build-select hero-name-input" placeholder="Enter Name" value="' +
+        escapeHeroName(name) + '" oninput="onHeroNameInput(this.value)">' +
+        '<span class="build-text hero-name-print">' + escapeHeroName(name) + '</span>';
+    }
+
+    // Keep the character model, build selections and the print mirror in sync.
+    function onHeroNameInput(value) {
+      if (typeof Renderer !== 'undefined' && Renderer._char) Renderer._char.name = value;
+      if (typeof BuildModeRenderer !== 'undefined' && BuildModeRenderer._selections) BuildModeRenderer._selections.name = value;
+      const mirrors = document.querySelectorAll('.hero-name-print');
+      for (let i = 0; i < mirrors.length; i++) mirrors[i].textContent = value;
+    }
+
+    // --- PRINT VALIDATION (Build/Manual mode) ---
+    // true while the Build Manual sheet is what's currently displayed
+    var _sheetIsManual = false;
+
+    // Every required field outside Powers/Talents/Contacts must be filled.
+    // Those three are line-based: a fully blank line is fine, but once any
+    // part of a line is populated, every part of it must be populated.
+    function validateBuildSheet() {
+      var issues = [];
+      var s = BuildModeRenderer._selections;
+      if (!s || !s._initialized) return issues;
+      function filled(v) { return v !== undefined && v !== null && String(v).trim() !== ''; }
+
+      // Hero name (text field on the sheet)
+      var nameEl = document.getElementById('hero-name-input');
+      if (nameEl && !filled(nameEl.value)) issues.push('Name is required.');
+
+      // Required dropdowns outside Powers/Talents/Contacts
+      var need = [];
+      if (document.getElementById('bm-physform')) need.push(['Physical Form', s.physicalForm]);
+      need.push(['Origin', s.origin]);
+      need.push(['Identity', s.identity]);
+      var faserip = ['Fighting', 'Agility', 'Strength', 'Endurance', 'Reason', 'Intuition', 'Psyche'];
+      for (var fi = 0; fi < faserip.length; fi++) {
+        need.push([faserip[fi] + ' rank', s.abilities ? s.abilities[faserip[fi]] : '']);
+      }
+      need.push(['Resources', s.resources]);
+      need.push(['Popularity', s.popularity]);
+      if (document.getElementById('bm-stimulus')) {
+        need.push(['Weakness Stimulus', s.stimulus]);
+        need.push(['Weakness Effect', s.effect]);
+        need.push(['Weakness Duration', s.duration]);
+        if (s.stimulus === 'Finite Limit') need.push(['Weakness Rank', s.weaknessRank]);
+      }
+      for (var ni = 0; ni < need.length; ni++) {
+        if (!filled(need[ni][1])) issues.push(need[ni][0] + ' is required.');
+      }
+
+      // Powers: Category, Power and Rank — all three or none, per line
+      for (var pi = 0; pi < (s.powers || []).length; pi++) {
+        var p = s.powers[pi];
+        var pvals = [['Category', p.category], ['Power', p.name], ['Rank', p.rank]];
+        var pMissing = pvals.filter(function(v) { return !filled(v[1]); });
+        if (pMissing.length === 0 || pMissing.length === pvals.length) continue;
+        var pHint = filled(p.category) ? ' (' + p.category + ')' : '';
+        issues.push('Power line ' + (pi + 1) + pHint + ': missing ' +
+          pMissing.map(function(v) { return v[0]; }).join(', ') + '.');
+      }
+
+      // Talents: Category and Talent — both or none, per line
+      for (var ti = 0; ti < (s.talents || []).length; ti++) {
+        var t = s.talents[ti];
+        var tvals = [['Category', t.category], ['Talent', t.name]];
+        var tMissing = tvals.filter(function(v) { return !filled(v[1]); });
+        if (tMissing.length === 0 || tMissing.length === tvals.length) continue;
+        issues.push('Talent line ' + (ti + 1) + ': missing ' +
+          tMissing.map(function(v) { return v[0]; }).join(', ') + '.');
+      }
+
+      // Contacts: Name, Category and Contact Type — all three or none, per line
+      for (var ci = 0; ci < (s.contacts || []).length; ci++) {
+        var c = s.contacts[ci];
+        var cvals = [['Name', c.contactName], ['Category', c.category], ['Contact Type', c.name]];
+        var cMissing = cvals.filter(function(v) { return !filled(v[1]); });
+        if (cMissing.length === 0 || cMissing.length === cvals.length) continue;
+        issues.push('Contact line ' + (ci + 1) + ': missing ' +
+          cMissing.map(function(v) { return v[0]; }).join(', ') + '.');
+      }
+
+      return issues;
+    }
+
+    // Modal telling the user exactly what's missing (print is not started)
+    function showBuildValidationDialog(issues) {
+      var old = document.getElementById('build-validation-overlay');
+      if (old && old.parentNode) old.parentNode.removeChild(old);
+      var overlay = document.createElement('div');
+      overlay.className = 'physical-form-overlay';
+      overlay.id = 'build-validation-overlay';
+      var listHtml = '';
+      for (var i = 0; i < issues.length; i++) {
+        listHtml += '<li>' + escapeHeroName(issues[i]) + '</li>';
+      }
+      overlay.innerHTML =
+        '<div class="physical-form-modal">' +
+        '<h2>Incomplete Character Sheet</h2>' +
+        '<div class="physical-form-content">' +
+        '<p class="physical-form-subtitle">Fix the following before printing:</p>' +
+        '<ul style="text-align: left; padding-left: 20px;">' + listHtml + '</ul>' +
+        '</div>' +
+        '<div class="physical-form-actions">' +
+        '<button class="physical-form-confirm-btn enabled" id="build-validation-close">OK</button>' +
+        '</div></div>';
+      document.body.appendChild(overlay);
+      var close = document.getElementById('build-validation-close');
+      if (close) close.addEventListener('click', function() {
+        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+      });
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+      });
+    }
+
+    // Print Hero Sheet: validate the Build Manual sheet first; the print
+    // dialog only opens when everything required has been filled in.
+    function printHeroSheet() {
+      if (!_sheetIsManual) { window.print(); return; }
+      var issues = validateBuildSheet();
+      if (issues.length === 0) { window.print(); return; }
+      showBuildValidationDialog(issues);
+    }
+
     // --- CLASSES ---
     class Renderer {
+      static _char = null;
       static render(char, mode) {
         const display = document.getElementById('display-area');
+        Renderer._char = char;
+        _sheetIsManual = false;
 
         const isBasic = mode === 'basic';
         const isAdvanced = mode === 'advanced';
@@ -366,7 +515,7 @@
         if (!isUltimate) {
           html += `
                 <div class="info-header">
-                    <div class="info-item"><span>Name</span> ${char.name}</div>
+                    <div class="info-item"><span>Name</span> ${heroNameHtml(char.name)}</div>
                     <div class="info-item"><span>Origin</span> ${char.physicalForm}</div>
                     <div class="info-item"><span>Identity</span> ${char.identity}</div>
                 </div>`;
@@ -381,7 +530,7 @@
 
           html += `
                 <div class="${infoHeader}">
-                    <div class="info-item"><span>Name</span> ${char.name}</div>
+                    <div class="info-item"><span>Name</span> ${heroNameHtml(char.name)}</div>
                     <div class="info-item"><span>Physical Form</span> ${physicalForm}</div>
                     <div class="info-item"><span>Origin</span> ${char.origin}</div>
                     <div class="info-item"><span>Identity</span> ${char.identity}</div>
@@ -531,6 +680,1182 @@
             </div>
         `;
         display.innerHTML = html;
+      }
+    }
+
+    // --- BUILD MODE RENDERER ---
+    // Replaces character sheet text with dropdowns for "Selected" build mode.
+    class BuildModeRenderer {
+      static _selections = {};
+      static _generator = null;
+      static _mode = null;
+      static _char = null;
+
+      static _sel(id, options, currentVal, placeholder, disabled) {
+        const titleAttr = currentVal ? ' title="' + String(currentVal).replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '"' : '';
+        let h = '<select id="' + id + '" class="build-select"' + titleAttr + (disabled ? ' disabled' : '') + ' onchange="BuildModeRenderer._onChange()">';
+        if (placeholder) {
+          const phSel = (!currentVal) ? ' selected' : '';
+          h += '<option value=""' + phSel + '>' + placeholder + '</option>';
+        }
+        for (let i = 0; i < options.length; i++) {
+          const v = typeof options[i] === 'string' ? options[i] : options[i].name;
+          const sel = v === currentVal ? ' selected' : '';
+          h += '<option value="' + v.replace(/"/g, '&quot;') + '"' + sel + '>' + v + '</option>';
+        }
+        h += '</select>';
+        h += '<span class="build-text">' + (currentVal || (placeholder ? '' : '')) + '</span>';
+        return h;
+      }
+
+      static _rankOpts() {
+        const gen = BuildModeRenderer._generator;
+        return gen.randomRanksTable.map(function(r) { return r.rank; });
+      }
+
+      static _physFormOpts() {
+        const gen = BuildModeRenderer._generator;
+        const opts = [];
+        for (let i = 0; i < gen.physicalFormTable.length; i++) {
+          const row = gen.physicalFormTable[i];
+          const subType = Utility.getValue(row, 'subType', -1);
+          if (typeof subType === 'string' && subType) {
+            const parts = subType.split('|');
+            for (let j = 0; j < parts.length; j++) {
+              const name = parts[j].split('(')[0];
+              opts.push({ name: row.name + ' (' + name + ')', formName: row.name, subType: name });
+            }
+          } else {
+            opts.push({ name: row.name, formName: row.name, subType: '' });
+          }
+        }
+        return opts;
+      }
+
+      static _powerCatOpts() {
+        return BuildModeRenderer._generator.powerCategoriesTable.map(function(r) { return r.name; });
+      }
+
+      static _powerOpts(category, excludeNames) {
+        var opts = BuildModeRenderer._generator.powerListTable
+          .filter(function(p) { return p.category === category; })
+          .map(function(p) { return p.name; });
+        if (excludeNames && excludeNames.length > 0) {
+          opts = opts.filter(function(n) { return excludeNames.indexOf(n) === -1; });
+        }
+        return opts;
+      }
+
+      static _talentCatOpts() {
+        const cats = [];
+        const seen = {};
+        for (let i = 0; i < BuildModeRenderer._generator.talentListTable.length; i++) {
+          const c = BuildModeRenderer._generator.talentListTable[i].category;
+          if (!seen[c]) { seen[c] = true; cats.push(c); }
+        }
+        return cats;
+      }
+
+      static _talentOpts(category, excludeNames) {
+        var opts = BuildModeRenderer._generator.talentListTable
+          .filter(function(t) { return t.category === category; })
+          .map(function(t) { return t.name; });
+        if (excludeNames && excludeNames.length > 0) {
+          opts = opts.filter(function(n) { return excludeNames.indexOf(n) === -1; });
+        }
+        return opts;
+      }
+
+      static _contactCatOpts() {
+        const cats = [];
+        const seen = {};
+        for (let i = 0; i < BuildModeRenderer._generator.contactTypeListTable.length; i++) {
+          const c = BuildModeRenderer._generator.contactTypeListTable[i].category;
+          if (!seen[c]) { seen[c] = true; cats.push(c); }
+        }
+        return cats;
+      }
+
+      static _contactOpts(category) {
+        return BuildModeRenderer._generator.contactTypeListTable
+          .filter(function(c) { return c.category === category; })
+          .map(function(c) { return c.name; });
+      }
+
+      static _originOpts() {
+        return BuildModeRenderer._generator.originTable.map(function(r) { return r.name; });
+      }
+
+      static _stimulusOpts() {
+        var gen = BuildModeRenderer._generator;
+        if (!gen.weaknessStimulusTable) return [];
+        return gen.weaknessStimulusTable.map(function(r) { return r.name; });
+      }
+
+      static _effectOpts() {
+        var gen = BuildModeRenderer._generator;
+        if (!gen.weaknessEffectTable) return [];
+        return gen.weaknessEffectTable.map(function(r) { return r.name; });
+      }
+
+      static _durationOpts() {
+        var gen = BuildModeRenderer._generator;
+        if (!gen.weaknessDurationTable) return [];
+        return gen.weaknessDurationTable.map(function(r) { return r.name; });
+      }
+
+      static render(generator, char, mode) {
+        BuildModeRenderer._generator = generator;
+        BuildModeRenderer._mode = mode;
+        BuildModeRenderer._char = char;
+        _sheetIsManual = true;
+
+        const s = BuildModeRenderer._selections;
+        if (!s._initialized) {
+          s.physicalForm = char.physicalForm + (char.subType ? ' (' + char.subType + ')' : '');
+          s.origin = char.origin;
+          s.identity = char.identity;
+          s.name = null; // null = not user-edited yet; fall back to char.name
+          s.abilities = {};
+          for (const ab of ['Fighting','Agility','Strength','Endurance','Reason','Intuition','Psyche']) {
+            s.abilities[ab] = char.primaryAbilities[0][ab].rank;
+          }
+          s.resources = char.resources.rank;
+          s.popularity = char.popularity;
+          s.stimulus = (char.weakness && char.weakness.stimulus) || '';
+          s.effect = (char.weakness && char.weakness.effect) || '';
+          s.duration = (char.weakness && char.weakness.duration) || '';
+          s.weaknessRank = (char.weakness && char.weakness.rank) || '';
+          s.powers = [];
+          for (let i = 0; i < char.powers.length; i++) {
+            s.powers[i] = { category: char.powers[i].category, name: char.powers[i].name, rank: char.powers[i].rank, bonus: !!char.powers[i].bonusPower, rankLocked: !!char.powers[i].bonusPower, physFormBonus: false };
+          }
+          s.talents = [];
+          for (let i = 0; i < char.talents.length; i++) {
+            s.talents[i] = { category: char.talents[i].category, name: char.talents[i].name, bonus: false };
+          }
+          s.contacts = [];
+          for (let i = 0; i < char.contacts.length; i++) {
+            s.contacts[i] = { category: char.contacts[i].category, name: char.contacts[i].name, contactName: char.contacts[i].contactName || '', bonus: false };
+          }
+          s._initialized = true;
+        }
+
+        const isUltimate = mode === 'ultimate';
+        const isFullDisplay = document.querySelector('input[name="display_mode"]').value === 'full';
+        const physFormOpts = BuildModeRenderer._physFormOpts();
+        const rankOpts = BuildModeRenderer._rankOpts();
+        const originOpts = BuildModeRenderer._originOpts();
+        // Hero name: a user-edited value wins, otherwise the auto-filled char.name
+        const nameVal = (s.name !== null && s.name !== undefined) ? s.name : char.name;
+
+        let html = '<div class="character-sheet">';
+        html += '<div class="section-title">Identity</div>';
+
+        if (isUltimate) {
+          html += '<div class="info-header-ultimate">';
+          html += '<div class="info-item"><span>Name</span> ' + heroNameHtml(nameVal) + '</div>';
+          html += '<div class="info-item"><span>Physical Form</span> ' + BuildModeRenderer._sel('bm-physform', physFormOpts, s.physicalForm, 'Select a Physical Form') + '</div>';
+          html += '<div class="info-item"><span>Origin</span> ' + BuildModeRenderer._sel('bm-origin', originOpts, s.origin, 'Select an Origin') + '</div>';
+          html += '<div class="info-item"><span>Identity</span> ' + BuildModeRenderer._sel('bm-identity', ['Secret','Public'], s.identity, 'Select an Identity') + '</div>';
+          html += '</div>';
+        } else {
+          html += '<div class="info-header">';
+          html += '<div class="info-item"><span>Name</span> ' + heroNameHtml(nameVal) + '</div>';
+          html += '<div class="info-item"><span>Origin</span> ' + BuildModeRenderer._sel('bm-origin', originOpts, s.origin, 'Select an Origin') + '</div>';
+          html += '<div class="info-item"><span>Identity</span> ' + BuildModeRenderer._sel('bm-identity', ['Secret','Public'], s.identity, 'Select an Identity') + '</div>';
+          html += '</div>';
+        }
+
+        html += '<div class="section-title">Primary Abilities (FASERIP)</div>';
+        const faserip1 = ['Fighting','Agility','Strength','Endurance','Reason','Intuition','Psyche'];
+        for (let i = 0; i < faserip1.length; i++) {
+          const a = faserip1[i];
+          html += '<div class="stat-block">';
+          html += '<span class="stat-label">' + a + '</span>';
+          html += '<span class="stat-rank">' + BuildModeRenderer._sel('bm-ab-' + a, rankOpts, s.abilities[a], 'Select ' + a + ' Rank') + '</span>';
+          html += '</div>';
+        }
+
+        html += '<div class="section-title">Secondary Abilities</div>';
+        html += '<div class="side-by-side">';
+        html += '<div class="secondary-block"><div class="secondary-value">' + char.health + '</div><div>Health</div></div>';
+        html += '<div class="secondary-block"><div class="secondary-value">' + char.karma + '</div><div>Karma</div></div>';
+        html += '<div class="secondary-block"><div class="secondary-value">' + BuildModeRenderer._sel('bm-resources', rankOpts, s.resources, 'Select Resources Rank') + '</div><div>Resources</div></div>';
+        html += '<div class="secondary-block"><div class="secondary-value">' + BuildModeRenderer._sel('bm-popularity', rankOpts, s.popularity, 'Select Popularity Rank') + '</div><div>Popularity</div></div>';
+        html += '</div>';
+
+        // Weakness section (Ultimate mode only)
+        if (isUltimate && BuildModeRenderer._generator.weaknessStimulusTable) {
+          var wGen = BuildModeRenderer._generator;
+          html += '<div class="section-title">Weakness</div>';
+          html += '<div class="list-section"><ul>';
+          var stimOpts = BuildModeRenderer._stimulusOpts();
+          var effOpts = BuildModeRenderer._effectOpts();
+          var durOpts = BuildModeRenderer._durationOpts();
+          html += '<li class="weakness"><span class="stat-label">Stimulus</span> ' + BuildModeRenderer._sel('bm-stimulus', stimOpts, s.stimulus, 'Select a Stimulus');
+          if (s.stimulus) {
+            var stimRow = wGen.weaknessStimulusTable.find(function(r) { return r.name === s.stimulus; });
+            if (stimRow) html += ' &nbsp; <span class="power-description">' + (stimRow.description || '') + '</span>';
+          }
+          html += '</li>';
+          html += '<li class="weakness"><span class="stat-label">Effect</span> ' + BuildModeRenderer._sel('bm-effect', effOpts, s.effect, 'Select an Effect');
+          if (s.effect) {
+            var effRow = wGen.weaknessEffectTable.find(function(r) { return r.name === s.effect; });
+            if (effRow) html += ' &nbsp; <span class="power-description">' + (effRow.description || '') + '</span>';
+          }
+          html += '</li>';
+          html += '<li class="weakness"><span class="stat-label">Duration</span> ' + BuildModeRenderer._sel('bm-duration', durOpts, s.duration, 'Select a Duration');
+          if (s.duration) {
+            var durRow = wGen.weaknessDurationTable.find(function(r) { return r.name === s.duration; });
+            if (durRow) html += ' &nbsp; <span class="power-description">' + (durRow.description || '') + '</span>';
+          }
+          html += '</li>';
+          if (s.stimulus === 'Finite Limit') {
+            html += '<li class="weakness"><span class="stat-label">Rank</span> ' + BuildModeRenderer._sel('bm-wrank', rankOpts, s.weaknessRank, 'Select a Rank');
+            html += '</li>';
+          }
+          html += '</ul></div>';
+        }
+
+        html += '<div class="section-title">Powers</div>';
+        html += '<div class="list-section"><ul>';
+        const powerCatOpts = BuildModeRenderer._powerCatOpts();
+        for (let i = 0; i < s.powers.length; i++) {
+          const ps = s.powers[i];
+          // Exclude powers already selected in earlier slots
+          var usedPwrNames = [];
+          for (var ui = 0; ui < i; ui++) {
+            if (s.powers[ui].name) usedPwrNames.push(s.powers[ui].name);
+          }
+          var pwrCatOpts = BuildModeRenderer._powerOpts(ps.category, usedPwrNames);
+          // Locks are a snapshot taken when the bonus row was filled: a
+          // concrete value is locked, but an "Any" choice stays editable
+          // even after the player selects a power for it
+          var pwrCatDisabled = !!ps.catLocked;
+          var pwrDisabled = !!ps.pwrLocked;
+          var rankDisabled = !!ps.rankLocked;
+          html += '<li class="power build-mode-power' + (!ps.name && !ps.bonus && !ps.optional ? ' build-empty-slot' : '') + '">';
+          html += '<div class="build-power-row">';
+          html += BuildModeRenderer._sel('bm-pcat-' + i, powerCatOpts, ps.category, 'Select a Power Category', pwrCatDisabled);
+          html += ' / ';
+          html += BuildModeRenderer._sel('bm-pwr-' + i, pwrCatOpts, ps.name, 'Select a Power', pwrDisabled);
+          html += ' ';
+          html += BuildModeRenderer._sel('bm-prank-' + i, rankOpts, ps.rank, 'Select a Rank', rankDisabled);
+          if (ps.bonus) html += ' <span class="bonus-power">B</span>';
+          if (ps.optional) html += ' <span class="optional-power">O</span>';
+          html += '</div>';
+          if (ps.name) {
+            var pwrDesc = '';
+            if (char.powers[i] && char.powers[i].description) {
+              pwrDesc = char.powers[i].description;
+            } else {
+              var pwrRow = BuildModeRenderer._generator.powerListTable.find(function(r) { return r.category === ps.category && r.name === ps.name; });
+              if (pwrRow) pwrDesc = pwrRow.description || '';
+            }
+            html += '<span class="power-description">' + pwrDesc + '</span>';
+          }
+          html += '</li>';
+        }
+        html += '</ul></div>';
+
+        html += '<div class="section-title">Talents</div>';
+        html += '<div class="list-section"><ul>';
+        const talentCatOpts = BuildModeRenderer._talentCatOpts();
+        for (let i = 0; i < s.talents.length; i++) {
+          const ts = s.talents[i];
+          // Exclude talents already selected in earlier slots
+          var usedTlrNames = [];
+          for (var ui = 0; ui < i; ui++) {
+            if (s.talents[ui].name) usedTlrNames.push(s.talents[ui].name);
+          }
+          var tlrOpts = BuildModeRenderer._talentOpts(ts.category, usedTlrNames);
+          var tlrDisabled = !!ts.bonus;
+          html += '<li class="talent' + (!ts.name ? ' build-empty-slot' : '') + '">';
+          html += BuildModeRenderer._sel('bm-tcat-' + i, talentCatOpts, ts.category, 'Select a Talent Category', tlrDisabled);
+          html += ' / ';
+          html += BuildModeRenderer._sel('bm-tlr-' + i, tlrOpts, ts.name, 'Select a Talent', tlrDisabled);
+          if (ts.bonus && ts.name) html += ' <span class="bonus-power">B</span>';
+          if (ts.name) {
+            var tlrRow = BuildModeRenderer._generator.talentListTable.find(function(r) { return r.category === ts.category && r.name === ts.name; });
+            if (tlrRow) html += '<br><span class="power-description">' + (tlrRow.description || '') + '</span>';
+          }
+          html += '</li>';
+        }
+        html += '</ul></div>';
+
+        html += '<div class="section-title">Contacts</div>';
+        html += '<div class="list-section"><ul>';
+        const contactCatOpts = BuildModeRenderer._contactCatOpts();
+        for (let i = 0; i < s.contacts.length; i++) {
+          const cs = s.contacts[i];
+          const cntOpts = BuildModeRenderer._contactOpts(cs.category);
+          var cntBonus = !!cs.bonus;
+          // Snapshot from fill time: concrete values are locked, "Any" stays
+          // editable even after the player picks a contact
+          var cntCatDisabled = !!cs.catLocked;
+          var cntTypeDisabled = !!cs.typeLocked;
+          html += '<li class="contact' + (!cs.name && !cs.bonus ? ' build-empty-slot' : '') + '">';
+          // Bonus contacts can't be removed, but their name must stay editable
+          html += '<input type="text" id="bm-cname-' + i + '" class="build-select" placeholder="Contact Name" value="' + (cs.contactName || '').replace(/"/g, '&quot;') + '" onchange="BuildModeRenderer._onChange()">';
+          html += '<span class="build-text">' + (cs.contactName || '') + '</span>';
+          html += ' ';
+          html += BuildModeRenderer._sel('bm-ccat-' + i, contactCatOpts, cs.category, 'Select a Contact Category', cntCatDisabled);
+          html += ' / ';
+          html += BuildModeRenderer._sel('bm-cnt-' + i, cntOpts, cs.name, 'Select a Contact', cntTypeDisabled);
+          if (cntBonus) html += ' <span class="bonus-power">B</span>';
+          if (cs.name) {
+            var cntRow = BuildModeRenderer._generator.contactTypeListTable.find(function(r) { return r.category === cs.category && r.name === cs.name; });
+            if (cntRow) html += '<br><span class="power-description">' + (cntRow.description || '') + '</span>';
+          }
+          html += '</li>';
+        }
+        html += '</ul></div>';
+
+        html += '</div>';
+        document.getElementById('display-area').innerHTML = html;
+      }
+
+      static _emptyChar() {
+        return {
+          name: '', physicalForm: '', subType: '', origin: '', identity: '',
+          health: 0, karma: 0, resources: { rank: '', number: 0 }, popularity: 0,
+          primaryAbilities: [{ Fighting: {rank:'',number:0}, Agility: {rank:'',number:0}, Strength: {rank:'',number:0}, Endurance: {rank:'',number:0}, Reason: {rank:'',number:0}, Intuition: {rank:'',number:0}, Psyche: {rank:'',number:0} }],
+          powers: [], talents: [], contacts: [],
+          bodyTypes: [], weakness: {}, log: []
+        };
+      }
+
+      static _parseBonusItems(physFormRow, subType) {
+        var result = { powers: [], talents: [], contacts: [], optionalPowers: [] };
+        if (!physFormRow) return result;
+
+        // Bonus powers
+        var bonusPowerCount = Utility.getValue(physFormRow, 'bonusPowerCount', 0);
+        var bonusPowerStr = Utility.getValue(physFormRow, 'bonusPower', '');
+        if (bonusPowerCount > 0 && bonusPowerStr) {
+          var powers = bonusPowerStr.split('|');
+          for (var i = 0; i < powers.length; i++) {
+            if (!powers[i]) continue;
+            var segs = powers[i].split('\\');
+            var category = segs[0];
+            // Handle subType prefix: e.g. "Demon(Category\\Power\\Good(100))"
+            var subTypePos = category.indexOf('(');
+            var pSubType = null;
+            if (subTypePos !== -1 && subTypePos !== 0) {
+              pSubType = category.substring(0, subTypePos);
+              category = category.substring(subTypePos + 1);
+            } else if (subTypePos === 0) {
+              category = category.substring(1);
+            }
+            // Filter by subType if applicable
+            if (pSubType && subType && pSubType !== subType) continue;
+            if (pSubType && !subType) continue;
+
+            var name = segs.length === 3 ? segs[1] : segs[1].split('(')[0];
+            var rollPart = segs.length === 3 ? segs[2] : segs[1];
+            var rollMatch = rollPart.match(/\((\d+)\)/);
+            var maxRoll = rollMatch ? parseInt(rollMatch[1]) : 100;
+            // Determine rank from the string if present (3-part format: category\name\Rank(roll))
+            var rank = null;
+            if (segs.length === 3) {
+              var rankMatch = segs[2].match(/^([^(]+)\(/);
+              rank = rankMatch ? rankMatch[1] : null;
+            }
+            // "Any" category or power means the player chooses it
+            if (category === 'Any') category = '';
+            if (name === 'Any') name = '';
+            result.powers.push({ category: category, name: name, rank: rank || null, maxRoll: maxRoll });
+            if (result.powers.length >= bonusPowerCount) break;
+          }
+        }
+
+        // Bonus talents
+        var bonusTalentCount = Utility.getValue(physFormRow, 'bonusTalentCount', 0);
+        var bonusTalentStr = Utility.getValue(physFormRow, 'bonusTalent', '');
+        if (bonusTalentCount > 0 && bonusTalentStr) {
+          var tparts = bonusTalentStr.split('|');
+          for (var i = 0; i < tparts.length; i++) {
+            var t = tparts[i];
+            if (!t) continue;
+            var segs = t.split('\\');
+            var cat = segs[0];
+            var name = segs[1].split('(')[0];
+            result.talents.push({ category: cat, name: name });
+            if (result.talents.length >= bonusTalentCount) break;
+          }
+        }
+
+        // Bonus contacts
+        var bonusContactCount = Utility.getValue(physFormRow, 'bonusContactCount', 0);
+        var bonusContactStr = Utility.getValue(physFormRow, 'bonusContact', '');
+        if (bonusContactCount > 0 && bonusContactStr) {
+          var cparts = bonusContactStr.split('|');
+          for (var i = 0; i < cparts.length; i++) {
+            var c = cparts[i];
+            if (!c) continue;
+            var sep = c.indexOf('/') !== -1 ? '/' : '\\';
+            var segs = c.split(sep);
+            var cat = segs[0];
+            var name = segs[1].split('(')[0];
+            // "Any" means the player chooses: leave that dropdown on its
+            // placeholder so it stays editable in manual mode.
+            // Concrete values are matched against the contact type table
+            // (literal values kept when no row exists yet).
+            var ctTable = BuildModeRenderer._generator.contactTypeListTable || [];
+            var outCat = cat === 'Any' ? '' : cat;
+            var outName = name === 'Any' ? '' : name;
+            if (outCat && outName) {
+              var resolved = ctTable.find(function(ct) { return ct.category === outCat && ct.name === outName; }) || null;
+              if (resolved) {
+                outCat = resolved.category;
+                outName = resolved.name;
+              }
+            }
+            result.contacts.push({ category: outCat, name: outName });
+            if (result.contacts.length >= bonusContactCount) break;
+          }
+        }
+
+        // Optional powers (e.g. form's optionalPowers: "Energy Control\\Any(100)")
+        var optStr = Utility.getValue(physFormRow, 'optionalPowers', '');
+        if (optStr) {
+          // Respect optionalPowerCount; when unset, offer every listed optional
+          var optMax = Utility.getValue(physFormRow, 'optionalPowerCount', 0) || 99;
+          var oparts = optStr.split('|');
+          for (var i = 0; i < oparts.length; i++) {
+            if (!oparts[i]) continue;
+            var oentry = oparts[i];
+            // "A~B" = alternatives — default to the first (editable here)
+            if (oentry.indexOf('~') !== -1) oentry = oentry.split('~')[0];
+            var osegs = oentry.split('\\');
+            var ocat = osegs[0];
+            var oname = (osegs[1] || '').split('(')[0];
+            if (ocat === 'Any') ocat = '';
+            if (oname === 'Any') oname = '';
+            result.optionalPowers.push({ category: ocat, name: oname });
+            if (result.optionalPowers.length >= optMax) break;
+          }
+        }
+
+        return result;
+      }
+
+      // Parse bonus powers from a power's bonusPower string (power-level format: Category\\Name(roll))
+      static _parsePowerBonusItems(powerRow) {
+        var result = [];
+        if (!powerRow) return result;
+        var bonusPowerCount = Utility.getValue(powerRow, 'bonusPowerCount', 0);
+        var bonusPowerStr = Utility.getValue(powerRow, 'bonusPower', '');
+        if (bonusPowerCount > 0 && bonusPowerStr) {
+          var parts = bonusPowerStr.split('|');
+          for (var i = 0; i < parts.length; i++) {
+            if (!parts[i]) continue;
+            var segs = parts[i].split('\\');
+            var category = segs[0];
+            // Handle subType prefix if present
+            var subTypePos = category.indexOf('(');
+            if (subTypePos !== -1 && subTypePos !== 0) {
+              category = category.substring(subTypePos + 1);
+            } else if (subTypePos === 0) {
+              category = category.substring(1);
+            }
+            var name = segs[1].split('(')[0];
+            var rollPart = segs[1];
+            var rollMatch = rollPart.match(/\((\d+)\)/);
+            var maxRoll = rollMatch ? parseInt(rollMatch[1]) : 100;
+            // "Any" category or power means the player chooses it
+            if (category === 'Any') category = '';
+            if (name === 'Any') name = '';
+            result.push({ category: category, name: name, maxRoll: maxRoll });
+            if (result.length >= bonusPowerCount) break;
+          }
+        }
+        return result;
+      }
+
+      // Parse optional powers from a power's optionalPowers string
+      // (format: Category\\Name or Category\\Name(roll), '|' separated)
+      static _parsePowerOptionalItems(powerRow) {
+        var result = [];
+        if (!powerRow) return result;
+        var optStr = Utility.getValue(powerRow, 'optionalPowers', '');
+        if (!optStr) return result;
+        // Respect optionalPowerCount/optionalPowersMax; when neither is set,
+        // offer every listed optional power (the user prunes what they don't want)
+        var optMax = Utility.getValue(powerRow, 'optionalPowerCount',
+          Utility.getValue(powerRow, 'optionalPowersMax', 0)) || 99;
+        var parts = optStr.split('|');
+        for (var i = 0; i < parts.length; i++) {
+          if (!parts[i]) continue;
+          var entry = parts[i];
+          // "A~B" = alternatives — default to the first (editable here)
+          if (entry.indexOf('~') !== -1) entry = entry.split('~')[0];
+          var segs = entry.split('\\');
+          var category = segs[0];
+          var name = (segs[1] || '').split('(')[0];
+          if (category === 'Any') category = '';
+          if (name === 'Any') name = '';
+          result.push({ category: category, name: name });
+          if (result.length >= optMax) break;
+        }
+        return result;
+      }
+
+      // Optional powers are filled like bonus powers but stay fully editable
+      // (marked with the O indicator, never locked, removable by the user).
+      // Called when a power selection changes: drop the optionals this slot
+      // previously contributed, then add those of its current power. Filling
+      // only on selection events means a user's removal sticks.
+      static _refreshPowerOptionals(srcIdx) {
+        const s = BuildModeRenderer._selections;
+        if (!s || !s.powers) return;
+        // Clear optionals this slot previously contributed
+        for (var i = 0; i < s.powers.length; i++) {
+          var p = s.powers[i];
+          if (p.optional && !p.physFormOptional && p.optionalFrom === srcIdx) {
+            s.powers[i] = { category: '', name: '', rank: '', bonus: false, rankLocked: false, physFormBonus: false, optional: false };
+          }
+        }
+        var sel = s.powers[srcIdx];
+        // Any selected power grants its optionals — including powers the user
+        // just picked into a bonus "Any" slot (e.g. Deity -> Travel\Any -> Astral Body)
+        if (!sel || !sel.name) return;
+        var gen = BuildModeRenderer._generator;
+        if (!gen) return;
+        var pwrRow = gen.powerListTable.find(function(r) { return r.category === sel.category && r.name === sel.name; });
+        if (!pwrRow) return;
+        var opts = BuildModeRenderer._parsePowerOptionalItems(pwrRow);
+        for (var oi = 0; oi < opts.length; oi++) {
+          // Find the first empty slot after this power (like bonus fill)
+          var slotIdx = -1;
+          for (var fi = srcIdx + 1; fi < s.powers.length; fi++) {
+            var fp = s.powers[fi];
+            if (!fp.bonus && !fp.optional && !fp.category && !fp.name) { slotIdx = fi; break; }
+          }
+          if (slotIdx === -1) {
+            // No empty slot found, add one
+            s.powers.push({ category: '', name: '', rank: '', bonus: false, rankLocked: false, physFormBonus: false, optional: false });
+            slotIdx = s.powers.length - 1;
+          }
+          s.powers[slotIdx] = {
+            category: opts[oi].category,
+            name: opts[oi].name,
+            rank: '',
+            bonus: false,
+            rankLocked: false,
+            physFormBonus: false,
+            optional: true,
+            physFormOptional: false,
+            optionalFrom: srcIdx
+          };
+        }
+      }
+
+      static _getMaxSlots(generator) {
+        var qtyTable = generator.quantityTable;
+        var qtyRow = qtyTable[qtyTable.length - 1]; // Last row = highest maxRoll (100)
+        var powers = qtyRow.powers.maximum;
+        var talents = qtyRow.talents.maximum;
+        var contacts = qtyRow.contacts.maximum;
+
+        // Apply physical form adjustments if _lastPhysicalForm is set
+        if (generator._lastPhysicalForm) {
+          var physRow = generator.physicalFormTable.find(function(o) { return o.name === generator._lastPhysicalForm; });
+          if (physRow) {
+            var val;
+            // Powers
+            val = Utility.getValue(physRow, 'powersCountSet', -1);
+            if (val !== -1) { powers = val; }
+            else {
+              val = Utility.getValue(physRow, 'powersCountAdjustment', 0);
+              if (val !== 0) powers += val;
+              if (powers > qtyRow.powers.maximum) powers = qtyRow.powers.maximum;
+              val = Utility.getValue(physRow, 'powersCountMinimum', -1);
+              if (val !== -1 && val > powers) powers = val;
+              val = Utility.getValue(physRow, 'powersCountMaximum', -1);
+              if (val !== -1 && val < powers) powers = val;
+            }
+            var bonusCount = Utility.getValue(physRow, 'bonusPowerCount', 0);
+            if (bonusCount > 0) powers = Math.max(0, powers - bonusCount);
+
+            // Talents
+            val = Utility.getValue(physRow, 'talentsCountSet', -1);
+            if (val !== -1) { talents = val; }
+            else {
+              val = Utility.getValue(physRow, 'talentsCountAdjustment', 0);
+              if (val !== 0) talents += val;
+              if (talents > qtyRow.talents.maximum) talents = qtyRow.talents.maximum;
+              val = Utility.getValue(physRow, 'talentsCountMinimum', -1);
+              if (val !== -1 && val > talents) talents = val;
+              val = Utility.getValue(physRow, 'talentsCountMaximum', -1);
+              if (val !== -1 && val < talents) talents = val;
+            }
+
+            // Contacts
+            val = Utility.getValue(physRow, 'contactsCountSet', -1);
+            if (val !== -1) { contacts = val; }
+            else {
+              val = Utility.getValue(physRow, 'contactsCountAdjustment', 0);
+              if (val !== 0) contacts += val;
+              if (contacts > qtyRow.contacts.maximum) contacts = qtyRow.contacts.maximum;
+              val = Utility.getValue(physRow, 'contactsCountMinimum', -1);
+              if (val !== -1 && val > contacts) contacts = val;
+              val = Utility.getValue(physRow, 'contactsCountMaximum', -1);
+              if (val !== -1 && val < contacts) contacts = val;
+            }
+          }
+        }
+        return { powers: powers, talents: talents, contacts: contacts };
+      }
+
+      static renderSelected(generator, mode) {
+        BuildModeRenderer._generator = generator;
+        BuildModeRenderer._mode = mode;
+        const s = BuildModeRenderer._selections;
+
+        // Initialize all selections to empty — placeholders are the default
+        s.physicalForm = '';
+        s.origin = '';
+        s.identity = '';
+        s.name = null; // null = not user-edited yet; fall back to auto-filled char.name
+        s.abilities = {};
+        var faserip2 = ['Fighting','Agility','Strength','Endurance','Reason','Intuition','Psyche'];
+        for (var i = 0; i < faserip2.length; i++) {
+          s.abilities[faserip2[i]] = '';
+        }
+        s.resources = '';
+        s.popularity = '';
+        s.stimulus = '';
+        s.effect = '';
+        s.duration = '';
+        s.weaknessRank = '';
+
+        // Powers, talents, contacts: maximum possible slots
+        var maxSlots = BuildModeRenderer._getMaxSlots(generator);
+        s.powers = [];
+        for (var i = 0; i < maxSlots.powers; i++) s.powers.push({ category: '', name: '', rank: '', bonus: false, physFormBonus: false });
+        s.talents = [];
+        for (var i = 0; i < maxSlots.talents; i++) s.talents.push({ category: '', name: '', bonus: false });
+        s.contacts = [];
+        for (var i = 0; i < maxSlots.contacts; i++) s.contacts.push({ category: '', name: '', contactName: '', bonus: false });
+
+        s._initialized = true;
+
+        // Show the character sheet with placeholders — no generation yet
+        BuildModeRenderer.render(generator, BuildModeRenderer._emptyChar(), mode);
+      }
+
+      static _onChange() {
+        const s = BuildModeRenderer._selections;
+        const gen = BuildModeRenderer._generator;
+        const mode = BuildModeRenderer._mode;
+
+        // Read physical form selection and handle cascade
+        const physFormEl = document.getElementById('bm-physform');
+        if (physFormEl) {
+          const newPhysForm = physFormEl.value;
+          if (newPhysForm !== s.physicalForm) {
+            s.physicalForm = newPhysForm;
+            // Find the physical form row and subType
+            const physOpts = BuildModeRenderer._physFormOpts();
+            const match = physOpts.find(function(o) { return o.name === newPhysForm; });
+            if (match) {
+              s._physFormName = match.formName;
+              s._subType = match.subType;
+            }
+            // Recalculate slot counts based on new physical form
+            gen._lastPhysicalForm = match ? match.formName : newPhysForm;
+            var maxSlots = BuildModeRenderer._getMaxSlots(gen);
+            // The physical form changed: reset every dropdown that depends
+            // on it. Powers, talents and contacts start clean, then the new
+            // form's bonus items are filled in below.
+            s.powers = [];
+            for (var ri = 0; ri < maxSlots.powers; ri++) s.powers.push({ category: '', name: '', rank: '', bonus: false, physFormBonus: false });
+            s.talents = [];
+            for (var ri = 0; ri < maxSlots.talents; ri++) s.talents.push({ category: '', name: '', bonus: false });
+            s.contacts = [];
+            for (var ri = 0; ri < maxSlots.contacts; ri++) s.contacts.push({ category: '', name: '', contactName: '', bonus: false });
+
+            // Auto-fill bonus slots from physical form data
+            var formRow = gen.physicalFormTable.find(function(r) { return r.name === (match ? match.formName : newPhysForm); });
+            var bonuses = BuildModeRenderer._parseBonusItems(formRow, match ? match.subType : '');
+            // Fill bonus powers
+            for (var bi = 0; bi < bonuses.powers.length && bi < s.powers.length; bi++) {
+              s.powers[bi].category = bonuses.powers[bi].category;
+              s.powers[bi].name = bonuses.powers[bi].name;
+              s.powers[bi].rank = bonuses.powers[bi].rank || '';
+              s.powers[bi].bonus = true;
+              s.powers[bi].rankLocked = !!bonuses.powers[bi].rank;
+              s.powers[bi].physFormBonus = true;
+              // Snapshot what the bonus string fixed ("Any" stays editable)
+              s.powers[bi].catLocked = !!bonuses.powers[bi].category;
+              s.powers[bi].pwrLocked = !!bonuses.powers[bi].name;
+            }
+            // Fill bonus talents
+            for (var bi = 0; bi < bonuses.talents.length && bi < s.talents.length; bi++) {
+              s.talents[bi].category = bonuses.talents[bi].category;
+              s.talents[bi].name = bonuses.talents[bi].name;
+              s.talents[bi].bonus = true;
+            }
+            // Fill bonus contacts
+            for (var bi = 0; bi < bonuses.contacts.length && bi < s.contacts.length; bi++) {
+              s.contacts[bi].category = bonuses.contacts[bi].category;
+              s.contacts[bi].name = bonuses.contacts[bi].name;
+              s.contacts[bi].bonus = true;
+              s.contacts[bi].catLocked = !!bonuses.contacts[bi].category;
+              s.contacts[bi].typeLocked = !!bonuses.contacts[bi].name;
+            }
+            // Fill optional powers — editable, marked with the O indicator
+            var optPowers = bonuses.optionalPowers || [];
+            for (var oi = 0; oi < optPowers.length; oi++) {
+              var slotIdx = -1;
+              for (var fi = 0; fi < s.powers.length; fi++) {
+                if (!s.powers[fi].bonus && !s.powers[fi].optional && !s.powers[fi].category && !s.powers[fi].name) { slotIdx = fi; break; }
+              }
+              if (slotIdx === -1) break;
+              s.powers[slotIdx] = {
+                category: optPowers[oi].category,
+                name: optPowers[oi].name,
+                rank: '',
+                bonus: false,
+                rankLocked: false,
+                physFormBonus: false,
+                optional: true,
+                physFormOptional: true,
+                optionalFrom: 'form'
+              };
+            }
+            // Skip reading powers/talents/contacts from stale DOM — bonus items were just filled
+            // and the DOM hasn't been re-rendered yet. Go straight to regenerate.
+            BuildModeRenderer._regenerate();
+            return;
+          }
+        }
+
+        // Read origin
+        const originEl = document.getElementById('bm-origin');
+        if (originEl) s.origin = originEl.value;
+
+        // Read identity
+        const identityEl = document.getElementById('bm-identity');
+        if (identityEl) s.identity = identityEl.value;
+
+        // Read abilities
+        const faserip3 = ['Fighting','Agility','Strength','Endurance','Reason','Intuition','Psyche'];
+        for (let i = 0; i < faserip3.length; i++) {
+          const el = document.getElementById('bm-ab-' + faserip3[i]);
+          if (el) s.abilities[faserip3[i]] = el.value;
+        }
+
+        // Read resources
+        const resEl = document.getElementById('bm-resources');
+        if (resEl) s.resources = resEl.value;
+
+        // Read popularity
+        const popEl = document.getElementById('bm-popularity');
+        if (popEl) s.popularity = popEl.value;
+
+        // Read powers
+        var touchedPowerRows = [];
+        for (let i = 0; i < s.powers.length; i++) {
+          const catEl = document.getElementById('bm-pcat-' + i);
+          const pwrEl = document.getElementById('bm-pwr-' + i);
+          const rankEl = document.getElementById('bm-prank-' + i);
+          var pwrRowTouched = false;
+          var pwrCatCleared = false;
+          if (catEl) {
+            const newCat = catEl.value;
+            if (newCat !== s.powers[i].category) {
+              // A placeholder selection can't clear a locked bonus power
+              if (!(s.powers[i].bonus && !newCat)) {
+                pwrRowTouched = true;
+                s.powers[i].category = newCat;
+                if (s.powers[i].bonus) {
+                  // Bonus power: keep the power on "Select" for the player
+                  s.powers[i].name = '';
+                } else {
+                  // Reset power to first in category
+                  const pwrOpts = BuildModeRenderer._powerOpts(newCat);
+                  s.powers[i].name = pwrOpts[0] || '';
+                }
+                if (!newCat) {
+                  // Row cleared — no longer an optional suggestion
+                  pwrCatCleared = true;
+                  s.powers[i].optional = false;
+                  s.powers[i].physFormOptional = false;
+                  s.powers[i].optionalFrom = null;
+                }
+              }
+            }
+          }
+          // Skip the stale power read when the category was just cleared,
+          // so a removed row really empties out
+          if (pwrEl && !pwrCatCleared) {
+            const newPwr = pwrEl.value;
+            // A bonus power keeps its choice once made; "Any" slots start empty
+            if (newPwr !== s.powers[i].name && (newPwr || !s.powers[i].bonus)) {
+              s.powers[i].name = newPwr;
+              pwrRowTouched = true;
+              if (!newPwr) {
+                // Power cleared — no longer an optional suggestion
+                s.powers[i].optional = false;
+                s.powers[i].physFormOptional = false;
+                s.powers[i].optionalFrom = null;
+              }
+            }
+          }
+          // Remember the row — optional powers re-sync after ALL reads, so
+          // the stale DOM of not-yet-rendered rows can't wipe the new ones
+          if (pwrRowTouched) touchedPowerRows.push(i);
+          if (rankEl) s.powers[i].rank = rankEl.value;
+        }
+
+        // Now that every row has been read, re-sync the optional powers
+        // granted by the selections made in this pass
+        for (var tr = 0; tr < touchedPowerRows.length; tr++) {
+          BuildModeRenderer._refreshPowerOptionals(touchedPowerRows[tr]);
+        }
+
+        // Auto-fill bonus powers from selected power data
+        // First, clear any power-level bonus flags (not physical form bonuses)
+        for (var pi = 0; pi < s.powers.length; pi++) {
+          if (s.powers[pi].bonus && !s.powers[pi].physFormBonus) {              s.powers[pi] = { category: '', name: '', rank: '', bonus: false, rankLocked: false, physFormBonus: false };
+          }
+        }
+        // Now scan each non-bonus power for bonusPowerCount
+        for (var pi = 0; pi < s.powers.length; pi++) {
+          if (s.powers[pi].bonus) continue; // physical form bonus, skip
+          if (!s.powers[pi].name) continue;
+          var pwrRow = gen.powerListTable.find(function(r) { return r.category === s.powers[pi].category && r.name === s.powers[pi].name; });
+          if (!pwrRow) continue;
+          var bonusCount = Utility.getValue(pwrRow, 'bonusPowerCount', 0);
+          if (bonusCount <= 0) continue;
+          // Parse bonus power(s) from the power data
+          var pwrBonuses = BuildModeRenderer._parsePowerBonusItems(pwrRow);
+          // Fill next available slots with bonus powers
+          for (var bi = 0; bi < pwrBonuses.length && bi < bonusCount; bi++) {
+            var targetIdx = s.powers.length; // append to end
+            // Find the slot right after this power (or next empty slot)
+            // Actually, insert right after the last user-selected power
+            // Find first non-bonus empty slot after pi
+            var insertIdx = -1;              for (var fi = pi + 1; fi < s.powers.length; fi++) {
+                if (!s.powers[fi].bonus && !s.powers[fi].optional && !s.powers[fi].name) {
+                insertIdx = fi;
+                break;
+              }
+            }
+            if (insertIdx === -1) {
+              // No empty slot found, add one
+              insertIdx = s.powers.length;
+              s.powers.push({ category: '', name: '', rank: '', bonus: false, rankLocked: false, physFormBonus: false });
+            }
+            s.powers[insertIdx] = {
+              category: pwrBonuses[bi].category,
+              name: pwrBonuses[bi].name,
+              rank: '',
+              bonus: true,
+              rankLocked: false,
+              physFormBonus: false,
+              catLocked: !!pwrBonuses[bi].category,
+              pwrLocked: !!pwrBonuses[bi].name
+            };
+          }
+        }
+
+        // Read talents
+        for (let i = 0; i < s.talents.length; i++) {
+          const catEl = document.getElementById('bm-tcat-' + i);
+          const tlrEl = document.getElementById('bm-tlr-' + i);
+          if (catEl) {
+            const newCat = catEl.value;
+            if (newCat !== s.talents[i].category) {
+              s.talents[i].category = newCat;
+              const tlrOpts = BuildModeRenderer._talentOpts(newCat);
+              s.talents[i].name = tlrOpts[0] || '';
+            }
+          }
+          if (tlrEl) s.talents[i].name = tlrEl.value;
+        }
+
+        // Read contacts
+        for (let i = 0; i < s.contacts.length; i++) {
+          const catEl = document.getElementById('bm-ccat-' + i);
+          const cntEl = document.getElementById('bm-cnt-' + i);
+          const cnameEl = document.getElementById('bm-cname-' + i);
+          if (cnameEl) s.contacts[i].contactName = cnameEl.value;
+          if (catEl) {
+            const newCat = catEl.value;
+            if (newCat !== s.contacts[i].category) {
+              // A placeholder selection can't clear a locked bonus contact
+              if (!(s.contacts[i].bonus && !newCat)) {
+                s.contacts[i].category = newCat;
+                if (s.contacts[i].bonus) {
+                  // Bonus contact: keep the type on "Select" for the player
+                  s.contacts[i].name = '';
+                } else {
+                  const cntOpts = BuildModeRenderer._contactOpts(newCat);
+                  s.contacts[i].name = cntOpts[0] || '';
+                }
+              }
+            }
+          }
+          if (cntEl) {
+            // Keep a bonus contact's type when its select only offers the
+            // placeholder (the type isn't in the options list)
+            if (cntEl.value || !s.contacts[i].bonus) s.contacts[i].name = cntEl.value;
+          }
+        }
+
+        // Read weakness selections (Ultimate mode)
+        if (mode === 'ultimate' && gen.weaknessStimulusTable) {
+          const stimEl = document.getElementById('bm-stimulus');
+          if (stimEl) s.stimulus = stimEl.value;
+          const effEl = document.getElementById('bm-effect');
+          if (effEl) s.effect = effEl.value;
+          const durEl = document.getElementById('bm-duration');
+          if (durEl) s.duration = durEl.value;
+          const wRankEl = document.getElementById('bm-wrank');
+          if (wRankEl) s.weaknessRank = wRankEl.value;
+        }
+
+        // Regenerate from selections
+        BuildModeRenderer._regenerate();
+      }
+
+      static _regenerate() {
+        const s = BuildModeRenderer._selections;
+        const gen = BuildModeRenderer._generator;
+        const mode = BuildModeRenderer._mode;
+
+        // Check if at least one selection has been made
+        var hasSelection = s.physicalForm || s.origin || s.identity ||
+          Object.keys(s.abilities).some(function(k) { return s.abilities[k]; }) ||
+          s.resources || s.popularity ||
+          s.powers.some(function(p) { return p.category || p.name; }) ||
+          s.talents.some(function(t) { return t.category || t.name; }) ||
+          s.contacts.some(function(c) { return c.category || c.name; });
+
+        if (!hasSelection) {
+          BuildModeRenderer.render(gen, BuildModeRenderer._emptyChar(), mode);
+          return;
+        }
+
+        // Map selections to roll values
+        // Physical Form
+        const physOpts = BuildModeRenderer._physFormOpts();
+        const physMatch = s.physicalForm ? physOpts.find(function(o) { return o.name === s.physicalForm; }) : null;
+        if (physMatch) {
+          const formRow = gen.physicalFormTable.find(function(r) { return r.name === physMatch.formName; });
+          if (formRow) gen.physicalFormRoll = formRow.maxRoll;
+          gen._lastPhysicalForm = physMatch.formName;
+          if (physMatch.subType) {
+            const subTypeStr = Utility.getValue(formRow, 'subType', -1);
+            if (typeof subTypeStr === 'string' && subTypeStr) {
+              const parts = subTypeStr.split('|');
+              for (let k = 0; k < parts.length; k++) {
+                const name = parts[k].split('(')[0];
+                const rollVal = parseInt(parts[k].match(/\((\d+)\)/)?.[1] || '100');
+                if (name === physMatch.subType) {
+                  gen.subTypeRoll = rollVal;
+                  break;
+                }
+              }
+            }
+          } else {
+            gen.subTypeRoll = 1;
+          }
+        }
+
+        // Origin
+        if (s.origin) {
+          const originRow = gen.originTable.find(function(r) { return r.name === s.origin; });
+          if (originRow) gen.originRoll = originRow.maxRoll;
+        }
+
+        // Abilities
+        const faserip4 = ['Fighting','Agility','Strength','Endurance','Reason','Intuition','Psyche'];
+        for (let i = 0; i < faserip4.length; i++) {
+          if (!s.abilities[faserip4[i]]) continue;
+          const rankRow = gen.randomRanksTable.find(function(r) { return r.rank === s.abilities[faserip4[i]]; });
+          if (rankRow) {
+            const abilityRollIndex = ALL_ABILITIES[i].maxRoll - 1;
+            if (gen.abilityRolls && abilityRollIndex >= 0 && abilityRollIndex < gen.abilityRolls.length) {
+              gen.abilityRolls[abilityRollIndex] = rankRow.maxRoll;
+            }
+          }
+        }
+
+        // Resources
+        if (s.resources) {
+          const resRow = gen.randomRanksTable.find(function(r) { return r.rank === s.resources; });
+          if (resRow) gen.resourceModifierRoll = resRow.maxRoll;
+        }
+
+        // Popularity
+        if (s.popularity) {
+          const popRow = gen.randomRanksTable.find(function(r) { return r.rank === s.popularity; });
+          if (popRow) gen.popularityRoll = popRow.maxRoll;
+        }
+
+        // Powers
+        for (let i = 0; i < s.powers.length; i++) {
+          if (s.powers[i].category) {
+            const catRow = gen.powerCategoriesTable.find(function(r) { return r.name === s.powers[i].category; });
+            if (catRow && gen.powerCategoryRolls[i] !== undefined) gen.powerCategoryRolls[i] = catRow.maxRoll;
+          }
+          if (s.powers[i].category && s.powers[i].name) {
+            const pwrRow = gen.powerListTable.find(function(r) { return r.category === s.powers[i].category && r.name === s.powers[i].name; });
+            if (pwrRow && gen.powerRolls[i] !== undefined) gen.powerRolls[i] = pwrRow.maxRoll;
+          }
+          if (s.powers[i].rank) {
+            const rankRow = gen.randomRanksTable.find(function(r) { return r.rank === s.powers[i].rank; });
+            if (rankRow && gen.powerRankRolls[i] !== undefined) gen.powerRankRolls[i] = rankRow.maxRoll;
+          }
+        }
+
+        // Talents
+        for (let i = 0; i < s.talents.length; i++) {
+          if (s.talents[i].category && s.talents[i].name) {
+            const tlrRow = gen.talentListTable.find(function(r) { return r.category === s.talents[i].category && r.name === s.talents[i].name; });
+            if (tlrRow && gen.talentRolls[i] !== undefined) gen.talentRolls[i] = tlrRow.maxRoll;
+          }
+        }
+
+        // Contacts
+        for (let i = 0; i < s.contacts.length; i++) {
+          if (s.contacts[i].category && s.contacts[i].name) {
+            const cntRow = gen.contactTypeListTable.find(function(r) { return r.category === s.contacts[i].category && r.name === s.contacts[i].name; });
+            if (cntRow && gen.contactRolls[i] !== undefined) gen.contactRolls[i] = cntRow.maxRoll;
+          }
+        }
+
+        // Weakness rolls (Ultimate mode)
+        if (mode === 'ultimate' && gen.weaknessStimulusTable) {
+          if (s.stimulus) {
+            var stimRow = gen.weaknessStimulusTable.find(function(r) { return r.name === s.stimulus; });
+            if (stimRow) gen.weaknessStimulusRoll = stimRow.maxRoll;
+          }
+          if (s.effect) {
+            var effRow = gen.weaknessEffectTable.find(function(r) { return r.name === s.effect; });
+            if (effRow) gen.weaknessEffectRoll = effRow.maxRoll;
+          }
+          if (s.duration) {
+            var durRow = gen.weaknessDurationTable.find(function(r) { return r.name === s.duration; });
+            if (durRow) gen.weaknessDurationRoll = durRow.maxRoll;
+          }
+          if (s.weaknessRank) {
+            var wRankRow = gen.randomRanksTable.find(function(r) { return r.rank === s.weaknessRank; });
+            if (wRankRow) gen.weaknessRankRoll = wRankRow.maxRoll;
+          }
+        }
+
+        // Re-generate
+        try {
+          gen._phase1Complete = true;
+          const char = gen.generate();
+
+          // Keep a user-edited hero name; otherwise the auto-filled default stands
+          if (s.name !== null && s.name !== undefined) char.name = s.name;
+
+          // Override abilities directly from dropdown selections
+          // Always override — default to Shift 0 if nothing selected
+          var defaultRank = gen.randomRanksTable[0];
+          var faserip5 = ['Fighting','Agility','Strength','Endurance','Reason','Intuition','Psyche'];
+          for (let i = 0; i < faserip5.length; i++) {
+            var rankRow = s.abilities[faserip5[i]]
+              ? gen.randomRanksTable.find(function(r) { return r.rank === s.abilities[faserip5[i]]; })
+              : defaultRank;
+            if (rankRow) {
+              char.primaryAbilities[0][faserip5[i]].rank = rankRow.rank;
+              char.primaryAbilities[0][faserip5[i]].number = rankRow.rankNumber;
+            }
+          }
+
+          // Override resources from dropdown (default to Shift 0)
+          var resRow = s.resources
+            ? gen.randomRanksTable.find(function(r) { return r.rank === s.resources; })
+            : defaultRank;
+          if (resRow) {
+            char.resources.rank = resRow.rank;
+            char.resources.number = resRow.rankNumber;
+          }
+
+          // Override popularity from dropdown (default to 0)
+          var popRow = s.popularity
+            ? gen.randomRanksTable.find(function(r) { return r.rank === s.popularity; })
+            : null;
+          char.popularity = popRow ? popRow.rankNumber : 0;
+
+          // Override powers from selections (avoids generator adding duplicate bonus powers)
+          var newPowers = [];
+          for (var pi = 0; pi < s.powers.length; pi++) {
+            if (!s.powers[pi].name) continue;
+            var sel = s.powers[pi];
+            var pwRow = gen.powerListTable.find(function(r) { return r.category === sel.category && r.name === sel.name; });
+            if (!pwRow) continue;
+            var rkRow = sel.rank ? gen.randomRanksTable.find(function(r) { return r.rank === sel.rank; }) : null;
+            if (!rkRow && !sel.rank) {
+              // Rank not yet selected — use Good as default
+              rkRow = gen.randomRanksTable.find(function(r) { return r.rank === 'Good'; });
+            }
+            newPowers.push({
+              category: pwRow.category,
+              name: pwRow.name,
+              code: pwRow.code,
+              description: pwRow.description,
+              rank: rkRow ? rkRow.rank : 'Good',
+              number: rkRow ? rkRow.rankNumber : 7,
+              powerSlots: typeof pwRow.powerSlots !== 'undefined' ? pwRow.powerSlots : 1,
+              bonusPower: !!sel.bonus,
+              optionalPower: !!sel.optional
+            });
+          }
+          char.powers = newPowers;
+
+          // Override talents from selections
+          var newTalents = [];
+          for (var ti = 0; ti < s.talents.length; ti++) {
+            if (!s.talents[ti].name) continue;
+            var ts = s.talents[ti];
+            var tlRow = gen.talentListTable.find(function(r) { return r.category === ts.category && r.name === ts.name; });
+            if (!tlRow) continue;
+            newTalents.push({
+              category: tlRow.category,
+              name: tlRow.name,
+              description: tlRow.description,
+              bonus: !!ts.bonus
+            });
+          }
+          char.talents = newTalents;
+
+          // Override contacts from selections
+          var newContacts = [];
+          for (var ci = 0; ci < s.contacts.length; ci++) {
+            if (!s.contacts[ci].name) continue;
+            var cs = s.contacts[ci];
+            var ctRow = gen.contactTypeListTable.find(function(r) { return r.category === cs.category && r.name === cs.name; });
+            if (!ctRow) continue;
+            newContacts.push({
+              category: ctRow.category,
+              name: ctRow.name,
+              contactName: cs.contactName || '',
+              description: ctRow.description,
+              bonus: !!cs.bonus
+            });
+          }
+          char.contacts = newContacts;
+
+          // Recalculate health and karma from the overridden abilities
+          char.calculateSecondary();
+
+          BuildModeRenderer._char = char;
+          BuildModeRenderer.render(gen, char, mode);
+        } catch (e) {
+          console.error('Build mode regeneration failed:', e);
+          // Still re-render with correct slot count even on error
+          BuildModeRenderer.render(gen, BuildModeRenderer._emptyChar(), mode);
+        }
       }
     }
 
@@ -1953,6 +3278,8 @@
         if (!advanced && ultimate) generator.generatorMode = 'ultimate';
         generator.useUltimateTalents = useUltimateTalents;
 
+        generator.buildMode = document.getElementById('build_mode_selected').checked ? 'selected' : 'random';
+
         // Read mode-specific options (Ultimate uses _ultimate suffix, Advanced uses non-suffixed)
         if (ultimate) {
           generator.hiTechToGood = document.getElementById('hi_tech_good_ultimate').checked;
@@ -2003,6 +3330,15 @@
           ? earlyPhysRow.name
           : (generator.physicalFormTable[0] ? generator.physicalFormTable[0].name : "");
         generator._phase1Complete = true;
+
+        // In Selected build mode, skip all modals and random generation.
+        // Show the BuildModeRenderer with first-option defaults instead.
+        if (generator.buildMode === 'selected') {
+          BuildModeRenderer._selections = {};
+          BuildModeRenderer.renderSelected(generator, generator.generatorMode);
+          document.getElementById('test-area').innerHTML = "";
+          return;
+        }
 
         // If choosing powers, show modal first
         if (generator.choosePowerInsteadOfRandom && basic) {

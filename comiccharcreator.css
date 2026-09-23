@@ -200,6 +200,12 @@ button.action-btn:active {
     gap: 20px;
 }
 
+/* Allow header grid items to shrink so long <select> contents can't
+   overflow their column and overlap the neighbouring item. */
+.info-item {
+    min-width: 0;
+}
+
 .info-item span {
     font-weight: bold;
     display: block;
@@ -1164,4 +1170,75 @@ p.center {
 
 .physical-form-modal .physical-form-confirm-btn.enabled:hover {
     background: #c62828;
+}
+
+/* --- Build Mode (Selected) --- */
+.build-text {
+    display: none;
+}
+
+.build-select {
+    max-width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+    /* Long values (e.g. "Modified Human - Extra Parts") are shortened with
+       an ellipsis instead of overflowing. Full text is available via the
+       title tooltip and by opening the dropdown. */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: bold;
+    color: var(--text-color);
+    background: rgba(252, 163, 17, 0.15);
+    border: 1px solid var(--secondary-color);
+    border-radius: 3px;
+    padding: 2px 4px;
+    cursor: pointer;
+}
+
+.build-select:hover {
+    background: rgba(252, 163, 17, 0.3);
+}
+
+/* Editable hero name fills its header cell */
+.hero-name-input {
+    width: 100%;
+}
+
+/* Header dropdowns fill their grid column instead of overflowing it */
+.info-header .build-select,
+.info-header-ultimate .build-select,
+.info-header-ultimate-no-bottom .build-select {
+    width: 100%;
+}
+
+.build-mode-power {
+    list-style: none;
+}
+
+.build-power-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+@media print {
+    .build-select {
+        display: none !important;
+    }
+
+    .build-text-input {
+        display: none !important;
+    }
+
+    .build-text {
+        display: inline !important;
+    }
+
+    .build-empty-slot {
+        display: none !important;
+    }
 }
