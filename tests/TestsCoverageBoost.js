@@ -1705,6 +1705,879 @@ Tester.DiceEdgeCaseTests = () => {
 };
 
 // ============================================================================
+// CharacterGeneratorPowers.js — targeted coverage for the uncovered paths:
+// selected-bonus/optional branches, retry-loop guards, the roll>100
+// adjusters, and the five UI-query methods never called from Node.
+// ============================================================================
+
+Tester.PowerUpgradeAdvancedPathTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "ultimate";
+    gen.setTables();
+    gen.setDeterministicRolls();
+
+    // The Ultimate form carrying allPowersRankAdjustment (-1)
+    const formRow = gen.physicalFormTable.find(
+        (r) => Utility.getValue(r, "allPowersRankAdjustment", 0) !== 0,
+    );
+    Tester.assertNotNull(
+        formRow,
+        "UpgradeAdvanced: a form with allPowersRankAdjustment exists.",
+    );
+
+    const original = gen.powerListTable.find((r) => r.name && r.category);
+    const target = gen.powerListTable.find(
+        (r) => r.category === original.category && r.name !== original.name,
+    );
+    Tester.assertNotNull(target, "UpgradeAdvanced: found an upgrade target.");
+
+    const char = new Character();
+    char.physicalForm = formRow.name;
+    char.powersCount = 5;
+    char.powersMax = 5;
+    char.powers = [
+        { name: original.name, category: original.category, powerSlots: 1 },
+    ];
+    gen._assignedPowerNames = new Set([original.name]);
+
+    // Rank roll at the first row so the -1 adjustment clamps at the floor
+    gen.powerRankRolls[0] = 1;
+
+    const ok = gen.applyPowerUpgrade(char, 0, {
+        category: target.category,
+        powerName: target.name,
+        condition: null,
+    });
+    Tester.assert(
+        ok,
+        "UpgradeAdvanced: upgrade applied via the allPowersRankAdjustment path.",
+    );
+    Tester.assertEquals(
+        target.name,
+        char.powers[0].name,
+        "UpgradeAdvanced: power replaced.",
+    );
+    Tester.assert(
+        !gen._assignedPowerNames.has(original.name),
+        "UpgradeAdvanced: original removed from the assigned set.",
+    );
+    Tester.assert(
+        gen._assignedPowerNames.has(target.name),
+        "UpgradeAdvanced: upgrade added to the assigned set.",
+    );
+};
+
+Tester.RemovePowerReindexTests = () => {
+    const gen = new CharacterGenerator();
+    gen.setTables();
+    const char = new Character();
+    char.powers = [{ name: "A" }, { name: "B" }, { name: "C" }];
+    gen._assignedPowerNames = new Set(["A", "B", "C"]);
+    gen._pendingPowerUpgrades = [
+        { powerIndex: 0, upgradeInfo: { category: "X", powerName: "Y" } },
+        { powerIndex: 2, upgradeInfo: { category: "X", powerName: "Z" } },
+    ];
+
+    const removed = gen.removePower(char, 1);
+    Tester.assert(removed, "RemovePower: middle power removed.");
+    Tester.assertEquals(2, char.powers.length, "RemovePower: two remain.");
+    Tester.assertEquals(
+        2,
+        gen._pendingPowerUpgrades.length,
+        "RemovePower: no pending entry pointed at the removed index.",
+    );
+    Tester.assertEquals(
+        0,
+        gen._pendingPowerUpgrades[0].powerIndex,
+        "RemovePower: earlier pending index untouched.",
+    );
+    Tester.assertEquals(
+        1,
+        gen._pendingPowerUpgrades[1].powerIndex,
+        "RemovePower: later pending index re-based (covers the reindex loop).",
+    );
+    Tester.assert(
+        !gen._assignedPowerNames.has("B"),
+        "RemovePower: name released from the assigned set.",
+    );
+    Tester.assert(
+        gen.removePower(char, 99) === false,
+        "RemovePower: out-of-range index returns false.",
+    );
+};
+
+Tester.AddPowerAndChainBonusTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "advanced";
+    gen.setTables();
+    gen.setDeterministicRolls();
+    gen._assignedPowerNames = new Set();
+
+    const bt = gen.powerListTable.find((p) => p.name && p.category);
+    const rankRow = gen.randomRanksTable[0];
+
+    // Arm A: selected bonus → applySelectedBonusPower (incl. roll>100 adjust)
+    const charA = new Character();
+    charA.powers = [];
+    charA.powersCount = 10;
+    charA.powersMax = 10;
+    gen._selectedBonusPowers = {
+        ChainSource: { category: bt.category, name: bt.name },
+    };
+    gen.powerRolls[1] = 101; // bonus looks up startIndex = 1 (source already pushed)
+    gen._addPowerAndChain(
+        charA,
+        "Test",
+        {
+            name: "ChainSource",
+            code: "T",
+            category: "Test",
+            description: "",
+            bonusPowerCount: 1,
+        },
+        rankRow,
+        "Chain",
+        "Chain result",
+    );
+    Tester.assertEquals(
+        2,
+        charA.powers.length,
+        "Chain: source power + selected bonus pushed.",
+    );
+    Tester.assertEquals(
+        bt.name,
+        charA.powers[1].name,
+        "Chain: selected bonus power added.",
+    );
+    Tester.assert(
+        charA.powers[1].bonusPower === true,
+        "Chain: selected bonus flagged bonusPower.",
+    );
+    Tester.assert(
+        gen._assignedPowerNames.has(bt.name),
+        "Chain: bonus recorded in the assigned set.",
+    );
+
+    // Arm B: unselected bonus → generateBonusPower. Use a DIFFERENT target
+    // power: isPowerAlreadyAssigned consults the shared _assignedPowerNames
+    // set when it exists, and arm A just recorded bt there (cross-character
+    // dedup on a reused generator).
+    const bt2 = gen.powerListTable.find(
+        (p) => p.name && p.category && p.name !== bt.name,
+    );
+    const charB = new Character();
+    charB.powers = [];
+    charB.powersCount = 10;
+    charB.powersMax = 10;
+    gen._selectedBonusPowers = null;
+    gen.powerRolls[0] = 50;
+    gen._addPowerAndChain(
+        charB,
+        "Test",
+        {
+            name: "ChainSource2",
+            code: "T",
+            category: "Test",
+            description: "",
+            bonusPowerCount: 1,
+            bonusPower: `${bt2.category}\\${bt2.name}(100)`,
+        },
+        rankRow,
+        "Chain",
+        "Chain result",
+    );
+    Tester.assertEquals(
+        2,
+        charB.powers.length,
+        "Chain: source power + rolled bonus pushed.",
+    );
+    Tester.assert(
+        charB.powers[1] && charB.powers[1].bonusPower === true,
+        "Chain: rolled bonus flagged bonusPower.",
+    );
+    Tester.assertEquals(
+        bt2.name,
+        charB.powers[1] && charB.powers[1].name,
+        "Chain: rolled bonus power added from the DSL string.",
+    );
+};
+
+Tester.GenerateSinglePowerRetryGuardTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "basic";
+    gen.setTables();
+    gen.setDeterministicRolls();
+
+    // Smallest category = cheapest to exhaust
+    const counts = {};
+    for (const p of gen.powerListTable)
+        counts[p.category] = (counts[p.category] || 0) + 1;
+    const catX = Object.keys(counts).sort((a, b) => counts[a] - counts[b])[0];
+    const catXEntry = gen.powerCategoriesTable.find((c) => c.name === catX);
+    const yPower = gen.powerListTable.find(
+        (p) =>
+            p.category !== catX &&
+            Utility.getValue(p, "powerCount", 1) === 1 &&
+            p.name,
+    );
+    Tester.assertNotNull(catXEntry, "Retry: found the smallest category.");
+    Tester.assertNotNull(yPower, "Retry: found a cross-category target.");
+    const catYEntry = gen.powerCategoriesTable.find(
+        (c) => c.name === yPower.category,
+    );
+
+    const buildChar = () => {
+        const char = new Character();
+        char.physicalForm = gen.physicalFormTable[0].name;
+        char.powers = gen.powerListTable
+            .filter((p) => p.category === catX)
+            .map((p) => ({ name: p.name, category: catX, powerSlots: 1 }));
+        char.powersCount = char.powers.length + 5;
+        char.powersMax = char.powers.length + 10;
+        return char;
+    };
+
+    // (a) Category exhausted → retry loop: invalid cat roll, power roll >100,
+    //     then a valid cross-category pick
+    {
+        const char = buildChar();
+        const before = char.powers.length;
+        gen.powerCategoryRolls = Array(gen.rollArraySize).fill(0);
+        gen.powerRolls = Array(gen.rollArraySize).fill(50);
+        gen.powerRankRolls = Array(gen.rollArraySize).fill(50);
+        gen.powerCategoryRolls[0] = catXEntry.maxRoll;
+        gen.powerRolls[0] = 1; // lands inside X — every X power is assigned
+        gen.powerCategoryRolls[1] = 0; // invalid cat roll guard
+        gen.powerCategoryRolls[2] = catYEntry.maxRoll;
+        gen.powerRolls[2] = 101; // power roll >100 guard
+        gen.powerCategoryRolls[3] = catYEntry.maxRoll;
+        gen.powerRolls[3] = yPower.maxRoll; // unassigned pick → success
+        gen.generateSinglePower(char, 0);
+        Tester.assertEquals(
+            before + 1,
+            char.powers.length,
+            "Retry: cross-category shift adds exactly one power.",
+        );
+        Tester.assertEquals(
+            yPower.name,
+            char.powers[before].name,
+            "Retry: power came from the fallback category.",
+        );
+    }
+
+    // (b) Roll missed the table → the second retry twin + success
+    {
+        const char = buildChar();
+        const before = char.powers.length;
+        gen.powerCategoryRolls = Array(gen.rollArraySize).fill(0);
+        gen.powerRolls = Array(gen.rollArraySize).fill(50);
+        gen.powerRankRolls = Array(gen.rollArraySize).fill(50);
+        gen.powerCategoryRolls[0] = catXEntry.maxRoll;
+        gen.powerRolls[0] = 101; // no power matches → powerRow undefined
+        gen.powerCategoryRolls[1] = 0; // invalid cat roll guard
+        gen.powerCategoryRolls[2] = catYEntry.maxRoll;
+        gen.powerRolls[2] = 101; // power roll >100 guard
+        gen.powerCategoryRolls[3] = catYEntry.maxRoll;
+        gen.powerRolls[3] = yPower.maxRoll; // success
+        gen.generateSinglePower(char, 0);
+        Tester.assertEquals(
+            before + 1,
+            char.powers.length,
+            "Retry: roll-miss path recovers via cross-category shift.",
+        );
+        Tester.assertEquals(
+            yPower.name,
+            char.powers[before].name,
+            "Retry: roll-miss path picked the fallback power.",
+        );
+    }
+
+    // (c) Every retry roll invalid → "Exhausted retries" return, no push
+    {
+        const char = buildChar();
+        const before = char.powers.length;
+        gen.powerCategoryRolls = Array(gen.rollArraySize).fill(0);
+        gen.powerRolls = Array(gen.rollArraySize).fill(50);
+        gen.powerRankRolls = Array(gen.rollArraySize).fill(50);
+        gen.powerCategoryRolls[0] = catXEntry.maxRoll;
+        gen.powerRolls[0] = 101;
+        gen.generateSinglePower(char, 0);
+        Tester.assertEquals(
+            before,
+            char.powers.length,
+            "Retry: exhausted retries return without adding a power.",
+        );
+    }
+};
+
+Tester.TooManyPowersLoopTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "basic";
+    gen.setTables();
+    gen.setDeterministicRolls();
+
+    const multi = gen.powerListTable.find(
+        (p) => Utility.getValue(p, "powerCount", 1) > 1,
+    );
+    Tester.assertNotNull(multi, "TooMany: found a powerCount>1 power.");
+    const multiCat = gen.powerCategoriesTable.find(
+        (c) => c.name === multi.category,
+    );
+    const otherCat = gen.powerCategoriesTable.find(
+        (c) => c.name !== multi.category,
+    );
+    Tester.assertNotNull(multiCat, "TooMany: category entry exists.");
+
+    // currentSlots 1 + powerCount 2 > powersMax 2, and 2 > remainingSlots 1
+    const buildChar = () => {
+        const char = new Character();
+        char.physicalForm = gen.physicalFormTable[0].name;
+        char.powers = [{ name: "Filler", category: "Filler", powerSlots: 1 }];
+        char.powersCount = 2;
+        char.powersMax = 2;
+        return char;
+    };
+
+    // (a) guards + "Exhausted retries" return (powerRollIndex 0)
+    {
+        const char = buildChar();
+        gen.powerCategoryRolls = Array(gen.rollArraySize).fill(0);
+        gen.powerRolls = Array(gen.rollArraySize).fill(50);
+        gen.powerRankRolls = Array(gen.rollArraySize).fill(50);
+        gen.powerCategoryRolls[0] = multiCat.maxRoll;
+        gen.powerRolls[0] = multi.maxRoll; // the multi-slot power
+        gen.powerCategoryRolls[1] = otherCat.maxRoll;
+        gen.powerRolls[1] = 101; // power roll >100 guard
+        // remaining retry cat rolls stay 0 → invalid-cat guard until adj > 20
+        gen.generateSinglePower(char, 0);
+        Tester.assertEquals(
+            1,
+            char.powers.length,
+            "TooMany: no power added after retries exhausted.",
+        );
+    }
+
+    // (b) array-exhausted return near the end of the roll arrays
+    {
+        const char = buildChar();
+        gen.powerCategoryRolls = Array(gen.rollArraySize).fill(0);
+        gen.powerRolls = Array(gen.rollArraySize).fill(50);
+        gen.powerRankRolls = Array(gen.rollArraySize).fill(50);
+        const ix = gen.rollArraySize - 10;
+        gen.powerCategoryRolls[ix] = multiCat.maxRoll;
+        gen.powerRolls[ix] = multi.maxRoll;
+        // retry cat rolls stay 0 until nextIndex runs off the array
+        gen.generateSinglePower(char, ix);
+        Tester.assertEquals(
+            1,
+            char.powers.length,
+            "TooMany: array-exhausted return leaves powers unchanged.",
+        );
+    }
+};
+
+Tester.BonusFormSelectionTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "ultimate";
+    gen.setTables();
+    gen.setDeterministicRolls();
+    gen._assignedPowerNames = new Set();
+
+    const bt = gen.powerListTable.find((p) => p.name && p.category);
+
+    // Part 1: user-selected bonus slot — array-shaped and singular-shaped
+    const char1 = new Character();
+    char1.powers = [];
+    char1.powersCount = 6;
+    char1.powersMax = 6;
+    gen._selectedBonusPowers = [
+        [{ category: bt.category, name: bt.name }],
+        { category: bt.category, name: bt.name },
+    ];
+    gen.generatorBonusPowerOfPhysicalForm(char1, "Unused\\String(100)", 0);
+    gen.generatorBonusPowerOfPhysicalForm(char1, "Unused\\String(100)", 1);
+    Tester.assertEquals(
+        2,
+        char1.powers.length,
+        "FormBonusSel: two selected bonus powers pushed.",
+    );
+    Tester.assert(
+        char1.powers.every((p) => p.bonusPower === true),
+        "FormBonusSel: both flagged bonusPower.",
+    );
+
+    // Part 2: rolled path with every scan roll invalid → No Valid Power log
+    const char2 = new Character();
+    char2.powers = [];
+    char2.powersCount = 6;
+    char2.powersMax = 6;
+    gen._selectedBonusPowers = null;
+    gen.powerRolls = Array(gen.rollArraySize).fill(101);
+    gen.generatorBonusPowerOfPhysicalForm(char2, `${bt.category}\\Any(100)`);
+    Tester.assertEquals(
+        0,
+        char2.powers.length,
+        "FormBonusAny: exhausted rolls add nothing.",
+    );
+    gen.powerRolls = Array(gen.rollArraySize).fill(50);
+};
+
+Tester.ExtraInformationUndefinedFormTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "ultimate";
+    gen.setTables();
+    gen.setDeterministicRolls();
+    const p = gen.powerListTable.find(
+        (r) => r.rollExtraInformation && !Array.isArray(r.rollExtraInformation),
+    );
+    Tester.assertNotNull(
+        p,
+        "ExtraInfo: found a power with rollExtraInformation.",
+    );
+    gen.peiIndex = 0;
+    gen.powersExtraInfoRolls[0] = 101; // beyond every table's maxRoll
+    const result = gen.getExtraInformation(p.rollExtraInformation);
+    Tester.assertEquals("", result, "ExtraInfo: unmatched roll → empty.");
+    Tester.assertEquals(
+        0,
+        gen.peiIndex,
+        "ExtraInfo: peiIndex not consumed on a miss.",
+    );
+};
+
+Tester.OptionalPowerManualSelectionTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "advanced";
+    gen.setTables();
+    gen.setDeterministicRolls();
+    gen._assignedPowerNames = new Set();
+    gen.selectOptionalPowersManually = true;
+
+    const bt = gen.powerListTable.find((p) => p.name && p.category);
+
+    const char = new Character();
+    char.powers = [];
+    char.powersCount = 10;
+    char.powersMax = 10;
+
+    gen._selectedOptionalPowers = {
+        SourcePower: [
+            { category: bt.category, name: bt.name }, // rank miss (999) → continue
+            { category: bt.category, name: "Any" }, // Any resolve → push
+            { category: "NoSuchCategoryX", name: "Ghost" }, // !p → continue
+        ],
+    };
+    gen.powerRolls = Array(gen.rollArraySize).fill(50);
+    gen.powerRolls[0] = 101; // manual-branch roll>100 adjust
+    gen.powerRankRolls = Array(gen.rollArraySize).fill(50);
+    gen.powerRankRolls[0] = 999; // findRow miss → pick 0 skipped
+    gen.generateOptionalPower(char, 3, "ignored", "SourcePower");
+
+    Tester.assertEquals(
+        1,
+        char.powers.length,
+        "ManualOpt: exactly one optional power generated.",
+    );
+    if (char.powers.length === 1) {
+        Tester.assert(
+            char.powers[0].optionalPower === true,
+            "ManualOpt: flagged optionalPower.",
+        );
+        Tester.assertEquals(
+            bt.category,
+            char.powers[0].category,
+            "ManualOpt: resolved within the requested category.",
+        );
+    }
+    Tester.assert(
+        gen._processedOptionalSources.has("SourcePower"),
+        "ManualOpt: source marked processed.",
+    );
+
+    const before = char.powers.length;
+    gen.generateOptionalPower(char, 3, "ignored", "UnknownSource");
+    Tester.assertEquals(
+        before,
+        char.powers.length,
+        "ManualOpt: unknown source returns without changes.",
+    );
+};
+
+Tester.OptionalPowerAnyExhaustedTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "ultimate";
+    gen.setTables();
+    gen.setDeterministicRolls();
+    gen._assignedPowerNames = new Set();
+
+    const char = new Character();
+    char.powers = [];
+    char.powersCount = 6;
+    char.powersMax = 6;
+    gen.powerRolls = Array(gen.rollArraySize).fill(101);
+
+    // Entry 1 has no sub-type separator → segments<2 skip.
+    // Entry 2's "Any" scan sees only invalid rolls → skip arm + No Valid Power.
+    gen.generateOptionalPower(char, 1, "NoSlash|Movement\\Any(100)", "Src");
+
+    Tester.assertEquals(
+        0,
+        char.powers.length,
+        "OptAnyExhausted: no power when every roll is invalid.",
+    );
+    gen.powerRolls = Array(gen.rollArraySize).fill(50);
+};
+
+Tester.SimulateRolledPowersEdgeTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "advanced";
+    gen.setTables();
+    gen.setDeterministicRolls();
+    gen.powerNumberRoll = 50;
+    gen.powerRolls = Array(gen.rollArraySize).fill(101);
+    const rolled = gen._simulateRolledPowers();
+    Tester.assertEquals(
+        0,
+        rolled.size,
+        "Simulate: all-invalid rolls → empty set (covers re-roll + array-end break).",
+    );
+};
+
+Tester.BonusAndOptionalOptionQueryTests = () => {
+    // Fresh generators already auto-bind data tables in this environment,
+    // so drive the no-tables guards by nulling instance fields.
+    const bare = new CharacterGenerator();
+    Tester.assert(
+        bare.getTotalPowerCount() >= 0,
+        "Query: fresh generator resolves a total.",
+    );
+    const noTables = new CharacterGenerator();
+    noTables.physicalFormTable = null;
+    Tester.assertEquals(
+        0,
+        noTables.getTotalPowerCount(),
+        "Query: missing form table → 0 total.",
+    );
+    Tester.assertEquals(
+        0,
+        noTables.getMaxOptionalPowerSlots(),
+        "Query: missing tables → 0 optional slots.",
+    );
+    Tester.assertEquals(
+        null,
+        bare.getOptionalPowerGlobalCount(),
+        "Query: no form → null global count.",
+    );
+    Tester.assert(
+        Array.isArray(bare.getBonusPowerOptions()),
+        "Query: no power list → [].",
+    );
+    Tester.assert(
+        Array.isArray(bare.getOptionalPowerOptions()),
+        "Query: no power list → [] (optional).",
+    );
+
+    // A. getBonusPowerOptions → physicalForm section (searches all modes)
+    let formBonus = null;
+    let formOpts = null;
+    for (const mode of ["basic", "advanced", "ultimate"]) {
+        const g = new CharacterGenerator();
+        g.generatorMode = mode;
+        g.setTables();
+        g.setDeterministicRolls();
+        g.powerNumberRoll = 50;
+        const f = g.physicalFormTable.find((r) => {
+            const c = Utility.getValue(r, "bonusPowerCount", 0);
+            const s = Utility.getValue(r, "bonusPower", "");
+            if (c <= 0 || !s) return false;
+            return (
+                g._expandBonusPowerAny(
+                    CharacterGenerator.parseBonusPowerOptions(s),
+                ).length > 1
+            );
+        });
+        if (f) {
+            g._lastPhysicalForm = f.name;
+            formBonus = f;
+            formOpts = g.getBonusPowerOptions();
+            break;
+        }
+    }
+    Tester.assertNotNull(
+        formBonus,
+        "Query: found a form whose bonus powers expand to multiple options.",
+    );
+    if (formOpts && formOpts.length > 0) {
+        Tester.assertEquals(
+            "physicalForm",
+            formOpts[0].source,
+            "Query: form bonus options returned.",
+        );
+        Tester.assert(
+            formOpts[0].options.length > 1,
+            "Query: form options expanded.",
+        );
+    }
+
+    // B. getBonusPowerOptions → powerList section (simulate-rolled power)
+    let bp = null;
+    let genB = null;
+    for (const mode of ["advanced", "ultimate", "basic"]) {
+        const g = new CharacterGenerator();
+        g.generatorMode = mode;
+        g.setTables();
+        g.setDeterministicRolls();
+        g.powerNumberRoll = 50;
+        const cand = g.powerListTable.find((p) => {
+            const c = Utility.getValue(p, "bonusPowerCount", 0);
+            const s = Utility.getValue(p, "bonusPower", "");
+            if (c <= 0 || !s) return false;
+            return (
+                g._expandBonusPowerAny(
+                    CharacterGenerator.parseBonusPowerOptions(s),
+                ).length > 1
+            );
+        });
+        if (cand) {
+            bp = cand;
+            genB = g;
+            break;
+        }
+    }
+    Tester.assertNotNull(
+        bp,
+        "Query: found a power with multi-option bonus powers.",
+    );
+    if (bp && genB) {
+        genB._lastPhysicalForm = null; // form section must not early-return
+        const catEntry = genB.powerCategoriesTable.find(
+            (c) => c.name === bp.category,
+        );
+        genB.powerCategoryRolls[0] = catEntry.maxRoll;
+        genB.powerRolls[0] = bp.maxRoll; // exact pick → simulated as rolled
+        const powerOpts = genB.getBonusPowerOptions();
+        const slot = powerOpts.find(
+            (s) => s.source === "powerList" && s.sourcePowerName === bp.name,
+        );
+        Tester.assertNotNull(
+            slot,
+            "Query: powerList bonus slot returned for the simulated power.",
+        );
+    }
+
+    // C. the four never-called query methods on realistic state
+    const genC = new CharacterGenerator();
+    genC.generatorMode = "ultimate";
+    genC.setTables();
+    genC.setDeterministicRolls();
+    genC.powerNumberRoll = 50;
+
+    genC._lastPhysicalForm = genC.physicalFormTable[0].name;
+    const total = genC.getTotalPowerCount();
+    Tester.assert(total > 0, "Query: total power count resolves.");
+
+    const bonusForm = genC.physicalFormTable.find(
+        (r) => Utility.getValue(r, "bonusPowerCount", 0) > 0,
+    );
+    Tester.assertNotNull(
+        bonusForm,
+        "Query: a form with bonusPowerCount exists.",
+    );
+    genC._lastPhysicalForm = bonusForm.name;
+    const total2 = genC.getTotalPowerCount();
+    const maxOpt = genC.getMaxOptionalPowerSlots();
+    const expectedMaxOpt = Math.max(
+        0,
+        total2 - 1 - Utility.getValue(bonusForm, "bonusPowerCount", 0),
+    );
+    Tester.assertEquals(
+        expectedMaxOpt,
+        maxOpt,
+        "Query: optional slots = total - primary - bonus.",
+    );
+
+    // total <= 0 arm (quantityTable removed on this instance only)
+    const genD = new CharacterGenerator();
+    genD.setTables();
+    genD.quantityTable = null;
+    Tester.assertEquals(
+        0,
+        genD.getMaxOptionalPowerSlots(),
+        "Query: zero total → zero optional slots.",
+    );
+
+    // no form → no bonus subtraction
+    const genE = new CharacterGenerator();
+    genE.setTables();
+    genE.setDeterministicRolls();
+    genE.powerNumberRoll = 50;
+    genE._lastPhysicalForm = null;
+    const totalE = genE.getTotalPowerCount();
+    Tester.assertEquals(
+        Math.max(0, totalE - 1),
+        genE.getMaxOptionalPowerSlots(),
+        "Query: no form → no bonus subtraction.",
+    );
+
+    // getOptionalPowerGlobalCount — all three arms
+    const optForm = genC.physicalFormTable.find(
+        (r) => Utility.getValue(r, "optionalPowers", "") !== "",
+    );
+    Tester.assertNotNull(optForm, "Query: a form with optionalPowers exists.");
+    genC._lastPhysicalForm = optForm.name;
+    Tester.assertEquals(
+        Utility.getValue(optForm, "optionalPowerCount", 1),
+        genC.getOptionalPowerGlobalCount(),
+        "Query: global count read from the form.",
+    );
+    const plainForm = genC.physicalFormTable.find(
+        (r) => Utility.getValue(r, "optionalPowers", "") === "",
+    );
+    genC._lastPhysicalForm = plainForm ? plainForm.name : null;
+    Tester.assertEquals(
+        null,
+        genC.getOptionalPowerGlobalCount(),
+        "Query: form without optionalPowers → null.",
+    );
+    genC._lastPhysicalForm = null;
+    Tester.assertEquals(
+        null,
+        genC.getOptionalPowerGlobalCount(),
+        "Query: no form → null.",
+    );
+
+    // getOptionalPowerOptions — form group (prefer a '~' string for the
+    // alternatives-expansion arm) plus a simulated power group
+    const tildeOptForm = genC.physicalFormTable.find(
+        (r) => Utility.getValue(r, "optionalPowers", "").indexOf("~") !== -1,
+    );
+    const chosenForm = tildeOptForm || optForm;
+    genC._lastPhysicalForm = chosenForm.name;
+    const optPower = genC.powerListTable.find(
+        (p) => Utility.getValue(p, "optionalPowers", "") !== "",
+    );
+    if (optPower) {
+        const catE = genC.powerCategoriesTable.find(
+            (c) => c.name === optPower.category,
+        );
+        genC.powerCategoryRolls[0] = catE.maxRoll;
+        genC.powerRolls[0] = optPower.maxRoll;
+        genC.powerNumberRoll = 50;
+    }
+    const optGroups = genC.getOptionalPowerOptions();
+    const groupNames = optGroups.map((g) => g.sourcePowerName);
+    Tester.assert(
+        groupNames.includes(chosenForm.name),
+        "Query: form optional group returned.",
+    );
+    if (optPower) {
+        Tester.assert(
+            groupNames.includes(optPower.name),
+            "Query: rolled power's optional group returned.",
+        );
+    }
+    const formGroup = optGroups.find(
+        (g) => g.sourcePowerCategory === "Physical Form",
+    );
+    Tester.assert(
+        formGroup && formGroup.options.length > 0,
+        "Query: form options parsed.",
+    );
+    Tester.assert(
+        optGroups.every((g) => typeof g.maxCount === "number"),
+        "Query: every group carries a numeric maxCount.",
+    );
+};
+
+Tester.PowerSlotsAndCategoriesResolutionTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "basic";
+    gen.setTables();
+    gen.setDeterministicRolls();
+    gen.powerNumberRoll = 50;
+
+    // (a) _lastPhysicalForm path
+    gen._lastPhysicalForm = gen.physicalFormTable[0].name;
+    let r = gen.getPowerSlotsAndCategories();
+    Tester.assert(r.count > 0, "SlotsCat: resolves via _lastPhysicalForm.");
+
+    // (b) physicalFormRoll path — row found
+    gen._lastPhysicalForm = null;
+    gen.physicalFormRoll = 1;
+    r = gen.getPowerSlotsAndCategories();
+    Tester.assert(r.count > 0, "SlotsCat: resolves via physicalFormRoll.");
+
+    // (c) roll misses every row → fallback to the first form
+    gen.physicalFormRoll = 999;
+    r = gen.getPowerSlotsAndCategories();
+    Tester.assert(r.count > 0, "SlotsCat: missing row falls back to form[0].");
+
+    // (d) no form info → default first form
+    gen.physicalFormRoll = null;
+    r = gen.getPowerSlotsAndCategories();
+    Tester.assert(r.count > 0, "SlotsCat: default form path works.");
+    Tester.assert(
+        Array.isArray(r.categories),
+        "SlotsCat: categories array returned.",
+    );
+};
+
+Tester.GenerateBonusPowerEdgeTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "advanced";
+    gen.setTables();
+    gen.setDeterministicRolls();
+    gen._assignedPowerNames = new Set();
+
+    const bt = gen.powerListTable.find((p) => p.name && p.category);
+    const spec = `${bt.category}\\${bt.name}(100)`;
+
+    // roll >100 → re-roll adjust loop, then success
+    const char1 = new Character();
+    char1.powers = [];
+    char1.powersCount = 6;
+    char1.powersMax = 6;
+    gen.powerRolls[0] = 101;
+    gen.generateBonusPower(char1, spec);
+    Tester.assertEquals(
+        1,
+        char1.powers.length,
+        "BonusEdge: invalid first roll re-rolled to a valid one.",
+    );
+    if (char1.powers.length === 1) {
+        Tester.assert(
+            char1.powers[0].bonusPower === true,
+            "BonusEdge: bonus power flagged.",
+        );
+    }
+
+    // roll above the entry ceiling → no candidate → clean return
+    const char2 = new Character();
+    char2.powers = [];
+    char2.powersCount = 6;
+    char2.powersMax = 6;
+    gen.powerRolls[0] = 50;
+    gen.generateBonusPower(char2, `${bt.category}\\${bt.name}(1)`);
+    Tester.assertEquals(
+        0,
+        char2.powers.length,
+        "BonusEdge: roll above the entry ceiling adds nothing.",
+    );
+
+    // unknown category/power → lookup miss → clean return
+    const char3 = new Character();
+    char3.powers = [];
+    char3.powersCount = 6;
+    char3.powersMax = 6;
+    gen.generateBonusPower(char3, "NoSuchCategoryX\\NoSuchPowerX(100)");
+    Tester.assertEquals(
+        0,
+        char3.powers.length,
+        "BonusEdge: unknown power adds nothing.",
+    );
+};
+
+// ============================================================================
 // REGISTRATION
 // ============================================================================
 
@@ -1735,4 +2608,17 @@ Tester.registerTestGroup(86, "deterministic", [
     { name: "OptionalPowerAnyPathTests", needsGen: false },
     { name: "CrossCategoryInvalidCatRollTests", needsGen: false },
     { name: "DiceEdgeCaseTests", needsGen: false },
+    { name: "PowerUpgradeAdvancedPathTests", needsGen: false },
+    { name: "RemovePowerReindexTests", needsGen: false },
+    { name: "AddPowerAndChainBonusTests", needsGen: false },
+    { name: "GenerateSinglePowerRetryGuardTests", needsGen: false },
+    { name: "TooManyPowersLoopTests", needsGen: false },
+    { name: "BonusFormSelectionTests", needsGen: false },
+    { name: "ExtraInformationUndefinedFormTests", needsGen: false },
+    { name: "OptionalPowerManualSelectionTests", needsGen: false },
+    { name: "OptionalPowerAnyExhaustedTests", needsGen: false },
+    { name: "SimulateRolledPowersEdgeTests", needsGen: false },
+    { name: "BonusAndOptionalOptionQueryTests", needsGen: false },
+    { name: "PowerSlotsAndCategoriesResolutionTests", needsGen: false },
+    { name: "GenerateBonusPowerEdgeTests", needsGen: false },
 ]);

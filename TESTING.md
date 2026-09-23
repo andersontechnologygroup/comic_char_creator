@@ -276,15 +276,15 @@ product source, not the test files themselves. Last measured 2026-09-22 with
 | ---------------------------------- | ---------- | ------- |
 | CharacterGenerator.js (core)       | >95% lines | 94.1%   |
 | CharacterGeneratorDetermination.js | >95% lines | 91.0%   |
-| CharacterGeneratorPowers.js        | >95% lines | 71.7%   |
+| CharacterGeneratorPowers.js        | >95% lines | 94.5%   |
 | CharacterGeneratorRoster.js        | >95% lines | 89.0%   |
-| Overall                            | >97% lines | 92.9%   |
+| Overall                            | >97% lines | 96.0%   |
 
 The overall figure is lifted by the data tables (declarations only, always
 100%); the four `CharacterGenerator*.js` files — core lifecycle, determination,
 powers and roster (split for maintainability, see the header of
-core `CharacterGenerator.js`) — are the meaningful signal. Powers is the
-largest gap, so new tests pay off most there.
+core `CharacterGenerator.js`) — are the meaningful signal. Roster and
+Determination are the largest remaining gaps, so new tests pay off most there.
 
 ### Improving Coverage
 
