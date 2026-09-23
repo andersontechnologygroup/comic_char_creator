@@ -73,15 +73,20 @@ Tester._assertResourceInvariants = (char, mode) => {
         char.resources.rank !== "" && char.resources.rank !== undefined,
         `Fuzz (${mode}): resources.rank is populated (was "${char.resources.rank}").`,
     );
-    if(char.physicalForm === "Animal" || char.physicalForm === "Vegetable" || char.physicalForm === "Gaseous") {
+    if (
+        char.physicalForm === "Animal" ||
+        char.physicalForm === "Vegetable" ||
+        char.physicalForm === "Gaseous"
+    ) {
         Tester.assert(
-            typeof char.resources.number === "number" && char.resources.number === 0,
+            typeof char.resources.number === "number" &&
+                char.resources.number === 0,
             `Fuzz (${mode}): resources.number = 0 for ${char.physicalForm} (was ${char.resources.number}).`,
         );
-    }
-    else {
+    } else {
         Tester.assert(
-            typeof char.resources.number === "number" && char.resources.number > 0,
+            typeof char.resources.number === "number" &&
+                char.resources.number > 0,
             `Fuzz (${mode}): resources.number > 0 for ${char.physicalForm} (was ${char.resources.number}).`,
         );
     }

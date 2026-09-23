@@ -20,22 +20,27 @@ const { execSync } = require("child_process");
 
 const TESTS_DIR = path.join(__dirname, "tests");
 const TEST_MANIFEST = [
-    "tests/TestsHelpers.js",
-    "tests/TestsUtility.js",
     "tests/TestsAbilities.js",
-    "tests/TestsPowers.js",
-    "tests/TestsWeakness.js",
-    "tests/TestsTalents.js",
-    "tests/TestsContacts.js",
-    "tests/TestsFuzz.js",
-    "tests/TestsBoundary.js",
     "tests/TestsBenchmark.js",
-    "tests/TestsPhysicalForms.js",
-    "tests/TestsOrigins.js",
-    "tests/TestsGeneratorMethods.js",
+    "tests/TestsBoundary.js",
     "tests/TestsBranchCoverage.js",
+    "tests/TestsBranchCoverage2.js",
+    "tests/TestsContacts.js",
     "tests/TestsCoverageBoost.js",
+    "tests/TestsDataIntegrity.js",
+    "tests/TestsFeatures.js",
+    "tests/TestsFuzz.js",
+    "tests/TestsGeneratorMethods.js",
+    "tests/TestsHelpers.js",
+    "tests/TestsNegative.js",
+    "tests/TestsOrigins.js",
+    "tests/TestsPhysicalForms.js",
     "tests/TestsPowerSelection.js",
+    "tests/TestsPowers.js",
+    "tests/TestsTalents.js",
+    "tests/TestsUpgradePower.js",
+    "tests/TestsUtility.js",
+    "tests/TestsWeakness.js",
 ];
 
 // ============================================================================
@@ -52,20 +57,26 @@ if (coverageMode) {
     if (childArgs.length > 0)
         console.log("  Forwarding args: " + childArgs.join(" ") + "\n");
 
-    // Use --exclude to only show our project files (not node_modules)
+    // Use --exclude to only show our project source files (not node_modules
+    // or the test files themselves — coverage of the tests is not the point)
     const c8Cmd = [
         'npx c8 --reporter=text --reporter=text-summary --exclude="node_modules/**"',
+        '--exclude="tests/**"',
         '"' + process.execPath + '"',
         '"' + __filename + '"',
         ...childArgs.map((a) => '"' + a + '"'),
     ].join(" ");
+    let coverageExitCode = 0;
     try {
         execSync(c8Cmd, { stdio: "inherit", cwd: __dirname, shell: true });
     } catch (e) {
-        // Tests failed — c8 still reports coverage
+        // Tests failed — c8 still reports coverage, but the exit code must
+        // reflect the failure so CI goes red. Preserve the child's status.
+        coverageExitCode =
+            typeof e.status === "number" && e.status > 0 ? e.status : 1;
     }
 
-    process.exit(0);
+    process.exit(coverageExitCode);
 }
 
 // ============================================================================
@@ -168,6 +179,9 @@ const CORE_FILES = [
     "DataUltimate.js",
     "Character.js",
     "CharacterGenerator.js",
+    "CharacterGeneratorDetermination.js",
+    "CharacterGeneratorPowers.js",
+    "CharacterGeneratorRoster.js",
     "UnitTests.js",
 ];
 
@@ -186,6 +200,28 @@ try {
 }
 
 const allFiles = [...CORE_FILES, ...testFiles];
+
+// Browser/Node parity: comiccharcreator.html must <script> every test file
+// this runner discovers, otherwise the browser silently runs a different
+// (smaller) suite than CI. Fail loudly so the tags stay in sync.
+const htmlPath = path.join(__dirname, "comiccharcreator.html");
+if (fs.existsSync(htmlPath)) {
+    const html = fs.readFileSync(htmlPath, "utf8");
+    const missingInHtml = testFiles.filter(
+        (f) => html.indexOf('src="' + f + '"') === -1,
+    );
+    if (missingInHtml.length > 0) {
+        console.error(
+            "Error: test file(s) not loaded by comiccharcreator.html:",
+        );
+        for (const f of missingInHtml) {
+            console.error(
+                '  <script type="text/javascript" src="' + f + '"></script>',
+            );
+        }
+        process.exit(1);
+    }
+}
 
 // Validate all files exist
 for (const f of allFiles) {

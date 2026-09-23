@@ -265,7 +265,7 @@ Tester.DiceRollCountConsistencyTests = () => {
         const gen = new CharacterGenerator();
         gen.generatorMode = mode;
         gen.setTables();
-        const char = gen.generate();
+        gen.generate();
 
         Tester.assert(
             Dice.rollCount > 0,

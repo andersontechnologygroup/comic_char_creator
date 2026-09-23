@@ -53,10 +53,7 @@ function _setupDeterministicWithPreSelected(gen, mode) {
 // ============================================================================
 
 Tester.PreSelectedPowersBasicTests = (gen) => {
-    const { expectedCount, preSelected } = _setupDeterministicWithPreSelected(
-        gen,
-        "basic",
-    );
+    const { preSelected } = _setupDeterministicWithPreSelected(gen, "basic");
 
     const char = gen.generateWithoutThrows();
 

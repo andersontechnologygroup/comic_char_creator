@@ -1,4 +1,11 @@
 {
+    "scripts": {
+        "test": "node run-tests.js",
+        "test:coverage": "node run-tests.js --coverage",
+        "lint": "eslint .",
+        "format": "prettier --write .",
+        "format:check": "prettier --check ."
+    },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
         "c8": "^12.0.0",

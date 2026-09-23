@@ -416,10 +416,6 @@ Tester.BonusPowerOfPhysicalFormTests = () => {
     if (formsWithAny.length > 0) {
         const form = formsWithAny[0];
         gen.setDeterministicRolls();
-        // Find the roll value that selects this form
-        const formIndex = gen.physicalFormTable.indexOf(form);
-        // Calculate what roll selects this form
-        const maxRolls = gen.physicalFormTable.map((r) => r.maxRoll);
         // Just set the form directly
         const char2 = new Character();
         char2.physicalForm = form.name;
@@ -481,8 +477,8 @@ Tester.GenerateOptionalPowerTests = () => {
 
         gen.generateSinglePower(char, 0);
         Tester.assert(
-            char.powers.length >= 1,
-            `OptionalPower: ${formWithOptional.name} powers count = ${char.powers.length}.`,
+            char.powers.length >= 2,
+            `OptionalPower: ${formWithOptional.name} generated its power (pre-pushed + rolled): count = ${char.powers.length}.`,
         );
     }
 
@@ -503,8 +499,82 @@ Tester.GenerateOptionalPowerTests = () => {
         gen.powerRankRolls = Array(gen.rollArraySize).fill(50);
         gen.determineSpecialAbilities(char);
         Tester.assert(
-            char.powers.length >= 0,
-            `OptionalPowerTilde: ${formWithTilde.name} powers count = ${char.powers.length}.`,
+            char.powers.length >= 1,
+            `OptionalPowerTilde: ${formWithTilde.name} generated powers count = ${char.powers.length}.`,
+        );
+        // Every "~" alternative must parse to a clean two-segment
+        // (category, name) pair with no roll tail leaking into the name —
+        // that leak is what made "Any(100)" silently generate nothing
+        // before the DSL unification (issues #14/#18).
+        let tildeParsedOk = true;
+        const tildeEntries = Utility.splitDslList(formWithTilde.optionalPowers);
+        for (let ei = 0; ei < tildeEntries.length; ei++) {
+            const alts = Utility.splitDslAlternatives(tildeEntries[ei]);
+            for (let ai = 0; ai < alts.length; ai++) {
+                const altSpec = Utility.parseDslEntry(alts[ai]);
+                if (
+                    altSpec.segments.length < 2 ||
+                    altSpec.name.indexOf("(") !== -1
+                ) {
+                    tildeParsedOk = false;
+                }
+            }
+        }
+        Tester.assert(
+            tildeParsedOk && tildeEntries.length > 0,
+            `OptionalPowerTilde: ${formWithTilde.name} all ~ alternatives parse cleanly.`,
+        );
+    }
+
+    // --- Regression (issue #18): "(maxRoll)" tails must never leak into
+    // names. Before the DSL unification, generateOptionalPower kept the raw
+    // name, so "Any(100)" failed the === "Any" check and the Ultimate
+    // Energy form's optional power silently never generated.
+    const tailSpec = Utility.parseDslEntry("Energy Control\\Any(100)");
+    Tester.assertEquals(
+        "Any",
+        tailSpec.name,
+        "AnyTail: parseDslEntry strips the (100) tail from the name.",
+    );
+    Tester.assertEquals(
+        100,
+        tailSpec.maxRoll,
+        "AnyTail: (100) tail parsed as maxRoll 100.",
+    );
+
+    const genTail = new CharacterGenerator();
+    genTail.generatorMode = "ultimate";
+    genTail.setTables();
+    genTail.setDeterministicRolls();
+    genTail.applyOptionalPowers = true;
+    genTail.powerCategoryRolls = Array(genTail.rollArraySize).fill(50);
+    genTail.powerRolls = Array(genTail.rollArraySize).fill(50);
+    genTail.powerRankRolls = Array(genTail.rollArraySize).fill(50);
+    const charTail = new Character();
+    charTail.physicalForm = "AnyTailRegression";
+    charTail.powersCount = 10;
+    charTail.powersMax = 10;
+    genTail.generateOptionalPower(
+        charTail,
+        1,
+        "Energy Control\\Any(100)",
+        "regression",
+    );
+    Tester.assertEquals(
+        1,
+        charTail.powers.length,
+        "AnyTail: optional power generated from Any(100).",
+    );
+    if (charTail.powers.length === 1) {
+        Tester.assertEquals(
+            "Energy Control",
+            charTail.powers[0].category,
+            "AnyTail: generated power is in the Energy Control category.",
+        );
+        Tester.assertNotEquals(
+            "Any(100)",
+            charTail.powers[0].name,
+            "AnyTail: generated power name is a real power, not the raw tail.",
         );
     }
 };
@@ -549,7 +619,7 @@ Tester.GenerateBonusPowerFromAbilityTests = () => {
         const hasBonus = char.powers.some((p) => p.bonusPower);
         Tester.assert(
             char.powers.length >= 1,
-            `BonusPowerFromAbility: generated ${char.powers.length} powers.`,
+            `BonusPowerFromAbility: generated ${char.powers.length} powers (hasBonus: ${hasBonus}).`,
         );
     }
 };
@@ -1244,7 +1314,6 @@ Tester.SpecialAbilitySetAdjustmentTests = () => {
         char1.contactsCount,
         "SpecialAdj: contactsCountSet=7 → 7.",
     );
-    char1 = null;
 
     // --- contactsCountAdjustment (line 1195-1199) ---
     delete row.contactsCountSet;
@@ -1258,7 +1327,6 @@ Tester.SpecialAbilitySetAdjustmentTests = () => {
         char1.contactsCount >= origCC,
         `SpecialAdj: contactsCountAdjustment=3, count went from ${origCC} to ${char1.contactsCount}.`,
     );
-    char1 = null;
 
     // --- talentsCountSet (line 1229-1232) ---
     row.talentsCountSet = 5;
@@ -1271,7 +1339,6 @@ Tester.SpecialAbilitySetAdjustmentTests = () => {
         char1.talentsCount,
         "SpecialAdj: talentsCountSet=5 → 5.",
     );
-    char1 = null;
 
     // --- talentsCountAdjustment (line 1238-1242) ---
     delete row.talentsCountSet;
@@ -1285,7 +1352,6 @@ Tester.SpecialAbilitySetAdjustmentTests = () => {
         char1.talentsCount >= origTC,
         `SpecialAdj: talentsCountAdjustment=2, count went from ${origTC} to ${char1.talentsCount}.`,
     );
-    char1 = null;
 
     // --- powersCountSet (line 1272-1275) ---
     row.powersCountSet = 8;
@@ -1298,7 +1364,6 @@ Tester.SpecialAbilitySetAdjustmentTests = () => {
         char1.powersCount,
         "SpecialAdj: powersCountSet=8 → 8.",
     );
-    char1 = null;
 
     // --- powersCountAdjustment (line 1277-1280) ---
     delete row.powersCountSet;
@@ -1312,7 +1377,6 @@ Tester.SpecialAbilitySetAdjustmentTests = () => {
         char1.powersCount >= origPC,
         `SpecialAdj: powersCountAdjustment=1, count went from ${origPC} to ${char1.powersCount}.`,
     );
-    char1 = null;
 
     // --- powersCountMinimum (line 1287-1290) ---
     delete row.powersCountAdjustment;
@@ -1325,7 +1389,6 @@ Tester.SpecialAbilitySetAdjustmentTests = () => {
         char1.powersCount >= 99 || char1.powersCount >= 1,
         `SpecialAdj: powersCountMinimum=99, actual=${char1.powersCount}.`,
     );
-    char1 = null;
 
     // --- powersCountMaximum (line 1295-1298) ---
     delete row.powersCountMinimum;
@@ -1338,7 +1401,6 @@ Tester.SpecialAbilitySetAdjustmentTests = () => {
         char1.powersCount <= 0,
         `SpecialAdj: powersCountMaximum=0, actual=${char1.powersCount}.`,
     );
-    char1 = null;
 
     // Restore
     Object.keys(saved).forEach((k) => {

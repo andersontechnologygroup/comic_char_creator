@@ -625,12 +625,8 @@ const ULTIMATE_OPTIONAL_POWERS = {
     EC7: [
         { name: "Energy Emission", matchBy: "category", type: "optionalPower" },
     ],
-    EC10: [
-        { name: "Fire Generation", matchBy: "name", type: "optionalPower" },
-    ],
-    EC12: [
-        { name: "Hard Radiation", matchBy: "name", type: "optionalPower" },
-    ],
+    EC10: [{ name: "Fire Generation", matchBy: "name", type: "optionalPower" }],
+    EC12: [{ name: "Hard Radiation", matchBy: "name", type: "optionalPower" }],
     EC13: [
         {
             name: "Telekinesis",
@@ -645,9 +641,7 @@ const ULTIMATE_OPTIONAL_POWERS = {
             type: "optionalPower",
         },
     ],
-    EC14: [
-        { name: "Light Emission", matchBy: "name", type: "optionalPower" },
-    ],
+    EC14: [{ name: "Light Emission", matchBy: "name", type: "optionalPower" }],
     EC16: [
         { name: "Plasma Generation", matchBy: "name", type: "optionalPower" },
     ],
@@ -663,33 +657,21 @@ const ULTIMATE_OPTIONAL_POWERS = {
         { name: "Sonic Generation", matchBy: "name", type: "bonusPower" },
         { name: "Vibration", matchBy: "name", type: "optionalPower" },
     ],
-    EC20: [
-        { name: "Heat", matchBy: "name", type: "optionalPower" },
-    ],
-    EC21: [
-        { name: "Vibration", matchBy: "name", type: "optionalPower" },
-    ],
-    EE1: [
-        { name: "Coldshaping", matchBy: "name", type: "optionalPower" },
-    ],
-    EE7: [
-        { name: "Kinetic Control", matchBy: "name", type: "optionalPower" },
-    ],
+    EC20: [{ name: "Heat", matchBy: "name", type: "optionalPower" }],
+    EC21: [{ name: "Vibration", matchBy: "name", type: "optionalPower" }],
+    EE1: [{ name: "Coldshaping", matchBy: "name", type: "optionalPower" }],
+    EE7: [{ name: "Kinetic Control", matchBy: "name", type: "optionalPower" }],
     EE11: [
         { name: "Radiowave Control", matchBy: "name", type: "optionalPower" },
     ],
-    EE12: [
-        { name: "Shadowshaping", matchBy: "name", type: "optionalPower" },
-    ],
+    EE12: [{ name: "Shadowshaping", matchBy: "name", type: "optionalPower" }],
     EE13: [
         { name: "Sound Manipulation", matchBy: "name", type: "optionalPower" },
     ],
     EE14: [
         { name: "Vibration Control", matchBy: "name", type: "optionalPower" },
     ],
-    F2: [
-        { name: "Iron Will", matchBy: "name", type: "optionalPower" },
-    ],
+    F2: [{ name: "Iron Will", matchBy: "name", type: "optionalPower" }],
     I1: [
         {
             name: "Telescopic Vision",
@@ -870,7 +852,7 @@ Tester.PowersTests = (gen) => {
 
 const POWERS_INTEGRATION_CASES = [
     {
-        desc: "Altered Human (4 powers, form adjustment +1)",
+        desc: "Altered Human (3 powers, form adjustment +1 clamped to table maximum 3)",
         physicalForm: "Altered Human",
         origin: "Altered Human",
         randomRanksColumn: 1,
@@ -878,7 +860,7 @@ const POWERS_INTEGRATION_CASES = [
         powerCategoryRolls: [75, 2, 55, 27, 19, 74],
         powerRolls: [20, 20, 60, 30, 40, 50],
         powerRankRolls: [9, 19, 29, 39, 49, 59],
-        expectedPowerCount: 4,
+        expectedPowerCount: 3,
         expectedPowers: [
             {
                 category: "Body Alterations, Offensive",
@@ -916,7 +898,7 @@ const POWERS_INTEGRATION_CASES = [
         ],
     },
     {
-        desc: "Altered Human (6 powers, max powerNumberRoll)",
+        desc: "Altered Human (5 powers, max powerNumberRoll — 6 clamped to table maximum 5)",
         physicalForm: "Altered Human",
         origin: "Altered Human",
         randomRanksColumn: 1,
@@ -924,7 +906,7 @@ const POWERS_INTEGRATION_CASES = [
         powerCategoryRolls: [15, 5, 75, 75, 55, 35],
         powerRolls: [60, 90, 10, 30, 70, 10],
         powerRankRolls: [9, 19, 29, 39, 49, 59, 69],
-        expectedPowerCount: 6,
+        expectedPowerCount: 5,
         expectedPowers: [
             { category: "Nature Control", name: "Fire Control", rank: "Poor" },
             {
@@ -1059,7 +1041,9 @@ Tester.ValidateUltimatePowerCatchTests = () => {
     // _validateUltimatePower's catch blocks call Tester.assert(false, ...) which
     // increments failureCount. Save/restore to prevent expected failures from
     // polluting the test results.
-    console.log("  [INTENTIONAL FAILURE TEST] Corrupting bonus power data to verify error handling...");
+    console.log(
+        "  [INTENTIONAL FAILURE TEST] Corrupting bonus power data to verify error handling...",
+    );
     const origBonusDefs = ULTIMATE_BONUS_POWERS["EC1"];
     ULTIMATE_BONUS_POWERS["EC1"] = 42; // for...of on number throws TypeError
     const fBefore = Tester.failureCount;
@@ -1075,7 +1059,9 @@ Tester.ValidateUltimatePowerCatchTests = () => {
     console.log("  [INTENTIONAL FAILURE TEST] Restored bonus power data.");
 
     // --- Exercise optional powers catch(ex) by making loop body throw ---
-    console.log("  [INTENTIONAL FAILURE TEST] Corrupting optional power data with Proxy to verify error handling...");
+    console.log(
+        "  [INTENTIONAL FAILURE TEST] Corrupting optional power data with Proxy to verify error handling...",
+    );
     const origOptDefs = ULTIMATE_OPTIONAL_POWERS["EC1"];
     const origPowersMax = char.powersMax;
     char.powersMax = 10;
@@ -1150,7 +1136,7 @@ Tester.PowersTooManyTests = (gen) => {
     gen.randomRanksColumn = 2;
     gen.physicalFormRoll = 25; // Normal Human (maxRoll: 26)
     gen.originRoll = 25;
-    gen.powerNumberRoll = 5;   // quantity row maxRoll:12 → initial:1, maximum:3
+    gen.powerNumberRoll = 5; // quantity row maxRoll:12 → initial:1, maximum:3
     gen.powerCategoryRolls = [2, 15, 22, 40, 50, 60, 75, 85, 95, 5];
     gen.powerRolls = [5, 10, 20, 35, 45, 55, 70, 80, 90, 5];
     gen.powerRankRolls = [50, 50, 50, 50, 50, 50, 50, 50, 50, 50];
@@ -1165,16 +1151,18 @@ Tester.PowersTooManyTests = (gen) => {
 
     // Invariant: no powers exceed maximum
     const totalSlots1 = char1.powers.reduce(
-        (sum, p) => sum + (p.powerSlots || 1), 0,
+        (sum, p) => sum + (p.powerSlots || 1),
+        0,
     );
     Tester.assert(
         totalSlots1 <= char1.powersMax,
         `PowersTooMany (Normal Human): total slots (${totalSlots1}) <= powersMax (${char1.powersMax}).`,
     );
     // Normal Human has no bonus power, so all powers are regular
-    const bonusCount1 = char1.powers.filter(p => p.bonusPower).length;
+    const bonusCount1 = char1.powers.filter((p) => p.bonusPower).length;
     Tester.assertEquals(
-        0, bonusCount1,
+        0,
+        bonusCount1,
         `PowersTooMany (Normal Human): no bonus powers (got ${bonusCount1}).`,
     );
 
@@ -1189,7 +1177,7 @@ Tester.PowersTooManyTests = (gen) => {
     gen.randomRanksColumn = 2;
     gen.physicalFormRoll = 96; // Energy (maxRoll: 97)
     gen.originRoll = 96;
-    gen.powerNumberRoll = 22;  // quantity row maxRoll:26 → initial:2, maximum:4
+    gen.powerNumberRoll = 22; // quantity row maxRoll:26 → initial:2, maximum:4
     gen.powerCategoryRolls = [2, 15, 22, 40, 50, 60, 75, 85, 95, 5];
     gen.powerRolls = [5, 10, 20, 35, 45, 55, 70, 80, 90, 5];
     gen.powerRankRolls = [50, 50, 50, 50, 50, 50, 50, 50, 50, 50];
@@ -1203,23 +1191,26 @@ Tester.PowersTooManyTests = (gen) => {
     const char2 = gen.generateWithoutThrows();
 
     const totalSlots2 = char2.powers.reduce(
-        (sum, p) => sum + (p.powerSlots || 1), 0,
+        (sum, p) => sum + (p.powerSlots || 1),
+        0,
     );
     Tester.assert(
         totalSlots2 <= char2.powersMax,
         `PowersTooMany (Energy): total slots (${totalSlots2}) <= powersMax (${char2.powersMax}).`,
     );
     // Energy has bonusPowerCount:1 — should have exactly 1 bonus power
-    const bonusCount2 = char2.powers.filter(p => p.bonusPower).length;
+    const bonusCount2 = char2.powers.filter((p) => p.bonusPower).length;
     Tester.assertEquals(
-        1, bonusCount2,
+        1,
+        bonusCount2,
         `PowersTooMany (Energy): expected 1 bonus power (got ${bonusCount2}).`,
     );
     // Bonus power should be from Energy Emission category
-    const bonusPower2 = char2.powers.find(p => p.bonusPower);
+    const bonusPower2 = char2.powers.find((p) => p.bonusPower);
     if (bonusPower2) {
         Tester.assertEquals(
-            "Energy Emission", bonusPower2.category,
+            "Energy Emission",
+            bonusPower2.category,
             `PowersTooMany (Energy): bonus power category is Energy Emission (got ${bonusPower2.category}).`,
         );
     }
@@ -1268,7 +1259,8 @@ Tester.PowersTooManyTests = (gen) => {
     // Total slots should still be <= the original powersMax
     // (the generator already produced its powers, we're just verifying the invariant holds)
     const totalSlots3 = char3.powers.reduce(
-        (sum, p) => sum + (p.powerSlots || 1), 0,
+        (sum, p) => sum + (p.powerSlots || 1),
+        0,
     );
     // Since we generated with powersCount=1, total should be <= 1
     Tester.assert(
@@ -1294,7 +1286,8 @@ Tester.PowersTooManyTests = (gen) => {
 
         const charN = gen.generateWithoutThrows();
         const totalSlotsN = charN.powers.reduce(
-            (sum, p) => sum + (p.powerSlots || 1), 0,
+            (sum, p) => sum + (p.powerSlots || 1),
+            0,
         );
         Tester.assert(
             totalSlotsN <= charN.powersMax,
@@ -1303,7 +1296,8 @@ Tester.PowersTooManyTests = (gen) => {
         // Also verify each power has a valid powerSlots value
         for (let pi = 0; pi < charN.powers.length; pi++) {
             Tester.assert(
-                typeof charN.powers[pi].powerSlots === "number" && charN.powers[pi].powerSlots >= 0,
+                typeof charN.powers[pi].powerSlots === "number" &&
+                    charN.powers[pi].powerSlots >= 0,
                 `PowersTooMany (iter ${i}, power ${pi}): powerSlots is non-negative number (was ${charN.powers[pi].powerSlots}).`,
             );
         }

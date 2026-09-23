@@ -1,0 +1,13 @@
+# Game data tables are read-only — see AGENTS.md. Never reformat them.
+DataBasic.js
+DataAdvanced.js
+DataUltimate.js
+
+# npm-generated lockfile — keep npm's own formatting
+package-lock.json
+
+# Transcribed handbook reference material, not project source
+Support/
+
+# Test coverage output
+coverage/

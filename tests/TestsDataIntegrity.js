@@ -937,8 +937,8 @@ Tester._assertHiTechFlag = (tableName, table, mode) => {
         let shouldHave = false;
         if (n === "hi-tech") {
             shouldHave = true; // Hi-Tech is always isHiTech
-        } 
-        
+        }
+
         // It sounds counter-untuitive, but Ultimate modes Robots and Cyborg are not considered HiTech
 
         if (shouldHave) {

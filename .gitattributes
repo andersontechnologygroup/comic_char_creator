@@ -1,0 +1,4 @@
+# Normalize line endings: LF in the repository and in every working tree.
+# The working tree previously mixed CRLF (autocrlf=true on Windows) with LF,
+# which made `prettier --check` fail locally while CI saw plain LF.
+* text=auto eol=lf

@@ -213,8 +213,15 @@ class Tester {
         div.className = "test-output " + (found ? "pass" : "fail");
         div.innerText = `${found ? "PASS" : "FAIL"}: (${line}) ${message} Expected power: ${expectedValue}`;
         this.failureCount += found ? 0 : 1;
+        if (!found)
+            console.trace(
+                `%cASSERT FAILED - ${div.innerText}`,
+                "color: red; font-size: 18px",
+            );
+        if (this._verbose() && found) console.log(div.innerText);
         area.appendChild(div);
         this.assertCount++;
+        if (!found) this._onFailure(div);
     }
 
     static start() {

@@ -527,7 +527,7 @@ Tester.TalentSubRollTests = (gen) => {
     gen.setTables();
     gen.setDeterministicRolls();
     const origSubRoll0 = gen.talentSubRolls[0];
-    char = gen.generateWithoutThrows();
+    gen.generateWithoutThrows();
     Tester.assertEquals(
         origSubRoll0,
         gen.talentSubRolls[0],

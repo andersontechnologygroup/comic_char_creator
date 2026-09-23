@@ -404,9 +404,6 @@ const PHYSICAL_FORM_ASSERTIONS = {
                 const energyEmission = char.powers.filter(
                     (p) => p.category === "Energy Emission",
                 );
-                const energyControl = char.powers.filter(
-                    (p) => p.category === "Energy Control",
-                );
                 Tester.assertAtLeast(
                     1,
                     energyEmission.length,
@@ -513,11 +510,15 @@ Tester.GeneratorUltimatePhysicalFormTests = (gen) => {
         // the generated form may differ from physicalFormTable[index].
         // Accept any form that shares the same maxRoll.
         const expectedMaxRoll = gen.physicalFormTable[index].maxRoll;
-        const matchingForms = gen.physicalFormTable.filter(o => o.maxRoll === expectedMaxRoll);
-        const isMatchingForm = matchingForms.some(o => o.name === char.physicalForm);
+        const matchingForms = gen.physicalFormTable.filter(
+            (o) => o.maxRoll === expectedMaxRoll,
+        );
+        const isMatchingForm = matchingForms.some(
+            (o) => o.name === char.physicalForm,
+        );
         Tester.assert(
             isMatchingForm,
-            `Physical Form Roll (Ultimate): Generated '${char.physicalForm}' (expected one of: ${matchingForms.map(o => o.name).join(', ')}).`,
+            `Physical Form Roll (Ultimate): Generated '${char.physicalForm}' (expected one of: ${matchingForms.map((o) => o.name).join(", ")}).`,
         );
 
         // All assertions (simple + complex) are now data-driven
