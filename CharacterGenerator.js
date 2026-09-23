@@ -136,6 +136,7 @@ class CharacterGenerator {
     choosePowerInsteadOfRandom = false;
     wellEstablished = false;
     looksHuman = false;
+    newInArea = false;
     buildMode = "random"; // "random" or "selected"
 
     generatorMode = "basic";
@@ -216,6 +217,7 @@ class CharacterGenerator {
         this.choosePowerInsteadOfRandom = false;
         this.wellEstablished = false;
         this.looksHuman = false;
+        this.newInArea = false;
         this.generatorMode = "basic";
         this._assignedPowerNames = null;
         this._assignedTalentNames = null;
@@ -257,6 +259,7 @@ class CharacterGenerator {
         );
         char.logRoll(`wellEstablished`, "N/A", this.wellEstablished);
         char.logRoll(`looksHuman`, "N/A", this.looksHuman);
+        char.logRoll(`newInArea`, "N/A", this.newInArea);
         char.logRoll(`selectBonusPowers`, "N/A", this.selectBonusPowers);
         char.logRoll(
             `selectPhysicalFormManually`,
@@ -389,6 +392,7 @@ class CharacterGenerator {
                 "choosePowerInsteadOfRandom",
                 "wellEstablished",
                 "looksHuman",
+                "newInArea",
             ];
             for (const key of boolKeys) {
                 if (options[key] !== undefined) gen[key] = options[key];

@@ -204,6 +204,11 @@ CharacterGenerator.prototype.determinePhysicalForm = function (char) {
 
     this.randomRanksColumn = physicalFormData.column;
     if (randomRanksColumn !== -1) this.randomRanksColumn = randomRanksColumn;
+    if (this.generatorMode === "basic") {
+        // Basic's Table 25 (Random Ranks) is a single-column table; the
+        // per-form columns (3/4/5) only exist in Advanced/Ultimate.
+        this.randomRanksColumn = 1;
+    }
 
     char.physicalForm = physicalFormData.name;
     char.state.physicalForm = physicalFormData.name;
@@ -694,10 +699,26 @@ CharacterGenerator.prototype.determineResources = function (char) {
         );
     }
 
+    if (this.generatorMode === "basic") {
+        // Basic p40: "Roll percentile dice and consult Table 25: Random
+        // Ranks. The result is the hero's Resource rank." Basic's Table 25
+        // is the single-column Random Ranks table.
+        const roll = this.resourceModifierRoll;
+        const rankRow =
+            roll >= 1 && roll <= 100 ? Utility.findRow(this, roll, 1) : null;
+        if (rankRow) {
+            startRank = rankRow.rank;
+            char.state.resources.startRank = rankRow.rankNumber;
+            char.logRoll("Resources", `Table 25 (roll ${roll})`, rankRow.rank);
+        }
+    }
+
     value = Utility.getValue(physicalFormRow, "isHiTech", false);
     if (value) {
         char.state.resources.hiTech = true;
-        if (this.hiTechToGood) {
+        // "Set to Good" is an Advanced/Ultimate option; Basic always uses
+        // the Table 25 roll (p40).
+        if (this.hiTechToGood && this.generatorMode !== "basic") {
             startRank = "Good";
             char.logRoll(
                 "Resources",
@@ -1070,6 +1091,16 @@ CharacterGenerator.prototype.determinePopularity = function (char) {
         );
     }
 
+    // Table 26 (Basic): "Hero is new in the area -20"
+    if (this.generatorMode === "basic" && this.newInArea) {
+        char.popularity -= 20;
+        char.logRoll(
+            "Popularity",
+            "New in the Area",
+            "Loss of Popularity (-20)",
+        );
+    }
+
     value = Utility.getValue(physicalFormRow, "popularityAdjustment", 0);
     if (value !== 0) {
         char.popularity += value;
@@ -1100,7 +1131,10 @@ CharacterGenerator.prototype.determinePopularity = function (char) {
         );
     }
 
-    if (char.popularity < 0) char.popularity = 0;
+    // Basic's Table 26 defines no popularity floor, so Basic popularity
+    // may be negative. Advanced/Ultimate keep the existing floor.
+    if (this.generatorMode !== "basic" && char.popularity < 0)
+        char.popularity = 0;
 
     char.state.popularity.final = char.popularity;
     char.logRoll("Popularity", "Base Rules", char.popularity);

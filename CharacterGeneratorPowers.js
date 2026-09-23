@@ -538,6 +538,34 @@ CharacterGenerator.prototype._addPowerAndChain = function (
     }
 };
 
+/**
+ * Basic rules p.41: "A hero may choose a special power only if he rolled
+ * two powers in that category" — a special (multi-slot) power consumes both
+ * of that category's rolls, so the hero must have rolled the category at
+ * least twice among his power-category rolls.
+ */
+CharacterGenerator.prototype._canChooseSpecialPower = function (
+    char,
+    category,
+) {
+    const total = char.powersCount;
+    if (typeof total !== "number" || total <= 0) {
+        // Roll set unknown — don't block the pick.
+        return true;
+    }
+    let count = 0;
+    for (let i = 0; i < total && i < this.rollArraySize; i++) {
+        const roll = this.powerCategoryRolls[i];
+        if (roll === undefined || roll < 1 || roll > 100) continue;
+        const row = this.powerCategoriesTable.find((c) => roll <= c.maxRoll);
+        if (row && row.name === category) {
+            count++;
+            if (count >= 2) return true;
+        }
+    }
+    return false;
+};
+
 CharacterGenerator.prototype.generateSinglePower = function (
     char,
     powerRollIndex,
@@ -800,6 +828,37 @@ CharacterGenerator.prototype.generateSinglePower = function (
             `Exhausted retries at index ${powerRollIndex}`,
         );
         return;
+    }
+
+    // Basic rules p.41: a special (two-slot) power may be chosen only if the
+    // hero rolled two powers in that category. Otherwise substitute a normal
+    // power from the same category (or bail out when none remains).
+    if (
+        this.generatorMode === "basic" &&
+        CharacterGenerator._safeSlotCount(powerRow) > 1 &&
+        !this._canChooseSpecialPower(char, powerRow.category)
+    ) {
+        const categoryPowers = this._powerCategoryMap[powerRow.category] || [];
+        const substitute = categoryPowers.find(
+            (p) =>
+                p.maxRoll <= 100 &&
+                CharacterGenerator._safeSlotCount(p) === 1 &&
+                !this.isPowerAlreadyAssigned(char.powers, p),
+        );
+        if (!substitute) {
+            char.logRoll(
+                "Power Gen",
+                "Special Power",
+                `${powerRow.name} needs two ${powerRow.category} rolls; none available.`,
+            );
+            return;
+        }
+        char.logRoll(
+            "Power Gen",
+            "Special Power",
+            `${powerRow.name} needs two ${powerRow.category} rolls; taking ${substitute.name} instead.`,
+        );
+        powerRow = substitute;
     }
 
     // 3. Determine Rank

@@ -189,10 +189,15 @@ Tester.BoundaryInvariantTests = (gen) => {
             `Boundary (${mode}): karma = R+I+P.`,
         );
 
-        // Invariant: popularity >= 0
+        // Invariant: popularity >= 0 for Advanced/Ultimate. Basic's Table 26
+        // defines no floor, so Basic popularity may legitimately be negative.
         Tester.assert(
-            char.popularity >= 0,
-            `Boundary (${mode}): popularity >= 0 (was ${char.popularity}).`,
+            typeof char.popularity === "number" &&
+                (mode === "basic" || char.popularity >= 0),
+            `Boundary (${mode}): popularity is a number` +
+                (mode === "basic"
+                    ? ` (Basic has no floor; was ${char.popularity}).`
+                    : ` and >= 0 (was ${char.popularity}).`),
         );
 
         // Invariant: powers count <= powers max

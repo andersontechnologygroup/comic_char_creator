@@ -42,9 +42,9 @@ Tester.DetermineResourcesTests = (gen) => {
     char2.physicalForm = "Mutant";
     gen.determineResources(char2);
     Tester.assertEquals(
-        "Typical",
+        "Excellent",
         char2.resources.rank,
-        "determineResources (Basic): Mutant resources = Typical (default).",
+        "determineResources (Basic): Mutant resources = Excellent (Table 25 roll 50).",
     );
 
     // Hi-Tech (basic): isHiTech flag

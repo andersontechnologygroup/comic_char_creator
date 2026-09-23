@@ -54,7 +54,6 @@ const PHYSICAL_FORM_TABLE = [
         column: 5,
         description:
             "Aliens are creatures from other planets or times, or even isolated places on Earth.",
-        popularityAdjustment: -20,
     },
 ];
 
@@ -637,7 +636,6 @@ const TALENT_LIST_TABLE = [
         category: "Talents",
         maxRoll: 40,
         name: "Medicine",
-        talentCount: 2,
         description:
             "The hero with this Talent has extensive knowledge of medicine. A character losing Endurance ranks as the result of a lethal situation can have those losses stopped by any character with this Talent checking on him.",
     },
@@ -652,7 +650,6 @@ const TALENT_LIST_TABLE = [
         category: "Talents",
         maxRoll: 48,
         name: "Law-Enforcement",
-        talentCount: 2,
         description:
             "This person knows the law, is licensed to carry a gun and make arrests, and has all bonuses of the Guns talent.",
     },

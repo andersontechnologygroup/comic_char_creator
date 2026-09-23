@@ -520,6 +520,16 @@ Tester._runPowerLoopTests = (gen, config) => {
         gen.powerCategoryRolls[2] = catRow2.maxRoll;
         gen.powerCategoryRolls[3] = catRow3.maxRoll;
 
+        // Basic p.41: a special (two-slot) power may be chosen only when the
+        // hero rolled two powers in its category — roll the target's category
+        // twice so the pairing rule permits it.
+        if (
+            gen.generatorMode === "basic" &&
+            (targetPower.powerCount || 1) > 1
+        ) {
+            gen.powerCategoryRolls[1] = catData.maxRoll;
+        }
+
         gen.powerRolls[0] = targetPower.maxRoll;
         gen.powerRolls[1] = powerRow1.maxRoll;
         gen.powerRolls[2] = powerRow2.maxRoll;

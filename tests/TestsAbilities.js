@@ -370,8 +370,18 @@ Tester._runUltimateResourceTests = (gen) => {
 
 // Basic/Advanced popularity test configs
 const POPULARITY_GEN_ADV_CONFIGS = [
-    { form: "Mutant", origin: "Mutant", expectedBasic: 0, expectedAdvanced: 0 },
-    { form: "Robot", origin: "Robot", expectedBasic: 0, expectedAdvanced: 0 },
+    {
+        form: "Mutant",
+        origin: "Mutant",
+        expectedBasic: -30,
+        expectedAdvanced: 0,
+    },
+    {
+        form: "Robot",
+        origin: "Robot",
+        expectedBasic: -10,
+        expectedAdvanced: 0,
+    },
     {
         form: "Altered Human",
         origin: "Altered Human",
@@ -387,6 +397,7 @@ Tester._runPopularityTests_GenAdv = (gen, mode) => {
     gen.originPublic = false;
     gen.wellEstablished = false;
     gen.looksHuman = false;
+    gen.newInArea = false;
 
     for (const tc of POPULARITY_GEN_ADV_CONFIGS) {
         const charPop = new Character();
@@ -602,7 +613,8 @@ Tester._runUltimateHealthTests = (gen) => {
 // ============================================================================
 
 Tester.SecondaryAbilityTests = (gen) => {
-    // Basic mode: resourceModifierRoll is IGNORED (per p40, only Advanced/Ultimate apply it).
+    // Basic mode: p40 — roll percentile on Table 25 (column 1); the roll
+    // IS the hero's Resource rank.
     Tester._runResourceTests(
         gen,
         "basic",
@@ -610,29 +622,29 @@ Tester.SecondaryAbilityTests = (gen) => {
         "Altered Human",
         1,
         [
-            { roll: 1, rank: "Typical" },
+            { roll: 1, rank: "Feeble" },
             { roll: 16, rank: "Typical" },
-            { roll: 51, rank: "Typical" },
-            { roll: 71, rank: "Typical" },
-            { roll: 86, rank: "Typical" },
-            { roll: 96, rank: "Typical" },
+            { roll: 51, rank: "Excellent" },
+            { roll: 71, rank: "Remarkable" },
+            { roll: 86, rank: "Incredible" },
+            { roll: 96, rank: "Incredible" },
         ],
     );
     Tester._runResourceTests(gen, "basic", "Alien", "Alien", 5, [
-        { roll: 1, rank: "Typical" },
+        { roll: 1, rank: "Feeble" },
         { roll: 16, rank: "Typical" },
-        { roll: 51, rank: "Typical" },
-        { roll: 71, rank: "Typical" },
-        { roll: 86, rank: "Typical" },
-        { roll: 96, rank: "Typical" },
+        { roll: 51, rank: "Excellent" },
+        { roll: 71, rank: "Remarkable" },
+        { roll: 86, rank: "Incredible" },
+        { roll: 96, rank: "Incredible" },
     ]);
     Tester._runResourceTests(gen, "basic", "Alien", "Mutant", 5, [
-        { roll: 1, rank: "Typical" },
+        { roll: 1, rank: "Feeble" },
         { roll: 16, rank: "Typical" },
-        { roll: 51, rank: "Typical" },
-        { roll: 71, rank: "Typical" },
-        { roll: 86, rank: "Typical" },
-        { roll: 96, rank: "Typical" },
+        { roll: 51, rank: "Excellent" },
+        { roll: 71, rank: "Remarkable" },
+        { roll: 86, rank: "Incredible" },
+        { roll: 96, rank: "Incredible" },
     ]);
     Tester._runPopularityTests_GenAdv(gen, "basic");
 
