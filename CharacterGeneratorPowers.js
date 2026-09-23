@@ -786,6 +786,22 @@ CharacterGenerator.prototype.generateSinglePower = function (
         }
     }
 
+    // The loop above can also exit because the candidate is a duplicate or
+    // because a roll miss left powerRow undefined — neither is safe to add
+    // (a duplicate push also breaks the powersMax slot budget). Bail the
+    // same way the scan branches above do.
+    if (
+        powerRow === undefined ||
+        this.isPowerAlreadyAssigned(char.powers, powerRow)
+    ) {
+        char.logRoll(
+            "Power Gen",
+            `No Valid Power Found`,
+            `Exhausted retries at index ${powerRollIndex}`,
+        );
+        return;
+    }
+
     // 3. Determine Rank
     // Power ranks: Column 1 for Basic (Basic rules p40), Column 4 for Advanced/Ultimate
     const rankRoll = this.powerRankRolls[powerRollIndex];

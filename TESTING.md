@@ -269,22 +269,28 @@ Coverage is **Node.js only** — browser tests do not support coverage.
 ### Coverage Targets
 
 The coverage report excludes `tests/` (via `--exclude`) so the numbers measure
-product source, not the test files themselves. Last measured 2026-09-22 with
+product source, not the test files themselves. Last measured 2026-09-23 with
 `npm run test:coverage`:
 
 | File                               | Target     | Current |
 | ---------------------------------- | ---------- | ------- |
-| CharacterGenerator.js (core)       | >95% lines | 94.1%   |
-| CharacterGeneratorDetermination.js | >95% lines | 91.0%   |
-| CharacterGeneratorPowers.js        | >95% lines | 94.5%   |
-| CharacterGeneratorRoster.js        | >95% lines | 89.0%   |
-| Overall                            | >97% lines | 96.0%   |
+| CharacterGenerator.js (core)       | >95% lines | 100.0%  |
+| CharacterGeneratorDetermination.js | >95% lines | 99.2%   |
+| CharacterGeneratorPowers.js        | >95% lines | 99.8%   |
+| CharacterGeneratorRoster.js        | >95% lines | 100.0%  |
+| Overall                            | >97% lines | 99.1%   |
 
 The overall figure is lifted by the data tables (declarations only, always
 100%); the four `CharacterGenerator*.js` files — core lifecycle, determination,
 powers and roster (split for maintainability, see the header of
-core `CharacterGenerator.js`) — are the meaningful signal. Roster and
-Determination are the largest remaining gaps, so new tests pay off most there.
+core `CharacterGenerator.js`) — are the meaningful signal. All four clear their
+
+> 95% line targets (core and Roster at 100%); the residual line gaps are
+> mostly defensive guards unreachable with real data. Branch coverage (94.0%
+> overall, 82.4% a week ago) is the remaining frontier — weakest product spots
+> are Powers (93.8%) and Determination (96.4%). The table omits the harness
+> files `run-tests.js` (73.5%) and `UnitTests.js` (94.1%): test infrastructure,
+> not product code.
 
 ### Improving Coverage
 

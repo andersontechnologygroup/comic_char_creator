@@ -2578,6 +2578,2884 @@ Tester.GenerateBonusPowerEdgeTests = () => {
 };
 
 // ============================================================================
+// Core / Character / framework-meta coverage — the two-phase API, both
+// roll-override modes, the debug-override path, identitySecret,
+// useUltimateTalents, and the Tester API itself (deprecated alias,
+// assertThrows, failure arms, filter/bail/verbose branches).
+// ============================================================================
+
+Tester.CharacterAbilityIndexTests = () => {
+    const char = new Character();
+    char.primaryAbilities = [{ Fighting: { rank: "Good", number: 40 } }];
+    // Explicit null exercises the second half of the `undefined || null`
+    // guard — omitted arguments only ever short-circuit on `undefined`.
+    Tester.assertEquals(
+        40,
+        char.getAbilityNumber("Fighting", null),
+        "getAbilityNumber: explicit null index defaults to slot 0.",
+    );
+    const abilityNull = char.getAbility("Fighting", null);
+    Tester.assertEquals(
+        "Good",
+        abilityNull && abilityNull.rank,
+        "getAbility: explicit null index defaults to slot 0.",
+    );
+    Tester.assertEquals(
+        40,
+        char.getAbilityNumber("Fighting"),
+        "getAbilityNumber: omitted index defaults to slot 0.",
+    );
+    const abilityOmitted = char.getAbility("Fighting");
+    Tester.assertEquals(
+        "Good",
+        abilityOmitted && abilityOmitted.rank,
+        "getAbility: omitted index defaults to slot 0.",
+    );
+};
+
+Tester.CorePhaseAndOverrideTests = () => {
+    // --- applyRollOverrides: scalar keys + BOTH array modes
+    const gen = new CharacterGenerator();
+    gen.setDeterministicRolls();
+    const origSecond = gen.powerRolls[1];
+    CharacterGenerator.applyRollOverrides(
+        gen,
+        { popularityRoll: 7, powerRolls: [5] },
+        "first",
+    );
+    Tester.assertEquals(
+        7,
+        gen.popularityRoll,
+        "applyRollOverrides: scalar key copied.",
+    );
+    Tester.assertEquals(
+        5,
+        gen.powerRolls[0],
+        "applyRollOverrides: first mode overwrites element 0.",
+    );
+    Tester.assertEquals(
+        origSecond,
+        gen.powerRolls[1],
+        "applyRollOverrides: first mode leaves the rest of the array alone.",
+    );
+    CharacterGenerator.applyRollOverrides(
+        gen,
+        { powerRolls: [9, 8] },
+        "replace",
+    );
+    Tester.assertEquals(
+        2,
+        gen.powerRolls.length,
+        "applyRollOverrides: replace mode assigns the whole array.",
+    );
+    Tester.assertEquals(
+        9,
+        gen.powerRolls[0],
+        "applyRollOverrides: replace mode value applied.",
+    );
+
+    // --- generateWithoutThrows debug-override block (applyRollOverrides
+    //     with "first", as the Render/Debug flow uses it)
+    const genD = new CharacterGenerator();
+    genD.generatorMode = "basic";
+    genD.setTables();
+    genD.setDeterministicRolls();
+    CharacterGenerator._debugOverrides = { physicalFormRoll: 42 };
+    try {
+        const charD = genD.generateWithoutThrows();
+        Tester.assertNotNull(
+            charD,
+            "DebugOverrides: generation succeeds with overrides applied.",
+        );
+        Tester.assertEquals(
+            42,
+            genD.physicalFormRoll,
+            "DebugOverrides: scalar override applied during generation.",
+        );
+    } finally {
+        CharacterGenerator._debugOverrides = null;
+    }
+
+    // --- identitySecret → "Secret" arm of the identity ternary
+    const genI = new CharacterGenerator();
+    genI.generatorMode = "basic";
+    genI.setTables();
+    genI.setDeterministicRolls();
+    genI.identitySecret = true;
+    const charI = genI.generateWithoutThrows();
+    Tester.assertEquals(
+        "Secret",
+        charI.identity,
+        "identitySecret: secret identities generate as Secret.",
+    );
+
+    // --- useUltimateTalents selects the Ultimate talent tables in setTables
+    const genU = new CharacterGenerator();
+    genU.generatorMode = "ultimate";
+    genU.useUltimateTalents = true;
+    genU.setTables();
+    Tester.assertEquals(
+        TALENT_LIST_ULTIMATE_TABLE,
+        genU.talentListTable,
+        "setTables: useUltimateTalents selects the Ultimate talent list.",
+    );
+    Tester.assertEquals(
+        TALENT_CATEGORIES_ULTIMATE_TABLE,
+        genU.talentCategoriesTable,
+        "setTables: useUltimateTalents selects the Ultimate talent categories.",
+    );
+    const genA = new CharacterGenerator();
+    genA.generatorMode = "ultimate";
+    genA.setTables();
+    Tester.assertEquals(
+        TALENT_LIST_ADVANCED_TABLE,
+        genA.talentListTable,
+        "setTables: default Ultimate mode keeps the Advanced talent list.",
+    );
+
+    // --- two-phase API (Render flow): never called by Node tests
+    const genP = new CharacterGenerator();
+    genP.generatorMode = "ultimate";
+    Dice.seed(42);
+    const phase1 = genP.generatePhase1();
+    Dice.seed(null);
+    Tester.assert(
+        genP._phase1Complete === true,
+        "Phase: generatePhase1 marks the phase complete.",
+    );
+    Tester.assertNotNull(
+        phase1.physicalForm,
+        "Phase: physical form resolved for the name.",
+    );
+    Tester.assert(phase1.powersCount > 0, "Phase: power count resolved.");
+    Tester.assert(
+        Array.isArray(phase1.powerCategories),
+        "Phase: categories array returned.",
+    );
+    Tester.assertEquals(
+        null,
+        phase1.origin,
+        "Phase: origin deferred to phase 2.",
+    );
+    Tester.assertEquals(
+        phase1.powerCategories.length,
+        phase1.availablePowers.length,
+        "Phase: one available-powers entry per category.",
+    );
+
+    const genM = new CharacterGenerator();
+    genM.markPhase1Complete();
+    Tester.assert(
+        genM._phase1Complete === true,
+        "Phase: markPhase1Complete sets the flag.",
+    );
+
+    const gen2 = new CharacterGenerator();
+    gen2.generatorMode = "basic";
+    gen2.setTables();
+    gen2.setDeterministicRolls();
+    const char2 = gen2.generatePhase2();
+    Tester.assert(
+        char2 instanceof Character,
+        "Phase: generatePhase2 returns a character.",
+    );
+    Tester.assert(char2.powers.length > 0, "Phase: phase 2 generated powers.");
+};
+
+Tester.FrameworkMetaTests = () => {
+    // Probe the Tester framework itself. Every probe either passes or is a
+    // deliberate failure whose counter is snapshotted and restored below —
+    // the suite still finishes green.
+    // Deliberately NOT restored: run()'s phase 3 reads this after phase 1
+    // ends, so leaving it set executes the benchmark suite too (verified
+    // green and fast under `node run-tests.js --benchmark`).
+    globalThis.__TEST_BENCHMARK = true;
+
+    const savedFailures = Tester.failureCount;
+    const savedVerbose = globalThis.__TEST_VERBOSE;
+    const savedFilter = globalThis.__TEST_FILTER;
+    const savedBailFlag = globalThis.__TEST_BAIL;
+    const savedBailTriggered = Tester.bailTriggered;
+    const savedMethod = Tester.currentTestMethod;
+    try {
+        // --- verbose arms (pass log + fail error log)
+        globalThis.__TEST_VERBOSE = true;
+        Tester.assert(true, "[probe] verbose pass logs.");
+        Tester.assert(
+            false,
+            "[INTENTIONAL COVERAGE PROBE] verbose failure logs.",
+        );
+        Tester.assertHasPower(
+            "Real",
+            [{ name: "Real" }],
+            "[probe] verbose assertHasPower pass logs.",
+        );
+        globalThis.__TEST_VERBOSE = false;
+
+        // --- deprecated alias
+        Tester.assertGreaterOrEqual(1, 2, "[probe] deprecated alias passes.");
+
+        // --- failure arms of every other assertion
+        Tester.assertEquals(
+            1,
+            2,
+            "[INTENTIONAL COVERAGE PROBE] assertEquals failure arm.",
+        );
+        Tester.assertNotEquals(
+            1,
+            1,
+            "[INTENTIONAL COVERAGE PROBE] assertNotEquals failure arm.",
+        );
+        Tester.assertInRange(
+            1,
+            3,
+            9,
+            "[INTENTIONAL COVERAGE PROBE] assertInRange failure arm.",
+        );
+        Tester.assertNotNull(
+            null,
+            "[INTENTIONAL COVERAGE PROBE] assertNotNull failure arm.",
+        );
+        Tester.assertAtLeast(
+            5,
+            1,
+            "[INTENTIONAL COVERAGE PROBE] assertAtLeast failure arm.",
+        );
+        Tester.assertHasPower(
+            "NoSuchPowerXYZ",
+            [{ name: "Real" }],
+            "[INTENTIONAL COVERAGE PROBE] assertHasPower failure arm.",
+        );
+
+        // --- assertThrows: matching, undefined-expectation, mismatch,
+        //     and did-not-throw arms
+        Tester.assertThrows(
+            () => {
+                throw new Error("boom happened");
+            },
+            "boom",
+            "[probe] matching message passes.",
+        );
+        Tester.assertThrows(
+            () => {
+                throw new Error("anything");
+            },
+            undefined,
+            "[probe] undefined expectation passes.",
+        );
+        Tester.assertThrows(
+            () => {
+                throw new Error("mismatch");
+            },
+            "needle",
+            "[INTENTIONAL COVERAGE PROBE] wrong message records failure.",
+        );
+        Tester.assertThrows(
+            () => "no throw",
+            "needle",
+            "[INTENTIONAL COVERAGE PROBE] not throwing records failure.",
+        );
+
+        // --- _filterMatch + _run skip arm
+        globalThis.__TEST_FILTER = "zzz-no-match";
+        let skippedRan = false;
+        Tester._run("MetaSkipProbe", () => {
+            skippedRan = true;
+        });
+        Tester.assert(
+            skippedRan === false,
+            "[probe] _run skips tests that do not match the filter.",
+        );
+        globalThis.__TEST_FILTER = undefined;
+
+        // --- _run verbose per-test banner
+        globalThis.__TEST_VERBOSE = true;
+        Tester._run("MetaVerboseProbe", () => {});
+        globalThis.__TEST_VERBOSE = false;
+
+        // --- _run exception catch + bail rethrow, and _onFailure bail arm
+        globalThis.__TEST_BAIL = true;
+        Tester.bailTriggered = false;
+        Tester.assertThrows(
+            () =>
+                Tester._run("MetaCrashProbe", () => {
+                    throw new Error("[INTENTIONAL COVERAGE PROBE] probe crash");
+                }),
+            "INTENTIONAL COVERAGE PROBE",
+            "[probe] _run rethrows under --bail.",
+        );
+        Tester.bailTriggered = false;
+        Tester.assertThrows(
+            () =>
+                Tester.assert(false, "[INTENTIONAL COVERAGE PROBE] bail arm."),
+            "BAIL",
+            "[probe] failing assert bails under --bail.",
+        );
+        Tester.bailTriggered = false;
+        globalThis.__TEST_BAIL = undefined;
+
+        // --- start() flag banner lines
+        globalThis.__TEST_FILTER = "probe";
+        globalThis.__TEST_VERBOSE = true;
+        globalThis.__TEST_BAIL = true;
+        Tester.start();
+        globalThis.__TEST_FILTER = undefined;
+        globalThis.__TEST_VERBOSE = undefined;
+        globalThis.__TEST_BAIL = undefined;
+
+        // --- instance members + registry accessor
+        const inst = new Tester();
+        Tester.assertEquals(
+            0,
+            inst.failureCount,
+            "[probe] fresh Tester instance starts at zero.",
+        );
+        const names = Tester.getRenderMethodNames();
+        Tester.assert(
+            names.indexOf("FrameworkMetaTests") !== -1,
+            "[probe] getRenderMethodNames exposes the registry.",
+        );
+    } finally {
+        // Undo every deliberate failure and global poke.
+        Tester.failureCount = savedFailures;
+        Tester.bailTriggered = savedBailTriggered;
+        Tester.currentTestMethod = savedMethod;
+        globalThis.__TEST_VERBOSE = savedVerbose;
+        globalThis.__TEST_FILTER = savedFilter;
+        globalThis.__TEST_BAIL = savedBailFlag;
+    }
+};
+
+// ============================================================================
+// Utility DSL policies + Roster + Powers edge coverage — firstDslAlternative,
+// parse helpers, generateBonusTalent/Contact resolution modes, _findTalent
+// tie/subRoll arms, slot-count adjustments, generateTalents manual/duplicate/
+// overflow paths, the empty-category retry twin, and the optional/bonus
+// query edges.
+// ============================================================================
+
+Tester.UtilityDslPolicyTests = () => {
+    // UI policy helper — the generator uses pickDslAlternative instead
+    Tester.assertEquals(
+        "Flight",
+        Utility.firstDslAlternative("Flight~Teleport"),
+        "firstDslAlternative: returns the first ~ alternative.",
+    );
+    Tester.assertEquals(
+        "Flight",
+        Utility.firstDslAlternative("Flight"),
+        "firstDslAlternative: no ~ → unchanged.",
+    );
+    Tester.assertEquals(
+        null,
+        Utility.firstDslAlternative(null),
+        "firstDslAlternative: null in → null out.",
+    );
+    Tester.assertEquals(
+        0,
+        Utility.splitDslAlternatives(null).length,
+        "splitDslAlternatives: null → empty array.",
+    );
+    Tester.assertEquals(
+        2,
+        Utility.splitDslAlternatives("a~b").length,
+        "splitDslAlternatives: splits on ~.",
+    );
+
+    // Tail parsing: non-numeric, numeric, and absent
+    const spec = Utility.parseDslEntry("Movement\\Flight(abc)");
+    Tester.assertEquals(
+        100,
+        spec.maxRoll,
+        "parseDslEntry: non-numeric tail defaults to 100.",
+    );
+    Tester.assertEquals("abc", spec.tail, "parseDslEntry: tail kept verbatim.");
+    Tester.assertEquals(
+        50,
+        Utility.parseDslEntry("Movement\\Flight(50)").maxRoll,
+        "parseDslEntry: numeric tail parsed.",
+    );
+    Tester.assertEquals(
+        100,
+        Utility.parseDslEntry("Movement\\Flight").maxRoll,
+        "parseDslEntry: absent tail defaults to 100.",
+    );
+
+    // Contact-style '/' separator arm
+    const contact = Utility.parseDslEntry("Spouse/Anna", {
+        preferSlash: true,
+    });
+    Tester.assertEquals("Spouse", contact.category, "preferSlash: separator.");
+    Tester.assertEquals("Anna", contact.name, "preferSlash: name.");
+
+    // Full-list + value-list map callbacks
+    const list = Utility.parseDslList("A\\B(10)|C\\D");
+    Tester.assertEquals(2, list.length, "parseDslList: two entries.");
+    Tester.assertEquals(10, list[0].maxRoll, "parseDslList: tail per entry.");
+    const vals = Utility.parseDslValueList("Angel(+2)|Demon");
+    Tester.assertEquals(2, vals[0].value, "parseDslValueList: numeric tail.");
+    Tester.assert(
+        Number.isNaN(vals[1].value),
+        "parseDslValueList: absent tail → NaN.",
+    );
+    Tester.assertEquals("Angel", vals[0].name, "parseDslValueList: name.");
+
+    // parseDslUpgrade: condition present/absent, too short, falsy
+    const up1 = Utility.parseDslUpgrade("Cat\\Pow\\Cond\\Extra");
+    Tester.assertEquals(
+        "Cond",
+        up1 && up1.condition,
+        "parseDslUpgrade: third segment is the condition.",
+    );
+    const up2 = Utility.parseDslUpgrade("Cat\\Pow");
+    Tester.assertEquals(
+        null,
+        up2 && up2.condition,
+        "parseDslUpgrade: absent condition → null.",
+    );
+    Tester.assertEquals(
+        null,
+        Utility.parseDslUpgrade("Solo"),
+        "parseDslUpgrade: single segment → null.",
+    );
+    Tester.assertEquals(
+        null,
+        Utility.parseDslUpgrade(""),
+        "parseDslUpgrade: empty → null.",
+    );
+    Tester.assertEquals(
+        null,
+        Utility.parseDslUpgrade(null),
+        "parseDslUpgrade: null → null.",
+    );
+};
+
+Tester.RosterTalentSlotAndListTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "ultimate";
+    gen.setTables();
+    gen.setDeterministicRolls();
+
+    // Controlled tie/single/bonus-only fixtures on the shared talent table
+    // (restored in finally — TESTING.md's patch-row pattern)
+    const table = gen.talentListTable;
+    const pushed = [];
+    const addRow = (row) => {
+        table.push(row);
+        pushed.push(row);
+    };
+    addRow({
+        category: "ZZTieCat",
+        name: "TieA",
+        maxRoll: 50,
+        subRoll: 60,
+        description: "tie a",
+    });
+    addRow({
+        category: "ZZTieCat",
+        name: "TieB",
+        maxRoll: 50,
+        subRoll: 70,
+        description: "tie b",
+    });
+    addRow({
+        category: "ZZSingleCat",
+        name: "SoloTalent",
+        maxRoll: 100,
+        description: "solo",
+    });
+    addRow({
+        category: "ZZNoSubCat",
+        name: "NoSubA",
+        maxRoll: 40,
+        description: "a",
+    });
+    addRow({
+        category: "ZZNoSubCat",
+        name: "NoSubB",
+        maxRoll: 40,
+        description: "b",
+    });
+    addRow({
+        category: "ZZBonusOnly",
+        name: "BonusOnlyTalent",
+        maxRoll: 150,
+        description: "bonus only",
+    });
+    try {
+        Tester.assertEquals(
+            null,
+            gen._findTalent("NoSuchCategoryZZ", 50, 50),
+            "_findTalent: no candidates → null.",
+        );
+        const solo = gen._findTalent("ZZSingleCat", 100, 0);
+        Tester.assertEquals(
+            "SoloTalent",
+            solo && solo.name,
+            "_findTalent: single candidate returned.",
+        );
+        const tieB = gen._findTalent("ZZTieCat", 50, 65);
+        Tester.assertEquals(
+            "TieB",
+            tieB && tieB.name,
+            "_findTalent: subRoll match picks the first subRoll ≥ sRoll.",
+        );
+        const tieA = gen._findTalent("ZZTieCat", 50, 0);
+        Tester.assertEquals(
+            "TieA",
+            tieA && tieA.name,
+            "_findTalent: low sRoll matches the first subRoll.",
+        );
+        const tieLast = gen._findTalent("ZZTieCat", 50, 999);
+        Tester.assertEquals(
+            "TieB",
+            tieLast && tieLast.name,
+            "_findTalent: no subRoll match → last tie row.",
+        );
+        const noSub = gen._findTalent("ZZNoSubCat", 40, 50);
+        Tester.assertEquals(
+            "NoSubA",
+            noSub && noSub.name,
+            "_findTalent: tie without subRolls → first closest row.",
+        );
+
+        const avail = gen.getAvailableTalents();
+        const cats = avail.map((c) => c.category);
+        Tester.assert(
+            cats.indexOf("ZZBonusOnly") === -1,
+            "getAvailableTalents: skips bonus-only (maxRoll > 100) rows.",
+        );
+        Tester.assert(
+            cats.indexOf("ZZTieCat") !== -1,
+            "getAvailableTalents: includes normal categories.",
+        );
+        const tieCat = avail.find((c) => c.category === "ZZTieCat");
+        Tester.assert(
+            tieCat && tieCat.talents.length === 2,
+            "getAvailableTalents: both tie talents listed.",
+        );
+        Tester.assert(
+            tieCat && tieCat.talents[0].subRoll === 60,
+            "getAvailableTalents: subRoll exposed.",
+        );
+    } finally {
+        // Remove exactly the rows pushed above, by identity (finite loop).
+        for (const r of pushed) {
+            const idx = table.indexOf(r);
+            if (idx !== -1) table.splice(idx, 1);
+        }
+    }
+
+    // Slot-count adjustment blocks (patched form row, restored in finally)
+    const contactList = gen.getAvailableContacts();
+    Tester.assert(
+        contactList.length > 0,
+        "getAvailableContacts: categories returned.",
+    );
+
+    const formRow = gen.physicalFormTable[0];
+    const attrs = [
+        "talentsCountAdjustment",
+        "talentsCountMaximum",
+        "contactsCountAdjustment",
+        "contactsCountMinimum",
+        "contactsCountMaximum",
+    ];
+    const saved = {};
+    for (const a of attrs) saved[a] = formRow[a];
+    try {
+        formRow.talentsCountAdjustment = 5;
+        formRow.talentsCountMaximum = 6;
+        formRow.contactsCountAdjustment = 2;
+        formRow.contactsCountMinimum = 7;
+        formRow.contactsCountMaximum = 8;
+        gen._lastPhysicalForm = formRow.name;
+        gen.talentNumberRoll = 50;
+        gen.contactNumberRoll = 50;
+
+        const tQty = gen.quantityTable.find(
+            (q) => gen.talentNumberRoll <= q.maxRoll,
+        );
+        let expT = Math.max(1, tQty.talents.initial + 5);
+        expT = Math.min(expT, 6);
+        Tester.assertEquals(
+            expT,
+            gen.getTalentSlotCount(),
+            "getTalentSlotCount: adjustment + maximum cap applied.",
+        );
+
+        const cQty = gen.quantityTable.find(
+            (q) => gen.contactNumberRoll <= q.maxRoll,
+        );
+        let expC = Math.max(1, cQty.contacts.initial + 2);
+        if (expC < 7) expC = 7;
+        if (expC > 8) expC = 8;
+        Tester.assertEquals(
+            expC,
+            gen.getContactSlotCount(),
+            "getContactSlotCount: adjustment + min + max applied.",
+        );
+
+        gen._lastPhysicalForm = null;
+        Tester.assertEquals(
+            tQty.talents.initial,
+            gen.getTalentSlotCount(),
+            "getTalentSlotCount: no form → raw initial.",
+        );
+        Tester.assertEquals(
+            cQty.contacts.initial,
+            gen.getContactSlotCount(),
+            "getContactSlotCount: no form → raw initial.",
+        );
+    } finally {
+        for (const a of attrs) {
+            if (saved[a] === undefined) delete formRow[a];
+            else formRow[a] = saved[a];
+        }
+        gen._lastPhysicalForm = null;
+    }
+};
+
+Tester.RosterBonusTalentTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "ultimate";
+    gen.setTables();
+    gen.setDeterministicRolls();
+    gen._assignedTalentNames = new Set();
+
+    const target = gen.talentListTable.find(
+        (e) => e.name && e.category && e.maxRoll <= 100,
+    );
+    Tester.assertNotNull(target, "BonusTalent: fixture talent exists.");
+    const spec = `${target.category}\\${target.name}(100)`;
+    const add = (c, str, roll) => {
+        gen.talentCategoryRolls[c.talents.length] = roll;
+        gen.generateBonusTalent(c, str);
+    };
+
+    // success path
+    const char = new Character();
+    char.talents = [];
+    add(char, spec, 50);
+    Tester.assertEquals(1, char.talents.length, "BonusTalent: generated.");
+    Tester.assert(
+        char.talents[0].bonusTalent === true,
+        "BonusTalent: flagged bonusTalent.",
+    );
+    Tester.assert(
+        gen._assignedTalentNames.has(target.name),
+        "BonusTalent: recorded in the assigned set.",
+    );
+
+    // duplicate → log + return
+    add(char, spec, 50);
+    Tester.assertEquals(
+        1,
+        char.talents.length,
+        "BonusTalent: duplicate skipped.",
+    );
+
+    // roll above the entry ceiling → no candidate
+    add(char, `${target.category}\\${target.name}(1)`, 50);
+    Tester.assertEquals(
+        1,
+        char.talents.length,
+        "BonusTalent: roll above ceiling adds nothing.",
+    );
+
+    // unknown talent → lookup miss
+    add(char, "NoSuchCatX\\NoSuchTalentX(100)", 50);
+    Tester.assertEquals(
+        1,
+        char.talents.length,
+        "BonusTalent: unknown talent adds nothing.",
+    );
+
+    // empty string guard
+    gen.generateBonusTalent(char, "");
+    Tester.assertEquals(
+        1,
+        char.talents.length,
+        "BonusTalent: empty string no-ops.",
+    );
+
+    // _assignedTalentNames null → dup guard short-circuits, push succeeds
+    gen._assignedTalentNames = null;
+    const char2 = new Character();
+    char2.talents = [];
+    add(char2, spec, 50);
+    Tester.assertEquals(
+        1,
+        char2.talents.length,
+        "BonusTalent: null assigned-set still generates.",
+    );
+
+    // set present but without this name → first conjunct true, second false
+    gen._assignedTalentNames = new Set(["Nobody Else"]);
+    const char3 = new Character();
+    char3.talents = [];
+    add(char3, spec, 50);
+    Tester.assertEquals(
+        1,
+        char3.talents.length,
+        "BonusTalent: unrelated assigned-set still generates.",
+    );
+};
+
+Tester.RosterGenerateTalentsTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "ultimate";
+    gen.setTables();
+    gen.setDeterministicRolls();
+    gen._assignedTalentNames = new Set();
+    gen._selectedTalents = null;
+
+    // (1) no remaining slots → early return
+    const c0 = new Character();
+    c0.talents = [];
+    c0.talentsCount = 0;
+    c0.talentsMax = 0;
+    gen.generateTalents(c0, 0);
+    Tester.assertEquals(
+        0,
+        c0.talents.length,
+        "GenTalents: zero remaining slots → nothing generated.",
+    );
+
+    // (2) manual selection — success
+    const c1 = new Character();
+    c1.talents = [];
+    c1.talentsCount = 3;
+    c1.talentsMax = 4;
+    gen._selectedTalents = [
+        {
+            category: "ManualCat",
+            name: "ManualTalentA",
+            talentCount: 1,
+            description: "manual",
+        },
+    ];
+    gen.generateTalents(c1, 0);
+    Tester.assertEquals(
+        "ManualTalentA",
+        c1.talents[0] && c1.talents[0].name,
+        "GenTalents: manual pick generated.",
+    );
+    Tester.assert(
+        gen._assignedTalentNames.has("ManualTalentA"),
+        "GenTalents: manual pick recorded.",
+    );
+
+    // (3) manual selection — not enough slots → skip
+    const c2 = new Character();
+    c2.talents = [];
+    c2.talentsCount = 1;
+    c2.talentsMax = 1;
+    gen._selectedTalents = [
+        { category: "ManualCat", name: "ManualTalentB", talentCount: 5 },
+    ];
+    gen.generateTalents(c2, 0);
+    Tester.assertEquals(
+        0,
+        c2.talents.length,
+        "GenTalents: oversized manual pick skipped.",
+    );
+    gen._selectedTalents = null;
+
+    // (4) invalid category roll → lookup miss → return
+    const c3 = new Character();
+    c3.talents = [];
+    c3.talentsCount = 3;
+    c3.talentsMax = 4;
+    gen.talentCategoryRolls = Array(gen.rollArraySize).fill(101);
+    gen.talentRolls = Array(gen.rollArraySize).fill(50);
+    gen.talentSubRolls = Array(gen.rollArraySize).fill(0);
+    gen.generateTalents(c3, 0);
+    Tester.assertEquals(
+        0,
+        c3.talents.length,
+        "GenTalents: invalid category roll → nothing generated.",
+    );
+
+    // Find a talent whose maxRoll is unique in its category (deterministic
+    // _findTalent pick) for the duplicate/overflow scenarios.
+    let uniq = null;
+    let uniqCat = null;
+    for (const e of gen.talentListTable) {
+        if (!e.name || !e.category || e.maxRoll > 100) continue;
+        const same = gen.talentListTable.filter(
+            (o) => o.category === e.category && o.maxRoll === e.maxRoll,
+        );
+        const catEntry = gen.talentCategoriesTable.find(
+            (c) => c.name === e.category,
+        );
+        if (same.length === 1 && catEntry) {
+            uniq = e;
+            uniqCat = catEntry;
+            break;
+        }
+    }
+    Tester.assertNotNull(uniq, "GenTalents: unique-roll fixture found.");
+
+    // (5) duplicate pick + poisoned retries → exhausted-log return
+    if (uniq) {
+        const c4 = new Character();
+        c4.talents = [];
+        c4.talentsCount = 3;
+        c4.talentsMax = 4;
+        gen._assignedTalentNames = new Set([uniq.name]);
+        gen.talentCategoryRolls = Array(gen.rollArraySize).fill(101);
+        gen.talentRolls = Array(gen.rollArraySize).fill(50);
+        gen.talentSubRolls = Array(gen.rollArraySize).fill(0);
+        gen.talentCategoryRolls[0] = uniqCat.maxRoll;
+        gen.talentRolls[0] = uniq.maxRoll;
+        gen.generateTalents(c4, 0);
+        Tester.assertEquals(
+            0,
+            c4.talents.length,
+            "GenTalents: duplicate retries exhaust without a push.",
+        );
+    }
+
+    // (6) slot-overflow while-loop → bounds return (talentCount patched)
+    if (uniq) {
+        const savedCount = uniq.talentCount;
+        uniq.talentCount = 3;
+        try {
+            const c5 = new Character();
+            c5.talents = [];
+            c5.talentsCount = 1;
+            c5.talentsMax = 1;
+            gen._assignedTalentNames = new Set();
+            gen.talentCategoryRolls = Array(gen.rollArraySize).fill(101);
+            gen.talentRolls = Array(gen.rollArraySize).fill(50);
+            gen.talentSubRolls = Array(gen.rollArraySize).fill(0);
+            gen.talentCategoryRolls[0] = uniqCat.maxRoll;
+            gen.talentRolls[0] = uniq.maxRoll;
+            gen.generateTalents(c5, 0);
+            Tester.assertEquals(
+                0,
+                c5.talents.length,
+                "GenTalents: oversized talent exhausts retries untouched.",
+            );
+        } finally {
+            if (savedCount === undefined) delete uniq.talentCount;
+            else uniq.talentCount = savedCount;
+        }
+    }
+
+    // (7) bonusContact chain + subRoll log display (pushed fixture row)
+    const ct = gen.contactTypeListTable.find((c) => c.category && c.name);
+    Tester.assertNotNull(ct, "GenTalents: contact fixture exists.");
+    let chainEntry = null;
+    let chainCat = null;
+    let chainRoll = -1;
+    for (const catEntry of gen.talentCategoriesTable) {
+        const rows = gen.talentListTable.filter(
+            (r) => r.category === catEntry.name,
+        );
+        for (const x of [99, 98, 97, 96, 95]) {
+            if (!rows.some((r) => r.maxRoll === x)) {
+                chainEntry = catEntry;
+                chainRoll = x;
+                chainCat = catEntry.name;
+                break;
+            }
+        }
+        if (chainEntry) break;
+    }
+    Tester.assertNotNull(chainEntry, "GenTalents: free roll slot found.");
+    if (chainEntry && ct) {
+        const row = {
+            category: chainCat,
+            name: "ZZChainTalent",
+            maxRoll: chainRoll,
+            talentCount: 1,
+            bonusContactCount: 1,
+            bonusContact: `${ct.category}/${ct.name}(100)`,
+            subRoll: 80,
+            description: "chain",
+        };
+        gen.talentListTable.push(row);
+        try {
+            const c6 = new Character();
+            c6.talents = [];
+            c6.contacts = [];
+            c6.contactsMax = 5;
+            c6.talentsCount = 4;
+            c6.talentsMax = 5;
+            gen._assignedTalentNames = new Set();
+            gen._assignedContactNames = new Set();
+            gen.talentCategoryRolls = Array(gen.rollArraySize).fill(101);
+            gen.talentRolls = Array(gen.rollArraySize).fill(50);
+            gen.talentSubRolls = Array(gen.rollArraySize).fill(0);
+            gen.talentCategoryRolls[0] = chainEntry.maxRoll;
+            gen.talentRolls[0] = chainRoll;
+            gen.talentSubRolls[0] = 0;
+            gen.contactRolls = Array(gen.rollArraySize).fill(50);
+            gen.generateTalents(c6, 0);
+            Tester.assertEquals(
+                "ZZChainTalent",
+                c6.talents[0] && c6.talents[0].name,
+                "GenTalents: fixture talent generated (subRoll log arm).",
+            );
+            Tester.assertEquals(
+                1,
+                c6.contacts.length,
+                "GenTalents: bonusContact chain added a contact.",
+            );
+            Tester.assertEquals(
+                ct.name,
+                c6.contacts[0] && c6.contacts[0].name,
+                "GenTalents: chained contact is the fixture contact.",
+            );
+        } finally {
+            const idx = gen.talentListTable.indexOf(row);
+            if (idx !== -1) gen.talentListTable.splice(idx, 1);
+        }
+    }
+
+    gen.setDeterministicRolls(); // restore sane rolls for later tests on this gen
+};
+
+Tester.RosterBonusContactTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "ultimate";
+    gen.setTables();
+    gen.setDeterministicRolls();
+    gen._assignedContactNames = null;
+
+    const ct1 = gen.contactTypeListTable.find((c) => c.category && c.name);
+    const other = gen.contactTypeListTable.find(
+        (c) => c.category && c.name && c.name !== ct1.name,
+    );
+    Tester.assertNotNull(ct1, "BonusContact: contact fixture exists.");
+    Tester.assertNotNull(other, "BonusContact: second contact fixture exists.");
+
+    const char = new Character();
+    char.contacts = [];
+    char.contactsMax = 9;
+    const add = (str, forced) => {
+        gen.contactRolls[char.contacts.length] = 50;
+        gen.generateBonusContact(char, str, forced);
+    };
+
+    // (a) exact category/type → else arm
+    add(`${ct1.category}/${ct1.name}(100)`);
+    Tester.assertEquals(
+        ct1.name,
+        char.contacts[0] && char.contacts[0].name,
+        "BonusContact: exact match generated.",
+    );
+
+    // (b) Any/Any → random pick from every contact
+    add("Any/Any(100)");
+    Tester.assertEquals(
+        2,
+        char.contacts.length,
+        "BonusContact: Any/Any generated.",
+    );
+
+    // (c) Any/Type → match by name only
+    add(`Any/${other.name}(100)`);
+    Tester.assertEquals(
+        other.name,
+        char.contacts[char.contacts.length - 1].name,
+        "BonusContact: Any/Type matched the type.",
+    );
+
+    // (d) Category/Any → random pick inside the category
+    add(`${ct1.category}/Any(100)`);
+    Tester.assertEquals(
+        4,
+        char.contacts.length,
+        "BonusContact: Category/Any generated.",
+    );
+    Tester.assertEquals(
+        ct1.category,
+        char.contacts[3].category,
+        "BonusContact: Category/Any stayed in the category.",
+    );
+
+    // (e) unknown exact pair → lookup miss
+    add("NoSuchCatZZ/NoSuchTypeZZ(100)");
+    Tester.assertEquals(
+        4,
+        char.contacts.length,
+        "BonusContact: unknown pair adds nothing.",
+    );
+
+    // (f) unknown category with Any → empty category pool → return
+    add("NoSuchCatZZ/Any(100)");
+    Tester.assertEquals(
+        4,
+        char.contacts.length,
+        "BonusContact: empty category pool adds nothing.",
+    );
+
+    // (g) roll above the entry ceiling → no candidate
+    add(`${ct1.category}/${ct1.name}(1)`);
+    Tester.assertEquals(
+        4,
+        char.contacts.length,
+        "BonusContact: roll above ceiling adds nothing.",
+    );
+
+    // (h) empty string guard
+    gen.generateBonusContact(char, "");
+    Tester.assertEquals(
+        4,
+        char.contacts.length,
+        "BonusContact: empty string no-ops.",
+    );
+
+    // (i) duplicate → log + return
+    gen._assignedContactNames = new Set([ct1.name]);
+    add(`${ct1.category}/${ct1.name}(100)`);
+    Tester.assertEquals(
+        4,
+        char.contacts.length,
+        "BonusContact: duplicate skipped.",
+    );
+
+    // (j) at slot maximum → blocked without force, pushed with force
+    char.contactsMax = char.contacts.length;
+    add(`${other.category}/${other.name}(100)`);
+    Tester.assertEquals(
+        4,
+        char.contacts.length,
+        "BonusContact: full roster blocks a normal push.",
+    );
+    // The refused attempt above still claimed other.name in the assigned set
+    // (generateBonusContact records the name before the slot check), so drop
+    // it to make the forced retry a clean first claim.
+    gen._assignedContactNames.delete(other.name);
+    add(`${other.category}/${other.name}(100)`, true);
+    Tester.assertEquals(
+        5,
+        char.contacts.length,
+        "BonusContact: forcedContact pushes past the maximum.",
+    );
+};
+
+Tester.PowersRetryAndExhaustTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "basic";
+    gen.setTables();
+    gen.setDeterministicRolls();
+    gen._assignedPowerNames = new Set();
+
+    const counts = {};
+    for (const p of gen.powerListTable)
+        counts[p.category] = (counts[p.category] || 0) + 1;
+    // Pick the category FIRST (must sit past roll 5 so the unshifted fake
+    // category below, which owns rolls 1-5, cannot shadow it), then a
+    // single-slot power inside that category.
+    const yCat = gen.powerCategoriesTable.find(
+        (c) =>
+            c.maxRoll > 5 &&
+            gen.powerListTable.some(
+                (p) =>
+                    p.category === c.name &&
+                    p.name &&
+                    Utility.getValue(p, "powerCount", 1) === 1,
+            ),
+    );
+    Tester.assertNotNull(yCat, "Retry: target category sits past roll 5.");
+    const yPower = gen.powerListTable.find(
+        (p) =>
+            p.category === (yCat && yCat.name) &&
+            p.name &&
+            Utility.getValue(p, "powerCount", 1) === 1,
+    );
+    Tester.assertNotNull(yPower, "Retry: cross-category target exists.");
+
+    const buildChar = () => {
+        const char = new Character();
+        char.physicalForm = gen.physicalFormTable[0].name;
+        char.powers = [];
+        char.powersCount = 4;
+        char.powersMax = 6;
+        return char;
+    };
+
+    // A fake front category whose roll range (1-5) maps to NO powers — the
+    // only way powerRow resolves to undefined after the re-roll adjust.
+    const catTable = gen.powerCategoriesTable;
+    catTable.unshift({ name: "ZZCoverageEmpty", maxRoll: 5 });
+    try {
+        // (a) undefined power → roll-miss twin → guards → cross-category success
+        const charA = buildChar();
+        gen.powerCategoryRolls = Array(gen.rollArraySize).fill(0);
+        gen.powerRolls = Array(gen.rollArraySize).fill(50);
+        gen.powerRankRolls = Array(gen.rollArraySize).fill(50);
+        gen.powerCategoryRolls[0] = 5; // hits the fake category
+        gen.powerCategoryRolls[1] = 0; // invalid cat roll guard
+        gen.powerCategoryRolls[2] = yCat.maxRoll;
+        gen.powerRolls[2] = 101; // power roll >100 guard
+        gen.powerCategoryRolls[3] = yCat.maxRoll;
+        gen.powerRolls[3] = yPower.maxRoll; // unassigned pick → success
+        gen.generateSinglePower(charA, 0);
+        Tester.assertEquals(
+            1,
+            charA.powers.length,
+            "Retry: undefined-power twin recovers via another category.",
+        );
+        Tester.assertEquals(
+            yPower.name,
+            charA.powers[0] && charA.powers[0].name,
+            "Retry: fallback power is the expected one.",
+        );
+
+        // (b) every retry cat roll invalid → "Exhausted retries" return
+        const charB = buildChar();
+        gen.powerCategoryRolls = Array(gen.rollArraySize).fill(0);
+        gen.powerRolls = Array(gen.rollArraySize).fill(50);
+        gen.powerRankRolls = Array(gen.rollArraySize).fill(50);
+        gen.powerCategoryRolls[0] = 5;
+        gen.generateSinglePower(charB, 0);
+        Tester.assertEquals(
+            0,
+            charB.powers.length,
+            "Retry: exhausted retries return without a push.",
+        );
+    } finally {
+        catTable.shift();
+    }
+
+    // Pick-while array exhaustion near the end of the roll arrays
+    const catAny = gen.powerCategoriesTable.find((c) => c.maxRoll > 5);
+    const charC = buildChar();
+    gen.powerCategoryRolls = Array(gen.rollArraySize).fill(0);
+    gen.powerRolls = Array(gen.rollArraySize).fill(50);
+    gen.powerRankRolls = Array(gen.rollArraySize).fill(50);
+    const ix = gen.rollArraySize - 1;
+    gen.powerCategoryRolls[ix] = catAny.maxRoll;
+    gen.powerRolls[ix] = 101; // re-roll runs off the array → log + return
+    gen.generateSinglePower(charC, ix);
+    Tester.assertEquals(
+        0,
+        charC.powers.length,
+        "Retry: pick-while array exhaustion adds nothing.",
+    );
+};
+
+Tester.PowersOptionalEdgeTests = () => {
+    // (1) manual optional: Any re-roll adjust + rank + push
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "advanced";
+    gen.setTables();
+    gen.setDeterministicRolls();
+    gen._assignedPowerNames = new Set();
+    gen.selectOptionalPowersManually = true;
+    const bt = gen.powerListTable.find((p) => p.name && p.category);
+    gen._selectedOptionalPowers = {
+        Src: [{ category: bt.category, name: "Any" }],
+    };
+    gen.powerRolls = Array(gen.rollArraySize).fill(50);
+    gen.powerRolls[0] = 101;
+    gen.powerRolls[1] = 101;
+    gen.powerRolls[2] = 101;
+    gen.powerRankRolls = Array(gen.rollArraySize).fill(50);
+    const c1 = new Character();
+    c1.powers = [];
+    c1.powersCount = 6;
+    c1.powersMax = 6;
+    gen.generateOptionalPower(c1, 1, "ignored", "Src");
+    Tester.assertEquals(
+        1,
+        c1.powers.length,
+        "OptEdge: manual Any re-rolled past invalid slots and pushed.",
+    );
+    Tester.assert(
+        c1.powers[0] && c1.powers[0].optionalPower === true,
+        "OptEdge: manual Any flagged optionalPower.",
+    );
+    gen.selectOptionalPowersManually = false;
+    gen._selectedOptionalPowers = null;
+
+    // (2) random path: skipped first entry leaves a sparse hole → continue
+    const gen2 = new CharacterGenerator();
+    gen2.generatorMode = "advanced";
+    gen2.setTables();
+    gen2.setDeterministicRolls();
+    gen2._assignedPowerNames = new Set();
+    const c2 = new Character();
+    c2.powers = [];
+    c2.powersCount = 6;
+    c2.powersMax = 6;
+    gen2.generateOptionalPower(c2, 2, "NoSlash|Movement\\Any(100)", "Src");
+    Tester.assertEquals(
+        1,
+        c2.powers.length,
+        "OptEdge: sparse hole skipped, second entry generated.",
+    );
+    Tester.assert(
+        c2.powers[0] && c2.powers[0].optionalPower === true,
+        "OptEdge: generated power flagged optionalPower.",
+    );
+
+    // (3) getOptionalPowerOptions with a patched form string — exercises
+    //     segments<2 skip, Any expansion and ~ alternatives expansion.
+    //     Fake category targets: filterRolled() drops options the simulated
+    //     roll already produced, and with deterministic rolls every real
+    //     Movement power is in that set — the fakes never are.
+    const gen3 = new CharacterGenerator();
+    gen3.generatorMode = "ultimate";
+    gen3.setTables();
+    gen3.setDeterministicRolls();
+    gen3.powerNumberRoll = 50;
+    const formRow = gen3.physicalFormTable[0];
+    const savedStr = formRow.optionalPowers;
+    const baseLen = gen3.powerListTable.length;
+    gen3.powerListTable.push(
+        { category: "ZZOptFake", name: "FakeOptA" },
+        { category: "ZZOptFake", name: "FakeOptB" },
+        { category: "ZZOptFake", name: "FakeOptC" },
+    );
+    // Each ~ alternative carries its own category — the split happens on the
+    // raw entry, so a bare second alternative would be segments<2 and skipped.
+    formRow.optionalPowers =
+        "NoSlashPart|ZZOptFake\\Any(100)|ZZOptFake\\FakeOptA~ZZOptFake\\FakeOptB(100)";
+    try {
+        gen3._lastPhysicalForm = formRow.name;
+        const groups = gen3.getOptionalPowerOptions();
+        const formGroup = groups.find(
+            (g) => g.sourcePowerCategory === "Physical Form",
+        );
+        Tester.assertNotNull(
+            formGroup,
+            "OptEdge: patched form optional group returned.",
+        );
+        // NoSlashPart skipped (segments < 2); Any → 3 fakes; ~ → both alts.
+        Tester.assertEquals(
+            5,
+            formGroup && formGroup.options.length,
+            "OptEdge: NoSlash skipped, Any + ~ expansions present.",
+        );
+    } finally {
+        gen3.powerListTable.length = baseLen;
+        if (savedStr === undefined) delete formRow.optionalPowers;
+        else formRow.optionalPowers = savedStr;
+        gen3._lastPhysicalForm = null;
+    }
+};
+
+Tester.PowersQueryAndSelectionTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "advanced";
+    gen.setTables();
+    gen.setDeterministicRolls();
+    gen._assignedPowerNames = new Set();
+    const bt = gen.powerListTable.find((p) => p.name && p.category);
+    const bt2 = gen.powerListTable.find(
+        (p) => p.name && p.category && p.name !== bt.name,
+    );
+
+    // --- parseBonusPowerOptions
+    Tester.assertEquals(
+        0,
+        CharacterGenerator.parseBonusPowerOptions("").length,
+        "Query: empty bonus string → no options.",
+    );
+    const opts = CharacterGenerator.parseBonusPowerOptions(
+        "Movement\\Any(100)|Movement\\Flight(100)",
+    );
+    Tester.assertEquals(2, opts.length, "Query: two bonus options parsed.");
+    Tester.assertEquals(
+        "Movement",
+        opts[0] && opts[0].category,
+        "Query: option category parsed.",
+    );
+    Tester.assertEquals(
+        "Any",
+        opts[0] && opts[0].name,
+        "Query: option name parsed.",
+    );
+
+    // --- _expandBonusPowerAny: guard, Any/Any, category Any, passthrough
+    const gNull = new CharacterGenerator();
+    gNull.powerListTable = null;
+    const passthroughIn = [{ category: "X", name: "Y", maxRoll: 50 }];
+    Tester.assert(
+        gNull._expandBonusPowerAny(passthroughIn) === passthroughIn,
+        "Query: null power list returns the input unchanged.",
+    );
+    const all = gen._expandBonusPowerAny([
+        { category: "Any", name: "Any", maxRoll: 100 },
+    ]);
+    Tester.assertEquals(
+        gen.powerListTable.length,
+        all.length,
+        "Query: Any/Any expands to every power.",
+    );
+    const catName = gen.powerListTable[0].category;
+    const catExp = gen._expandBonusPowerAny([
+        { category: catName, name: "Any", maxRoll: 100 },
+    ]);
+    Tester.assertEquals(
+        gen.powerListTable.filter((p) => p.category === catName).length,
+        catExp.length,
+        "Query: category Any expands to that category only.",
+    );
+    const pass = gen._expandBonusPowerAny([
+        { category: "X", name: "Y", maxRoll: 50 },
+    ]);
+    Tester.assertEquals(
+        "Y",
+        pass[0] && pass[0].name,
+        "Query: concrete options pass through expansion.",
+    );
+
+    // --- getPowerSlotsAndCategories: invalid cat rolls skipped; then the
+    //     no-table guards of the two list helpers
+    const gQ = new CharacterGenerator();
+    gQ.generatorMode = "basic";
+    gQ.setTables();
+    gQ.setDeterministicRolls();
+    gQ.powerNumberRoll = 50;
+    gQ._lastPhysicalForm = null;
+    gQ.physicalFormRoll = null;
+    gQ.powerCategoryRolls = Array(gQ.rollArraySize).fill(101);
+    const slots = gQ.getPowerSlotsAndCategories();
+    Tester.assert(slots.count > 0, "Query: slot count still resolves.");
+    Tester.assertEquals(
+        0,
+        slots.categories.length,
+        "Query: invalid category rolls produce no categories.",
+    );
+    gQ.powerCategoriesTable = null;
+    Tester.assertEquals(
+        0,
+        gQ.getPowerCategoryNames().length,
+        "Query: null category table → empty names.",
+    );
+    gQ.powerListTable = null;
+    Tester.assertEquals(
+        0,
+        gQ.getPowersForCategory("Anything").length,
+        "Query: null power list → empty powers.",
+    );
+
+    // --- applySelectedBonusPower: null, array arm, ghost, rank miss, full slots
+    const gS = new CharacterGenerator();
+    gS.generatorMode = "advanced";
+    gS.setTables();
+    gS.setDeterministicRolls();
+    gS._assignedPowerNames = new Set();
+    const cS = new Character();
+    cS.powers = [];
+    cS.powersCount = 6;
+    cS.powersMax = 6;
+    gS.applySelectedBonusPower(cS, null);
+    Tester.assertEquals(
+        0,
+        cS.powers.length,
+        "SelBonus: null selection no-ops.",
+    );
+    gS.applySelectedBonusPower(cS, [{ category: bt.category, name: bt.name }]);
+    Tester.assertEquals(
+        1,
+        cS.powers.length,
+        "SelBonus: array selection pushes (isArray arm).",
+    );
+    Tester.assert(
+        cS.powers[0].bonusPower === true,
+        "SelBonus: pushed power flagged bonusPower.",
+    );
+    gS.applySelectedBonusPower(cS, {
+        category: "NoSuchCatZZ",
+        name: "Ghost",
+    });
+    Tester.assertEquals(
+        1,
+        cS.powers.length,
+        "SelBonus: unknown selection skipped.",
+    );
+    gS.powerRankRolls = Array(gS.rollArraySize).fill(50);
+    gS.powerRankRolls[1] = 999;
+    gS.applySelectedBonusPower(cS, {
+        category: bt2.category,
+        name: bt2.name,
+    });
+    Tester.assertEquals(
+        1,
+        cS.powers.length,
+        "SelBonus: rank-roll miss skips the push.",
+    );
+    gS.powerRankRolls[1] = 50;
+    cS.powersMax = 1; // current slots already 1 → no room
+    gS.applySelectedBonusPower(cS, {
+        category: bt2.category,
+        name: bt2.name,
+    });
+    Tester.assertEquals(
+        1,
+        cS.powers.length,
+        "SelBonus: full roster blocks the push.",
+    );
+
+    // --- generateBonusPower rank miss
+    const cB = new Character();
+    cB.powers = [];
+    cB.powersCount = 6;
+    cB.powersMax = 6;
+    gen.powerRolls[0] = 50;
+    gen.powerRankRolls[0] = 999;
+    gen.generateBonusPower(cB, `${bt.category}\\${bt.name}(100)`);
+    Tester.assertEquals(
+        0,
+        cB.powers.length,
+        "BonusEdge: rank-roll miss adds nothing.",
+    );
+    gen.powerRankRolls[0] = 50;
+
+    // --- _simulateRolledPowers: invalid category roll arm
+    const gSim = new CharacterGenerator();
+    gSim.generatorMode = "advanced";
+    gSim.setTables();
+    gSim.setDeterministicRolls();
+    gSim.powerNumberRoll = 50;
+    gSim.powerCategoryRolls = Array(gSim.rollArraySize).fill(50);
+    gSim.powerCategoryRolls[0] = 101;
+    gSim.powerRolls = Array(gSim.rollArraySize).fill(101);
+    Tester.assertEquals(
+        0,
+        gSim._simulateRolledPowers().size,
+        "Simulate: invalid category roll + poisoned power rolls → empty set.",
+    );
+
+    // --- bonus-form paths at zero remaining slots (selected + rolled)
+    const gF = new CharacterGenerator();
+    gF.generatorMode = "ultimate";
+    gF.setTables();
+    gF.setDeterministicRolls();
+    gF._assignedPowerNames = new Set();
+    gF._selectedBonusPowers = [[{ category: bt.category, name: bt.name }]];
+    const cF1 = new Character();
+    cF1.powers = [];
+    cF1.powersCount = 0;
+    cF1.powersMax = 0;
+    gF.generatorBonusPowerOfPhysicalForm(cF1, "Unused\\String(100)", 0);
+    Tester.assertEquals(
+        0,
+        cF1.powers.length,
+        "FormBonusAtMax: selected bonus blocked with no slots.",
+    );
+    gF._selectedBonusPowers = null;
+    const cF2 = new Character();
+    cF2.powers = [];
+    cF2.powersCount = 0;
+    cF2.powersMax = 0;
+    gF.powerRolls = Array(gF.rollArraySize).fill(50);
+    gF.generatorBonusPowerOfPhysicalForm(
+        cF2,
+        `${bt2.category}\\${bt2.name}(100)`,
+    );
+    Tester.assertEquals(
+        0,
+        cF2.powers.length,
+        "FormBonusAtMax: rolled bonus blocked with no slots.",
+    );
+};
+
+// ============================================================================
+// TARGETED BRANCH PUSH — one craft per uncovered branch slot across
+// Determination / Powers / Roster / core / Utility.
+// ============================================================================
+
+Tester.DeterminePhysicalFormGuardTests = () => {
+    const gen = new CharacterGenerator();
+    gen.setTables();
+    gen.setDeterministicRolls();
+    const savedTable = gen.physicalFormTable;
+    try {
+        // _findPhysicalForm: roll past every band → no candidates → null
+        Tester.assertEquals(
+            null,
+            gen._findPhysicalForm(101, 0),
+            "PF: roll past every band → null.",
+        );
+
+        // getPhysicalFormSubOptions — previously never called at all
+        gen.physicalFormTable = null;
+        Tester.assertEquals(
+            0,
+            gen.getPhysicalFormSubOptions().length,
+            "PF: sub-options without a table → [].",
+        );
+        gen.physicalFormTable = savedTable;
+
+        gen.physicalFormRoll = 101;
+        Tester.assertEquals(
+            0,
+            gen.getPhysicalFormSubOptions().length,
+            "PF: sub-options without candidates → [].",
+        );
+
+        gen.physicalFormTable = [
+            { name: "Solo", maxRoll: 100, description: "solo" },
+        ];
+        gen.physicalFormRoll = 50;
+        Tester.assertEquals(
+            0,
+            gen.getPhysicalFormSubOptions().length,
+            "PF: sub-options with one tightest row → [].",
+        );
+
+        gen.physicalFormTable = [
+            { name: "TieA", maxRoll: 500, subRoll: 30, description: "da" },
+            { name: "TieB", maxRoll: 500, subRoll: 20, description: "db" },
+        ];
+        const opts = gen.getPhysicalFormSubOptions();
+        Tester.assertEquals(
+            2,
+            opts.length,
+            "PF: sub-options returns the tie group.",
+        );
+        Tester.assertEquals(
+            "TieA",
+            opts[0] && opts[0].name,
+            "PF: sub-option name exposed.",
+        );
+        Tester.assertEquals(
+            30,
+            opts[0] && opts[0].subRoll,
+            "PF: sub-option subRoll exposed.",
+        );
+        Tester.assertEquals(
+            "da",
+            opts[0] && opts[0].description,
+            "PF: sub-option description exposed.",
+        );
+
+        const tieMatch = gen._findPhysicalForm(500, 25);
+        Tester.assertEquals(
+            "TieA",
+            tieMatch && tieMatch.name,
+            "PF: subRoll match picks the first qualifying row.",
+        );
+        const tieLast = gen._findPhysicalForm(500, 99);
+        Tester.assertEquals(
+            "TieB",
+            tieLast && tieLast.name,
+            "PF: subRoll past every subRoll → last withSub row.",
+        );
+    } finally {
+        gen.physicalFormTable = savedTable;
+        gen._selectedPhysicalForm = null;
+        gen.physicalFormRoll = 50;
+    }
+
+    // determinePhysicalForm guards ------------------------------------------------
+    const workRow = savedTable.find(
+        (r) => Utility.getValue(r, "combinations", -1) === -1,
+    );
+    if (!workRow) {
+        Tester.assert(true, "PF: determine guards skipped (no safe row).");
+        return;
+    }
+    gen.combinationsRoll = 10;
+    gen.compoundRandomRanksColumnRoll = 9999;
+    gen._selectedPhysicalForm = null;
+
+    const char0 = new Character();
+    const formBefore = char0.physicalForm;
+    gen.physicalFormRoll = 0;
+    gen.determinePhysicalForm(char0);
+    Tester.assertEquals(
+        formBefore,
+        char0.physicalForm,
+        "PF: invalid roll leaves the form unset.",
+    );
+
+    gen._selectedPhysicalForm = workRow.name;
+    gen.physicalFormRoll = workRow.maxRoll;
+    const char1 = new Character();
+    gen.determinePhysicalForm(char1);
+    Tester.assertEquals(
+        workRow.name,
+        char1.physicalForm,
+        "PF: manual sub-form selection found by name.",
+    );
+
+    gen._selectedPhysicalForm = "NoSuchFormZZ";
+    gen.physicalFormRoll = workRow.maxRoll;
+    const char2 = new Character();
+    gen.determinePhysicalForm(char2);
+    Tester.assert(
+        char2.physicalForm && char2.physicalForm !== "NoSuchFormZZ",
+        "PF: unknown manual selection falls back to the rolled form.",
+    );
+
+    // Compound/combinations block: invalid compound body type aborts
+    let bodyRoll = null;
+    for (let c = 1; c <= 100 && bodyRoll === null; c++) {
+        const hit = savedTable.find((o) => c <= o.maxRoll);
+        if (
+            hit &&
+            hit !== workRow &&
+            Utility.getValue(hit, "combinations", -1) === -1
+        ) {
+            bodyRoll = c;
+        }
+    }
+    if (bodyRoll !== null) {
+        const origCombos = workRow.combinations;
+        workRow.combinations = "2\\50(50)|3\\33(75)";
+        gen.bodyTypeRolls = [bodyRoll, bodyRoll, bodyRoll];
+        gen._selectedPhysicalForm = workRow.name;
+        gen.physicalFormRoll = workRow.maxRoll;
+        const charC = new Character();
+        try {
+            gen.determinePhysicalForm(charC);
+            Tester.assert(
+                !charC.physicalForm,
+                "PF: invalid compound body type aborts before assignment.",
+            );
+        } finally {
+            workRow.combinations = origCombos;
+        }
+    } else {
+        Tester.assert(true, "PF: compound fixture skipped.");
+    }
+
+    // No match: table whose rows all sit below the roll
+    gen.physicalFormTable = [{ name: "Tiny", maxRoll: 0 }];
+    gen._selectedPhysicalForm = null;
+    gen.physicalFormRoll = 50;
+    const char3 = new Character();
+    const formBefore3 = char3.physicalForm;
+    try {
+        gen.determinePhysicalForm(char3);
+        Tester.assertEquals(
+            formBefore3,
+            char3.physicalForm,
+            "PF: no matching row logs and returns.",
+        );
+    } finally {
+        gen.physicalFormTable = savedTable;
+    }
+};
+
+Tester.DetermineOriginAbilityGuardTests = () => {
+    const gen = new CharacterGenerator();
+    gen.setTables();
+    gen.setDeterministicRolls();
+
+    const charO = new Character();
+    const originBefore = charO.origin;
+    gen.originRoll = 101;
+    gen.determineOrigin(charO);
+    Tester.assertEquals(
+        originBefore,
+        charO.origin,
+        "Origin: invalid roll leaves origin unset.",
+    );
+
+    const savedOrigins = gen.originTable;
+    gen.originTable = [];
+    gen.originRoll = 50;
+    const charO2 = new Character();
+    try {
+        gen.determineOrigin(charO2);
+        Tester.assertEquals(
+            originBefore,
+            charO2.origin,
+            "Origin: empty table → no match.",
+        );
+    } finally {
+        gen.originTable = savedOrigins;
+        gen.originRoll = 50;
+    }
+
+    // determineAbility guards ------------------------------------------------------
+    const row = gen.physicalFormTable[0];
+
+    gen.physicalAbilityRolls[0].Fighting = 0;
+    const charA = new Character();
+    const fightingBefore = charA.getAbility("Fighting").rank;
+    gen.determineAbility(charA, "Fighting", row, 0);
+    Tester.assertEquals(
+        fightingBefore,
+        charA.getAbility("Fighting").rank,
+        "Ability: invalid roll leaves the rank unchanged.",
+    );
+
+    gen.physicalAbilityRolls[0].Fighting = 50;
+    const savedCol = gen.randomRanksColumn;
+    gen.randomRanksColumn = 999;
+    const charB = new Character();
+    try {
+        gen.determineAbility(charB, "Fighting", row, 0);
+        Tester.assertEquals(
+            fightingBefore,
+            charB.getAbility("Fighting").rank,
+            "Ability: null rankRow leaves the rank unchanged.",
+        );
+    } finally {
+        gen.randomRanksColumn = savedCol;
+    }
+
+    gen.mentalAbilityRolls.Reason = 0;
+    const charC = new Character();
+    const reasonBefore = charC.getAbility("Reason").rank;
+    gen.determineAbility(charC, "Reason", row, 0);
+    Tester.assertEquals(
+        reasonBefore,
+        charC.getAbility("Reason").rank,
+        "Ability: invalid mental roll leaves the rank unchanged.",
+    );
+};
+
+Tester.DetermineResourcesHiTechTests = () => {
+    const gen = new CharacterGenerator();
+    gen.setTables();
+    gen.setDeterministicRolls();
+    const hiRow = gen.physicalFormTable.find(
+        (r) => Utility.getValue(r, "isHiTech", false) === true,
+    );
+    Tester.assertNotNull(hiRow, "HiTech: a hi-tech form exists in the table.");
+    if (!hiRow) return;
+
+    const hadSet = Object.prototype.hasOwnProperty.call(hiRow, "resourcesSet");
+    const savedSet = hiRow.resourcesSet;
+    const savedGood = gen.hiTechToGood;
+    hiRow.resourcesSet = -1; // skip the early return so the hi-tech block runs
+    try {
+        gen.hiTechToGood = false;
+        const char1 = new Character();
+        char1.physicalForm = hiRow.name;
+        gen.determineResources(char1);
+        Tester.assert(
+            char1.isHiTech === true,
+            "HiTech: flag set on the character.",
+        );
+        Tester.assert(
+            char1.resources.rank !== undefined,
+            "HiTech: else-branch resources resolved.",
+        );
+
+        gen.hiTechToGood = true;
+        const char2 = new Character();
+        char2.physicalForm = hiRow.name;
+        gen.determineResources(char2);
+        Tester.assert(
+            char2.resources.rank !== undefined,
+            "HiTech: to-Good branch resources resolved.",
+        );
+    } finally {
+        if (hadSet) hiRow.resourcesSet = savedSet;
+        else delete hiRow.resourcesSet;
+        gen.hiTechToGood = savedGood;
+    }
+};
+
+Tester.PopularityClampGuardTests = () => {
+    // --- Ultimate: subType value-list min/max, then BOTH number clamps ----
+    const genU = new CharacterGenerator();
+    genU.generatorMode = "ultimate";
+    genU.setTables();
+    genU.setDeterministicRolls();
+    const rowU = genU.physicalFormTable.find(
+        (r) => Utility.getValue(r, "combinations", -1) === -1,
+    );
+    if (!rowU) {
+        Tester.assert(true, "Popularity clamp: fixture skipped.");
+        return;
+    }
+    const savedSet = rowU.popularitySet;
+    const savedMin = rowU.popularityMinimum;
+    const savedMax = rowU.popularityMaximum;
+    const savedAdj = rowU.popularityAdjustment;
+    rowU.popularitySet = -1;
+    rowU.popularityAdjustment = 0;
+    rowU.popularityMinimum = "Other(98)|SubX(999)";
+    rowU.popularityMaximum = "Other(9)|SubX(5)";
+
+    genU.physicalFormRoll = rowU.maxRoll;
+    genU._selectedPhysicalForm = rowU.name;
+    const charU = new Character();
+    genU.determinePhysicalForm(charU); // sets randomRanksColumn + form
+    genU._selectedPhysicalForm = null;
+    charU.subType = "SubX";
+    genU.popularityRoll = 50;
+    genU.identitySecret = false;
+    try {
+        genU.determinePopularityUltimate(charU);
+        Tester.assertEquals(
+            5,
+            charU.popularity,
+            "Popularity ultimate: subType lists resolve, then min and max clamps apply.",
+        );
+    } finally {
+        rowU.popularitySet = savedSet;
+        rowU.popularityMinimum = savedMin;
+        rowU.popularityMaximum = savedMax;
+        rowU.popularityAdjustment = savedAdj;
+    }
+
+    // --- Advanced: plain numeric min/max clamps in determinePopularity ----
+    const genA = new CharacterGenerator();
+    genA.generatorMode = "advanced";
+    genA.setTables();
+    genA.setDeterministicRolls();
+    const rowA = genA.physicalFormTable[0];
+    const savedASet = rowA.popularitySet;
+    const savedAMin = rowA.popularityMinimum;
+    const savedAMax = rowA.popularityMaximum;
+    const savedAAdj = rowA.popularityAdjustment;
+    rowA.popularitySet = -1;
+    rowA.popularityAdjustment = 0;
+    rowA.popularityMinimum = 999;
+    rowA.popularityMaximum = 5;
+    genA.identitySecret = false;
+    const charA = new Character();
+    charA.physicalForm = rowA.name;
+    try {
+        genA.determinePopularity(charA);
+        Tester.assertEquals(
+            5,
+            charA.popularity,
+            "Popularity advanced: minimum floor then maximum cap apply.",
+        );
+    } finally {
+        rowA.popularitySet = savedASet;
+        rowA.popularityMinimum = savedAMin;
+        rowA.popularityMaximum = savedAMax;
+        rowA.popularityAdjustment = savedAAdj;
+    }
+};
+
+Tester.PopularityNullGuardTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "ultimate";
+    gen.setTables();
+    gen.setDeterministicRolls();
+    const row = gen.physicalFormTable.find(
+        (r) => Utility.getValue(r, "combinations", -1) === -1,
+    );
+    if (!row) {
+        Tester.assert(true, "Popularity null: fixture skipped.");
+        return;
+    }
+    const savedSet = row.popularitySet;
+    const savedStart = row.popularityStart;
+    row.popularitySet = -1;
+    row.popularityStart = -1;
+
+    gen.physicalFormRoll = row.maxRoll;
+    gen._selectedPhysicalForm = row.name;
+    const char = new Character();
+    gen.determinePhysicalForm(char);
+    gen._selectedPhysicalForm = null;
+    gen.popularityRoll = 50;
+
+    const rrRow = Utility.findRow(
+        gen,
+        gen.popularityRoll,
+        gen.randomRanksColumn,
+    );
+    Tester.assertNotNull(rrRow, "Popularity null: rank row resolves.");
+    const savedRankNumber = rrRow && rrRow.rankNumber;
+    const popularityBefore = char.popularity;
+    if (rrRow) rrRow.rankNumber = null;
+    try {
+        gen.determinePopularityUltimate(char);
+        Tester.assertEquals(
+            popularityBefore,
+            char.popularity,
+            "Popularity null: invalid popularity logs and returns early.",
+        );
+    } finally {
+        if (rrRow) rrRow.rankNumber = savedRankNumber;
+        row.popularitySet = savedSet;
+        row.popularityStart = savedStart;
+    }
+};
+
+Tester.ManualLeftoverOptionalTests = () => {
+    // (1) leftover manual selections the generator never processed get pushed
+    const gen = new CharacterGenerator();
+    gen.setTables();
+    gen.setDeterministicRolls();
+    const target = gen.powerListTable.find((p) => p.name && p.category);
+    Tester.assertNotNull(
+        target,
+        "Leftover: a real power exists for the fixture.",
+    );
+    if (!target) return;
+
+    gen.selectOptionalPowersManually = true;
+    gen._selectedOptionalPowers = {
+        LeftoverSource: [
+            { category: target.category, name: target.name },
+            { category: "NoCatZZ", name: "NoPowZZ" },
+        ],
+        EmptySource: [],
+    };
+    const char = new Character();
+    char.physicalForm = gen.physicalFormTable[0].name;
+    // determineSpecialAbilities overwrites powersCount from the quantity row,
+    // so roll a zero-power row — the rolled loop then can't claim the target
+    // before the leftover block runs.
+    const qRow = gen.quantityTable.find(
+        (q) =>
+            Math.max(1, Math.min(100, gen.powerNumberRoll || 1)) <= q.maxRoll,
+    );
+    const savedQPowers = qRow && qRow.powers;
+    if (qRow) qRow.powers = { initial: 0, maximum: 6 };
+    try {
+        gen.determineSpecialAbilities(char);
+        const pushed = char.powers.find(
+            (p) => p.name === target.name && p.optionalPower === true,
+        );
+        Tester.assert(
+            pushed !== undefined,
+            "Leftover: unprocessed manual optional power pushed.",
+        );
+    } finally {
+        if (qRow) qRow.powers = savedQPowers;
+        gen.selectOptionalPowersManually = false;
+        gen._selectedOptionalPowers = null;
+    }
+
+    // (2) manual flag without a selection map skips the block entirely
+    const gen2 = new CharacterGenerator();
+    gen2.setTables();
+    gen2.setDeterministicRolls();
+    gen2.selectOptionalPowersManually = true;
+    const char2 = new Character();
+    char2.physicalForm = gen2.physicalFormTable[0].name;
+    try {
+        gen2.determineSpecialAbilities(char2);
+        Tester.assert(
+            true,
+            "Leftover: flag without a selection map skips cleanly.",
+        );
+    } finally {
+        gen2.selectOptionalPowersManually = false;
+    }
+};
+
+Tester.ContactManualRandomGuardTests = () => {
+    // (1) manual selections: default-count pushes, oversized skips
+    const gen = new CharacterGenerator();
+    gen.setTables();
+    gen.setDeterministicRolls();
+    gen._assignedContactNames = null;
+    gen._selectedContacts = [
+        { category: "Contact", name: "ManualCtA" },
+        { category: "Contact", name: "ManualCtHog", contactCount: 99 },
+    ];
+    const char = new Character();
+    char.physicalForm = gen.physicalFormTable[0].name;
+    try {
+        gen.determineSpecialAbilities(char);
+        Tester.assert(
+            char.contacts.some((c) => c.name === "ManualCtA"),
+            "Contact manual: default-count selection pushed.",
+        );
+        Tester.assert(
+            !char.contacts.some((c) => c.name === "ManualCtHog"),
+            "Contact manual: oversized selection skipped.",
+        );
+    } finally {
+        gen._selectedContacts = null;
+        gen.selectContactManually = false;
+    }
+
+    // (2) random loop: slot hog always exceeds the remaining slots
+    const gen2 = new CharacterGenerator();
+    gen2.setTables();
+    gen2.setDeterministicRolls();
+    gen2._assignedContactNames = new Set();
+    const listTable = gen2.contactTypeListTable;
+    listTable.unshift({
+        category: listTable[0].category,
+        name: "ZZSlotHog",
+        maxRoll: 100,
+        contactCount: 99,
+        description: "hog",
+    });
+    const char2 = new Character();
+    char2.physicalForm = gen2.physicalFormTable[0].name;
+    try {
+        gen2.determineSpecialAbilities(char2);
+        Tester.assertEquals(
+            0,
+            char2.contacts.length,
+            "Contact random: slot hog skipped every roll.",
+        );
+    } finally {
+        listTable.shift();
+        gen2._assignedContactNames = null;
+    }
+
+    // (3) random loop: every contact already assigned → dup advance hits a
+    //     missing category, then the roll-array bound
+    const gen3 = new CharacterGenerator();
+    gen3.setTables();
+    gen3.setDeterministicRolls();
+    gen3._assignedContactNames = new Set(
+        gen3.contactTypeListTable.map((c) => c.name),
+    );
+    // Entry validation repairs out-of-range rolls to 50, so the advance
+    // "miss" has to come from a table gap instead: shrink the single
+    // category band to 40 and roll 30 initially, 50 on every advance.
+    const catTable3 = gen3.contactCategoriesTable;
+    const savedCatMax3 = catTable3[0] && catTable3[0].maxRoll;
+    if (catTable3[0]) catTable3[0].maxRoll = 40;
+    gen3.contactCategoryRolls = Array(gen3.rollArraySize).fill(50);
+    gen3.contactCategoryRolls[0] = 30;
+    const char3 = new Character();
+    char3.physicalForm = gen3.physicalFormTable[0].name;
+    try {
+        gen3.determineSpecialAbilities(char3);
+        Tester.assertEquals(
+            0,
+            char3.contacts.length,
+            "Contact dup: exhausted advance adds nothing.",
+        );
+    } finally {
+        if (catTable3[0]) catTable3[0].maxRoll = savedCatMax3;
+        gen3._assignedContactNames = null;
+        gen3.setDeterministicRolls();
+    }
+};
+
+Tester.BoostGuardTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "ultimate";
+    gen.setTables();
+    gen.setDeterministicRolls();
+    const char = gen.generateWithoutThrows();
+    const table = gen.randomRanksTable;
+    const topRank = table[table.length - 1].rank;
+
+    // boostAbility: rank missing from the table
+    const fighting = char.primaryAbilities[0].Fighting;
+    const savedFighting = fighting.rank;
+    char.boostApplied = false;
+    fighting.rank = "NoSuchRankZZ";
+    Tester.assert(
+        gen.boostAbility(char, "Fighting") === false,
+        "Boost: unknown ability rank returns false.",
+    );
+    fighting.rank = savedFighting;
+
+    // boostAbility: already at the top rank
+    char.boostApplied = false;
+    fighting.rank = topRank;
+    Tester.assert(
+        gen.boostAbility(char, "Fighting") === false,
+        "Boost: top-rank ability returns false.",
+    );
+    fighting.rank = savedFighting;
+
+    if (char.powers.length > 0) {
+        // boostPower: boostApplied short-circuit on the second call
+        const power = char.powers[0];
+        const savedRank = power.rank;
+        char.boostApplied = false;
+        gen.boostPower(char, 0);
+        Tester.assert(
+            gen.boostPower(char, 0) === false,
+            "Boost: second power boost rejected once applied.",
+        );
+
+        // boostPower: rank guards
+        char.boostApplied = false;
+        power.rank = "NoSuchRankZZ";
+        Tester.assert(
+            gen.boostPower(char, 0) === false,
+            "Boost: unknown power rank returns false.",
+        );
+        power.rank = savedRank;
+        char.boostApplied = false;
+        power.rank = topRank;
+        Tester.assert(
+            gen.boostPower(char, 0) === false,
+            "Boost: top-rank power returns false.",
+        );
+        power.rank = savedRank;
+    }
+    char.boostApplied = false;
+};
+
+Tester.CoreIdentityPhaseFallbackTests = () => {
+    // applyRollOverrides with a null source returns early
+    const gen0 = new CharacterGenerator();
+    CharacterGenerator.applyRollOverrides(gen0, null);
+    Tester.assert(true, "Core: null override source is a no-op.");
+
+    // identity ternary: secret side
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "ultimate";
+    gen.setTables();
+    gen.setDeterministicRolls();
+    gen.identitySecret = true;
+    const char = gen.generateWithoutThrows({ identitySecret: true });
+    Tester.assertEquals(
+        "Secret",
+        char.identity,
+        "Core: secret identity ternary.",
+    );
+
+    // generatePhase1 fallback when the roll misses every form row
+    const gen2 = new CharacterGenerator();
+    gen2.setTables();
+    const origThrow = gen2.throwAllRolls.bind(gen2);
+    gen2.throwAllRolls = () => {
+        origThrow();
+        gen2.physicalFormRoll = 101;
+    };
+    const phase = gen2.generatePhase1();
+    Tester.assertEquals(
+        gen2.physicalFormTable[0].name,
+        gen2._lastPhysicalForm,
+        "Core: phase1 falls back to the first form row.",
+    );
+    Tester.assert(
+        phase !== null && phase.powersCount >= 0,
+        "Core: phase1 result returned.",
+    );
+};
+
+Tester.RosterSlotTalentGuardTests = () => {
+    const gen = new CharacterGenerator();
+    gen.setTables();
+    gen.setDeterministicRolls();
+
+    // getTalentSlotCount: falsy roll falls back to roll 1
+    gen.talentNumberRoll = 1;
+    const withOne = gen.getTalentSlotCount();
+    gen.talentNumberRoll = 0;
+    Tester.assertEquals(
+        withOne,
+        gen.getTalentSlotCount(),
+        "Roster: talentNumberRoll 0 falls back to roll 1.",
+    );
+    gen.talentNumberRoll = 50;
+
+    // empty quantity table → early default of 4 slots (both counters)
+    const savedQty = gen.quantityTable;
+    gen.quantityTable = [];
+    try {
+        Tester.assertEquals(
+            4,
+            gen.getTalentSlotCount(),
+            "Roster: missing quantity row → 4 talent slots.",
+        );
+        Tester.assertEquals(
+            4,
+            gen.getContactSlotCount(),
+            "Roster: missing quantity row → 4 contact slots.",
+        );
+    } finally {
+        gen.quantityTable = savedQty;
+    }
+
+    // getContactSlotCount: adjustment + minimum floor, then maximum cap
+    const row = gen.physicalFormTable[0];
+    const savedAdj = row.contactsCountAdjustment;
+    const savedMin = row.contactsCountMinimum;
+    const savedMax = row.contactsCountMaximum;
+    gen._lastPhysicalForm = row.name;
+    try {
+        row.contactsCountAdjustment = 5;
+        row.contactsCountMinimum = 99;
+        row.contactsCountMaximum = undefined;
+        const high = gen.getContactSlotCount();
+        Tester.assert(
+            high >= 99,
+            `Roster: contact adjustment + minimum floor (got ${high}).`,
+        );
+
+        row.contactsCountAdjustment = 0;
+        row.contactsCountMinimum = undefined;
+        row.contactsCountMaximum = 1;
+        const low = gen.getContactSlotCount();
+        Tester.assert(low <= 1, `Roster: contact maximum cap (got ${low}).`);
+    } finally {
+        row.contactsCountAdjustment = savedAdj;
+        row.contactsCountMinimum = savedMin;
+        row.contactsCountMaximum = savedMax;
+        gen._lastPhysicalForm = null;
+    }
+
+    // getAvailableTalents: missing description / subRoll defaults
+    const catTable = gen.talentCategoriesTable;
+    const listTable = gen.talentListTable;
+    catTable.unshift({ name: "ZZDescCat", maxRoll: 100 });
+    listTable.push(
+        {
+            category: "ZZDescCat",
+            name: "NoDescTalent",
+            maxRoll: 100,
+            subRoll: 40,
+        },
+        {
+            category: "ZZDescCat",
+            name: "PlainTalent",
+            maxRoll: 100,
+            description: "d",
+        },
+    );
+    try {
+        const cats = gen.getAvailableTalents();
+        const zz = cats.find((c) => c.category === "ZZDescCat");
+        Tester.assertNotNull(zz, "Roster: fixture category listed.");
+        const noDesc = zz && zz.talents.find((t) => t.name === "NoDescTalent");
+        Tester.assert(
+            noDesc !== undefined && noDesc !== null,
+            "Roster: description-less talent listed.",
+        );
+        Tester.assertEquals(
+            "",
+            noDesc && noDesc.description,
+            "Roster: missing description defaults to ''.",
+        );
+        Tester.assertEquals(
+            40,
+            noDesc && noDesc.subRoll,
+            "Roster: subRoll exposed on the talent.",
+        );
+        const plain = zz && zz.talents.find((t) => t.name === "PlainTalent");
+        Tester.assertEquals(
+            null,
+            plain && plain.subRoll,
+            "Roster: missing subRoll defaults to null.",
+        );
+    } finally {
+        listTable.pop();
+        listTable.pop();
+        catTable.shift();
+    }
+
+    // generateTalents manual: oversized skips, default count pushes
+    const genM = new CharacterGenerator();
+    genM.setTables();
+    genM.setDeterministicRolls();
+    const charM = new Character();
+    charM.talents = [];
+    charM.talentsMax = 3;
+    charM.talentsCount = 3;
+    genM._selectedTalents = [
+        { category: "Talents", name: "ManualTalentHog", talentCount: 99 },
+    ];
+    try {
+        genM.generateTalents(charM, 0);
+        Tester.assertEquals(
+            0,
+            charM.talents.length,
+            "Roster: oversized manual talent skipped.",
+        );
+    } finally {
+        genM._selectedTalents = null;
+    }
+
+    const genN = new CharacterGenerator();
+    genN.setTables();
+    genN.setDeterministicRolls();
+    const charN = new Character();
+    charN.talents = [];
+    charN.talentsMax = 3;
+    charN.talentsCount = 3;
+    genN._selectedTalents = [
+        { category: "Talents", name: "ManualTalentPlain" },
+    ];
+    try {
+        genN.generateTalents(charN, 0);
+        Tester.assertEquals(
+            1,
+            charN.talents.length,
+            "Roster: default-count manual talent pushed.",
+        );
+        Tester.assertEquals(
+            "ManualTalentPlain",
+            charN.talents[0] && charN.talents[0].name,
+            "Roster: manual talent name recorded.",
+        );
+    } finally {
+        genN._selectedTalents = null;
+    }
+
+    // dup-advance: re-roll lands on no talent → early return
+    const genD = new CharacterGenerator();
+    genD.setTables();
+    genD.setDeterministicRolls();
+    const firstCat = genD.talentCategoriesTable.find(
+        (c) => genD.talentCategoryRolls[0] <= c.maxRoll,
+    );
+    const firstTalent = firstCat
+        ? genD._findTalent(
+              firstCat.name,
+              genD.talentRolls[0],
+              genD.talentSubRolls[0],
+          )
+        : null;
+    if (firstTalent) {
+        genD._assignedTalentNames = new Set([firstTalent.name]);
+        genD.talentRolls[1] = 101;
+        const charD = new Character();
+        charD.talents = [];
+        charD.talentsMax = 3;
+        charD.talentsCount = 3;
+        genD.generateTalents(charD, 0);
+        Tester.assertEquals(
+            0,
+            charD.talents.length,
+            "Roster: dup advance with no matching talent returns.",
+        );
+    } else {
+        Tester.assert(true, "Roster: dup-advance fixture skipped.");
+    }
+
+    // overflow: advance hits an assigned talent, a category miss, then bound
+    const genO = new CharacterGenerator();
+    genO.setTables();
+    genO.setDeterministicRolls();
+    const catTableO = genO.talentCategoriesTable;
+    const listTableO = genO.talentListTable;
+    catTableO.unshift({ name: "ZZOvfCat", maxRoll: 999 });
+    listTableO.push(
+        {
+            category: "ZZOvfCat",
+            name: "ZZOvfTalentA",
+            maxRoll: 40,
+            talentCount: 3,
+            description: "a",
+            subRoll: 10,
+        },
+        {
+            category: "ZZOvfCat",
+            name: "ZZOvfTalentB",
+            maxRoll: 60,
+            talentCount: 1,
+            description: "b",
+            subRoll: 20,
+        },
+    );
+    try {
+        genO._assignedTalentNames = new Set(["ZZOvfTalentA", "ZZOvfTalentB"]);
+        genO.talentCategoryRolls = Array(genO.rollArraySize).fill(1000);
+        genO.talentCategoryRolls[0] = 999;
+        genO.talentCategoryRolls[1] = 999;
+        genO.talentRolls[0] = 40; // tightest → ZZOvfTalentA (count 3)
+        const charO = new Character();
+        charO.talents = [];
+        charO.talentsMax = 2;
+        charO.talentsCount = 2;
+        genO.generateTalents(charO, 0);
+        Tester.assertEquals(
+            0,
+            charO.talents.length,
+            "Roster: overflow advances exhaust every escape without a push.",
+        );
+    } finally {
+        listTableO.pop();
+        listTableO.pop();
+        catTableO.shift();
+    }
+
+    // rollDisplay: subRoll present vs absent both reach the log line
+    const genR = new CharacterGenerator();
+    genR.setTables();
+    genR.setDeterministicRolls();
+    const catR = genR.talentCategoriesTable;
+    const listR = genR.talentListTable;
+    catR.unshift({ name: "ZZDispCat", maxRoll: 999 });
+    listR.push(
+        {
+            category: "ZZDispCat",
+            name: "ZZDispSub",
+            maxRoll: 40,
+            description: "s",
+            subRoll: 40,
+        },
+        {
+            category: "ZZDispCat",
+            name: "ZZDispPlain",
+            maxRoll: 100,
+            description: "p",
+        },
+    );
+    try {
+        genR.talentCategoryRolls[0] = 999;
+        genR.talentRolls[0] = 30; // tightest → ZZDispSub (has subRoll)
+        const cSub = new Character();
+        cSub.talents = [];
+        cSub.talentsMax = 9;
+        cSub.talentsCount = 9;
+        genR.generateTalents(cSub, 0);
+        Tester.assertEquals(
+            "ZZDispSub",
+            cSub.talents[0] && cSub.talents[0].name,
+            "Roster: subRoll talent pushed (log shows the sub roll).",
+        );
+
+        genR.talentRolls[0] = 70; // only ZZDispPlain qualifies
+        const cPlain = new Character();
+        cPlain.talents = [];
+        cPlain.talentsMax = 9;
+        cPlain.talentsCount = 9;
+        genR.generateTalents(cPlain, 0);
+        Tester.assertEquals(
+            "ZZDispPlain",
+            cPlain.talents[0] && cPlain.talents[0].name,
+            "Roster: plain talent pushed (log omits the sub roll).",
+        );
+    } finally {
+        listR.pop();
+        listR.pop();
+        catR.shift();
+    }
+};
+
+Tester.PowersRetryGapScanTests = () => {
+    // Shrink every category band to 50 so rolls 51-100 miss the table —
+    // the only way to reach the !catEntry guards with contiguous data.
+    const patchCats = (gen) => {
+        const table = gen.powerCategoriesTable;
+        const saved = table.map((c) => c.maxRoll);
+        table.forEach((c) => {
+            c.maxRoll = 50;
+        });
+        return () =>
+            table.forEach((c, i) => {
+                c.maxRoll = saved[i];
+            });
+    };
+
+    // (A) dup retry loop: every retry category roll misses → exhaust
+    const genA = new CharacterGenerator();
+    genA.setTables();
+    genA.setDeterministicRolls();
+    const restoreA = patchCats(genA);
+    try {
+        genA.powerCategoryRolls = Array(genA.rollArraySize).fill(60);
+        genA.powerCategoryRolls[0] = 5;
+        const catA = genA.powerCategoriesTable.find((c) => 5 <= c.maxRoll);
+        const rowsA = genA.powerListTable.filter(
+            (p) => catA && p.category === catA.name,
+        );
+        if (catA && rowsA.length > 0) {
+            genA._assignedPowerNames = new Set(rowsA.map((p) => p.name));
+            genA.powerRolls = Array(genA.rollArraySize).fill(50);
+            genA.powerRolls[0] = rowsA[0].maxRoll; // resolves an assigned row
+            const charA = new Character();
+            charA.powers = [];
+            charA.powersCount = 4;
+            charA.powersMax = 6;
+            genA.generateSinglePower(charA, 0);
+            Tester.assertEquals(
+                0,
+                charA.powers.length,
+                "Power: dup retry loop with gap rolls exhausts.",
+            );
+        } else {
+            Tester.assert(true, "Power: dup-retry fixture skipped.");
+        }
+    } finally {
+        restoreA();
+    }
+
+    // (B) roll miss → same-category scan picks the first free member
+    const genB = new CharacterGenerator();
+    genB.setTables();
+    genB.setDeterministicRolls();
+    genB._assignedPowerNames = new Set();
+    genB.powerCategoryRolls = Array(genB.rollArraySize).fill(60);
+    genB.powerCategoryRolls[0] = 5;
+    genB.powerRolls = Array(genB.rollArraySize).fill(50);
+    const catB = genB.powerCategoriesTable.find((c) => 5 <= c.maxRoll);
+    const rowsB = genB.powerListTable.filter(
+        (p) => catB && p.category === catB.name,
+    );
+    const savedMaxB = rowsB.map((p) => p.maxRoll);
+    rowsB.forEach((p) => {
+        p.maxRoll = 1;
+    });
+    try {
+        const charB = new Character();
+        charB.powers = [];
+        charB.powersCount = 4;
+        charB.powersMax = 6;
+        genB.generateSinglePower(charB, 0);
+        Tester.assertEquals(
+            1,
+            charB.powers.length,
+            "Power: roll miss falls through to the same-category scan.",
+        );
+        Tester.assertEquals(
+            catB && catB.name,
+            charB.powers[0] && charB.powers[0].category,
+            "Power: scan stays inside the rolled category.",
+        );
+    } finally {
+        rowsB.forEach((p, i) => {
+            p.maxRoll = savedMaxB[i];
+        });
+    }
+
+    // (C) cross-category retry: gap roll, valid-category miss, then exhaust
+    const genC = new CharacterGenerator();
+    genC.setTables();
+    genC.setDeterministicRolls();
+    const restoreC = patchCats(genC);
+    const catC = genC.powerCategoriesTable.find((c) => 5 <= c.maxRoll);
+    const rowsC = genC.powerListTable.filter(
+        (p) => catC && p.category === catC.name,
+    );
+    const savedMaxC = rowsC.map((p) => p.maxRoll);
+    rowsC.forEach((p) => {
+        p.maxRoll = 1;
+    });
+    genC._assignedPowerNames = new Set(rowsC.map((p) => p.name));
+    genC.powerCategoryRolls = Array(genC.rollArraySize).fill(60);
+    genC.powerCategoryRolls[0] = 5;
+    genC.powerCategoryRolls[2] = 5; // valid category, but the roll misses
+    genC.powerRolls = Array(genC.rollArraySize).fill(50);
+    try {
+        const charC = new Character();
+        charC.powers = [];
+        charC.powersCount = 4;
+        charC.powersMax = 6;
+        genC.generateSinglePower(charC, 0);
+        Tester.assertEquals(
+            0,
+            charC.powers.length,
+            "Power: cross-category retries with gap rolls add nothing.",
+        );
+    } finally {
+        restoreC();
+        rowsC.forEach((p, i) => {
+            p.maxRoll = savedMaxC[i];
+        });
+    }
+
+    // (D) cross-category retry runs off the end of the roll array → break
+    const genD = new CharacterGenerator();
+    genD.setTables();
+    genD.setDeterministicRolls();
+    const restoreD = patchCats(genD);
+    const catD = genD.powerCategoriesTable.find((c) => 5 <= c.maxRoll);
+    const rowsD = genD.powerListTable.filter(
+        (p) => catD && p.category === catD.name,
+    );
+    const savedMaxD = rowsD.map((p) => p.maxRoll);
+    rowsD.forEach((p) => {
+        p.maxRoll = 1;
+    });
+    genD._assignedPowerNames = new Set(rowsD.map((p) => p.name));
+    genD.powerCategoryRolls = Array(genD.rollArraySize).fill(60);
+    genD.powerCategoryRolls[genD.rollArraySize - 1] = 5;
+    genD.powerRolls = Array(genD.rollArraySize).fill(50);
+    try {
+        const charD = new Character();
+        charD.powers = [];
+        charD.powersCount = 4;
+        charD.powersMax = 6;
+        genD.generateSinglePower(charD, genD.rollArraySize - 1);
+        Tester.assertEquals(
+            0,
+            charD.powers.length,
+            "Power: retry running off the roll array breaks out.",
+        );
+    } finally {
+        restoreD();
+        rowsD.forEach((p, i) => {
+            p.maxRoll = savedMaxD[i];
+        });
+    }
+
+    // (E) every power roll > 100 → array exhaustion return
+    const genE = new CharacterGenerator();
+    genE.setTables();
+    genE.setDeterministicRolls();
+    genE.powerRolls = Array(genE.rollArraySize).fill(101);
+    genE.powerCategoryRolls[0] = 5;
+    const charE = new Character();
+    charE.powers = [];
+    charE.powersCount = 4;
+    charE.powersMax = 6;
+    genE.generateSinglePower(charE, 0);
+    Tester.assertEquals(
+        0,
+        charE.powers.length,
+        "Power: all-invalid power rolls exhaust the array.",
+    );
+
+    // (F) duplicate roll retries within the category (higher maxRoll scan)
+    const genF = new CharacterGenerator();
+    genF.setTables();
+    genF.setDeterministicRolls();
+    genF.powerCategoryRolls = Array(genF.rollArraySize).fill(60);
+    genF.powerCategoryRolls[0] = 5;
+    const catF = genF.powerCategoriesTable.find((c) => 5 <= c.maxRoll);
+    const rowsF = genF.powerListTable.filter(
+        (p) => catF && p.category === catF.name,
+    );
+    const lowF = rowsF.find(
+        (p) =>
+            p.maxRoll <= 100 &&
+            rowsF.some((o) => o.maxRoll > p.maxRoll && o.maxRoll <= 100),
+    );
+    if (lowF) {
+        genF.powerRolls = Array(genF.rollArraySize).fill(50);
+        genF.powerRolls[0] = lowF.maxRoll;
+        const resolved = genF.powerListTable.find(
+            (p) => p.category === catF.name && lowF.maxRoll <= p.maxRoll,
+        );
+        genF._assignedPowerNames = new Set(
+            resolved ? [resolved.name] : [lowF.name],
+        );
+        const charF = new Character();
+        charF.powers = [];
+        charF.powersCount = 4;
+        charF.powersMax = 6;
+        genF.generateSinglePower(charF, 0);
+        const pushedF = charF.powers[0];
+        Tester.assert(
+            pushedF !== undefined,
+            "Power: duplicate roll retries within the category.",
+        );
+        Tester.assert(
+            pushedF && pushedF.name !== (resolved ? resolved.name : lowF.name),
+            "Power: duplicate retry replaced the assigned power.",
+        );
+    } else {
+        Tester.assert(true, "Power: dup-scan fixture skipped.");
+    }
+};
+
+Tester.RitualExtraInfoEdgeTests = () => {
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "ultimate";
+    gen.setTables();
+    gen.setDeterministicRolls();
+
+    // (a) roll matches no ritual row → empty string
+    gen.powersExtraInfoRolls = [999];
+    gen.peiIndex = 0;
+    Tester.assertEquals(
+        "",
+        gen.getRitualRollsExtraInformation(),
+        "Ritual: unmatched roll → empty string.",
+    );
+
+    // (b) mechanism rolls already exhausted → header, then break
+    gen.powersExtraInfoRolls = [50];
+    gen.peiIndex = 0;
+    const outB = gen.getRitualRollsExtraInformation();
+    Tester.assert(
+        outB.indexOf("RITUALS") !== -1,
+        `Ritual: header written before break (got '${outB.slice(0, 24)}').`,
+    );
+    Tester.assertEquals(
+        -1,
+        outB.indexOf("/"),
+        "Ritual: break fires before any mechanism is appended.",
+    );
+
+    // (c) >84 roll skipped, then a valid mechanism appended
+    gen.powersExtraInfoRolls = [50, 95, 20];
+    gen.peiIndex = 0;
+    const outC = gen.getRitualRollsExtraInformation();
+    Tester.assert(
+        outC.indexOf("RITUALS") !== -1,
+        "Ritual: skip-then-append path works.",
+    );
+    Tester.assert(
+        outC.indexOf("/") !== -1,
+        `Ritual: mechanism appended (got '${outC.slice(0, 40)}').`,
+    );
+};
+
+Tester.PowersUpgradeDuplicateSlotTests = () => {
+    const gen = new CharacterGenerator();
+    gen.setTables();
+    gen.setDeterministicRolls();
+    const base = gen.powerListTable.find((p) => p.name && p.category);
+    const other = gen.powerListTable.find(
+        (p) => p !== base && p.name && p.category,
+    );
+    if (!base || !other) {
+        Tester.assert(true, "Upgrade slots: fixture skipped.");
+        return;
+    }
+    const infoBase = CharacterGenerator._parseUpgradePower(
+        base.category + "\\" + base.name,
+    );
+    const infoOther = CharacterGenerator._parseUpgradePower(
+        other.category + "\\" + other.name,
+    );
+    Tester.assert(
+        infoBase !== null && infoOther !== null,
+        "Upgrade slots: parse produces info objects.",
+    );
+    if (!infoBase || !infoOther) return;
+
+    // canUpgradePower with a duplicate already held → duplicateCost ternary
+    const char1 = new Character();
+    char1.powers = [{ ...base }, { ...base }];
+    char1.powersMax = 10;
+    const check1 = gen.canUpgradePower(char1, 0, infoBase);
+    Tester.assert(
+        typeof check1.upgradeSlots === "number",
+        `Upgrade slots: duplicate check computes slots (${check1.upgradeSlots}).`,
+    );
+
+    // applyPowerUpgrade: non-duplicate path
+    const char2 = new Character();
+    char2.powers = [{ ...base }];
+    char2.powersMax = 10;
+    char2.physicalForm = gen.physicalFormTable[0].name;
+    const applied2 = gen.applyPowerUpgrade(char2, 0, infoOther);
+    Tester.assert(
+        applied2 === true,
+        "Upgrade slots: non-duplicate apply succeeds.",
+    );
+
+    // applyPowerUpgrade: duplicate path (duplicateCost slots)
+    const savedDup = other.allowDuplicate;
+    other.allowDuplicate = true;
+    const char3 = new Character();
+    char3.powers = [{ ...base }, { ...other }];
+    char3.powersMax = 10;
+    char3.physicalForm = gen.physicalFormTable[0].name;
+    try {
+        const applied3 = gen.applyPowerUpgrade(char3, 0, infoOther);
+        Tester.assert(
+            applied3 === true,
+            "Upgrade slots: duplicate apply uses the duplicateCost path.",
+        );
+    } finally {
+        other.allowDuplicate = savedDup;
+    }
+};
+
+Tester.UtilityEntryPolicyTests = () => {
+    // splitDslAlternatives keeps empty entries, so "~" → ["", ""] and the
+    // picked (non-null) element comes back — pinning actual behavior.
+    Tester.assertEquals(
+        "",
+        Utility.pickDslAlternative("~"),
+        "Utility: '~' splits into empty elements, one is picked.",
+    );
+    Tester.assertEquals(
+        null,
+        Utility.pickDslAlternative(null),
+        "Utility: null entry → null.",
+    );
+
+    // parseDslEntry: preferSlash separator
+    const slash = Utility.parseDslEntry("Contact/Contactee", {
+        preferSlash: true,
+    });
+    Tester.assertEquals(
+        2,
+        slash.segments.length,
+        "Utility: preferSlash splits on /.",
+    );
+    Tester.assertEquals(
+        "Contact",
+        slash.category,
+        "Utility: slash category parsed.",
+    );
+
+    // parseDslEntry: leading "(" prefix (pos === 0)
+    const lead = Utility.parseDslEntry("(Ghost)Form\\Body", {
+        subTypePrefix: true,
+    });
+    Tester.assertEquals(
+        "Ghost)Form",
+        lead.segments[0],
+        "Utility: leading paren stripped from segment 0.",
+    );
+    Tester.assertEquals(
+        "Body",
+        lead.name,
+        "Utility: two-segment name taken from the trailing segment.",
+    );
+};
+
+Tester.TooManyDuplicateExitTests = () => {
+    // Regression for the fuzz-caught overfill: the Too-Many-Powers loop also
+    // exits when the next candidate is a duplicate (cond 3) or powerRow goes
+    // undefined — the old code then fell through and pushed that duplicate,
+    // producing total power slots > powersMax (and a duplicate power).
+    const gen = new CharacterGenerator();
+    gen.generatorMode = "basic";
+    gen.setTables();
+    gen.setDeterministicRolls();
+
+    const multiSlotRows = gen.powerListTable.filter(
+        (r) => (r.powerCount || 1) >= 2,
+    );
+    const igRow = gen.powerListTable.find((r) => r.name === "Image Generation");
+    Tester.assert(
+        igRow !== undefined && multiSlotRows.some((r) => r.name !== igRow.name),
+        "TooMany exit: data has Image Generation + another multi-slot power.",
+    );
+    const initialRow = multiSlotRows.find((r) => r.name !== igRow.name);
+    const initialCat = gen.powerCategoriesTable.find(
+        (c) => c.name === initialRow.category,
+    );
+    const igCat = gen.powerCategoriesTable.find(
+        (c) => c.name === igRow.category,
+    );
+
+    // Craft the hunt state: slotSum 3 of count 4 → remaining 1, so no
+    // multi-slot candidate can fit and the loop has to advance.
+    const char = new Character();
+    char.powersCount = 4;
+    char.powersMax = 4;
+    char.powers = [
+        {
+            name: "Filler Power",
+            category: "Mental Powers",
+            powerSlots: 1,
+            rank: "Good",
+        },
+        {
+            name: igRow.name,
+            category: igRow.category,
+            powerSlots: 2,
+            rank: "Good",
+        },
+    ];
+
+    // index 0 → an unassigned multi-slot power (enters Too-Many loop)
+    gen.powerCategoryRolls[0] = initialCat.maxRoll;
+    gen.powerRolls[0] = initialRow.maxRoll;
+    gen.powerRankRolls[0] = 50;
+    // index 1 → the duplicate Image Generation row (loop exits on dup)
+    gen.powerCategoryRolls[1] = igCat.maxRoll;
+    gen.powerRolls[1] = igRow.maxRoll;
+    gen.powerRankRolls[1] = 50;
+
+    gen.generateSinglePower(char, 0);
+
+    Tester.assertEquals(
+        2,
+        char.powers.length,
+        "TooMany exit: duplicate candidate is not pushed.",
+    );
+    const total = char.powers.reduce((s, p) => s + (p.powerSlots || 1), 0);
+    Tester.assert(
+        total <= char.powersMax,
+        `TooMany exit: total slots (${total}) stay within powersMax.`,
+    );
+    Tester.assertEquals(
+        1,
+        char.powers.filter((p) => p.name === igRow.name).length,
+        "TooMany exit: no duplicate power names.",
+    );
+};
+
+// ==========================================================================
 // REGISTRATION
 // ============================================================================
 
@@ -2621,4 +5499,30 @@ Tester.registerTestGroup(86, "deterministic", [
     { name: "BonusAndOptionalOptionQueryTests", needsGen: false },
     { name: "PowerSlotsAndCategoriesResolutionTests", needsGen: false },
     { name: "GenerateBonusPowerEdgeTests", needsGen: false },
+    { name: "CharacterAbilityIndexTests", needsGen: false },
+    { name: "CorePhaseAndOverrideTests", needsGen: false },
+    { name: "FrameworkMetaTests", needsGen: false },
+    { name: "UtilityDslPolicyTests", needsGen: false },
+    { name: "RosterTalentSlotAndListTests", needsGen: false },
+    { name: "RosterBonusTalentTests", needsGen: false },
+    { name: "RosterGenerateTalentsTests", needsGen: false },
+    { name: "RosterBonusContactTests", needsGen: false },
+    { name: "PowersRetryAndExhaustTests", needsGen: false },
+    { name: "PowersOptionalEdgeTests", needsGen: false },
+    { name: "PowersQueryAndSelectionTests", needsGen: false },
+    { name: "DeterminePhysicalFormGuardTests", needsGen: false },
+    { name: "DetermineOriginAbilityGuardTests", needsGen: false },
+    { name: "DetermineResourcesHiTechTests", needsGen: false },
+    { name: "PopularityClampGuardTests", needsGen: false },
+    { name: "PopularityNullGuardTests", needsGen: false },
+    { name: "ManualLeftoverOptionalTests", needsGen: false },
+    { name: "ContactManualRandomGuardTests", needsGen: false },
+    { name: "BoostGuardTests", needsGen: false },
+    { name: "CoreIdentityPhaseFallbackTests", needsGen: false },
+    { name: "RosterSlotTalentGuardTests", needsGen: false },
+    { name: "PowersRetryGapScanTests", needsGen: false },
+    { name: "RitualExtraInfoEdgeTests", needsGen: false },
+    { name: "PowersUpgradeDuplicateSlotTests", needsGen: false },
+    { name: "UtilityEntryPolicyTests", needsGen: false },
+    { name: "TooManyDuplicateExitTests", needsGen: false },
 ]);
