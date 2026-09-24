@@ -636,6 +636,7 @@ Tester.DataIntegrityAdvancedTests = (gen) => {
         "Psychiatry",
         "Detective/Espionage",
         "Hero Group",
+        "Artist/Performer",
     ];
     const professionalContacts = gen.contactTypeListTable.filter(
         (c) => c.category === "Professional",

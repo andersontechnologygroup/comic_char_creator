@@ -943,7 +943,7 @@ CharacterGenerator.prototype.generatorBonusPowerOfPhysicalForm = function (
             );
             if (p) {
                 const bonusPowerRankColumn =
-                    this.generatorMode === "basic" ? 1 : 3;
+                    this.generatorMode === "basic" ? 1 : 4;
                 const rankRoll = this.powerRankRolls[char.powers.length];
                 const rankRow = Utility.findRow(
                     this,
@@ -1073,7 +1073,7 @@ CharacterGenerator.prototype.generatorBonusPowerOfPhysicalForm = function (
     );
     if (!p) return;
 
-    const bonusPowerRankColumn = this.generatorMode === "basic" ? 1 : 3;
+    const bonusPowerRankColumn = this.generatorMode === "basic" ? 1 : 4;
     const rankRoll =
         power.rank === null ? this.powerRankRolls[startIndex] : null;
     const rankRow =
@@ -1133,7 +1133,7 @@ CharacterGenerator.prototype.applySelectedBonusPower = function (
             indexAdjustment++;
         }
 
-        const bonusPowerRankColumn = this.generatorMode === "basic" ? 1 : 3;
+        const bonusPowerRankColumn = this.generatorMode === "basic" ? 1 : 4;
         const rankRoll = this.powerRankRolls[startIndex];
         const rankRow = Utility.findRow(this, rankRoll, bonusPowerRankColumn);
         if (!rankRow) continue;
@@ -1194,7 +1194,7 @@ CharacterGenerator.prototype.generateBonusPower = function (
     );
     if (!p) return;
 
-    const bonusPowerRankColumn = this.generatorMode === "basic" ? 1 : 3;
+    const bonusPowerRankColumn = this.generatorMode === "basic" ? 1 : 4;
     const rankRoll = this.powerRankRolls[startIndex];
     const rankRow = Utility.findRow(this, rankRoll, bonusPowerRankColumn);
     if (!rankRow) return;
@@ -1282,7 +1282,7 @@ CharacterGenerator.prototype.generateOptionalPower = function (
             }
             if (!p) continue;
             const optionalPowerRankColumn =
-                this.generatorMode === "basic" ? 1 : 3;
+                this.generatorMode === "basic" ? 1 : 4;
             const rankRoll = this.powerRankRolls[startIndex + index];
             const rankRow = Utility.findRow(
                 this,
@@ -1388,7 +1388,7 @@ CharacterGenerator.prototype.generateOptionalPower = function (
         );
         if (!p) continue;
 
-        const optionalPowerRankColumn = this.generatorMode === "basic" ? 1 : 3;
+        const optionalPowerRankColumn = this.generatorMode === "basic" ? 1 : 4;
         const rankRoll = this.powerRankRolls[startIndex];
         const rankRow = Utility.findRow(
             this,

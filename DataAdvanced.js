@@ -20,7 +20,8 @@ const PHYSICAL_FORM_ADVANCED_TABLE = [
         maxRoll: 60,
         name: "Mutant",
         column: 1,
-        enduranceAdjustment: 2,
+        enduranceAdjustment: 1,
+        resourcesAdjustment: -1,
         popularitySet: 0,
         powersCountAdjustment: 1,
     },
@@ -28,7 +29,6 @@ const PHYSICAL_FORM_ADVANCED_TABLE = [
         maxRoll: 90,
         name: "Hi-Tech",
         column: 3,
-        enduranceAdjustment: 2,
         reasonAdjustment: 2,
         isHiTech: true,
         contactsCountMinimum: 1,
@@ -38,18 +38,16 @@ const PHYSICAL_FORM_ADVANCED_TABLE = [
         maxRoll: 95,
         name: "Robot",
         column: 4,
-        enduranceAdjustment: 2,
         popularitySet: 0,
     },
     {
         maxRoll: 100,
         name: "Alien",
         column: 5,
-        enduranceAdjustment: 2,
         resourcesStart: 3 /* Poor */,
         popularityAdjustment: -5,
         powersCountAdjustment: -1,
-        powersCountMaximum: 2,
+        powersCountMinimum: 2,
         contactsCountMinimum: 1,
         contactsCountMaximum: 1,
     },
@@ -1227,6 +1225,7 @@ const TALENT_LIST_ADVANCED_TABLE = [
         maxRoll: 20,
         subRoll: 100,
         name: "Law Enforcement",
+        talentCount: 2,
         description:
             "The character with this Talent has a background with law enforcement authorities. This Talent includes both Gun and Law Talents, and the character, if still a member of a law enforcement agency, may legally carry a gun and make arrests.",
     },
@@ -1241,6 +1240,8 @@ const TALENT_LIST_ADVANCED_TABLE = [
         category: "Professional Skills",
         maxRoll: 40,
         name: "Military",
+        bonusContactCount: 1,
+        bonusContact: "Professional/Military(100)",
         description:
             "The hero has had some dealings with one of the armed services. In military matters, the hero gets a + 1CS to all FEAT rolls, and in addition may take a member of the armed services as a Contact. ",
     },
@@ -1248,6 +1249,9 @@ const TALENT_LIST_ADVANCED_TABLE = [
         category: "Professional Skills",
         maxRoll: 50,
         name: "Business/Finance",
+        resourcesMinimum: "Good",
+        bonusContactCount: 1,
+        bonusContact: "Professional/Any(100)",
         description:
             "The hero is familiar with the world of business, corporate finance, and how money works. Initial resources are a minimum of Good, and the hero gains a + 1CS for FEAT rolls dealing with money. The hero gains a Contact in the Professional category. ",
     },
@@ -1255,6 +1259,8 @@ const TALENT_LIST_ADVANCED_TABLE = [
         category: "Professional Skills",
         maxRoll: 60,
         name: "Journalism",
+        bonusContactCount: 2,
+        bonusContact: "Professional/Journalism(50)|Any/Any(100)",
         description:
             "The hero with this Talent gains an additional 2 Contacts to those already generated. The Contacts should be connected with the media in some fashion, such as at local newspapers, radio or TV stations, or as sources in law enforcement, political circles, or snitches of the criminal underworld. ",
     },
@@ -1269,6 +1275,8 @@ const TALENT_LIST_ADVANCED_TABLE = [
         category: "Professional Skills",
         maxRoll: 80,
         name: "Crime",
+        bonusContactCount: 1,
+        bonusContact: "Professional/Law Enforcement(50)|Professional/Crime(100)",
         description:
             "The hero with this Talent has an understanding of the criminal mind and behavior, either from studies or first-hand observation. The character with this Talent gains a + 1CS on all Reason and Intuition FEATs involving criminal practices (If I were a crook, where would I hide?). The hero also gains a Contact in either the police or crime areas.",
     },
@@ -1283,6 +1291,8 @@ const TALENT_LIST_ADVANCED_TABLE = [
         category: "Professional Skills",
         maxRoll: 100,
         name: "Detective/Espionage",
+        bonusContactCount: 1,
+        bonusContact: "Professional/Any(100)",
         description:
             "The hero with this Talent has been trained to notice small clues in solving crimes. The character with this Talent gains a + 1CS to discover clues to a crime, and in addition gains a Contact in either crime, law enforcement, law, or espionage.",
     },
@@ -1450,6 +1460,7 @@ const TALENT_LIST_ADVANCED_TABLE = [
         subRoll: 60,
         name: "Heir to Fortune",
         talentCount: 2,
+        resourcesMinimum: "Remarkable",
         description:
             "This is not a Talent, but a situation which brings the character into a lot of money. The minimum Resources of a character with this Talent is Remarkable (if your character is making Excellent Resources or less, do not take this Talent).",
     },
@@ -1490,28 +1501,28 @@ const CONTACT_TYPE_LIST_ADVANCED_TABLE = [
     },
     {
         category: "Professional",
-        maxRoll: 18,
+        maxRoll: 23,
         name: "Law",
         description:
             "The hero with this Contact has a friend, ally, or acquaintance with Law Talent, who will provide legal assistance for a reduced fee and legal advice to the hero for free. The Contact may be a lawyer whose firm has been on retainer with the family for years, is a personal friend, or who owes the hero for providing his big break into the profession.",
     },
     {
         category: "Professional",
-        maxRoll: 27,
+        maxRoll: 31,
         name: "Law Enforcement",
         description:
             "The hero with this Contact has a friend, ally, or acquaintance with Law-enforcement Talent, who is in addition a member of the law-enforcement profession. This may include forces of local and state police and the national guard, and may vary in rank from knowing a patrolman (Excellent rank knowledge of the world at large, Remarkable of his beat), being on good terms with a Detective (Remarkable knowledge of criminal investigation, plus detective skills), or being well-known to a station captain or commissioner (Remarkable Resources, limited to that material which police forces normally have). Note that the higher the Contact, the more likely the Contact will get in touch with the hero when he needs help.",
     },
     {
         category: "Professional",
-        maxRoll: 36,
+        maxRoll: 38,
         name: "Military",
         description:
             "The character has a Contact in the armed forces, either of the United States or another nation. This may range from a low-level sergeant to the Joint Chiefs of Staff. Military Contacts may provide Amazing Resources, maximum.",
     },
     {
         category: "Professional",
-        maxRoll: 45,
+        maxRoll: 46,
         name: "Business World",
         description:
             "The character has a Contact in the world of business or finance. This may rank from the accountant for their hero's group to a captain of industry who is trying to build fusion plants across the country. Resources available are at the Incredible level.",
@@ -1525,38 +1536,45 @@ const CONTACT_TYPE_LIST_ADVANCED_TABLE = [
     },
     {
         category: "Professional",
-        maxRoll: 63,
+        maxRoll: 61,
         name: "Crime",
         description:
             "The character with this Contact has some connection with the criminal underworld. This ranges from having a snitch that pass on information about street action, such as Turk Barrett is for Daredevil, up to a Contact high in the hierarchy of the Maggia or independent gangs. WARNING: Having criminal Contacts may place the hero in Karma-losing or Contact-losing situations, with the hero having to choose between losing a criminal Contact or losing Karma by aiding the Contact. High-level criminal Contacts (Remarkable Resources or higher) may seek to manipulate the hero to their own ends (the best example of which is the Kingpin of Crime).",
     },
     {
         category: "Professional",
-        maxRoll: 72,
+        maxRoll: 69,
         name: "Engineering",
         description:
             "The character with this Contact has some connection with someone who builds, either independently or for a larger corporation. The character may aid in the construction of devices.",
     },
     {
         category: "Professional",
-        maxRoll: 81,
+        maxRoll: 77,
         name: "Psychiatry",
         description:
             "The character with this Contact has some connection with a character in the fields of psychiatry or psycho-analysis, including doctors devoted to the curing of the criminal mind.",
     },
     {
         category: "Professional",
-        maxRoll: 90,
+        maxRoll: 85,
         name: "Detective/Espionage",
         description:
             "The character with this Contact has connections with the world of espionage. This includes agencies such as the FBI, CIA, NSA, KGB, Interpol, MI5, S.H.I.E.L.D., and the criminal organization H.Y.D.R.A. Such Contacts provide information up to Remarkable level, though top-secret information will be harder to obtain. Equipment may be provided for up to Incredible rank, Amazing for S.H.I.E.L.D. and H.Y.D.R.A. All these agencies have no concern about using Contact heroes as agents to their own ends, and any hero that uses a Contact in this area will be guaranteed to receive a request for a return favor some time in the near future.",
     },
     {
         category: "Professional",
-        maxRoll: 100,
+        maxRoll: 92,
         name: "Hero Group",
         description:
             "The character has some connection with, or was or is a member of or an ally of some existing group of super-powered heroes, and as such may enjoy the privileges thereof. This includes using their equipment, calling them in on an emergency, using their HQ, and benefitting from their training. The other disadvantage (in addition to being at the group's beck and call) is that enemies of the hero group are considered enemies of this hero as well. A hero who belongs to a group is always considered to have that group as a Contact.",
+    },
+    {
+        category: "Professional",
+        maxRoll: 100,
+        name: "Artist/Performer",
+        description:
+            "The hero has a friend, ally or acquaintance working in the arts — a painter, sculptor, actor, musician, or other performer — who can provide contacts in creative circles, venues, and the entertainment industry, and may call on their skills or equipment within their field.",
     },
     {
         category: "Scientific",
@@ -1654,13 +1672,21 @@ const CONTACT_TYPE_LIST_ADVANCED_TABLE = [
         category: "Political",
         maxRoll: 100,
         name: "Planetary",
+        alienOnly: true,
         description:
             "This Contact is available to Alien characters only. The hero is well-known to the inhabitants and/or rulers of another planet, and may call on those Resources (up to Unearthly or higher) provided they can get in contact with those sources. ",
     },
 
     {
         category: "Mystic Arts",
-        maxRoll: 50,
+        maxRoll: 34,
+        name: "Religion",
+        description:
+            "The hero knows someone in religious life — a priest, rabbi, imam, monk, or mystic — who can offer spiritual guidance and sanctuary, and may open doors to religious institutions and their resources.",
+    },
+    {
+        category: "Mystic Arts",
+        maxRoll: 67,
         name: "Occult Lore",
         description:
             "The hero knows someone who dabbles in the darker arts, and as such has at least a Remarkable Reason involving these matters. The Contact may provide advice on mystic writings, spells and their castings, and curses. The Contact is not necessarily someone of Doctor Strange's category (a true magic-wielder), but most likely a college professor who has done copious reading on the subject. ",

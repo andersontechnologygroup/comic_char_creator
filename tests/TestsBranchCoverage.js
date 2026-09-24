@@ -383,11 +383,11 @@ Tester.GenerateWithSeedTests = () => {
         );
         Tester.assert(
             typeof char.popularity === "number" &&
-                (mode === "basic" || char.popularity >= 0),
+                (mode !== "ultimate" || char.popularity >= 0),
             `generate(${mode}, seed=42): popularity is a number` +
-                (mode === "basic"
-                    ? ` (no floor in Basic; was ${char.popularity}).`
-                    : ` and non-negative (was ${char.popularity}).`),
+                (mode === "ultimate"
+                    ? ` and non-negative (was ${char.popularity}).`
+                    : ` (no floor; was ${char.popularity}).`),
         );
         Tester.assert(
             char.powers.length >= 0,

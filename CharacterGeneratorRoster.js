@@ -342,6 +342,33 @@ CharacterGenerator.prototype.getContactSlotCount = function () {
     return count;
 };
 
+CharacterGenerator.prototype._applyTalentResourceMinimum = function (
+    char,
+    talentName,
+) {
+    // Book: Business/Finance requires Initial Resources of at least Good;
+    // Heir to Fortune requires a minimum of Remarkable.
+    const row = this.talentListTable.find((r) => r.name === talentName);
+    if (!row) return;
+    const minRank = Utility.getValue(row, "resourcesMinimum", null);
+    if (!minRank) return;
+    const minIdx = this.randomRanksTable.findIndex((r) => r.rank === minRank);
+    const curIdx = this.randomRanksTable.findIndex(
+        (r) => r.rank === (char.resources && char.resources.rank),
+    );
+    if (minIdx === -1 || curIdx === -1 || curIdx >= minIdx) return;
+    char.resources.rank = minRank;
+    char.resources.number = this.randomRanksTable[minIdx].rankNumber;
+    if (char.state && char.state.resources) {
+        char.state.resources.final = minRank;
+    }
+    char.logRoll(
+        "Resources",
+        "Talent Minimum",
+        `${talentName}: Resources raised to ${minRank}`,
+    );
+};
+
 CharacterGenerator.prototype.generateTalents = function (char, talentIndex) {
     const currentTalentSlots = char.talents
         .map((t) => t.talentSlots)
@@ -372,6 +399,7 @@ CharacterGenerator.prototype.generateTalents = function (char, talentIndex) {
             description: sel.description || "",
             talentSlots: value,
         });
+        this._applyTalentResourceMinimum(char, sel.name);
         return;
     }
 
@@ -415,9 +443,13 @@ CharacterGenerator.prototype.generateTalents = function (char, talentIndex) {
     if (!t) return;
 
     let value = Utility.getValue(t, "talentCount", 1);
+    // A rolled Talent that needs more slots than remain is unusable
+    // (Advanced example 2: "Medicine and Law-Enforcement require two slots
+    // and are as such unusable") — retry with the next roll.
     while (
         remainingTalentSlots < value &&
-        currentTalentSlots + value > char.talentsMax
+        (this.generatorMode === "advanced" ||
+            currentTalentSlots + value > char.talentsMax)
     ) {
         adjustIndex++;
         if (talentIndex + adjustIndex >= this.rollArraySize) return;
@@ -453,6 +485,8 @@ CharacterGenerator.prototype.generateTalents = function (char, talentIndex) {
         description: t.description,
         talentSlots: value,
     });
+
+    this._applyTalentResourceMinimum(char, t.name);
 
     value = Utility.getValue(t, "bonusContactCount", 0);
     if (value > 0) {
@@ -494,7 +528,10 @@ CharacterGenerator.prototype.generateBonusContact = function (
     if (contact.category === "Any" && contact.type === "Any") {
         // "Any/Any" — pick a random contact from all available
         const allContacts = this.contactTypeListTable.filter(
-            (ct) => ct.name && ct.name !== "",
+            (ct) =>
+                ct.name &&
+                ct.name !== "" &&
+                (!ct.alienOnly || char.physicalForm === "Alien"),
         );
         if (allContacts.length === 0) return;
         // Use the contact roll to pick from the filtered list
@@ -506,7 +543,9 @@ CharacterGenerator.prototype.generateBonusContact = function (
     } else if (contact.type === "Any") {
         // "Category/Any" — pick a random contact from the category
         const catContacts = this.contactTypeListTable.filter(
-            (ct) => ct.category === contact.category,
+            (ct) =>
+                ct.category === contact.category &&
+                (!ct.alienOnly || char.physicalForm === "Alien"),
         );
         if (catContacts.length === 0) return;
         const pickIndex = (roll - 1) % catContacts.length;
@@ -514,10 +553,33 @@ CharacterGenerator.prototype.generateBonusContact = function (
     } else {
         c = this.contactTypeListTable.find(
             (ct) =>
-                ct.category === contact.category && ct.name === contact.type,
+                ct.category === contact.category &&
+                ct.name === contact.type &&
+                (!ct.alienOnly || char.physicalForm === "Alien"),
         );
     }
     if (!c) return;
+
+    // Slot budget: talent-granted Contacts consume the hero's initial Contact
+    // slots; excess is discarded (Advanced p.12: "Heroes who have more
+    // initial Contacts (as the result of Talents) than slots must discard
+    // the excess"). Forced (origin-granted) contacts bypass the budget.
+    if (!forcedContact) {
+        const bonusSlots = Utility.getValue(c, "contactCount", 1);
+        const usedSlots = char.contacts.reduce(
+            (sum, ct) => sum + (ct.contactSlots || 1),
+            0,
+        );
+        const remainingSlots = (char.contactsCount || 0) - usedSlots;
+        if (bonusSlots > remainingSlots) {
+            char.logRoll(
+                "Bonus Contact Gen",
+                `Too Many Slots`,
+                `${contact.category}: ${c.name} (needs ${bonusSlots} slots, ${remainingSlots} remaining)`,
+            );
+            return;
+        }
+    }
 
     // Skip duplicate bonus contacts
     if (this._assignedContactNames && this._assignedContactNames.has(c.name)) {
@@ -542,6 +604,8 @@ CharacterGenerator.prototype.generateBonusContact = function (
             category: contact.category,
             name: c.name,
             description: c.description,
+            contactSlots: Utility.getValue(c, "contactCount", 1),
+            contactName: "",
         });
     }
 };

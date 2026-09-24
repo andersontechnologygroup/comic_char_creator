@@ -91,11 +91,29 @@ const ORIGIN_ADVANCED_CASES = [
     {
         mode: "advanced",
         physicalForm: "Altered Human",
-        physicalFormRoll: 46,
-        originRoll: 46,
+        physicalFormRoll: 20,
+        originRoll: 20,
         expectedOrigin: "Altered Human",
         expectedPhysicalForm: "Altered Human",
-        desc: "Advanced Altered Human roll=46",
+        desc: "Advanced Altered Human roll=20",
+    },
+    {
+        mode: "advanced",
+        physicalForm: "Mutant",
+        physicalFormRoll: 46,
+        originRoll: 46,
+        expectedOrigin: "Mutant",
+        expectedPhysicalForm: "Mutant",
+        desc: "Advanced Mutant roll=46 (unified with physical form roll)",
+    },
+    {
+        mode: "advanced",
+        physicalForm: "Alien",
+        physicalFormRoll: 98,
+        originRoll: 98,
+        expectedOrigin: "Alien",
+        expectedPhysicalForm: "Alien",
+        desc: "Advanced Alien roll=98",
     },
 ];
 

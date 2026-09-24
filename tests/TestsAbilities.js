@@ -374,19 +374,19 @@ const POPULARITY_GEN_ADV_CONFIGS = [
         form: "Mutant",
         origin: "Mutant",
         expectedBasic: -30,
-        expectedAdvanced: 0,
+        expectedAdvanced: -5,
     },
     {
         form: "Robot",
         origin: "Robot",
         expectedBasic: -10,
-        expectedAdvanced: 0,
+        expectedAdvanced: -5,
     },
     {
         form: "Altered Human",
         origin: "Altered Human",
         expectedBasic: 10,
-        expectedAdvanced: 30,
+        expectedAdvanced: 5,
     },
 ];
 

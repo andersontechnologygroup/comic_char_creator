@@ -480,6 +480,28 @@ Tester.TalentSubRollTests = (gen) => {
         "_findTalent: subRoll=80 → Weapons Specialist.",
     );
 
+    // Other tie groups disambiguate the same way
+    Tester.assertEquals(
+        "Computers",
+        gen._findTalent("Scientific Skills", 85, 100).name,
+        "_findTalent: Scientific tie (Physics/Computers), subRoll=100 → Computers.",
+    );
+    Tester.assertEquals(
+        "Animal Training",
+        gen._findTalent("Other Skills", 95, 40).name,
+        "_findTalent: Other Skills tie, subRoll=40 → Animal Training.",
+    );
+    Tester.assertEquals(
+        "Mystic Origin",
+        gen._findTalent("Mystic and Mental Skills", 85, 100).name,
+        "_findTalent: Mystic tie (Resist Domination/Mystic Origin), subRoll=100 → Mystic Origin.",
+    );
+    Tester.assertEquals(
+        "Law Enforcement",
+        gen._findTalent("Professional Skills", 15, 60).name,
+        "_findTalent: Professional tie (Law/Law Enforcement), subRoll=60 → Law Enforcement.",
+    );
+
     // Single candidate (no subRoll needed)
     const found5 = gen._findTalent("Weapon Skills", 10, 50);
     Tester.assertEquals(
@@ -892,6 +914,9 @@ Tester.ContactManualSelectionTests = (gen) => {
 
     // --- _selectedContacts used during generation ---
     gen.setDeterministicRolls();
+    // Avoid Professional talent rolls that trigger bonusContactCount
+    // (Business/Finance would consume a contact slot before the manual picks)
+    gen.talentCategoryRolls[2] = 75;
     gen._selectedContacts = [
         {
             category: "Professional",

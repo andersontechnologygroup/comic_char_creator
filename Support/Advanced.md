@@ -1776,24 +1776,24 @@ does not know you are really a hero, then
 you cannot be called upon to do heroic acts.
 
 ### Types of Contacts ###
-1. Professional
-2. Medicine
-3. Law
-4. Law-Enforcement
-5. Military
-6. Business World
+### Professional ###
+1. Medicine
+2. Law
+3. Law-Enforcement
+4. Military
+5. Business World
 
 ---
 
 ## Page 13
 
-7. Journalism
-8. Crime
-9. Engineering
-10. Psychiatry
-11. Detective/Espionage
-12. Hero Group
-13. Artist/Performer
+6. Journalism
+7. Crime
+8. Engineering
+9. Psychiatry
+10. Detective/Espionage
+11. Hero Group
+12. Artist/Performer
 ### Scientific ###
 1. Chemistry
 2. Biology

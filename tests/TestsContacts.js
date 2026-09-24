@@ -17,7 +17,7 @@ Tester._applyBaseContactRolls = (gen) => {
     gen.powerRankRolls = [9, 19, 29, 39, 49, 59, 69, 79, 94, 99];
     gen.talentNumberRoll = 91;
     gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [20, 30, 40, 50];
+    gen.talentRolls = [20, 30, 30, 50];
 };
 
 /**
@@ -179,7 +179,7 @@ const BASIC_ADVANCED_BASE_ROLLS = (gen) => {
     gen.powerRankRolls = [9, 19, 29, 39, 49, 59, 69, 79, 94, 99];
     gen.talentNumberRoll = 91;
     gen.talentCategoryRolls = [2, 27, 67, 91];
-    gen.talentRolls = [20, 30, 40, 50];
+    gen.talentRolls = [20, 30, 30, 50];
 };
 
 // Contact quantity test cases: [contactNumberRoll, expectedCount]
@@ -598,6 +598,12 @@ Tester.ContactCountSlotSkipTests = (gen) => {
     gen.setTables();
     gen.contactsEqualToPowers = false;
     gen.setDeterministicRolls();
+    // Pin talent rolls to non-granting talents (convention of
+    // _applyBaseContactRolls): Business/Finance's bonusContact would
+    // otherwise consume a slot before the rolled-contact loop this
+    // test exercises.
+    gen.talentCategoryRolls = [2, 27, 67, 91];
+    gen.talentRolls = [20, 30, 30, 50];
 
     const medEntry = gen.contactTypeListTable.find(
         (c) => c.name === "Medicine",
@@ -638,6 +644,8 @@ Tester.ContactCountSlotSkipTests = (gen) => {
 
     // Now test with enough slots — Medicine should appear
     gen.setDeterministicRolls();
+    gen.talentCategoryRolls = [2, 27, 67, 91];
+    gen.talentRolls = [20, 30, 30, 50];
     medEntry.contactCount = 3;
     gen.contactNumberRoll = 99; // contacts.initial = 3
     gen.contactCategoryRolls[0] = medCat.maxRoll;

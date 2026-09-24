@@ -563,10 +563,10 @@ class CharacterGenerator {
 
         if (this.generatorMode === "advanced") {
             this.physicalFormTable = PHYSICAL_FORM_ADVANCED_TABLE;
-            this.originTable = ORIGIN_TABLE;
+            this.originTable = ORIGIN_ADVANCED_TABLE;
             this.randomRanksTable = RANDOM_RANKS_ADVANCED_TABLE;
             this.abilityModifierTable = ABILITY_MODIFIER_TABLE;
-            this.quantityTable = QUANTITY_TABLE;
+            this.quantityTable = QUANTITY_ADVANCED_TABLE;
             this.powerCategoriesTable = POWER_CATEGORIES_ADVANCED_TABLE;
             this.powerListTable = POWER_LIST_ADVANCED_TABLE;
             this.talentCategoriesTable = TALENT_CATEGORIES_ADVANCED_TABLE;

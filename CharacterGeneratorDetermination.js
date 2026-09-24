@@ -244,6 +244,13 @@ CharacterGenerator.prototype.determinePhysicalForm = function (char) {
 };
 
 CharacterGenerator.prototype.determineOrigin = function (char) {
+    // Advanced p.7: origin and physical form are the same single roll —
+    // both tables share identical dice ranges (01-30 Altered, 31-60 Mutant,
+    // 61-90 Hi-Tech, 91-95 Robot, 96-00 Alien).
+    if (this.generatorMode === "advanced") {
+        this.originRoll = this.physicalFormRoll;
+    }
+
     if (this.originRoll < 1 || this.originRoll > 100) {
         char.logRoll("Origin", -1, "Invalid Roll");
         return;
@@ -1003,12 +1010,17 @@ CharacterGenerator.prototype.determinePopularity = function (char) {
         (o) => o.name === char.physicalForm,
     );
 
-    char.popularity = 50;
+    // Advanced p.9: base Popularity is 10 for most heroes (0 for Mutants
+    // and robots via popularitySet). Basic's Table 26 starts from 50.
+    char.popularity = this.generatorMode === "basic" ? 50 : 10;
     let value = Utility.getValue(physicalFormRow, "popularitySet", -1);
     if (value !== -1) {
         char.popularity = value;
-        char.logRoll("Popularity", "Base Rules", "Popularity set to " + value);
-        return;
+        char.logRoll(
+            "Popularity",
+            "Base Rules",
+            "Popularity base set to " + value,
+        );
     }
 
     value = Utility.getValue(physicalFormRow, "popularityStart", -1);
@@ -1054,20 +1066,17 @@ CharacterGenerator.prototype.determinePopularity = function (char) {
             );
         }
     } else {
-        // Advanced: combined identity/origin modifier
+        // Advanced p.9: raise by 10 if identity is publicly known,
+        // lower by 5 if identity is secret.
         if (this.identitySecret) {
-            char.popularity -= 20;
-            char.logRoll(
-                "Popularity",
-                "Secret ID / Origin Secret",
-                "Loss of Popularity (-20)",
-            );
+            char.popularity -= 5;
+            char.logRoll("Popularity", "Secret ID", "Loss of Popularity (-5)");
         } else {
-            char.popularity += 20;
+            char.popularity += 10;
             char.logRoll(
                 "Popularity",
-                "Public ID / Origin Public",
-                "Addition of Popularity (+20)",
+                "Public ID",
+                "Addition of Popularity (+10)",
             );
         }
     }
@@ -1131,10 +1140,8 @@ CharacterGenerator.prototype.determinePopularity = function (char) {
         );
     }
 
-    // Basic's Table 26 defines no popularity floor, so Basic popularity
-    // may be negative. Advanced/Ultimate keep the existing floor.
-    if (this.generatorMode !== "basic" && char.popularity < 0)
-        char.popularity = 0;
+    // Advanced p.9: "Heroes may start with negative Popularity." — no floor.
+    // (Ultimate keeps its floor in determinePopularityUltimate.)
 
     char.state.popularity.final = char.popularity;
     char.logRoll("Popularity", "Base Rules", char.popularity);
@@ -1306,7 +1313,7 @@ CharacterGenerator.prototype.determineSpecialAbilities = function (char) {
                 );
                 if (!p) continue;
                 const optionalPowerRankColumn =
-                    this.generatorMode === "basic" ? 1 : 3;
+                    this.generatorMode === "basic" ? 1 : 4;
                 const rankRoll = this.powerRankRolls[nextRankIdx];
                 nextRankIdx++;
                 const rankRow = Utility.findRow(
@@ -1458,7 +1465,10 @@ CharacterGenerator.prototype.determineSpecialAbilities = function (char) {
         let cRoll = this.contactRolls[ci];
         let c = category
             ? this.contactTypeListTable.find(
-                  (c) => c.category === category && cRoll <= c.maxRoll,
+                  (c) =>
+                      c.category === category &&
+                      cRoll <= c.maxRoll &&
+                      (!c.alienOnly || char.physicalForm === "Alien"),
               )
             : null;
 
@@ -1483,7 +1493,10 @@ CharacterGenerator.prototype.determineSpecialAbilities = function (char) {
             category = catRow.name;
             cRoll = this.contactRolls[ci + adjustIndex];
             c = this.contactTypeListTable.find(
-                (c2) => c2.category === category && cRoll <= c2.maxRoll,
+                (c2) =>
+                    c2.category === category &&
+                    cRoll <= c2.maxRoll &&
+                    (!c2.alienOnly || char.physicalForm === "Alien"),
             );
         }
         if (!c) {

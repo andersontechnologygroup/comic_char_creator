@@ -169,15 +169,15 @@ Tester._assertCharacterInvariants = (char, mode) => {
         `Fuzz (${mode}): karma = R+I+P.`,
     );
 
-    // Popularity: Basic has no popularity floor (Table 26), so only
-    // Advanced/Ultimate are required to be non-negative.
+    // Popularity: Basic (Table 26) and Advanced (p.9) have no popularity
+    // floor, so only Ultimate is required to be non-negative.
     Tester.assert(
         typeof char.popularity === "number" &&
-            (mode === "basic" || char.popularity >= 0),
+            (mode !== "ultimate" || char.popularity >= 0),
         `Fuzz (${mode}): popularity is ${char.popularity}` +
-            (mode === "basic"
-                ? " (may be negative in Basic)."
-                : " (must be >= 0)."),
+            (mode === "ultimate"
+                ? " (must be >= 0)."
+                : " (may be negative; no floor)."),
     );
 
     // Slot invariants

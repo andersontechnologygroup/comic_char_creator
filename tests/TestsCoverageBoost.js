@@ -3481,6 +3481,7 @@ Tester.RosterGenerateTalentsTests = () => {
             const c6 = new Character();
             c6.talents = [];
             c6.contacts = [];
+            c6.contactsCount = 5;
             c6.contactsMax = 5;
             c6.talentsCount = 4;
             c6.talentsMax = 5;
@@ -3534,6 +3535,7 @@ Tester.RosterBonusContactTests = () => {
 
     const char = new Character();
     char.contacts = [];
+    char.contactsCount = 9;
     char.contactsMax = 9;
     const add = (str, forced) => {
         gen.contactRolls[char.contacts.length] = 50;
